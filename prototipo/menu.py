@@ -1,3 +1,5 @@
+import pygame
+
 class Menu:
     def __init__(self, tela):
         self.__tela = tela
@@ -19,7 +21,7 @@ class Tela:
         self.__fundo = fundo
     
 class Botao:
-    def __init__(self,x,y,w,h,cor,corhover,texto):
+    def __init__(self,x,y,w,h,cor,corhover,texto,borda):
         self.__x = x
         self.__y = y
         self.__w = w
@@ -28,8 +30,16 @@ class Botao:
         self.__corhover = corhover
         self.__texto = texto
     
-    def destaque():
-        pass
-    
-    def click():
-        pass
+    def renderizar(self,surface):
+        pos = pygame.mouse.get_pos()
+        pygame.draw.rect(surface,(0,0,0),[self.__x,self.__y,self.__w,self.__h])
+        if self.__x <= pos[0] <= self.__x + self.__w and self.__y <= pos[1] <= self.__y + self.__h:
+            pygame.draw.rect(surface,corhover,[self.__x+borda,self.__y+borda,self.__w-2*borda,self.__h-2*borda])
+        else:
+            pygame.draw.rect(surface,cor,[self.__x+borda,self.__y+borda,self.__w-2*borda,self.__h-2*borda])
+
+    def clicar():
+        if self.__x <= pos[0] <= self.__x + self.__w and self.__y <= pos[1] <= self.__y + self.__h:
+            return True
+        else:
+            return False
