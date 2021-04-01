@@ -12,3 +12,18 @@ class Menu:
     
     def trocar_tela():
         pass
+    
+class Tela:
+    def __init__(self,listabotoes,fundo):
+        self.__listabotoes = listabotoes
+        self.__fundo = fundo
+
+class Botao:
+    def __init__(self,x,y,w,h,cor,corhover,texto):
+        self.__x = x
+        self.__y = y
+        self.__w = w
+        self.__h = h
+        self.__cor = cor
+        self.__corhover = corhover
+        self.__texto = texto
