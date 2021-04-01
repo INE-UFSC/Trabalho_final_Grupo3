@@ -14,10 +14,10 @@ class Menu:
         pass
     
 class Tela:
-    def __init__(self,listabotoes,fundo):
+    def __init__(self,listabotoes:list,fundo):
         self.__listabotoes = listabotoes
         self.__fundo = fundo
-
+    
 class Botao:
     def __init__(self,x,y,w,h,cor,corhover,texto):
         self.__x = x
@@ -27,3 +27,9 @@ class Botao:
         self.__cor = cor
         self.__corhover = corhover
         self.__texto = texto
+    
+    def destaque():
+        pass
+    
+    def click():
+        pass
