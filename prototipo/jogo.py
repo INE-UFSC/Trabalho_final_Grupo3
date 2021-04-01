@@ -1,4 +1,5 @@
 import pygame, time, math, random
+from inimigos import *
 from jogador import *
 
 class Particle:
@@ -54,6 +55,7 @@ class Jogo:
 
     def rodar(self):
         pygame.init()
+        goomba = Goomba("goomba")
         retangulo = pygame.Rect(50, 60, 200, 80)
         cima, baixo, direita, esquerda = 0,0,0,0
         espaco = False
@@ -89,7 +91,7 @@ class Jogo:
 
 
             #TUDO QUE VAI SER RENDERIZADO EM ORDEM
-            # screen.fill(background_colour)  # Preenche com o a cor de fundo
+            screen.fill(background_colour)  # Preenche com o a cor de fundo
             # print(direita,esquerda, espaco)
             circulo.atualizar((R,G,B),size)
             circulo.move(direita, esquerda ,espaco)
