@@ -36,7 +36,7 @@ class Jogador:
 
     def colisao(self, objeto):
         if self.__x + 80 + self.__velocidade >= objeto.bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto.bottomright[0] :
-            print("Colidiu")
+
     
     def atualizar(self, screen):
         pygame.draw.rect(screen, (0,0,0), self.__corpo)
