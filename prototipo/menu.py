@@ -39,6 +39,7 @@ class Botao:
             pygame.draw.rect(surface,cor,[self.__x+borda,self.__y+borda,self.__w-2*borda,self.__h-2*borda])
 
     def clicar():
+        pos = pygame.mouse.get_pos()
         if self.__x <= pos[0] <= self.__x + self.__w and self.__y <= pos[1] <= self.__y + self.__h:
             return True
         else:
