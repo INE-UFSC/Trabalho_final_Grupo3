@@ -50,6 +50,14 @@ class Estatico():
     def altura(self, altura):
         self.__altura = altura
 
+    @property
+    def corpo(self):
+        return self.__corpo
+
+    @corpo.setter
+    def corpo(self, corpo):
+        self.__corpo = corpo
+
     def Inicializar(self):
         pass
 
