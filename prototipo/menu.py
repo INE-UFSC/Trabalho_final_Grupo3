@@ -16,9 +16,14 @@ class Menu:
         pass
     
 class Tela:
-    def __init__(self,listabotoes:list,fundo):
+    def __init__(self,listabotoes:list,fundo,superficie):
         self.__listabotoes = listabotoes
         self.__fundo = fundo
+        self.__superficie = superficie
+    
+    def renderizar(self):
+        for i in self.__listabotoes:
+            i.renderizar(superficie)
     
 class Botao:
     def __init__(self,x,y,w,h,cor,corhover,texto,borda):
@@ -28,7 +33,7 @@ class Botao:
         self.__h = h
         self.__cor = cor
         self.__corhover = corhover
-        self.__texto = texto
+        self.__textsf = pygame.font.SysFont(None,s).render(texto,True,(0,0,0))
     
     def renderizar(self,surface):
         pos = pygame.mouse.get_pos()
