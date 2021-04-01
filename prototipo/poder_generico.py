@@ -1,5 +1,5 @@
 class Poder_Generico():
-    def __init__(tem_tempo, duracao: int, nome_funcionalidade: str):
+    def __init__(tem_tempo: bool, duracao: int, nome_funcionalidade: str):
         self.__tem_tempo = tem_tempo
         self.__duracao = durcao 
         self.__nome_funcionalidade = nome_funcionalidade
