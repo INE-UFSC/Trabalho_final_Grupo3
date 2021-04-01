@@ -1,4 +1,5 @@
 import pygame, time, math, random
+from jogador import *
 
 class Particle:
     def __init__(self, pos, size):

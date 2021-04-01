@@ -1,8 +1,9 @@
 import abc from ABC
 
-def __init__(nome: str, posicao: tuple(), tamanho: int)
-    self.__nome = nome 
-    self.__posicao = posicao 
+def __init__(nome: str, x: int, y:int, tamanho: int):
+    self.__nome = nome
+    self.__x = x
+    self.__y = y
     self.__tamanho = tamanho 
 
 @property
