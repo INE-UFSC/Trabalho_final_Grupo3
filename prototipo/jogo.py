@@ -1,6 +1,10 @@
 import pygame, time, math, random
+<<<<<<< HEAD
+from jogador import Jogador
+=======
 from inimigos import *
 from jogador import *
+>>>>>>> refs/remotes/origin/main
 
 class Particle:
     def __init__(self, pos, size):
@@ -55,8 +59,14 @@ class Jogo:
 
     def rodar(self):
         pygame.init()
+<<<<<<< HEAD
+        retangulo = pygame.Rect(180, 420, 200, 40)
+        retangulo.bottomright
+        
+=======
         goomba = Goomba("goomba")
         retangulo = pygame.Rect(50, 60, 200, 80)
+>>>>>>> refs/remotes/origin/main
         cima, baixo, direita, esquerda = 0,0,0,0
         espaco = False
         R,G,B = 0,0,0
@@ -71,6 +81,7 @@ class Jogo:
         pygame.display.set_caption('Tutorial 1')
         screen.fill(background_colour)
         circulo = Particle((150, 50), 15)
+        jogador = Jogador('mario',150, 50, 0, 1)
 
         rodando = True
         while rodando:
@@ -91,12 +102,21 @@ class Jogo:
 
 
             #TUDO QUE VAI SER RENDERIZADO EM ORDEM
+<<<<<<< HEAD
+            screen.fill(background_colour)
+             # Preenche com o a cor de fundo
+=======
             screen.fill(background_colour)  # Preenche com o a cor de fundo
+>>>>>>> refs/remotes/origin/main
             # print(direita,esquerda, espaco)
-            circulo.atualizar((R,G,B),size)
-            circulo.move(direita, esquerda ,espaco)
-            circulo.display(screen)
-            # pygame.draw.rect(screen, (R,G,B), retangulo)
+            #circulo.atualizar((R,G,B),size)
+            #circulo.move(direita, esquerda ,espaco)
+            jogador.mover(direita, esquerda ,espaco, (width, height))
+            jogador.atualizar(screen)
+            print(retangulo.bottomleft)
+            #circulo.display(screen)
+            pygame.draw.rect(screen, (0,0,255), retangulo)
+            jogador.colisao(retangulo)
             # pygame.draw.circle(screen, (R, G, B), (400, 250), size, 10)
 
             #RENDERIZACAO DA TELA
