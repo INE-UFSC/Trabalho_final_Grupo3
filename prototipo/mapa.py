@@ -4,24 +4,24 @@ class Mapa:
         self.__tamanho = tamanho
         self.__desenho = desenho 
 
-@property
-def tamanho (self):
-    return self.__tamanho
+    @property
+    def tamanho (self):
+        return self.__tamanho
 
-@nome.setter
-def  (self, tamanho):
-     self.__tamanho = tamanho
+    @nome.setter
+    def  (self, tamanho):
+         self.__tamanho = tamanho
 
-@property
-def desenho (self):
-    return self.__desenho
+    @property
+    def desenho (self):
+        return self.__desenho
 
-@nome.setter
-def  (self, desenho):
-     self.__desenho = desenho
+    @nome.setter
+    def  (self, desenho):
+         self.__desenho = desenho
 
-def inicializacao():
-    pass
+    def inicializacao():
+        pass
 
-def mocao():
-    pass
+    def mocao():
+        pass
