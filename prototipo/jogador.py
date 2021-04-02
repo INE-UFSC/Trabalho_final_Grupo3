@@ -1,4 +1,5 @@
 import pygame
+from obstaculo_generico import ObstaculoGenerico
 
 class Jogador: 
     def __init__(self, nome: str, x: int, y: int, velocidade: int, vida: int):
@@ -34,9 +35,17 @@ class Jogador:
     def nome (self, velocidade):
         self.__velocidade = velocidade
 
+    @property
+    def corpo(self):
+        return self.__corpo
+
     def colisao(self, objeto):
-        if self.__x + 80 + self.__velocidade >= objeto.bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto.bottomright[0] :
-            print("Colidiu")
+        #if self.__x + 80 + self.__velocidade >= objeto[0].bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto[0].bottomright[0] :
+            #print("Colidiu")
+        
+        if isinstance(objeto[1], ObstaculoGenerico):
+            if self.__corpo.colliderect(objeto[0]):
+                return 
     
     def atualizar(self, screen):
         pygame.draw.rect(screen, (0,0,0), self.__corpo)

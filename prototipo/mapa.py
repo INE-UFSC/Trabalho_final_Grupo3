@@ -1,27 +1,15 @@
+import pygame
+from obstaculo_generico import ObstaculoGenerico
 class Mapa: 
 
-    def __init__(tamanho: int, desenho: str):
+    def __init__(self, tamanho):
         self.__tamanho = tamanho
-        self.__desenho = desenho 
+        #self.__desenho = desenho 
 
-    @property
-    def tamanho (self):
-        return self.__tamanho
-
-    @nome.setter
-    def  (self, tamanho):
-         self.__tamanho = tamanho
-
-    @property
-    def desenho (self):
-        return self.__desenho
-
-    @nome.setter
-    def  (self, desenho):
-         self.__desenho = desenho
-
-    def inicializacao():
-        pass
+    def inicializacao(self):
+        bloco1 = ObstaculoGenerico('bloco')
+        #print(bloco1.__tipo)
+        return (pygame.Rect((550,350), (75, 75)), bloco1)
 
     def mocao():
         pass
