@@ -36,6 +36,16 @@ class Jogador:
 
     def colisao(self, objeto):
         if self.__x + 80 + self.__velocidade >= objeto.bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto.bottomright[0] :
+            self.__vida = self.__vida - 1
+            self.__x = self.__x - 20
+            print(self.__vida)
+            self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
+            if self.__vida == 0:
+                self.__x = 1000000000
+                self.__y = 1000000000
+                self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
+
+
 
     
     def atualizar(self, screen):
@@ -56,6 +66,6 @@ class Jogador:
         self.__y += self.__vely
         self.__x += self.__velocidade
 
-        self.__x = self.__x % 800
+        self.__x = self.__x
         self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
 

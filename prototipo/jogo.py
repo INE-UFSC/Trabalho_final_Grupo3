@@ -54,7 +54,7 @@ class Jogo:
 
     def rodar(self):
         pygame.init()
-        retangulo = pygame.Rect(180, 420, 200, 40)
+        retangulo = pygame.Rect(300, 420, 200, 40)
         retangulo.bottomright
         
         cima, baixo, direita, esquerda = 0,0,0,0
@@ -71,7 +71,7 @@ class Jogo:
         pygame.display.set_caption('Tutorial 1')
         screen.fill(background_colour)
         circulo = Particle((150, 50), 15)
-        jogador = Jogador('mario',150, 50, 0, 1)
+        jogador = Jogador('mario',150, 50, 0, 5)
 
         rodando = True
         while rodando:
@@ -97,6 +97,7 @@ class Jogo:
             # print(direita,esquerda, espaco)
             #circulo.atualizar((R,G,B),size)
             #circulo.move(direita, esquerda ,espaco)
+            jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height))
             jogador.atualizar(screen)
             #circulo.display(screen)
