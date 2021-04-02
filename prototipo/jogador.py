@@ -40,12 +40,27 @@ class Jogador:
         return self.__corpo
 
     def colisao(self, objeto):
+<<<<<<< HEAD
         #if self.__x + 80 + self.__velocidade >= objeto[0].bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto[0].bottomright[0] :
             #print("Colidiu")
         
         if isinstance(objeto[1], ObstaculoGenerico):
             if self.__corpo.colliderect(objeto[0]):
                 return 
+=======
+        if self.__x + 80 + self.__velocidade >= objeto.bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto.bottomright[0] :
+            self.__vida = self.__vida - 1
+            self.__x = self.__x - 20
+            print(self.__vida)
+            self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
+            if self.__vida == 0:
+                self.__x = 1000000000
+                self.__y = 1000000000
+                self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
+
+
+
+>>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
     
     def atualizar(self, screen):
         pygame.draw.rect(screen, (0,0,0), self.__corpo)
@@ -65,6 +80,6 @@ class Jogador:
         self.__y += self.__vely
         self.__x += self.__velocidade
 
-        self.__x = self.__x % 800
+        self.__x = self.__x
         self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
 

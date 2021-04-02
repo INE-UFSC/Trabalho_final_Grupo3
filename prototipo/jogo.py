@@ -1,7 +1,10 @@
 import pygame, time, math, random
 from jogador import Jogador
+<<<<<<< HEAD
 from obstaculo_generico import ObstaculoGenerico
 from mapa import Mapa
+=======
+>>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
 
 class Particle:
     def __init__(self, pos, size):
@@ -56,12 +59,18 @@ class Jogo:
 
     def rodar(self):
         pygame.init()
+<<<<<<< HEAD
         retangulo = pygame.Rect(180, 25, 200, 40)
         retangulo.bottomright
         
         
         #goomba = Goomba("goomba")
         retangulo = pygame.Rect(50, 60, 200, 80)
+=======
+        retangulo = pygame.Rect(300, 420, 200, 40)
+        retangulo.bottomright
+        
+>>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
         cima, baixo, direita, esquerda = 0,0,0,0
         espaco = False
         R,G,B = 0,0,0
@@ -76,9 +85,13 @@ class Jogo:
         pygame.display.set_caption('Tutorial 1')
         screen.fill(background_colour)
         circulo = Particle((150, 50), 15)
+<<<<<<< HEAD
         mapa1 = Mapa(15).inicializacao()
         jogador = Jogador('mario',150, 50, 0, 1)
         #retangulo2 = ObstaculoGenerico(550, 350).bloco()
+=======
+        jogador = Jogador('mario',150, 50, 0, 5)
+>>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
 
         rodando = True
         while rodando:
@@ -101,13 +114,20 @@ class Jogo:
             #TUDO QUE VAI SER RENDERIZADO EM ORDEM
             screen.fill(background_colour)
              # Preenche com o a cor de fundo
+<<<<<<< HEAD
             screen.fill(background_colour)  # Preenche com o a cor de fundo
+=======
+>>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
             # print(direita,esquerda, espaco)
             #circulo.atualizar((R,G,B),size)
             #circulo.move(direita, esquerda ,espaco)
+            jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height))
             jogador.atualizar(screen)
+<<<<<<< HEAD
             #print(retangulo.bottomleft)
+=======
+>>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
             #circulo.display(screen)
             pygame.draw.rect(screen, (0,0,255), retangulo)
             pygame.draw.rect(screen, (125,100,255), mapa1[0])
