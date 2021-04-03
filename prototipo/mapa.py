@@ -1,15 +1,21 @@
 import pygame
-from obstaculo_generico import ObstaculoGenerico
-class Mapa: 
-
+from obstaculos import *
+class Mapa:
     def __init__(self, tamanho):
         self.__tamanho = tamanho
-        #self.__desenho = desenho 
+        #self.__desenho = desenho
+        self.__listaDeObstaculos = []
 
-    def inicializacao(self):
-        bloco1 = ObstaculoGenerico('bloco')
-        #print(bloco1.__tipo)
-        return (pygame.Rect((550,350), (75, 75)), bloco1)
+    def iniciar(self):
+        self.__listaDeObstaculos.append(Cano_vertical('cano1', 100, 300, 800))
+        self.__listaDeObstaculos.append(Cano_vertical('cano2', 400, 300, 800))
+        self.__listaDeObstaculos.append(Bloco('bloco1', 100, 100))
+        self.__listaDeObstaculos.append(Cano_horizontal('cano3', 0, 400, 800))
 
-    def mocao():
+
+    def atualizar(self, tela):
+        for obstaculo in self.__listaDeObstaculos:
+            obstaculo.atualizar(tela)
+
+    def mocao(self):
         pass

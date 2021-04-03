@@ -1,10 +1,7 @@
 import pygame, time, math, random
 from jogador import Jogador
-<<<<<<< HEAD
-from obstaculo_generico import ObstaculoGenerico
+from obstaculos import Bloco
 from mapa import Mapa
-=======
->>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
 
 class Particle:
     def __init__(self, pos, size):
@@ -58,42 +55,39 @@ class Jogo:
         pass
 
     def rodar(self):
+        ###### PYGAME GERAL #####
         pygame.init()
-<<<<<<< HEAD
-        retangulo = pygame.Rect(180, 25, 200, 40)
-        retangulo.bottomright
-        
-        
-        #goomba = Goomba("goomba")
-        retangulo = pygame.Rect(50, 60, 200, 80)
-=======
-        retangulo = pygame.Rect(300, 420, 200, 40)
-        retangulo.bottomright
-        
->>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
-        cima, baixo, direita, esquerda = 0,0,0,0
+        rodando = True
+        #relogio = pygame.time.Clock(60)
+
+
+        ###### INFORMACOES TA TELA ######
+        background_colour = (255, 255, 255)  # Cor do fundo
+        (width, height) = (800, 500)  # Tamanho da tela
+        screen = pygame.display.set_mode((width, height)) #Cria o objeto da tela
+        pygame.display.set_caption('Tutorial 1')
+        screen.fill(background_colour)
+
+        ##### ENTRADAS DO JOGADOR #####
+        cima, baixo, direita, esquerda = 0, 0, 0, 0
         espaco = False
-        R,G,B = 0,0,0
+
+        ###### INSTANCIAS DE OBJETOS ######
+        jogador = Jogador('mario',150, 50, 0, 1)
+        #bloco1 = Bloco('bloco1', 100, 100)
+        mapa = Mapa(15)
+        mapa.iniciar()
+
+        ###### FORMAS GEOMETRICAS DE TESTE ######
+        R, G, B = 0, 0, 0
         gR, gG, gB = 0, 120, 240
-        background_colour = (255, 255, 255) #Cor do fundo
-        (width, height) = (800, 500) #Tamanho da tela
         size = 100
         incrementador = 1
 
-        screen = pygame.display.set_mode((width, height)) #Cria o objeto da tela
-        #relogio = pygame.time.Clock(60)
-        pygame.display.set_caption('Tutorial 1')
-        screen.fill(background_colour)
         circulo = Particle((150, 50), 15)
-<<<<<<< HEAD
-        mapa1 = Mapa(15).inicializacao()
-        jogador = Jogador('mario',150, 50, 0, 1)
         #retangulo2 = ObstaculoGenerico(550, 350).bloco()
-=======
-        jogador = Jogador('mario',150, 50, 0, 5)
->>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
+        retangulo = pygame.Rect(300, 420, 200, 40)
 
-        rodando = True
         while rodando:
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT: rodando = False
@@ -111,35 +105,31 @@ class Jogo:
                     if evento.key == pygame.K_SPACE: espaco = False
 
 
-            #TUDO QUE VAI SER RENDERIZADO EM ORDEM
-            screen.fill(background_colour)
-             # Preenche com o a cor de fundo
-<<<<<<< HEAD
-            screen.fill(background_colour)  # Preenche com o a cor de fundo
-=======
->>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
-            # print(direita,esquerda, espaco)
+            ##### FILA DE RENDERIZACAO #####
+            screen.fill(background_colour) # Preenche com o a cor de fundo
             #circulo.atualizar((R,G,B),size)
             #circulo.move(direita, esquerda ,espaco)
-            jogador.colisao(retangulo)
+
+            mapa.atualizar(screen)
+
+            #jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height))
             jogador.atualizar(screen)
-<<<<<<< HEAD
             #print(retangulo.bottomleft)
-=======
->>>>>>> 3a13016f1075575af93d6a40075967f29cba2f46
             #circulo.display(screen)
+
             pygame.draw.rect(screen, (0,0,255), retangulo)
-            pygame.draw.rect(screen, (125,100,255), mapa1[0])
+            #pygame.draw.rect(screen, (125,100,255), mapa1[0])
 
 
             #jogador.colisao(retangulo)
-            jogador.colisao(mapa1)
+            # jogador.colisao(mapa1)
             # pygame.draw.circle(screen, (R, G, B), (400, 250), size, 10)
 
-            #RENDERIZACAO DA TELA
+            ##### RENDERIZACAO DA TELA #####
             pygame.display.flip()
 
+            ##### MANIPULACAO DE PARAMETROS DE TESTE #####
             size += incrementador
             if size > 200:
                 incrementador = -1
@@ -154,6 +144,7 @@ class Jogo:
             G = definir_cor(gG)
             B = definir_cor(gB)
 
+            ##### FPS RUIM #####
             time.sleep(0.01)
 
 jogo = Jogo()
