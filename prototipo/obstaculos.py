@@ -22,7 +22,18 @@ class Cano_vertical(Estatico):
 class Cano_horizontal(Estatico):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
         largura = 100
+        ##O que e esse 100????? aqui nao esta herdando? -Victor
         super().__init__(nome, esquerda, y, 100, direita-esquerda)
 
     def atualizar(self, tela):
         pygame.draw.rect(tela, (11, 137, 0), self.corpo)
+
+
+##teste
+class Chao(Estatico): 
+    def __init__(self, nome: str, y: int, esquerda: int, direita: int):
+        largura = 50
+        super().__init__(nome, esquerda, y, largura, direita-esquerda)
+
+    def atualizar(self, tela):
+        pygame.draw.rect(tela, (184, 20, 20), self.corpo)

@@ -14,10 +14,16 @@ class Mapa:
         self.__listaDeObstaculos = listaDeObstaculos
 
     def iniciar(self):
-        self.__listaDeObstaculos.append(Cano_vertical('cano1', 200, 300, 800))
-        self.__listaDeObstaculos.append(Cano_vertical('cano2', 400, 300, 800))
-        self.__listaDeObstaculos.append(Bloco('bloco1', 100, 100))
-        self.__listaDeObstaculos.append(Cano_horizontal('cano3', 0, 400, 800))
+        self.__listaDeObstaculos.append(Cano_vertical('cano1', 320, 375, 800))
+        self.__listaDeObstaculos.append(Cano_vertical('cano2', 540, 375, 800))
+        #self.__listaDeObstaculos.append(Bloco('bloco1', 100, 100))
+        #self.__listaDeObstaculos.append(Cano_horizontal('cano3', 0, 400, 800))
+
+        #teste
+        self.__listaDeObstaculos.append(Chao('Chao', 475, 0, 100))
+        self.__listaDeObstaculos.append(Chao('Chao', 475, 150, 250))
+        self.__listaDeObstaculos.append(Chao('Chao', 475, 300, 450))
+        self.__listaDeObstaculos.append(Chao('Chao', 475, 500, 750))
 
 
     def atualizar(self, tela):

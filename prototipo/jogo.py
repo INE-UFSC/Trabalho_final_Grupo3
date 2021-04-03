@@ -120,7 +120,7 @@ class Jogo:
             #print(retangulo.bottomleft)
             #circulo.display(screen)
 
-            pygame.draw.rect(screen, (0,0,255), retangulo)
+            #pygame.draw.rect(screen, (0,0,255), retangulo)
             #pygame.draw.rect(screen, (125,100,255), mapa1[0])
 
 
