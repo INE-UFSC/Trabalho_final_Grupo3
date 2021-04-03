@@ -13,27 +13,26 @@ class Bloco(Estatico):
 
 class Cano_vertical(Estatico):
     def __init__(self, nome: str, x: int, topo: int, base: int):
-        largura = 100
-        super().__init__(nome, x, topo, base-topo, largura)
+        largura = 50
+        altura= base-topo
+        super().__init__(nome, x, topo, altura, largura)
 
     def atualizar(self, tela):
         pygame.draw.rect(tela, (11, 137, 0), self.corpo)
 
 class Cano_horizontal(Estatico):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
-        largura = 100
-        ##O que e esse 100????? aqui nao esta herdando? -Victor
-        super().__init__(nome, esquerda, y, 100, direita-esquerda)
+        altura = 50
+        largura = direita-esquerda
+        super().__init__(nome, esquerda, y, altura, largura)
 
     def atualizar(self, tela):
         pygame.draw.rect(tela, (11, 137, 0), self.corpo)
 
-
-##teste
 class Chao(Estatico): 
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
-        largura = 50
-        super().__init__(nome, esquerda, y, largura, direita-esquerda)
+        altura = 10
+        super().__init__(nome, esquerda, y, altura, direita-esquerda)
 
     def atualizar(self, tela):
         pygame.draw.rect(tela, (184, 20, 20), self.corpo)

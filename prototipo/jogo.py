@@ -74,7 +74,7 @@ class Jogo:
 
         ###### INSTANCIAS DE OBJETOS ######
         jogador = Jogador('mario',150, 50, 0, 1)
-        goomba = Goomba('goomba',100,5)
+        goomba = Goomba('goomba',400,5)
         mapa = Mapa(15)
         mapa.iniciar()
 

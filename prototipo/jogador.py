@@ -7,9 +7,12 @@ class Jogador:
         self.__nome = nome 
         self.__x = x
         self.__y = y
+        #Modifiquei pra altura e largura serem variaveis - Bernardo
+        self.__altura = 100
+        self.__largura = 50
         self.__velocidade = velocidade
         self.__vely = 0
-        self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
+        self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 
     @property
     def nome (self):
@@ -42,19 +45,20 @@ class Jogador:
     def colisao(self, objeto):
         #if self.__x + 80 + self.__velocidade >= objeto[0].bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto[0].bottomright[0] :
             #print("Colidiu")
-        
+
+        #Obstaculo generico nao existe, tem que arrumar, ve como eu faco no goomba - Bernardo
         if isinstance(objeto[1], ObstaculoGenerico):
             if self.__corpo.colliderect(objeto[0]):
                 return
-        if self.__x + 80 + self.__velocidade >= objeto.bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto.bottomright[0] :
+        if self.__x + self.__largura + self.__velocidade >= objeto.bottomleft[0] and self.__x + self.__largura + self.__velocidade <= objeto.bottomright[0] :
             self.__vida = self.__vida - 1
             self.__x = self.__x - 20
             print(self.__vida)
-            self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
+            self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
             if self.__vida == 0:
                 self.__x = 1000000000
                 self.__y = 1000000000
-                self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
+                self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 
     
     def atualizar(self, screen):
@@ -63,11 +67,11 @@ class Jogador:
     def mover(self, direita, esquerda, espaco, screen):
         self.__velocidade = direita - esquerda
 
-        if espaco and self.__y == screen[1] - 200:
+        if espaco and self.__y == screen[1] - self.__altura:
             self.__vely = -20
 
-        if self.__y + self.__vely >= screen[1] - 200:
-            self.__y = screen[1] - 200
+        if self.__y + self.__vely >= screen[1] - self.__altura:
+            self.__y = screen[1] - self.__altura
             self.__vely = 0
         else:
             self.__vely += 1
@@ -76,5 +80,5 @@ class Jogador:
         self.__x += self.__velocidade
 
         self.__x = self.__x
-        self.__corpo = pygame.Rect(self.__x , self.__y, 80, 200)
+        self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 

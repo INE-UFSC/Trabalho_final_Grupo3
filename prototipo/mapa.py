@@ -20,10 +20,10 @@ class Mapa:
         #self.__listaDeObstaculos.append(Cano_horizontal('cano3', 0, 400, 800))
 
         #teste
-        self.__listaDeObstaculos.append(Chao('Chao', 475, 0, 100))
-        self.__listaDeObstaculos.append(Chao('Chao', 475, 150, 250))
-        self.__listaDeObstaculos.append(Chao('Chao', 475, 300, 450))
-        self.__listaDeObstaculos.append(Chao('Chao', 475, 500, 750))
+        self.__listaDeObstaculos.append(Chao('Chao', 495, 0, 800))
+        #self.__listaDeObstaculos.append(Chao('Chao', 475, 150, 250))
+        #self.__listaDeObstaculos.append(Chao('Chao', 475, 300, 450))
+        #self.__listaDeObstaculos.append(Chao('Chao', 475, 500, 750))
 
 
     def atualizar(self, tela):
