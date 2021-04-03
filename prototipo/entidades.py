@@ -58,10 +58,10 @@ class Estatico():
     def corpo(self, corpo):
         self.__corpo = corpo
 
-    def Inicializar(self):
+    def iniciar(self):
         pass
 
-    def Atualizar(self):
+    def atualizar(self):
         pass
 
 class Movel(Estatico):
@@ -96,7 +96,10 @@ class Movel(Estatico):
     def limiteVel(self, limiteVel):
         self.__limiteVel = limiteVel
 
-    def Mover(self):
+    def mover(self):
+        pass
+
+    def checar_colisao(self):
         pass
 
 class Entidade(Movel):
@@ -121,5 +124,5 @@ class Entidade(Movel):
     def danoContato(self, danoContato):
         self.__danoContato = danoContato
 
-    def Sumir(self):
+    def sumir(self):
         pass

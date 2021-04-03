@@ -1,7 +1,7 @@
 import pygame, time, math, random
 from jogador import Jogador
-from obstaculos import Bloco
 from mapa import Mapa
+from inimigos import *
 
 class Particle:
     def __init__(self, pos, size):
@@ -74,7 +74,7 @@ class Jogo:
 
         ###### INSTANCIAS DE OBJETOS ######
         jogador = Jogador('mario',150, 50, 0, 1)
-        #bloco1 = Bloco('bloco1', 100, 100)
+        goomba = Goomba('goomba',100,5)
         mapa = Mapa(15)
         mapa.iniciar()
 
@@ -111,6 +111,8 @@ class Jogo:
             #circulo.move(direita, esquerda ,espaco)
 
             mapa.atualizar(screen)
+            goomba.atualizar(screen)
+            goomba.mover((width, height), mapa)
 
             #jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height))
