@@ -37,7 +37,6 @@ class Particle:
 
         self.x = self.x % 800
 
-
 def definir_cor(graus):
     graus = int(graus)
     if graus in range(300,360) or graus in range(0,60):
@@ -71,6 +70,7 @@ class Jogo:
         ##### ENTRADAS DO JOGADOR #####
         cima, baixo, direita, esquerda = 0, 0, 0, 0
         espaco = False
+        bola_fogo = False
 
         ###### INSTANCIAS DE OBJETOS ######
         jogador = Jogador('mario',100, 500, 0, 1)
@@ -83,9 +83,9 @@ class Jogo:
         size = 100
         incrementador = 1
 
-        circulo = Particle((150, 50), 15)
+        #circulo = Particle((150, 50), 15)
         #retangulo2 = ObstaculoGenerico(550, 350).bloco()
-        retangulo = pygame.Rect(300, 420, 200, 40)
+        #retangulo = pygame.Rect(300, 420, 200, 40)
 
         while rodando:
             for evento in pygame.event.get():
@@ -96,12 +96,15 @@ class Jogo:
                     if evento.key == pygame.K_d: direita = 5
                     if evento.key == pygame.K_a: esquerda = 5
                     if evento.key == pygame.K_SPACE: espaco = True
+                    if evento.key == pygame.K_t: bola_fogo = True
                 if evento.type == pygame.KEYUP:
                     if evento.key == pygame.K_w: cima = 0
                     if evento.key == pygame.K_s: baixo = 0
                     if evento.key == pygame.K_d: direita = 0
                     if evento.key == pygame.K_a: esquerda = 0
                     if evento.key == pygame.K_SPACE: espaco = False
+                    if evento.key == pygame.K_t: bola_fogo = False
+
 
 
             ##### FILA DE RENDERIZACAO #####
@@ -113,6 +116,7 @@ class Jogo:
 
             #jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height), mapa)
+            jogador.poderes((width, height), mapa, bola_fogo)
             jogador.atualizar(screen)
             if jogador.vida == "morto":
                 rodando = False

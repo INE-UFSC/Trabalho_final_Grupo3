@@ -1,6 +1,7 @@
 import pygame
 from obstaculos import Bloco
 from entidades import gravidade
+from poder_generico import BolaFogo
 
 class Jogador: 
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
@@ -16,6 +17,7 @@ class Jogador:
         self.__velx = velx
         self.__vely = 0
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
+        self.__poder = ''
 
     @property
     def nome (self):
@@ -73,6 +75,13 @@ class Jogador:
                     colisaoEsquerda = True
         return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
 
+    @property
+    def poder(self):
+        return self.__poder
+    
+    def poder(self, poder):
+        self.__poder = poder
+
     # def colisao(self, objeto):
     #     #if self.__x + 80 + self.__velocidade >= objeto[0].bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto[0].bottomright[0] :
     #         #print("Colidiu")
@@ -94,8 +103,12 @@ class Jogador:
     
     def atualizar(self, screen):
         pygame.draw.rect(screen, self.__cor, self.__corpo)
+        if self.__poder != '':
+            self.__poder.atualizar(screen)
+            #self.__poder = ''
     
-    def mover(self, direita, esquerda, espaco, screen, mapa):
+    def mover(self, direita, esquerda, espaco, screen, mapa): 
+
 
         ##### MOVIMENTO HORIZONTAL #####
         self.__velx = direita - esquerda
@@ -174,5 +187,10 @@ class Jogador:
         self.__y += self.__vely
         self.__x += self.__velx
 
+
         if self.__y > screen[1]: self.__vida = "morto"
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
+
+    def poderes(self, screen, mapa, bola_fogo = False, outros_poderes = False):
+        if bola_fogo == True: 
+            self.__poder = BolaFogo(self.corpo.center, screen, mapa)
