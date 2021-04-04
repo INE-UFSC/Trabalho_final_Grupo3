@@ -1,7 +1,7 @@
 import mapa
 import pygame
 class Poder_Generico():
-    def __init__(tem_tempo: bool, duracao: int, nome_funcionalidade: str):
+    def __init__(tem_tempo: bool, duracao: int):
         self.__tem_tempo = tem_tempo
         self.__duracao = durcao 
         self.__nome_funcionalidade = nome_funcionalidade
@@ -21,26 +21,26 @@ class Poder_Generico():
     @duracao.setter
     def duracao (self, duracao):
         self.__duracao = duracao
-    @property
+    '''@property
     def nome_funcionalidade (self):
         return self.__nome_funcionalidade
     
     @nome_funcionalidade.setter
     def nome_funcionalidade (self, nome_funcionalidade):
-        self.__nome_funcionalidade = nome_funcionalidade
+        self.__nome_funcionalidade = nome_funcionalidade'''
 
 class BolaFogo(Poder_Generico):
     def __init__(self, pos_inicial , screen, mapa):
-        danoContato = 1
-        largura = 15
-        altura = 15
-        limVel = 4
+        self.vida = 1
+        self.largura = 15
+        self.altura = 15
+        self.duracao = 100
         self.mapa = mapa
         self.vely = 0
-        self.velx = 1
-        self.x = pos_inicial[0]
+        self.velx = 3
+        self.x = pos_inicial[0] + 25
         self.y = pos_inicial[1]
-        self.__corpo = pygame.Rect(self.x, self.y, largura, altura)
+        self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
     @property
     def corpo(self):
@@ -49,15 +49,87 @@ class BolaFogo(Poder_Generico):
     @corpo.setter
     def corpo(self, corpo):
         self.__corpo = corpo
+    
+    ###TESTE###
+    def checar_colisao(self, corpo):
+        colisaoBaixo, colisaoCima, colisaoEsquerda, colisaoDireita = False, False, False, False
+        corpoLargo = pygame.Rect(self.x-1, self.y-1, self.largura+2,self.altura+2)
+        colisaoAjustada = corpoLargo.colliderect(corpo)
+        if colisaoAjustada:
+            ##### VERTICAIS #####
+            '''if self.corpo.left in range(corpo.left+1, corpo.right-1) or self.corpo.right in range(corpo.left+1, corpo.right-1):
+                if corpoLargo.bottom in range(corpo.top+1, corpo.bottom-1 + int(self.vely)):
+                    colisaoBaixo = True
+                elif corpoLargo.top in range(corpo.top+1+ int(self.vely), corpo.bottom-1):
+                    colisaoCima = True'''
+            ##### HORIZONTAIS #####
+            '''print(f'SEILA {self.corpo.top} =? {corpo.top+1, corpo.bottom-1}')
+            print(f'SEILA2 {self.corpo.bottom} =? {corpo.top+1, corpo.bottom-1}')
+            print(f'SEILA3 {self.corpo.top} =? {corpo.top+1, corpo.bottom-1}')
+            print(f'SEILA4{colisaoCima, colisaoBaixo}')'''
+
+            if (self.corpo.top in range(corpo.top+1, corpo.bottom-1) or self.corpo.bottom in range(corpo.top+1, corpo.bottom-1)):
+                ###TIREI DO IF da LINHA 77  and (not colisaoCima and not colisaoBaixo)                
+                if corpoLargo.right in range(corpo.left+1, corpo.right-1 + int(self.velx)):
+                    colisaoDireita = True
+                ###POR ENQUANTO É INÚTIL PQ SÓ JOGA PODER PELA DIREITA
+                if corpoLargo.left in range(corpo.left+1 + int(self.velx), corpo.right-1):
+                    colisaoEsquerda = True
+        return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
 
     def mover(self):
-        self.x += 3.5
+
+        ##### COLISOES #####
+        colisaoCima, colisaoBaixo, colisaoEsquerda, colisaoDireita = False, False, False, False
+        cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
+        obsBaixo, obsCima, obsEsquerda, obsDireita = 0,0,0,0
+
+        ##### COLISOES COM OBSTACULOS #####
+        
+        for obstaculo in self.mapa.listaDeObstaculos:
+
+            cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo)
+            #print(f'{cDireita}')
+
+            # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
+            ## Inutil enquanto a bola so vai reto e so 
+            '''if cCima:
+                colisaoCima = True
+                obsCima = obstaculo
+            if cBaixo:
+                colisaoBaixo = True
+                obsBaixo = obstaculo'''
+            if cEsquerda:
+                colisaoEsquerda = True
+                obsEsquerda = obstaculo
+            if cDireita:
+                colisaoDireita = True
+                obsDireta = obstaculo
+                print('ENTROU NA 109')
+            
+
+        ##### HORIZONTAIS #####
+        if colisaoEsquerda or colisaoDireita:
+            self.duracao = 0
+            #self.velx = 0
+
+        ##### VERTICAIS #####
+        '''if colisaoBaixo:
+            self.vely = 0
+            #self.y = obsBaixo.corpo.top - self.altura'''
+
+        self.y += self.vely
+        self.x += self.velx
 
     def atualizar(self, tela):
-        self.mover()
-        self.corpo.x = self.x
-        self.corpo.y = self.y
-        pygame.draw.rect(tela, (205,157,205), self.corpo)
-
+        if (self.duracao >  0):
+            self.mover()
+            self.corpo.x = self.x
+            self.corpo.y = self.y
+            pygame.draw.rect(tela, (205,157,205), self.corpo)
+            self.duracao -= 1
+        
+        else:
+            pass
 
         

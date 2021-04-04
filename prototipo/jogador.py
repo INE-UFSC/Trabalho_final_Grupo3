@@ -105,7 +105,6 @@ class Jogador:
         pygame.draw.rect(screen, self.__cor, self.__corpo)
         if self.__poder != '':
             self.__poder.atualizar(screen)
-            #self.__poder = ''
     
     def mover(self, direita, esquerda, espaco, screen, mapa): 
 
