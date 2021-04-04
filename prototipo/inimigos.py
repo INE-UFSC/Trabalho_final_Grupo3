@@ -1,6 +1,6 @@
 #Arquivo destinado a fazer todos os inimigos
 import pygame
-from entidades import Entidade
+from entidades import Entidade, gravidade
 
 class Goomba(Entidade):
     def __init__(self, nome: str, x: int, y: int):
@@ -21,16 +21,16 @@ class Goomba(Entidade):
         if colisaoAjustada:
             ##### VERTICAIS #####
             if self.corpo.left in range(corpo.left+1, corpo.right-1) or self.corpo.right in range(corpo.left+1, corpo.right-1):
-                if corpoLargo.bottom >= corpo.top and self.vely >= 0:
+                if corpoLargo.bottom in range(corpo.top+1, corpo.bottom-1 + int(self.vely)):
                     colisaoBaixo = True
-                elif corpoLargo.top <= corpo.bottom and self.vely <= 0:
+                elif corpoLargo.top in range(corpo.top+1+ int(self.vely), corpo.bottom-1):
                     colisaoCima = True
             ##### HORIZONTAIS #####
             if (self.corpo.top in range(corpo.top+1, corpo.bottom-1) or self.corpo.bottom in range(corpo.top+1, corpo.bottom-1))\
                     and (not colisaoCima and not colisaoBaixo):
-                if corpoLargo.right >= corpo.left and self.velx >= 0:
+                if corpoLargo.right in range(corpo.left+1, corpo.right-1 + int(self.velx)):
                     colisaoDireita = True
-                if corpoLargo.left <= corpo.right and self.velx <= 0:
+                if corpoLargo.left in range(corpo.left+1 + int(self.velx), corpo.right-1):
                     colisaoEsquerda = True
         return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
 
@@ -39,11 +39,7 @@ class Goomba(Entidade):
         ##### COLISOES #####
         colisaoCima, colisaoBaixo, colisaoEsquerda, colisaoDireita = False, False, False, False
         cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
-
-        ##### COLISAO COM O CHAO #####
-        if self.corpo.bottom + self.vely >= dimensoesTela[1]:
-            self.corpo.bottom = dimensoesTela[1] - self.altura
-            self.vely = 0
+        obsBaixo, obsCima, obsEsquerda, obsDireita = 0,0,0,0
 
         ##### COLISOES COM OBSTACULOS #####
         for obstaculo in mapa.listaDeObstaculos:
@@ -51,10 +47,18 @@ class Goomba(Entidade):
             cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo)
 
             # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
-            if cCima: colisaoDireita = True
-            if cBaixo: colisaoBaixo = True
-            if cEsquerda: colisaoEsquerda = True
-            if cDireita: colisaoDireita = True
+            if cCima:
+                colisaoCima = True
+                obsCima = obstaculo
+            if cBaixo:
+                colisaoBaixo = True
+                obsBaixo = obstaculo
+            if cEsquerda:
+                colisaoEsquerda = True
+                obsEsquerda = obstaculo
+            if cDireita:
+                colisaoDireita = True
+                obsDireta = obstaculo
 
         ##### HORIZONTAIS #####
         if colisaoEsquerda or colisaoDireita:
@@ -63,10 +67,10 @@ class Goomba(Entidade):
         ##### VERTICAIS #####
         if colisaoBaixo:
             self.vely = 0
-            self.y = obstaculo.corpo.top - self.altura
+            self.y = obsBaixo.corpo.top - self.altura
 
         ##### GRAVIDADE ######
-        if not colisaoBaixo: self.vely += 1
+        if not colisaoBaixo: self.vely += gravidade
 
         self.y += self.vely
         self.x += self.velx

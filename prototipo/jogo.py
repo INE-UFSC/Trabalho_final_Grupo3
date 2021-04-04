@@ -74,7 +74,7 @@ class Jogo:
 
         ###### INSTANCIAS DE OBJETOS ######
         jogador = Jogador('mario',150, 50, 0, 1)
-        goomba = Goomba('goomba',400,5)
+        goomba = Goomba('goomba',300,5)
         mapa = Mapa(15)
         mapa.iniciar()
 
@@ -115,7 +115,7 @@ class Jogo:
             goomba.mover((width, height), mapa)
 
             #jogador.colisao(retangulo)
-            jogador.mover(direita, esquerda ,espaco, (width, height))
+            jogador.mover(direita, esquerda ,espaco, (width, height), mapa)
             jogador.atualizar(screen)
             #print(retangulo.bottomleft)
             #circulo.display(screen)

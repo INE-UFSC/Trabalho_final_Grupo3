@@ -1,5 +1,8 @@
 #Arquivos com as classes abstratas do jogo
 import pygame
+
+gravidade = 1
+
 class Estatico():
 
     def __init__(self, nome: str, x:int, y:int, altura: int, largura: int):
