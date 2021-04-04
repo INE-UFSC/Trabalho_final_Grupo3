@@ -63,7 +63,7 @@ class Jogo:
 
         ###### INFORMACOES TA TELA ######
         background_colour = (255, 255, 255)  # Cor do fundo
-        (width, height) = (800, 500)  # Tamanho da tela
+        (width, height) = (1000, 600)  # Tamanho da tela
         screen = pygame.display.set_mode((width, height)) #Cria o objeto da tela
         pygame.display.set_caption('Tutorial 1')
         screen.fill(background_colour)
@@ -73,9 +73,8 @@ class Jogo:
         espaco = False
 
         ###### INSTANCIAS DE OBJETOS ######
-        jogador = Jogador('mario',150, 50, 0, 1)
-        goomba = Goomba('goomba',300,5)
-        mapa = Mapa(15)
+        jogador = Jogador('mario',100, 500, 0, 1)
+        mapa = Mapa((width, height))
         mapa.iniciar()
 
         ###### FORMAS GEOMETRICAS DE TESTE ######
@@ -111,12 +110,12 @@ class Jogo:
             #circulo.move(direita, esquerda ,espaco)
 
             mapa.atualizar(screen)
-            goomba.atualizar(screen)
-            goomba.mover((width, height), mapa)
 
             #jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height), mapa)
             jogador.atualizar(screen)
+            if jogador.vida == "morto":
+                rodando = False
             #print(retangulo.bottomleft)
             #circulo.display(screen)
 

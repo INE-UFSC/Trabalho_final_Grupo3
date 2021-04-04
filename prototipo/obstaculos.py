@@ -4,9 +4,9 @@ from entidades import Estatico
 # mudar no UML- Sem parametro
 class Bloco(Estatico):
     def __init__(self, nome: str, x: int, y: int):
-        largura = 100
-        altura = 100
-        super().__init__(nome, x, y, largura, altura)
+        largura = 30
+        altura = 30
+        super().__init__(nome, x, y, altura, largura)
 
     def atualizar(self, tela):
         pygame.draw.rect(tela, (255, 102, 0), self.corpo)

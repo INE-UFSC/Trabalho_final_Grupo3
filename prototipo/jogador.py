@@ -5,13 +5,14 @@ from entidades import gravidade
 class Jogador: 
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
         self.__vida = vida
-        self.__nome = nome 
+        self.__nome = nome
+        self.__cor = (0,0,0)
         self.__x = x
         self.__y = y
         #Modifiquei pra altura e largura serem variaveis - Bernardo
         self.__altura = 50
         self.__largura = 25
-        self.__pulo = 20
+        self.__pulo = 7
         self.__velx = velx
         self.__vely = 0
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
@@ -44,6 +45,10 @@ class Jogador:
     def corpo(self):
         return self.__corpo
 
+    @property
+    def vida(self):
+        return self.__vida
+
     def checar_colisao(self, corpo, nome):
         colisaoBaixo, colisaoCima, colisaoEsquerda, colisaoDireita = False, False, False, False
         corpoLargo = pygame.Rect(self.__x-1, self.__y-1, self.__largura+2,self.__altura+2)
@@ -53,11 +58,15 @@ class Jogador:
             if self.corpo.left in range(corpo.left+1, corpo.right-1) or self.corpo.right in range(corpo.left+1, corpo.right-1):
                 if corpoLargo.bottom in range(corpo.top+1, corpo.bottom-1 + int(self.__vely)):
                     colisaoBaixo = True
-                elif corpoLargo.top in range(corpo.top+1+ int(self.__vely), corpo.bottom-1):
+                if corpoLargo.top in range(corpo.top+1+ int(self.__vely), corpo.bottom-1):
                     colisaoCima = True
+
             ##### HORIZONTAIS #####
-            if (self.corpo.top in range(corpo.top+1, corpo.bottom-1) or self.corpo.bottom in range(corpo.top+1, corpo.bottom-1)) and (not colisaoCima and not colisaoBaixo):
-                if nome == "cano1": print(True, corpoLargo.left, range(corpo.left+1 + int(self.__velx), corpo.right-1))
+            if (self.corpo.top in range(corpo.top + 1, corpo.bottom - 1) or self.corpo.bottom in range(
+                    corpo.top + 1, corpo.bottom - 1) or
+                    corpo.top in range(self.corpo.top + 1, self.corpo.bottom - 1) or corpo.bottom in range(
+                    self.corpo.top + 1, self.corpo.bottom - 1)) and (not colisaoCima and not colisaoBaixo):
+
                 if corpoLargo.right in range(corpo.left+1, corpo.right-1 + int(self.__velx)):
                     colisaoDireita = True
                 if corpoLargo.left in range(corpo.left+1 + int(self.__velx), corpo.right):
@@ -84,7 +93,7 @@ class Jogador:
 
     
     def atualizar(self, screen):
-        pygame.draw.rect(screen, (0,0,0), self.__corpo)
+        pygame.draw.rect(screen, self.__cor, self.__corpo)
     
     def mover(self, direita, esquerda, espaco, screen, mapa):
 
@@ -115,17 +124,34 @@ class Jogador:
                 colisaoDireita = True
                 obsDireita = obstaculo
 
-            # if cEsquerda or cDireita:
-            #     print(obstaculo.nome, colisaoBaixo, colisaoEsquerda, colisaoDireita)
+        for inimigo in mapa.listaDeInimigos:
+            cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(inimigo.corpo, inimigo.nome)
+
+            # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
+            if cCima:
+                colisaoCima = True
+                obsCima = inimigo
+            if cBaixo:
+                colisaoBaixo = True
+                obsBaixo = inimigo
+            if cEsquerda:
+                colisaoEsquerda = True
+                obsEsquerda = inimigo
+            if cDireita:
+                colisaoDireita = True
+                obsDireita = inimigo
 
         ##### HORIZONTAIS #####
+        if colisaoDireita and colisaoEsquerda: #ESMAGAMENTO
+            self.__vida = "morto" #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
+
         if colisaoEsquerda:
-            if self.__velx < 0:
+            if self.__velx <= 0:
                 self.__velx = 0
                 self.__x = obsEsquerda.corpo.right
 
         if colisaoDireita:
-            if self.__velx > 0:
+            if self.__velx >= 0:
                 self.__velx = 0
                 self.__x = obsDireita.corpo.left - self.__largura
 
@@ -136,6 +162,11 @@ class Jogador:
             if espaco:
                 self.__vely = -self.__pulo
 
+        if colisaoCima:
+            if self.__vely < 0:
+                self.__vely = 0
+                self.__y = obsCima.corpo.bottom
+
         ##### GRAVIDADE ######
         if not colisaoBaixo: self.__vely += gravidade
 
@@ -143,6 +174,5 @@ class Jogador:
         self.__y += self.__vely
         self.__x += self.__velx
 
-        #print(self.__x, self.__y)
-
+        if self.__y > screen[1]: self.__vida = "morto"
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)

@@ -1,7 +1,7 @@
 #Arquivos com as classes abstratas do jogo
 import pygame
 
-gravidade = 1
+gravidade = 0.1
 
 class Estatico():
 

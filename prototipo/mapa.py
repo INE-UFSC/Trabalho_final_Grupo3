@@ -1,10 +1,12 @@
 import pygame
 from obstaculos import *
+from inimigos import *
 
 class Mapa:
     def __init__(self, tamanho):
         self.__tamanho = tamanho
         self.__listaDeObstaculos = []
+        self.__listaDeInimigos = []
 
     @property
     def listaDeObstaculos(self):
@@ -14,22 +16,38 @@ class Mapa:
     def listaDeObstaculos(self, listaDeObstaculos):
         self.__listaDeObstaculos = listaDeObstaculos
 
+    @property
+    def listaDeInimigos(self):
+        return self.__listaDeInimigos
+
+    @listaDeInimigos.setter
+    def listaDeInimigos(self, listaDeInimigos):
+        self.__listaDeInimigos = listaDeInimigos
+
     def iniciar(self):
-        self.__listaDeObstaculos.append(Cano_vertical('cano1', 120, 375, 800))
-        self.__listaDeObstaculos.append(Cano_vertical('cano2', 540, 375, 800))
-        #self.__listaDeObstaculos.append(Bloco('bloco1', 100, 100))
-        #self.__listaDeObstaculos.append(Cano_horizontal('cano3', 0, 400, 800))
 
-        #teste
-        self.__listaDeObstaculos.append(Chao('Chao1', 490, 0, 350)) #490
-        self.__listaDeObstaculos.append(Chao('Chao2', 490, 450, 800))
-        #self.__listaDeObstaculos.append(Chao('Chao', 485, 300, 450))
-        #self.__listaDeObstaculos.append(Chao('Chao', 485, 500, 750))
+        ##### OBSTACULOS ##### (FUTURAMENTE UMA FUNCAO VAI LER ISSO DE UM ARQUIVO)
 
+        self.__listaDeObstaculos.append(Cano_vertical('cano1', 550, 475, self.__tamanho[1]))
+        self.__listaDeObstaculos.append(Cano_vertical('cano2', 800, 475, self.__tamanho[1]))
+
+        self.__listaDeObstaculos.append(Bloco('bloco1', 200, 400))
+        self.__listaDeObstaculos.append(Bloco('bloco2', 250, 400))
+        self.__listaDeObstaculos.append(Bloco('bloco3', 300, 400))
+        self.__listaDeObstaculos.append(Bloco('bloco4', 350, 400))
+
+        self.__listaDeObstaculos.append(Chao('chao1', self.__tamanho[1]-10, 0, 350))
+        self.__listaDeObstaculos.append(Chao('chao2', self.__tamanho[1]-10, 450, 1000))
+
+        ##### INIMIGOS #####
+
+        self.__listaDeInimigos.append(Goomba('goomba',600,self.__tamanho[1]-50))
 
     def atualizar(self, tela):
         for obstaculo in self.__listaDeObstaculos:
             obstaculo.atualizar(tela)
+        for inimigo in self.__listaDeInimigos:
+            inimigo.atualizar(tela, self.__tamanho, self)
 
     def mocao(self):
         pass

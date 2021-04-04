@@ -6,8 +6,8 @@ class Goomba(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
         danoContato = 1
-        largura = 20
-        altura = 20
+        largura = 30
+        altura = 30
         limiteVel = 4
         super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato)
         self.vely = 0
@@ -75,7 +75,8 @@ class Goomba(Entidade):
         self.y += self.vely
         self.x += self.velx
 
-    def atualizar(self, tela):
+    def atualizar(self, tela, dimensoesTela,mapa):
+        self.mover(dimensoesTela, mapa)
         self.corpo.x = self.x
         self.corpo.y = self.y
         pygame.draw.rect(tela, (88,51,0), self.corpo)#88, 51, 0
