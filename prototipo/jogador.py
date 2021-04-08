@@ -13,7 +13,7 @@ class Jogador:
         #Modifiquei pra altura e largura serem variaveis - Bernardo
         self.__altura = 50
         self.__largura = 25
-        self.__pulo = 7
+        self.__pulo = 9
         self.__velx = velx
         self.__vely = 0
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
