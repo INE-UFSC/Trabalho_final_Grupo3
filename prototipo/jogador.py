@@ -112,8 +112,8 @@ class Jogador:
 
 
         ##### MOVIMENTO HORIZONTAL #####
-        aceleração = direita - esquerda
-        self.__velx += aceleração
+        aceleracao = direita - esquerda
+        self.__velx += aceleracao
 
         ##### COLISOES #####
         colisaoCima, colisaoBaixo, colisaoEsquerda, colisaoDireita = False, False, False, False
@@ -186,7 +186,7 @@ class Jogador:
         if not colisaoBaixo: self.__vely += gravidade
 
         ##### ATRITO ######
-        if aceleração == 0:
+        if aceleracao == 0:
             if self.__velx < 0:
                 self.__velx += atrito
             elif self.__velx > 0:
