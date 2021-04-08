@@ -118,7 +118,7 @@ class Jogador:
         obsBaixo, obsCima, obsEsquerda, obsDireita = 0,0,0,0
 
         ##### COLISOES COM OBSTACULOS #####
-        for obstaculo in mapa.listaDeObstaculos:
+        for obstaculo in mapa.lista_de_obstaculos:
 
             cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo, obstaculo.nome)
 
@@ -136,7 +136,7 @@ class Jogador:
                 colisaoDireita = True
                 obsDireita = obstaculo
 
-        for inimigo in mapa.listaDeInimigos:
+        for inimigo in mapa.lista_de_inimigos:
             cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(inimigo.corpo, inimigo.nome)
 
             # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo

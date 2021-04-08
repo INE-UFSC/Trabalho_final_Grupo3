@@ -65,9 +65,15 @@ class Jogo:
         corsaturada = psicodelico(contadormenu)
         cormenu = misturacor(corsaturada,[255,255,255],1,5)
 
-        botaojogar = Botao(375,250,250,50,(0,220,180),(0,160,110),"Começar",5)
-        botaosair = Botao(375,325,250,50,(0,220,180),(0,160,110),"Sair",5)
-        telaprincipal = Tela([botaojogar,botaosair],cormenu,self.__screen)
+
+        botaonivel_1 = Botao(250, 75, 100, 100, (0, 220, 180), (0, 160, 110), "Fase 1", 5)
+        botaonivel_2 = Botao(450, 75, 100, 100, (0, 220, 180), (0, 160, 110), "Fase 2", 5)
+        botaonivel_3 = Botao(650, 75, 100, 100, (0, 220, 180), (0, 160, 110), "Fase 3", 5)
+        botaojogar = Botao(375, 250, 250, 50, (0, 220, 180), (0, 160, 110), "Começar", 5)
+        botaoplacar = Botao(375, 350, 250, 50, (0, 220, 180), (0, 160, 110), "Placar", 5)
+        botaosair = Botao(375, 450, 250, 50, (0, 220, 180), (0, 160, 110), "Sair", 5)
+        botaoconfig = Botao(width-100, height-100, 50, 50, (0, 220, 180), (0, 160, 110), "C", 5)
+        telaprincipal = Tela([botaojogar,botaosair,botaoplacar,botaonivel_1, botaonivel_2, botaonivel_3, botaoconfig],cormenu,self.__screen)
         self.__menu = Menu(telaprincipal)
 
     def logicamenu(self):   # logica do sistema de menu

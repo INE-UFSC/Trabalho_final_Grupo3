@@ -69,11 +69,11 @@ class Estatico():
 
 class Movel(Estatico):
 
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int):
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int):
         super().__init__(nome, x, y, largura, altura)
         self.__velx = 0
         self.__vely = 0
-        self.__limiteVel = limiteVel
+        self.__limite_vel = limite_vel
 
     @property
     def velx(self):
@@ -92,12 +92,12 @@ class Movel(Estatico):
         self.__vely = vely
 
     @property
-    def limiteVel(self):
-        return self.__limiteVel
+    def limite_vel(self):
+        return self.__limite_vel
 
-    @limiteVel.setter
-    def limiteVel(self, limiteVel):
-        self.__limiteVel = limiteVel
+    @limite_vel.setter
+    def limite_vel(self, limite_vel):
+        self.__limite_vel = limite_vel
 
     def mover(self):
         pass
@@ -106,10 +106,10 @@ class Movel(Estatico):
         pass
 
 class Entidade(Movel):
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, danoContato:int):
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int):
         super().__init__(nome, x, y, largura, altura, limiteVel)
         self.__vida = vida
-        self.__danoContato = danoContato
+        self.__dano_contato = dano_contato
 
     @property
     def vida(self):
@@ -121,11 +121,11 @@ class Entidade(Movel):
 
     @property
     def danoContato(self):
-        return self.__danoContato
+        return self.__dano_contato
 
     @danoContato.setter
-    def danoContato(self, danoContato):
-        self.__danoContato = danoContato
+    def danoContato(self, dano_contato):
+        self.__dano_contato = dano_contato
 
     def sumir(self):
         pass
