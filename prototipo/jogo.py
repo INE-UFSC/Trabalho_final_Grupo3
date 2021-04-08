@@ -2,6 +2,8 @@ import pygame, time, math, random
 from jogador import Jogador
 from mapa import Mapa
 from inimigos import *
+from menu import Menu,Tela,Botao
+from efeitosrender import *
 
 class Particle:
     def __init__(self, pos, size):
@@ -51,30 +53,54 @@ def definir_cor(graus):
 
 class Jogo:
     def __init__(self):
-        pass
+        ###### INFORMACOES TA TELA ######
+        self.__background_colour = (255, 255, 255)  # Cor do fundo
+        (width, height) = (1000, 600)  # Tamanho da tela
+        self.__screen = pygame.display.set_mode((width, height)) #Cria o objeto da tela
+        pygame.display.set_caption('Tutorial 1')
+        self.__screen.fill(self.__background_colour)
+
+        ### MENU PRINCIPAL
+        contadormenu = 0      #usado para criar o efeito rgb do menu
+        corsaturada = psicodelico(contadormenu)
+        cormenu = misturacor(corsaturada,[255,255,255],1,5)
+
+        botaojogar = Botao(375,250,250,50,(0,220,180),(0,160,110),"Começar",5)
+        botaosair = Botao(375,325,250,50,(0,220,180),(0,160,110),"Sair",5)
+        telaprincipal = Tela([botaojogar,botaosair],cormenu,self.__screen)
+        self.__menu = Menu(telaprincipal)
+
+    def logicamenu(self):   # logica do sistema de menu
+        relogiomenu = pygame.time.Clock()
+        self.__contadormenu = 0
+        while True:
+            self.__menu.tela.renderizar(self.__screen)
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT: return 0
+                if evento.type == pygame.MOUSEBUTTONDOWN:
+                    acao = self.__menu.tela.clicar()
+                    if acao != 0:
+                        return acao
+            self.__contadormenu += 1
+            corsaturada = psicodelico(self.__contadormenu)
+            self.__menu.tela.setfundo(misturacor(corsaturada,[240,240,240],1,7))
+            relogiomenu.tick(60)
 
     def rodar(self):
         ###### PYGAME GERAL #####
-        pygame.init()
         rodando = True
-        #relogio = pygame.time.Clock(60)
-
-
-        ###### INFORMACOES TA TELA ######
-        background_colour = (255, 255, 255)  # Cor do fundo
-        (width, height) = (1000, 600)  # Tamanho da tela
-        screen = pygame.display.set_mode((width, height)) #Cria o objeto da tela
-        pygame.display.set_caption('Tutorial 1')
-        screen.fill(background_colour)
-
+        aberto = True
+        relogio = pygame.time.Clock()
+        screen = self.__screen
         ##### ENTRADAS DO JOGADOR #####
         cima, baixo, direita, esquerda = 0, 0, 0, 0
         espaco = False
         bola_fogo = False
 
         ###### INSTANCIAS DE OBJETOS ######
+        (width,height) = self.__screen.get_size()
         jogador = Jogador('mario',100, 500, 0, 1)
-        mapa = Mapa((width, height))
+        mapa = Mapa((width,height))
         mapa.iniciar()
 
         ###### FORMAS GEOMETRICAS DE TESTE ######
@@ -89,26 +115,28 @@ class Jogo:
 
         while rodando:
             for evento in pygame.event.get():
-                if evento.type == pygame.QUIT: rodando = False
+                if evento.type == pygame.QUIT: 
+                    rodando = False
+                    aberto = False
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_w: cima = 5
                     if evento.key == pygame.K_s: baixo = 5
                     if evento.key == pygame.K_d: direita = 5
                     if evento.key == pygame.K_a: esquerda = 5
-                    if evento.key == pygame.K_SPACE: espaco = True
+                    if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: espaco = True
                     if evento.key == pygame.K_t: bola_fogo = True
                 if evento.type == pygame.KEYUP:
                     if evento.key == pygame.K_w: cima = 0
                     if evento.key == pygame.K_s: baixo = 0
                     if evento.key == pygame.K_d: direita = 0
                     if evento.key == pygame.K_a: esquerda = 0
-                    if evento.key == pygame.K_SPACE: espaco = False
+                    if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: espaco = False
                     if evento.key == pygame.K_t: bola_fogo = False
 
 
 
             ##### FILA DE RENDERIZACAO #####
-            screen.fill(background_colour) # Preenche com o a cor de fundo
+            screen.fill(self.__background_colour) # Preenche com o a cor de fundo
             #circulo.atualizar((R,G,B),size)
             #circulo.move(direita, esquerda ,espaco)
 
@@ -149,8 +177,16 @@ class Jogo:
             G = definir_cor(gG)
             B = definir_cor(gB)
 
-            ##### FPS RUIM #####
-            time.sleep(0.01)
+            ##### FPS MELHORADO #####
+            relogio.tick(60)
+        return aberto
 
+
+pygame.init()
 jogo = Jogo()
-jogo.rodar()
+while True:
+    acao = jogo.logicamenu()
+    if acao == 1 and jogo.rodar():
+        pass
+    else:
+        break
