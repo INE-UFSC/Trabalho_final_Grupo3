@@ -94,6 +94,7 @@ class Jogo:
         screen = self.__screen
         ##### ENTRADAS DO JOGADOR #####
         cima, baixo, direita, esquerda = 0, 0, 0, 0
+        atrito = 0.5
         espaco = False
         bola_fogo = False
 
@@ -121,15 +122,19 @@ class Jogo:
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_w: cima = 5
                     if evento.key == pygame.K_s: baixo = 5
-                    if evento.key == pygame.K_d: direita = 5
-                    if evento.key == pygame.K_a: esquerda = 5
+                    if evento.key == pygame.K_d:
+                        direita = 0.5
+                    if evento.key == pygame.K_a:
+                        esquerda = 0.5
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: espaco = True
                     if evento.key == pygame.K_t: bola_fogo = True
                 if evento.type == pygame.KEYUP:
                     if evento.key == pygame.K_w: cima = 0
                     if evento.key == pygame.K_s: baixo = 0
-                    if evento.key == pygame.K_d: direita = 0
-                    if evento.key == pygame.K_a: esquerda = 0
+                    if evento.key == pygame.K_d:
+                        direita = 0
+                    if evento.key == pygame.K_a:
+                        esquerda = 0
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: espaco = False
                     if evento.key == pygame.K_t: bola_fogo = False
 
@@ -143,7 +148,7 @@ class Jogo:
             mapa.atualizar(screen)
 
             #jogador.colisao(retangulo)
-            jogador.mover(direita, esquerda ,espaco, (width, height), mapa)
+            jogador.mover(direita, esquerda ,espaco, (width, height), mapa, atrito)
             jogador.poderes((width, height), mapa, bola_fogo)
             jogador.atualizar(screen)
             if jogador.vida == "morto":

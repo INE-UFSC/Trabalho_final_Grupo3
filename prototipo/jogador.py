@@ -18,6 +18,8 @@ class Jogador:
         self.__vely = 0
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
         self.__poder = ''
+        self.__velocidade_max = 5
+        self.__velocidade_min = -5
 
     @property
     def nome (self):
@@ -106,11 +108,12 @@ class Jogador:
         if self.__poder != '':
             self.__poder.atualizar(screen)
     
-    def mover(self, direita, esquerda, espaco, screen, mapa): 
+    def mover(self, direita, esquerda, espaco, screen, mapa, atrito): 
 
 
         ##### MOVIMENTO HORIZONTAL #####
-        self.__velx = direita - esquerda
+        aceleração = direita - esquerda
+        self.__velx += aceleração
 
         ##### COLISOES #####
         colisaoCima, colisaoBaixo, colisaoEsquerda, colisaoDireita = False, False, False, False
@@ -181,6 +184,19 @@ class Jogador:
 
         ##### GRAVIDADE ######
         if not colisaoBaixo: self.__vely += gravidade
+
+        ##### ATRITO ######
+        if aceleração == 0:
+            if self.__velx < 0:
+                self.__velx += atrito
+            elif self.__velx > 0:
+                self.__velx -= atrito
+        #else:
+            #self.__velx = 0
+        if self.__velx >= self.__velocidade_max:
+            self.__velx = self.__velocidade_max
+        elif self.__velx <= self.__velocidade_min:
+            self.__velx = self.__velocidade_min 
 
         ##### ATUALIZACAO DE POSICOES #####
         self.__y += self.__vely
