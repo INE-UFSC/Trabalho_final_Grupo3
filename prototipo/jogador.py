@@ -163,11 +163,13 @@ class Jogador:
         if colisaoEsquerda:
             if self.__velx <= 0:
                 self.__velx = 0
+                aceleracao = 0
                 self.__x = obsEsquerda.corpo.right
 
         if colisaoDireita:
             if self.__velx >= 0:
                 self.__velx = 0
+                aceleracao = 0
                 self.__x = obsDireita.corpo.left - self.__largura
 
         ##### VERTICAIS #####
