@@ -86,7 +86,7 @@ class BolaFogo(Poder_Generico):
 
         ##### COLISOES COM OBSTACULOS #####
         
-        for obstaculo in self.mapa.listaDeObstaculos:
+        for obstaculo in self.mapa.lista_de_obstaculos:
 
             cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo)
             #print(f'{cDireita}')
