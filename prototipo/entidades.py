@@ -13,6 +13,7 @@ class Estatico():
         self.__largura = largura
         self.__altura = altura
         self.__corpo = pygame.Rect(x, y, largura, altura)
+        self.__corpocor = pygame.Rect(x+2, y+2, largura-4, altura-4)
 
     @property
     def nome (self):
@@ -61,6 +62,14 @@ class Estatico():
     @corpo.setter
     def corpo(self, corpo):
         self.__corpo = corpo
+    
+    @property
+    def corpocor(self):
+        return self.__corpocor
+
+    @corpo.setter
+    def corpocor(self, corpocor):
+        self.__corpocor = corpocor
 
     def iniciar(self):
         pass

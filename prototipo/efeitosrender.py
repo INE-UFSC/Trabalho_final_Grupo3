@@ -13,3 +13,9 @@ def misturacor(cor1,cor2,peso1=1,peso2=1):                      # retorna uma me
     g = (cor1[1] * peso1 + cor2[1] * peso2)/(peso1+peso2)       # o resultado pode nao ser perfeito
     b = (cor1[2] * peso1 + cor2[2] * peso2)/(peso1+peso2)
     return [r,g,b]
+
+def escolherborda(cor):             # retorna branco ou preto, o que der mais contraste
+    if cor[0]+cor[1]*2+cor[2] < 200:
+        return [255,255,255]
+    else:
+        return[0,0,0]
