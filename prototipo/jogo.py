@@ -5,52 +5,6 @@ from inimigos import *
 from menu import Menu,Tela,Botao
 from efeitosrender import *
 
-class Particle:
-    def __init__(self, pos, size):
-        self.velx = 0
-        self.vely = 0
-        self.x = pos[0]
-        self.y = pos[1]
-        self.size = size
-        self.colour = (0, 0, 0)
-        self.thickness = 10
-
-    def display(self, screen):
-      pygame.draw.circle(screen, self.colour, (self.x, self.y), self.size, self.thickness)
-
-    def atualizar (self, cor, size):
-        self.colour = cor
-        self.size = size
-
-    def move(self, direita, esquerda, espaco):
-        self.velx = direita - esquerda
-
-        if espaco and self.y == 500:
-            self.vely = -20
-
-        if self.y + self.vely >= 500:
-            self.y = 500
-            self.vely = 0
-        else:
-            self.vely += 1
-
-        self.y += self.vely
-        self.x += self.velx
-
-        self.x = self.x % 800
-
-def definir_cor(graus):
-    graus = int(graus)
-    if graus in range(300,360) or graus in range(0,60):
-        valor = 255
-    elif graus in range(120, 240):
-        valor = 0
-    elif graus in range(60, 120):
-        valor = int(255 - ((graus - 60))*4.25)
-    else: #graus in range(240, 300)
-        valor = int((graus - 240)*4.25)
-    return valor
-
 class Jogo:
     def __init__(self):
         ###### INFORMACOES TA TELA ######
@@ -106,19 +60,9 @@ class Jogo:
 
         ###### INSTANCIAS DE OBJETOS ######
         (width,height) = self.__screen.get_size()
-        jogador = Jogador('mario',100, 500, 0, 1)
+        jogador = Jogador('mario',200, 550, 0, 1)
         mapa = Mapa((width,height))
         mapa.iniciar()
-
-        ###### FORMAS GEOMETRICAS DE TESTE ######
-        R, G, B = 0, 0, 0
-        gR, gG, gB = 0, 120, 240
-        size = 100
-        incrementador = 1
-
-        #circulo = Particle((150, 50), 15)
-        #retangulo2 = ObstaculoGenerico(550, 350).bloco()
-        #retangulo = pygame.Rect(300, 420, 200, 40)
 
         while rodando:
             for evento in pygame.event.get():
@@ -159,12 +103,6 @@ class Jogo:
             jogador.atualizar(screen)
             if jogador.vida == "morto":
                 rodando = False
-            #print(retangulo.bottomleft)
-            #circulo.display(screen)
-
-            #pygame.draw.rect(screen, (0,0,255), retangulo)
-            #pygame.draw.rect(screen, (125,100,255), mapa1[0])
-
 
             #jogador.colisao(retangulo)
             # jogador.colisao(mapa1)
@@ -172,21 +110,6 @@ class Jogo:
 
             ##### RENDERIZACAO DA TELA #####
             pygame.display.flip()
-
-            ##### MANIPULACAO DE PARAMETROS DE TESTE #####
-            size += incrementador
-            if size > 200:
-                incrementador = -1
-            elif size < 10:
-                incrementador = 1
-
-            gR = (gR + 0.5) % 360
-            gG = (gG + 0.5) % 360
-            gB = (gB + 0.5) % 360
-
-            R = definir_cor(gR)
-            G = definir_cor(gG)
-            B = definir_cor(gB)
 
             ##### FPS MELHORADO #####
             relogio.tick(60)

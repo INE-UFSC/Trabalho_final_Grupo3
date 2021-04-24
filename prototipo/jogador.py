@@ -1,6 +1,6 @@
 import pygame
 from obstaculos import Bloco
-from entidades import gravidade
+from entidades import gravidade, colisao_analisada
 from poder_generico import BolaFogo
 
 class Jogador: 
@@ -10,13 +10,13 @@ class Jogador:
         self.__cor = (0,0,0)
         self.__x = x
         self.__y = y
-        #Modifiquei pra altura e largura serem variaveis - Bernardo
         self.__altura = 50
         self.__largura = 25
         self.__pulo = 9
         self.__velx = velx
         self.__vely = 0
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
+        self.__corpoveloz = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
         self.__poder = ''
         self.__velocidade_max = 5
         self.__velocidade_min = -5
@@ -55,26 +55,60 @@ class Jogador:
 
     def checar_colisao(self, corpo, nome):
         colisaoBaixo, colisaoCima, colisaoEsquerda, colisaoDireita = False, False, False, False
-        corpoLargo = pygame.Rect(self.__x-1, self.__y-1, self.__largura+2,self.__altura+2)
-        colisaoAjustada = corpoLargo.colliderect(corpo)
-        if colisaoAjustada:
-            ##### VERTICAIS #####
-            if self.corpo.left in range(corpo.left+1, corpo.right-1) or self.corpo.right in range(corpo.left+1, corpo.right-1):
-                if corpoLargo.bottom in range(corpo.top+1, corpo.bottom-1 + int(self.__vely)):
-                    colisaoBaixo = True
-                if corpoLargo.top in range(corpo.top+1+ int(self.__vely), corpo.bottom-1):
-                    colisaoCima = True
+        if self.__velx < 0: # movimento para a esquerda
+            cveloz_left = self.__corpo.left-1+self.__velx
+            cveloz_largura = self.__corpo.right - cveloz_left + 1
+        else: # movimento para a direita
+            cveloz_left = self.__corpo.left - 1
+            cveloz_largura = self.__corpo.right - cveloz_left + 1 + self.__velx
+        if self.__vely < 0: # movimento para cima
+            cveloz_top = self.__corpo.top - 1 + self.__vely
+            cveloz_altura = self.__corpo.bottom - cveloz_top + 1
+        else: #  movimento para baixo
+            cveloz_top = self.__corpo.top
+            cveloz_altura = self.__corpo.bottom - cveloz_top + 1 + self.__vely
+        self.__corpoveloz = pygame.Rect(cveloz_left, cveloz_top, cveloz_largura, cveloz_altura)
+        colisaoVeloz = self.__corpoveloz.colliderect(corpo)
 
-            ##### HORIZONTAIS #####
-            if (self.corpo.top in range(corpo.top + 1, corpo.bottom - 1) or self.corpo.bottom in range(
-                    corpo.top + 1, corpo.bottom - 1) or
-                    corpo.top in range(self.corpo.top + 1, self.corpo.bottom - 1) or corpo.bottom in range(
-                    self.corpo.top + 1, self.corpo.bottom - 1)) and (not colisaoCima and not colisaoBaixo):
+        if colisaoVeloz:
+            # CALCULO DE O QUAO DENTRO O OBJETO TA HORIZONTALMENTE E VERTICALMENTE
+            ##### VERTICIAIS #####
+            dist_y = 0
+            if not self.__vely: #parado
+                if nome == colisao_analisada: print("parado")
+                dist_y = min(self.__corpoveloz.bottom-corpo.top,corpo.bottom-self.__corpoveloz.top)
+            elif self.__vely > 0: #caindo
+                if nome == colisao_analisada: print("caindo")
+                dist_y = self.__corpoveloz.bottom-corpo.top
+            else: #subindo
+                if nome == colisao_analisada: print("subindo")
+                dist_y = corpo.bottom-self.__corpoveloz.top
+            dist_x = 0
+            ##### HORIZONTAL #####
+            if not self.__velx: #parado
+                dist_x = min(corpo.right - self.__corpoveloz.left,self.__corpoveloz.right - corpo.left) #colisao a direita = +
+            elif self.__velx > 0: #movimentacao pra direita
+                dist_x = self.__corpoveloz.right - corpo.left
+            else: #movimentacao pra esquerda
+                dist_x = corpo.right - self.__corpoveloz.left
 
-                if corpoLargo.right in range(corpo.left+1, corpo.right-1 + int(self.__velx)):
-                    colisaoDireita = True
-                if corpoLargo.left in range(corpo.left+1 + int(self.__velx), corpo.right):
+            if nome == colisao_analisada: print(nome, dist_x, dist_y, self.__velx, self.__vely)
+            if self.__vely >= 0 and dist_x + self.__largura/2 >= dist_y:
+                colisaoBaixo = True
+            elif self.__vely < 0 and dist_x + self.__largura/2 >= dist_y:
+                colisaoCima = True
+            elif self.__velx > 0 and dist_x < dist_y:
+                colisaoDireita = True
+            elif self.__velx < 0 and dist_x < dist_y:
+                colisaoEsquerda = True
+            elif not self.__velx and abs(dist_x) < dist_y:
+                print("buff", dist_x)
+                if self.__corpoveloz.right - corpo.left > corpo.right - self.__corpoveloz.left:
                     colisaoEsquerda = True
+                else: colisaoDireita = True
+            if nome == colisao_analisada: print("------")
+
+        if colisaoVeloz and nome == colisao_analisada: print(int(colisaoCima), int(colisaoBaixo), int(colisaoDireita), int(colisaoEsquerda))
         return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
 
     @property
@@ -83,33 +117,14 @@ class Jogador:
     
     def poder(self, poder):
         self.__poder = poder
-
-    # def colisao(self, objeto):
-    #     #if self.__x + 80 + self.__velocidade >= objeto[0].bottomleft[0] and self.__x + 80 + self.__velocidade <= objeto[0].bottomright[0] :
-    #         #print("Colidiu")
-    #
-    #     #Obstaculo generico nao existe, tem que arrumar, ve como eu faco no goomba - Bernardo
-    #     if isinstance(objeto[1], ObstaculoGenerico):
-    #         if self.__corpo.colliderect(objeto[0]):
-    #             return
-    #     if self.__x + self.__largura + self.__velx >= objeto.bottomleft[0] and self.__x + self.__largura + self.__velx <= objeto.bottomright[0] :
-    #         self.__vida = self.__vida - 1
-    #         self.__x = self.__x - 20
-    #         print(self.__vida)
-    #         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
-    #         if self.__vida == 0:
-    #             self.__x = 1000000000
-    #             self.__y = 1000000000
-    #             self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
-
     
     def atualizar(self, screen):
+        pygame.draw.rect(screen, (0, 0, 255), self.__corpoveloz)
         pygame.draw.rect(screen, self.__cor, self.__corpo)
-        if self.__poder != '':
-            self.__poder.atualizar(screen)
+        # if self.__poder != '':
+        #     self.__poder.atualizar(screen)
     
-    def mover(self, direita, esquerda, espaco, screen, mapa, atrito): 
-
+    def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
 
         ##### MOVIMENTO HORIZONTAL #####
         aceleracao = direita - esquerda
@@ -156,7 +171,7 @@ class Jogador:
                 colisaoDireita = True
                 obsDireita = inimigo
 
-        ##### HORIZONTAIS #####
+        ##### REPOSICIONAMENTO POS COLISAO #####
         if colisaoDireita and colisaoEsquerda: #ESMAGAMENTO
             self.__vida = "morto" #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
 
@@ -170,7 +185,6 @@ class Jogador:
                 self.__velx = 0
                 self.__x = obsDireita.corpo.left - self.__largura
 
-        ##### VERTICAIS #####
         if colisaoBaixo:
             self.__vely = 0
             self.__y = obsBaixo.corpo.top - self.__altura
@@ -179,6 +193,7 @@ class Jogador:
 
         if colisaoCima:
             if self.__vely < 0:
+                print("AQUI")
                 self.__vely = 0
                 self.__y = obsCima.corpo.bottom
 
@@ -202,8 +217,10 @@ class Jogador:
         self.__y += self.__vely
         self.__x += self.__velx
 
-
+        ##### MATA O JOGADOR SE CAIR NO BURACO #####
         if self.__y > screen[1]: self.__vida = "morto"
+
+        ##### ATUALIZACAO DO CORPO DO JOGADOR #####
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 
     def poderes(self, screen, mapa, bola_fogo = False, outros_poderes = False):

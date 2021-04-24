@@ -1,6 +1,7 @@
 #Arquivos com as classes abstratas do jogo
 import pygame
 
+colisao_analisada = "bloco1"
 gravidade = 0.2
 
 class Estatico():
