@@ -30,14 +30,15 @@ class Mapa:
 
         self.__lista_de_obstaculos.append(CanoVertical('cano1', 550, 475, self.__tamanho[1]))
         self.__lista_de_obstaculos.append(CanoVertical('cano2', 800, 475, self.__tamanho[1]))
+        self.__lista_de_obstaculos.append(CanoVertical('cano2', 1500, 475, self.__tamanho[1]))
 
         self.__lista_de_obstaculos.append(Bloco('bloco1', 200, 400))
         self.__lista_de_obstaculos.append(Bloco('bloco2', 250, 400))
         self.__lista_de_obstaculos.append(Bloco('bloco3', 300, 400))
         self.__lista_de_obstaculos.append(Bloco('bloco4', 350, 400))
 
-        self.__lista_de_obstaculos.append(Chao('chao1', self.__tamanho[1]-10, 0, 350))
-        self.__lista_de_obstaculos.append(Chao('chao2', self.__tamanho[1]-10, 450, 1000))
+        self.__lista_de_obstaculos.append(Chao('chao1', self.__tamanho[1]-10, -200, 350))
+        self.__lista_de_obstaculos.append(Chao('chao2', self.__tamanho[1]-10, 450, 2000))
 
         self.__lista_de_obstaculos.append(Vida('vida', 140, 50))
         self.__lista_de_obstaculos.append(Tempo('tempo', 470, 50))
@@ -47,11 +48,12 @@ class Mapa:
 
         self.__lista_de_inimigos.append(Goomba('goomba',600,self.__tamanho[1]-50))
 
-    def atualizar(self, tela):
+    def atualizar(self, tela, velocidade):
         for obstaculo in self.__lista_de_obstaculos:
+            obstaculo.x += velocidade
+            if obstaculo.nome == "cano1": print(obstaculo.x)
             obstaculo.atualizar(tela)
-        for inimigo in self.__lista_de_inimigos:
-            inimigo.atualizar(tela, self.__tamanho, self)
 
-    def mocao(self):
-        pass
+        for inimigo in self.__lista_de_inimigos:
+            inimigo.x += velocidade
+            inimigo.atualizar(tela, self.__tamanho, self)

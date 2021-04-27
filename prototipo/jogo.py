@@ -86,25 +86,18 @@ class Jogo:
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: espaco = False
                     if evento.key == pygame.K_t: bola_fogo = False
 
-
+            ##### FILA DE ATUALIZACAO #####
+            sidescroll = jogador.mover(direita, esquerda, espaco, (width, height), mapa, atrito)
+            #print(sidescroll)
 
             ##### FILA DE RENDERIZACAO #####
             screen.fill(self.__background_colour) # Preenche com o a cor de fundo
-            #circulo.atualizar((R,G,B),size)
-            #circulo.move(direita, esquerda ,espaco)
 
-            mapa.atualizar(screen)
-
-            #jogador.colisao(retangulo)
-            jogador.mover(direita, esquerda ,espaco, (width, height), mapa, atrito)
+            mapa.atualizar(screen, sidescroll)
             jogador.poderes(screen, mapa, bola_fogo)
             jogador.atualizar(screen)
             if jogador.vida == "morto":
                 rodando = False
-
-            #jogador.colisao(retangulo)
-            # jogador.colisao(mapa1)
-            # pygame.draw.circle(screen, (R, G, B), (400, 250), size, 10)
 
             ##### RENDERIZACAO DA TELA #####
             pygame.display.flip()

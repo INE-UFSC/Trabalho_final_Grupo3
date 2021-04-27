@@ -108,11 +108,11 @@ class Jogador:
             elif self.__velx < 0 and dist_x < dist_y:
                 colisaoEsquerda = True
             elif not self.__velx and abs(dist_x) < dist_y:
-                print("buff", dist_x)
+                #print("buff", dist_x)
                 if self.__corpoveloz.right - corpo.left > corpo.right - self.__corpoveloz.left:
                     colisaoEsquerda = True
                 else: colisaoDireita = True
-            if nome == colisao_analisada: print("------")
+            #if nome == colisao_analisada: print("------")
 
         if colisaoVeloz and nome == colisao_analisada: print(int(colisaoCima), int(colisaoBaixo), int(colisaoDireita), int(colisaoEsquerda))
         return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
@@ -132,7 +132,7 @@ class Jogador:
         if self.__poder != '':
             self.__poder.atualizar(screen)
     
-    def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
+    def mover(self, direita, esquerda, espaco, dimensoes_tela, mapa, atrito):
 
         ##### MOVIMENTO HORIZONTAL #####
         aceleracao = direita - esquerda
@@ -203,7 +203,7 @@ class Jogador:
 
         if colisaoCima:
             if self.__vely < 0:
-                print("AQUI")
+                #print("AQUI")
                 self.__vely = 0
                 self.__y = obsCima.corpo.bottom
 
@@ -224,11 +224,6 @@ class Jogador:
             self.__velx = self.__velocidade_min 
 
         ##### ATUALIZACAO DE POSICOES #####
-        self.__y += self.__vely
-        self.__x += self.__velx
-
-        ##### MATA O JOGADOR SE CAIR NO BURACO #####
-        if self.__y > screen[1]: self.__vida = "morto"
 
         ##### INDICA A DIRECAO DO JOGADOR PARA DIRECIONAR PODERES #####
         if self.__velx > 0:
@@ -236,8 +231,26 @@ class Jogador:
         elif self.__velx < 0:
             self.__face = -1
 
+        ##### MOVIMENTA O JOGADOR E FAZ O SIDESCROLL #####
+        sidescroll = False
+        self.__y += self.__vely
+        print(self.__x, dimensoes_tela[0], self.__velx)
+        if (self.__x <= 150 and self.__velx < 0) or (self.__x >= dimensoes_tela[0]-150 and self.__velx > 0):
+            sidescroll = True
+        else:
+            self.__x += self.__velx
+
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
+
+        ##### MATA O JOGADOR SE CAIR NO BURACO #####
+        if self.__y > dimensoes_tela[1]: self.__vida = "morto"
+
+        ##### POSSIBILITA O SIDESCROLL #####
+        if sidescroll:
+            return -self.__velx
+        else:
+            return 0
 
     def poderes(self, screen, mapa, bola_fogo = False, outros_poderes = False):
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
