@@ -130,7 +130,7 @@ class Jogador:
         if self.__recarga > 0:
             self.__recarga -= 1
         if self.__poder != '':
-            self.__poder.atualizar(screen)
+            self.__poder.atualizar(screen,campo_visivel)
         if self.x > campo_visivel.x + 650:
             return pygame.Rect(self.x-650,-50,campo_visivel.w,campo_visivel.h)
         elif self.x < campo_visivel.x + 450:

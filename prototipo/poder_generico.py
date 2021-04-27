@@ -39,9 +39,9 @@ class VermelhoDoMago(Poder_Generico):
         self.__bolas = []
     def atirar(self,jogador,screen,mapa):
         self.__bolas.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
-    def atualizar(self,tela):
+    def atualizar(self,tela,campo_visivel):
         for fogo in self.__bolas:
-            if fogo.atualizar(tela):
+            if fogo.atualizar(tela,campo_visivel):
                 self.__bolas.remove(fogo)
 
 
@@ -137,12 +137,12 @@ class BolaFogo:
         self.y += self.vely
         self.x += self.velx
 
-    def atualizar(self, tela):
+    def atualizar(self, tela, campo_visivel):
         if (self.duracao >  0):
             self.mover()
             self.corpo.x = self.x
             self.corpo.y = self.y
-            pygame.draw.rect(tela, [245,87+self.duracao,65], self.corpo)
+            pygame.draw.rect(tela, [245,87+self.duracao,65], [self.corpo.x-campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])
             self.duracao -= 1
             return False
         return True
