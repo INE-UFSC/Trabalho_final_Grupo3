@@ -71,9 +71,6 @@ class Estatico():
     def corpocor(self, corpocor):
         self.__corpocor = corpocor
 
-    def iniciar(self):
-        pass
-
     def renderizar(self, tela, mapa):
         pass
 

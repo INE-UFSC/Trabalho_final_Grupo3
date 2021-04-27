@@ -32,7 +32,6 @@ class Poder_Generico:
     def atirar(self):   ### ERA PRA SER ABSTRATO MAS FDS
         pass
 
-
 class VermelhoDoMago(Poder_Generico):
     def __init__(self):
         super().__init__(False,0)
@@ -43,7 +42,6 @@ class VermelhoDoMago(Poder_Generico):
         for fogo in self.__bolas:
             if fogo.atualizar(tela,campo_visivel):
                 self.__bolas.remove(fogo)
-
 
 class BolaFogo:
     def __init__(self, pos_inicial , screen, mapa, vel):
@@ -146,5 +144,3 @@ class BolaFogo:
             self.duracao -= 1
             return False
         return True
-
-        

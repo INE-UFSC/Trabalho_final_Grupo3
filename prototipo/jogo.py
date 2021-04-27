@@ -104,8 +104,6 @@ class Jogo:
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: espaco = False
                     if evento.key == pygame.K_t: bola_fogo = False
 
-
-
             ##### FILA DE RENDERIZACAO #####
             screen.fill(self.__background_colour) # Preenche com o a cor de fundo
 
