@@ -15,7 +15,7 @@ class Jogo:
         self.__screen.fill(self.__background_colour)
         self.__contadormenu = 0
 
-        ### MENU PRINCIPAL
+        ##### MENU PRINCIPAL #####
         contadormenu = 0      #usado para criar o efeito rgb do menu
         corsaturada = psicodelico(contadormenu)
         cormenu = misturacor(corsaturada,[255,255,255],1,5)
@@ -44,6 +44,19 @@ class Jogo:
             self.__menu.tela.setfundo(misturacor(psicodelico(self.__contadormenu),[240,240,240],1,7))
             relogiomenu.tick(60)
 
+    def menu_inicial(self): # Menu inicial do jogo
+        while True:
+            acao = self.logicamenu()
+
+            ### se acao == 0, nao fazer nada
+            ### caso contrario, fazer a acao correspondente ao botao descrito
+
+            if acao == 1:  # botao sair
+                break
+            elif acao == 2:  # botao jogar
+                if not self.rodar():  # se o jogador fechar o jogo durante a fase
+                    break
+
     def rodar(self):
         ###### PYGAME GERAL #####
         rodando = True
@@ -52,6 +65,7 @@ class Jogo:
         screen = self.__screen
         (width,height) = self.__screen.get_size()
         campo_visivel = pygame.Rect(-50,-50,width+100,height+100)
+
         ##### ENTRADAS DO JOGADOR #####
         cima, baixo, direita, esquerda = 0, 0, 0, 0
         atrito = 0.5
@@ -97,10 +111,10 @@ class Jogo:
 
             mapa.atualizar(screen, campo_visivel, (width,height))
 
-            #jogador.colisao(retangulo)
-            jogador.mover(direita, esquerda ,espaco, (width, height), mapa, atrito)
+            # FAZER O JOGADOR RECEBER UM MAPA E SALVAR ONDE ELE TA
+            jogador.mover(direita, esquerda, espaco, (width, height), mapa, atrito)
             jogador.poderes(screen, mapa, bola_fogo)
-            campo_visivel = jogador.atualizar(screen,campo_visivel)
+            campo_visivel = jogador.atualizar(screen, campo_visivel)
             if jogador.vida == "morto":
                 rodando = False
 
@@ -114,14 +128,4 @@ class Jogo:
 
 pygame.init()
 jogo = Jogo()
-while True:
-    acao = jogo.logicamenu()
-
-    ### se acao == 0, nao fazer nada
-    ### caso contrario, fazer a acao correspondente ao botao descrito
-
-    if acao == 1:   # botao sair
-        break
-    elif acao == 2: # botao jogar
-        if not jogo.rodar():    # se o jogador fechar o jogo durante a fase
-            break
+jogo.menu_inicial()
