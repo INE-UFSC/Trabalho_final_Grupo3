@@ -79,4 +79,4 @@ class Goomba(Entidade):
         self.mover(dimensoesTela, mapa)
         self.corpo.x = self.x
         self.corpo.y = self.y
-        pygame.draw.rect(tela, (88,51,0), self.corpo)#88, 51, 0
+        pygame.draw.rect(tela, (88,51,0), [self.corpo.x-mapa.campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])#88, 51, 0

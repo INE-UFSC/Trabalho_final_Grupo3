@@ -50,6 +50,8 @@ class Jogo:
         aberto = True
         relogio = pygame.time.Clock()
         screen = self.__screen
+        (width,height) = self.__screen.get_size()
+        campo_visivel = pygame.Rect(-50,-50,width+100,height+100)
         ##### ENTRADAS DO JOGADOR #####
         cima, baixo, direita, esquerda = 0, 0, 0, 0
         atrito = 0.5
@@ -57,7 +59,6 @@ class Jogo:
         bola_fogo = False
 
         ###### INSTANCIAS DE OBJETOS ######
-        (width,height) = self.__screen.get_size()
         jogador = Jogador('mario',200, 550, 0, 1)
         mapa = Mapa((width,height))
         mapa.iniciar()
@@ -93,12 +94,12 @@ class Jogo:
             #circulo.atualizar((R,G,B),size)
             #circulo.move(direita, esquerda ,espaco)
 
-            mapa.atualizar(screen)
+            mapa.atualizar(screen,campo_visivel)
 
             #jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height), mapa, atrito)
             jogador.poderes(screen, mapa, bola_fogo)
-            jogador.atualizar(screen)
+            campo_visivel = jogador.atualizar(screen,campo_visivel)
             if jogador.vida == "morto":
                 rodando = False
 

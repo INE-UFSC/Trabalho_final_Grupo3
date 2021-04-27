@@ -124,14 +124,19 @@ class Jogador:
     def poder(self, poder):
         self.__poder = poder
     
-    def atualizar(self, screen):
-        pygame.draw.rect(screen, (0, 0, 255), self.__corpoveloz)
-        pygame.draw.rect(screen, self.__cor, self.__corpo)
+    def atualizar(self, screen, campo_visivel):
+        pygame.draw.rect(screen, (0, 0, 255), [self.__corpoveloz.x-campo_visivel.x-50,self.__corpoveloz.y,self.__corpoveloz.w,self.__corpoveloz.h])
+        pygame.draw.rect(screen, self.__cor, [self.corpo.x-campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])
         if self.__recarga > 0:
             self.__recarga -= 1
         if self.__poder != '':
             self.__poder.atualizar(screen)
-    
+        if self.x > campo_visivel.x + 650:
+            return pygame.Rect(self.x-650,-50,campo_visivel.w,campo_visivel.h)
+        elif self.x < campo_visivel.x + 450:
+            return pygame.Rect(self.x-450,-50,campo_visivel.w,campo_visivel.h) if campo_visivel.x > -50 else pygame.Rect(-50,-50,campo_visivel.w,campo_visivel.h)
+        return campo_visivel
+
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
 
         ##### MOVIMENTO HORIZONTAL #####
