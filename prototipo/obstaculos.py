@@ -63,3 +63,13 @@ class Moeda(Estatico):
 
     def renderizar(self, tela, mapa):
         pygame.draw.rect(tela, (254, 254, 0), self.corpo)
+
+class Borda(Estatico):
+    def __init__(self, nome: str, x: int):
+        y = -1000
+        altura = 2000
+        largura = 1
+        super().__init__(nome, x, y, altura, largura)
+
+    def renderizar(self, tela, mapa):
+        pygame.draw.rect(tela, (0,0,0), self.corpo)

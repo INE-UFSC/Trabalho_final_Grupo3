@@ -57,6 +57,9 @@ fase1 = [
     Tempo('tempo', 470, 50),
     Moeda('moeda', 800, 50),
 
+    Borda('borda1', 0),
+    Borda('borda1', 2000),
+
     ##### INIMIGOS #####
 
     Goomba('goomba1', 600, height - 50)

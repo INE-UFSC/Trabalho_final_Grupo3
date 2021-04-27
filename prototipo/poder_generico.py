@@ -47,20 +47,25 @@ class VermelhoDoMago(Poder_Generico):
         #     if fogo.atualizar(tela,campo_visivel):
         #         self.__bolas.remove(fogo)
 
-class BolaFogo(Entidade):
+class Poder_manifestado(Entidade):
+    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao):
+        self.duracao = duracao
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato)
+
+class BolaFogo(Poder_manifestado):
     def __init__(self, pos_inicial , screen, mapa, vel):
-        vida = 1
-        largura = 15
-        altura = 15
-        limiteVel = 3 * vel
-        dano_contato = 0
         x = pos_inicial[0] + 25 * vel
         y = pos_inicial[1]
+        largura = 15
+        altura = 15
+        vida = 1
+        limiteVel = 3 * vel
+        dano_contato = 0
+        duracao = 500
         #self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        super().__init__("bola de fogo",x,y,largura,altura,limiteVel,vida,dano_contato)
-        self.duracao = 100
+        super().__init__("bola de fogo",x,y,largura,altura,limiteVel,vida,dano_contato, duracao)
         self.mapa = mapa
-        self.vely = 0
+        self.vely = -1
         self.velx = 3 * vel
 
     def mover(self, dimensoesTela, mapa):
@@ -73,42 +78,47 @@ class BolaFogo(Entidade):
         ##### COLISOES COM OBSTACULOS #####
         
         for obstaculo in self.mapa.lista_de_entidades:
+            if obstaculo != self:
 
-            cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo)
-            #print(f'{cDireita}')
+                cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo)
+                #print(f'{cDireita}')
 
-            # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
-            ## Inutil enquanto a bola so vai reto e so 
-            '''if cCima:
-                colisaoCima = True
-                obsCima = obstaculo
-            if cBaixo:
-                colisaoBaixo = True
-                obsBaixo = obstaculo'''
-            if cEsquerda:
-                colisaoEsquerda = True
-                obsEsquerda = obstaculo
-            if cDireita:
-                colisaoDireita = True
-                obsDireta = obstaculo
-                print('ENTROU NA 109')
+                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
+                ## Inutil enquanto a bola so vai reto e so
+                if cCima:
+                    colisaoCima = True
+                    obsCima = obstaculo
+                if cBaixo:
+                    colisaoBaixo = True
+                    obsBaixo = obstaculo
+                if cEsquerda:
+                    colisaoEsquerda = True
+                    obsEsquerda = obstaculo
+                if cDireita:
+                    colisaoDireita = True
+                    obsDireta = obstaculo
+                    #print('ENTROU NA 109')
             
 
         ##### HORIZONTAIS #####
         if colisaoEsquerda or colisaoDireita:
-            self.duracao = 0
-            #self.velx = 0
+            #self.duracao = 0
+            self.velx = -self.velx
 
         ##### VERTICAIS #####
-        '''if colisaoBaixo:
-            self.vely = 0
+        if colisaoBaixo or colisaoCima:
+            self.vely = -self.vely
             #self.y = obsBaixo.corpo.top - self.altura'''
+
+        if not colisaoBaixo: self.vely += gravidade*7
+
+        print(colisaoBaixo, obsBaixo)
 
         self.y += self.vely
         self.x += self.velx
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, [245, 87 + self.duracao, 65],[self.corpo.x - mapa.campo_visivel.x - 50, self.corpo.y, self.corpo.w, self.corpo.h])
+        pygame.draw.rect(tela, [245, min(87 + self.duracao,255), 65],[self.corpo.x - mapa.campo_visivel.x - 50, self.corpo.y, self.corpo.w, self.corpo.h])
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
