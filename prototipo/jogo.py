@@ -1,6 +1,6 @@
 import pygame, time, math, random
 from jogador import Jogador
-from mapa import Mapa
+from mapa import Mapa, fase1, fase2
 from inimigos import *
 from menu import Menu,Tela,Botao
 from efeitosrender import *
@@ -60,8 +60,11 @@ class Jogo:
 
         ###### INSTANCIAS DE OBJETOS ######
         jogador = Jogador('mario',200, 550, 0, 1)
-        mapa = Mapa((width,height))
-        mapa.iniciar()
+
+        ##### MAPA #####
+        (width, height) = self.__screen.get_size()
+        mapa = Mapa((width, height))
+        mapa.iniciar(fase1)
 
         while rodando:
             for evento in pygame.event.get():
@@ -94,7 +97,7 @@ class Jogo:
             #circulo.atualizar((R,G,B),size)
             #circulo.move(direita, esquerda ,espaco)
 
-            mapa.atualizar(screen,campo_visivel)
+            mapa.atualizar(screen, campo_visivel, (width,height))
 
             #jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height), mapa, atrito)

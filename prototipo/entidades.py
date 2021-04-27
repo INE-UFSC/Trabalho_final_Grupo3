@@ -67,15 +67,18 @@ class Estatico():
     def corpocor(self):
         return self.__corpocor
 
-    @corpo.setter
+    @corpocor.setter
     def corpocor(self, corpocor):
         self.__corpocor = corpocor
 
     def iniciar(self):
         pass
 
-    def atualizar(self):
+    def renderizar(self, tela, mapa):
         pass
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.renderizar(tela, mapa)
 
 class Movel(Estatico):
 
@@ -109,11 +112,65 @@ class Movel(Estatico):
     def limite_vel(self, limite_vel):
         self.__limite_vel = limite_vel
 
-    def mover(self):
+    def mover(self, dimensoesTela, mapa):
         pass
 
-    def checar_colisao(self):
-        pass
+    def checar_colisao(self, corpo):
+        colisaoBaixo, colisaoCima, colisaoEsquerda, colisaoDireita = False, False, False, False
+        if self.__velx < 0:  # movimento para a esquerda
+            cveloz_left = self.corpo.left - 1 + self.__velx
+            cveloz_largura = self.corpo.right - cveloz_left + 1
+        else:  # movimento para a direita
+            cveloz_left = self.corpo.left - 1
+            cveloz_largura = self.corpo.right - cveloz_left + 1 + self.__velx
+        if self.__vely < 0:  # movimento para cima
+            cveloz_top = self.corpo.top - 1 + self.__vely
+            cveloz_altura = self.corpo.bottom - cveloz_top + 1
+        else:  # movimento para baixo
+            cveloz_top = self.corpo.top
+            cveloz_altura = self.corpo.bottom - cveloz_top + 1 + self.__vely
+        self.__corpoveloz = pygame.Rect(cveloz_left, cveloz_top, cveloz_largura, cveloz_altura)
+        colisaoVeloz = self.__corpoveloz.colliderect(corpo)
+
+        if colisaoVeloz:
+            # CALCULO DE O QUAO DENTRO O OBJETO TA HORIZONTALMENTE E VERTICALMENTE
+            ##### VERTICIAIS #####
+            dist_y = 0
+            if not self.__vely:  # parado
+                dist_y = min(self.__corpoveloz.bottom - corpo.top, corpo.bottom - self.__corpoveloz.top)
+            elif self.__vely > 0:  # caindo
+                dist_y = self.__corpoveloz.bottom - corpo.top
+            else:  # subindo
+                dist_y = corpo.bottom - self.__corpoveloz.top
+            dist_x = 0
+            ##### HORIZONTAL #####
+            if not self.__velx:  # parado
+                dist_x = min(corpo.right - self.__corpoveloz.left,
+                             self.__corpoveloz.right - corpo.left)  # colisao a direita = +
+            elif self.__velx > 0:  # movimentacao pra direita
+                dist_x = self.__corpoveloz.right - corpo.left
+            else:  # movimentacao pra esquerda
+                dist_x = corpo.right - self.__corpoveloz.left
+
+            if self.__vely >= 0 and dist_x + self.largura / 2 >= dist_y:
+                colisaoBaixo = True
+            elif self.__vely < 0 and dist_x + self.largura / 2 >= dist_y:
+                colisaoCima = True
+            elif self.__velx > 0 and dist_x < dist_y:
+                colisaoDireita = True
+            elif self.__velx < 0 and dist_x < dist_y:
+                colisaoEsquerda = True
+            elif not self.__velx and abs(dist_x) < dist_y:
+                if self.__corpoveloz.right - corpo.left > corpo.right - self.__corpoveloz.left:
+                    colisaoEsquerda = True
+                else:
+                    colisaoDireita = True
+        return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.mover(dimensoes_tela, mapa)
+        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        self.renderizar(tela, mapa)
 
 class Entidade(Movel):
     def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int):

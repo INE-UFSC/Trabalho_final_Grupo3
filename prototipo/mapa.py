@@ -5,72 +5,73 @@ from inimigos import *
 class Mapa:
     def __init__(self, tamanho):
         self.__tamanho = tamanho
-        self.__lista_de_obstaculos = []
-        self.__lista_de_inimigos = []
+        self.__lista_de_entidades = []
         self.__lista_de_display = []
         self.__campo_visivel = pygame.Rect(-50,-50,tamanho[0]+100,tamanho[1]+100)
 
     @property
-    def lista_de_obstaculos(self):
-        return self.__lista_de_obstaculos
+    def lista_de_entidades(self):
+        return self.__lista_de_entidades
 
-    @lista_de_obstaculos.setter
-    def lista_de_obstaculos(self, lista_de_obstaculos):
-        self.__lista_de_obstaculos = lista_de_obstaculos
-
-    @property
-    def lista_de_inimigos(self):
-        return self.__lista_de_inimigos
-
-    @lista_de_inimigos.setter
-    def lista_de_inimigos(self, lista_de_inimigos):
-        self.__lista_de_inimigos = lista_de_inimigos
+    @lista_de_entidades.setter
+    def lista_de_entidades(self, lista_de_entidades):
+        self.__lista_de_entidades = lista_de_entidades
     
     @property
     def campo_visivel(self):
         return self.__campo_visivel
 
-    def iniciar(self):
+    def iniciar(self, entidades):
+        self.__lista_de_entidades = entidades
 
-        ##### OBSTACULOS ##### (FUTURAMENTE UMA FUNCAO VAI LER ISSO DE UM ARQUIVO)
-
-        self.__lista_de_obstaculos.append(CanoVertical('cano1', 550, 475, self.__tamanho[1]))
-        self.__lista_de_obstaculos.append(CanoVertical('cano2', 800, 475, self.__tamanho[1]))
-        self.__lista_de_obstaculos.append(CanoVertical('cano3', 1300, 475, self.__tamanho[1]))
-        self.__lista_de_obstaculos.append(CanoVertical('cano4', 1900, 475, self.__tamanho[1]))
-        self.__lista_de_obstaculos.append(CanoVertical('cano5', 2150, 350, self.__tamanho[1]))
-
-        self.__lista_de_obstaculos.append(Bloco('bloco1', 200, 400))
-        self.__lista_de_obstaculos.append(Bloco('bloco2', 250, 400))
-        self.__lista_de_obstaculos.append(Bloco('bloco3', 300, 400))
-        self.__lista_de_obstaculos.append(Bloco('bloco4', 350, 400))
-
-        self.__lista_de_obstaculos.append(Chao('chao1', self.__tamanho[1]-10, 0, 350))
-        self.__lista_de_obstaculos.append(Chao('chao2', self.__tamanho[1]-10, 450, 1600))
-        self.__lista_de_obstaculos.append(Chao('chao3', self.__tamanho[1]-10, 1700, 2400))
-
-        ##### HUD COM VIDA, TEMPO, MOEDA #####
-
-        self.__lista_de_display.append(Vida('vida', 140, 50))
-        self.__lista_de_display.append(Tempo('tempo', 470, 50))
-        self.__lista_de_display.append(Moeda('moeda', 800, 50))
-
-        ##### INIMIGOS #####
-
-        self.__lista_de_inimigos.append(Goomba('goomba',600,self.__tamanho[1]-50))
-
-    def atualizar(self, tela,campo_visivel):
+    def atualizar(self, tela,campo_visivel,dimensoes_tela):
         # O CAMPO_VISIVEL FAZ COM QUE APENAS OBJETOS NA TELA SEJAM RENDERIZADOS
         # PODE AJUDAR CASO OS MAPAS FIQUEM MUITO GRANDES
         self.__campo_visivel = campo_visivel
-        for obstaculo in self.__lista_de_obstaculos:
-            if campo_visivel.colliderect(obstaculo.corpo):
-                obstaculo.atualizar(tela,self)
-        for inimigo in self.__lista_de_inimigos:
-            if campo_visivel.colliderect(inimigo.corpo):
-                inimigo.atualizar(tela, self.__tamanho, self)
+        for entidade in self.__lista_de_entidades:
+            if campo_visivel.colliderect(entidade.corpo):
+                entidade.atualizar(tela, self, dimensoes_tela)
         for elementohud in self.__lista_de_display:
             elementohud.atualizar(tela)
 
-    def mocao(self):
-        pass
+##### INSTANCIAS DE MAPAS #####
+
+width = 1000
+height = 600
+
+fase1 = [
+    CanoVertical('cano1', 550, 475, height),
+    CanoVertical('cano2', 800, 475, height),
+    CanoVertical('cano2', 1500, 475, height),
+
+    Bloco('bloco1', 200, 400),
+    Bloco('bloco2', 250, 400),
+    Bloco('bloco3', 300, 400),
+    Bloco('bloco4', 350, 400),
+
+    Chao('chao1', height-10, -200, 350),
+    Chao('chao2', height-10, 450, 2000),
+
+    Vida('vida', 140, 50),
+    Tempo('tempo', 470, 50),
+    Moeda('moeda', 800, 50),
+
+    ##### INIMIGOS #####
+
+    Goomba('goomba1', 600, height - 50)
+]
+
+fase2 = [
+    CanoVertical('cano1', -9000, 475, height),
+    CanoVertical('cano2', 1600, 475, height),
+
+    Chao('chao1', height - 10, -1000, 2000),
+
+    ##### INIMIGOS #####
+    Goomba('goomba',100,height-50),
+    Goomba('goomba',600,height-50),
+    Goomba('goomba',1000,height-50),
+    Goomba('goomba',1200,height-50),
+    Goomba('goomba',1400,height-50),
+    Goomba('goomba',1600,height-50)
+]
