@@ -26,7 +26,7 @@ class Jogador:
     @property
     def nome (self):
         return self.__nome
-    
+
     @nome.setter
     def nome (self, nome):
         self.__nome = nome
@@ -34,7 +34,7 @@ class Jogador:
     @property
     def x (self):
         return self.__x
-    
+
     @property
     def y (self):
         return self.__y
@@ -42,7 +42,7 @@ class Jogador:
     @property
     def velx (self):
         return self.__velx
-    
+
     @velx.setter
     def velx(self, velx):
         self.__velx = velx
@@ -54,7 +54,7 @@ class Jogador:
     @property
     def vida(self):
         return self.__vida
-    
+
     @property
     def face(self):
         return self.__face
@@ -120,10 +120,10 @@ class Jogador:
     @property
     def poder(self):
         return self.__poder
-    
+
     def poder(self, poder):
         self.__poder = poder
-    
+
     def atualizar(self, screen, campo_visivel): ### REQUER AREA VISIVEL PARA RENDERIZAR
         pygame.draw.rect(screen, (0, 0, 255), [self.__corpoveloz.x-campo_visivel.x-50,self.__corpoveloz.y,self.__corpoveloz.w,self.__corpoveloz.h])
         pygame.draw.rect(screen, self.__cor, [self.corpo.x-campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])
@@ -204,8 +204,7 @@ class Jogador:
                 self.__velx += atrito
             elif self.__velx > 0:
                 self.__velx -= atrito
-        #else:
-            #self.__velx = 0
+
         if self.__velx >= self.__velocidade_max:
             self.__velx = self.__velocidade_max
         elif self.__velx <= self.__velocidade_min:
