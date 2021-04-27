@@ -75,7 +75,7 @@ class Goomba(Entidade):
         self.y += self.vely
         self.x += self.velx
 
-    def atualizar(self, tela, dimensoesTela,mapa):
+    def atualizar(self, tela, dimensoesTela,mapa): ### REQUER AREA VISIVEL PARA RENDERIZAR
         self.mover(dimensoesTela, mapa)
         self.corpo.x = self.x
         self.corpo.y = self.y

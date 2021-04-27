@@ -1,7 +1,7 @@
 import pygame
 from entidades import Estatico
 
-# mudar no UML- Sem parametro
+# FUNCOES DE ATUALIZAR NECESSITAM DA AREA VISIVEL PARA RENDERIZAR CORRETAMENTE
 class Bloco(Estatico):
     def __init__(self, nome: str, x: int, y: int):
         largura = 30
@@ -43,7 +43,7 @@ class Vida(Estatico):
         largura = 60
         super().__init__(nome, x, y, altura, largura)
 
-    def atualizar(self, tela,mapa):
+    def atualizar(self, tela):
         pygame.draw.rect(tela, (10, 237, 0), self.corpo)
 
 class Tempo(Estatico):
@@ -52,7 +52,7 @@ class Tempo(Estatico):
         largura = 60
         super().__init__(nome, x, y, altura, largura)
 
-    def atualizar(self, tela,mapa):
+    def atualizar(self, tela):
         pygame.draw.rect(tela, (160, 160, 160), self.corpo)
 
 class Moeda(Estatico):
@@ -61,5 +61,5 @@ class Moeda(Estatico):
         largura = 60
         super().__init__(nome, x, y, altura, largura)
 
-    def atualizar(self, tela,mapa):
+    def atualizar(self, tela):
         pygame.draw.rect(tela, (254, 254, 0), self.corpo)

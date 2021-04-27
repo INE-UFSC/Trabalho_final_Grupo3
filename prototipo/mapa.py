@@ -60,6 +60,8 @@ class Mapa:
         self.__lista_de_inimigos.append(Goomba('goomba',600,self.__tamanho[1]-50))
 
     def atualizar(self, tela,campo_visivel):
+        # O CAMPO_VISIVEL FAZ COM QUE APENAS OBJETOS NA TELA SEJAM RENDERIZADOS
+        # PODE AJUDAR CASO OS MAPAS FIQUEM MUITO GRANDES
         self.__campo_visivel = campo_visivel
         for obstaculo in self.__lista_de_obstaculos:
             if campo_visivel.colliderect(obstaculo.corpo):
@@ -68,7 +70,7 @@ class Mapa:
             if campo_visivel.colliderect(inimigo.corpo):
                 inimigo.atualizar(tela, self.__tamanho, self)
         for elementohud in self.__lista_de_display:
-            elementohud.atualizar(tela,self)
+            elementohud.atualizar(tela)
 
     def mocao(self):
         pass
