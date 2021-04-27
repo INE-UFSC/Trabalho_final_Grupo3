@@ -30,7 +30,8 @@ class Mapa:
         self.__campo_visivel = campo_visivel
         for entidade in self.__lista_de_entidades:
             if campo_visivel.colliderect(entidade.corpo):
-                entidade.atualizar(tela, self, dimensoes_tela)
+                if entidade.atualizar(tela, self, dimensoes_tela):
+                    self.__lista_de_entidades.remove(entidade)
         for elemento_hud in self.__lista_de_display:
             elemento_hud.atualizar(tela)
 

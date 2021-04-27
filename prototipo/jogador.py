@@ -150,22 +150,24 @@ class Jogador:
 
         ##### COLISOES COM OBSTACULOS #####
         for obstaculo in mapa.lista_de_entidades:
+            print (type(obstaculo))
+            if type(obstaculo) not in [BolaFogo]:
 
-            cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo, obstaculo.nome)
+                cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo, obstaculo.nome)
 
-            # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
-            if cCima:
-                colisaoCima = True
-                obsCima = obstaculo
-            if cBaixo:
-                colisaoBaixo = True
-                obsBaixo = obstaculo
-            if cEsquerda:
-                colisaoEsquerda = True
-                obsEsquerda = obstaculo
-            if cDireita:
-                colisaoDireita = True
-                obsDireita = obstaculo
+                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
+                if cCima:
+                    colisaoCima = True
+                    obsCima = obstaculo
+                if cBaixo:
+                    colisaoBaixo = True
+                    obsBaixo = obstaculo
+                if cEsquerda:
+                    colisaoEsquerda = True
+                    obsEsquerda = obstaculo
+                if cDireita:
+                    colisaoDireita = True
+                    obsDireita = obstaculo
 
         ##### REPOSICIONAMENTO POS COLISAO #####
         if colisaoDireita and colisaoEsquerda: #ESMAGAMENTO

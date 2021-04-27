@@ -1,5 +1,7 @@
 import mapa
 import pygame
+from entidades import *
+
 class Poder_Generico:
     def __init__(self,tem_tempo: bool, duracao: int):
         self.__tem_tempo = tem_tempo
@@ -29,69 +31,39 @@ class Poder_Generico:
     def nome_funcionalidade (self, nome_funcionalidade):
         self.__nome_funcionalidade = nome_funcionalidade'''
     
-    def atirar(self):   ### ERA PRA SER ABSTRATO MAS FDS
+    def atirar(self, jogador, screen, mapa):   ### ERA PRA SER ABSTRATO MAS FDS
         pass
 
 class VermelhoDoMago(Poder_Generico):
     def __init__(self):
         super().__init__(False,0)
-        self.__bolas = []
-    def atirar(self,jogador,screen,mapa):
-        self.__bolas.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
-    def atualizar(self,tela,campo_visivel):
-        for fogo in self.__bolas:
-            if fogo.atualizar(tela,campo_visivel):
-                self.__bolas.remove(fogo)
 
-class BolaFogo:
+    def atirar(self, jogador, screen, mapa):
+        mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
+
+    def atualizar(self,tela,campo_visivel):
+        pass
+        # for fogo in self.__bolas:
+        #     if fogo.atualizar(tela,campo_visivel):
+        #         self.__bolas.remove(fogo)
+
+class BolaFogo(Entidade):
     def __init__(self, pos_inicial , screen, mapa, vel):
-        self.vida = 1
-        self.largura = 15
-        self.altura = 15
+        vida = 1
+        largura = 15
+        altura = 15
+        limiteVel = 3 * vel
+        dano_contato = 0
+        x = pos_inicial[0] + 25 * vel
+        y = pos_inicial[1]
+        #self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        super().__init__("bola de fogo",x,y,largura,altura,limiteVel,vida,dano_contato)
         self.duracao = 100
         self.mapa = mapa
         self.vely = 0
         self.velx = 3 * vel
-        self.x = pos_inicial[0] + 25 * vel
-        self.y = pos_inicial[1]
-        self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
-    @property
-    def corpo(self):
-        return self.__corpo
-    
-    @corpo.setter
-    def corpo(self, corpo):
-        self.__corpo = corpo
-    
-    ###TESTE###
-    def checar_colisao(self, corpo):
-        colisaoBaixo, colisaoCima, colisaoEsquerda, colisaoDireita = False, False, False, False
-        corpoLargo = pygame.Rect(self.x-1, self.y-1, self.largura+2,self.altura+2)
-        colisaoAjustada = corpoLargo.colliderect(corpo)
-        if colisaoAjustada:
-            ##### VERTICAIS #####
-            '''if self.corpo.left in range(corpo.left+1, corpo.right-1) or self.corpo.right in range(corpo.left+1, corpo.right-1):
-                if corpoLargo.bottom in range(corpo.top+1, corpo.bottom-1 + int(self.vely)):
-                    colisaoBaixo = True
-                elif corpoLargo.top in range(corpo.top+1+ int(self.vely), corpo.bottom-1):
-                    colisaoCima = True'''
-            ##### HORIZONTAIS #####
-            '''print(f'SEILA {self.corpo.top} =? {corpo.top+1, corpo.bottom-1}')
-            print(f'SEILA2 {self.corpo.bottom} =? {corpo.top+1, corpo.bottom-1}')
-            print(f'SEILA3 {self.corpo.top} =? {corpo.top+1, corpo.bottom-1}')
-            print(f'SEILA4{colisaoCima, colisaoBaixo}')'''
-
-            if (self.corpo.top in range(corpo.top+1, corpo.bottom-1) or self.corpo.bottom in range(corpo.top+1, corpo.bottom-1)):
-                ###TIREI DO IF da LINHA 77  and (not colisaoCima and not colisaoBaixo)                
-                if corpoLargo.right in range(corpo.left+1, corpo.right-1 + int(self.velx)):
-                    colisaoDireita = True
-                ###POR ENQUANTO É INÚTIL PQ SÓ JOGA PODER PELA DIREITA
-                if corpoLargo.left in range(corpo.left+1 + int(self.velx), corpo.right-1):
-                    colisaoEsquerda = True
-        return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
-
-    def mover(self):
+    def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
         colisaoCima, colisaoBaixo, colisaoEsquerda, colisaoDireita = False, False, False, False
@@ -135,12 +107,14 @@ class BolaFogo:
         self.y += self.vely
         self.x += self.velx
 
-    def atualizar(self, tela, campo_visivel):
+    def renderizar(self, tela, mapa):
+        pygame.draw.rect(tela, [245, 87 + self.duracao, 65],[self.corpo.x - mapa.campo_visivel.x - 50, self.corpo.y, self.corpo.w, self.corpo.h])
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
         if (self.duracao >  0):
-            self.mover()
-            self.corpo.x = self.x
-            self.corpo.y = self.y
-            pygame.draw.rect(tela, [245,87+self.duracao,65], [self.corpo.x-campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])
+            self.mover(dimensoes_tela, mapa)
+            self.renderizar(tela, mapa)
             self.duracao -= 1
             return False
         return True
