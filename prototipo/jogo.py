@@ -44,6 +44,19 @@ class Jogo:
             self.__menu.tela.setfundo(misturacor(psicodelico(self.__contadormenu),[240,240,240],1,7))
             relogiomenu.tick(60)
 
+    def menu_inicial(self): # Menu inicial do jogo
+        while True:
+            acao = self.logicamenu()
+
+            ### se acao == 0, nao fazer nada
+            ### caso contrario, fazer a acao correspondente ao botao descrito
+
+            if acao == 1:  # botao sair
+                break
+            elif acao == 2:  # botao jogar
+                if not self.rodar():  # se o jogador fechar o jogo durante a fase
+                    break
+
     def rodar(self):
         ###### PYGAME GERAL #####
         rodando = True
@@ -115,14 +128,4 @@ class Jogo:
 
 pygame.init()
 jogo = Jogo()
-while True:
-    acao = jogo.logicamenu()
-
-    ### se acao == 0, nao fazer nada
-    ### caso contrario, fazer a acao correspondente ao botao descrito
-
-    if acao == 1:   # botao sair
-        break
-    elif acao == 2: # botao jogar
-        if not jogo.rodar():    # se o jogador fechar o jogo durante a fase
-            break
+jogo.menu_inicial()
