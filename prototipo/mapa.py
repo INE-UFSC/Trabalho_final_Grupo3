@@ -31,8 +31,8 @@ class Mapa:
         for entidade in self.__lista_de_entidades:
             if campo_visivel.colliderect(entidade.corpo):
                 entidade.atualizar(tela, self, dimensoes_tela)
-        for elementohud in self.__lista_de_display:
-            elementohud.atualizar(tela)
+        for elemento_hud in self.__lista_de_display:
+            elemento_hud.atualizar(tela)
 
 ##### INSTANCIAS DE MAPAS #####
 
