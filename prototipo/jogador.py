@@ -1,7 +1,7 @@
 import pygame
 from obstaculos import Bloco
 from entidades import gravidade, colisao_analisada
-from poder_generico import Poder_manifestado,VermelhoDoMago
+from poderes import PoderManifestado,VermelhoDoMago
 
 class Jogador: 
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
@@ -150,7 +150,7 @@ class Jogador:
 
         ##### COLISOES COM OBSTACULOS #####
         for obstaculo in mapa.lista_de_entidades:
-            if not(isinstance(obstaculo,Poder_manifestado)):
+            if not(isinstance(obstaculo,PoderManifestado)):
 
                 cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo, obstaculo.nome)
 

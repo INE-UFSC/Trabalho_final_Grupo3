@@ -2,7 +2,7 @@ import mapa
 import pygame
 from entidades import *
 
-class Poder_Generico:
+class PoderGenerico:
     def __init__(self,tem_tempo: bool, duracao: int):
         self.__tem_tempo = tem_tempo
         self.__duracao = duracao 
@@ -34,7 +34,7 @@ class Poder_Generico:
     def atirar(self, jogador, screen, mapa):   ### ERA PRA SER ABSTRATO MAS FDS
         pass
 
-class VermelhoDoMago(Poder_Generico):
+class VermelhoDoMago(PoderGenerico):
     def __init__(self):
         super().__init__(False,0)
 
@@ -47,12 +47,12 @@ class VermelhoDoMago(Poder_Generico):
         #     if fogo.atualizar(tela,campo_visivel):
         #         self.__bolas.remove(fogo)
 
-class Poder_manifestado(Entidade):
+class PoderManifestado(Entidade):
     def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao):
         self.duracao = duracao
         super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato)
 
-class BolaFogo(Poder_manifestado):
+class BolaFogo(PoderManifestado):
     def __init__(self, pos_inicial , screen, mapa, vel):
         x = pos_inicial[0] + 25 * vel
         y = pos_inicial[1]
@@ -77,26 +77,26 @@ class BolaFogo(Poder_manifestado):
 
         ##### COLISOES COM OBSTACULOS #####
         
-        for obstaculo in self.mapa.lista_de_entidades:
-            if obstaculo != self:
+        for entidade in self.mapa.lista_de_entidades:
+            if not isinstance(entidade,PoderManifestado):
 
-                cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo)
+                cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(entidade.corpo)
                 #print(f'{cDireita}')
 
-                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
+                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo entidade
                 ## Inutil enquanto a bola so vai reto e so
                 if cCima:
                     colisaoCima = True
-                    obsCima = obstaculo
+                    obsCima = entidade
                 if cBaixo:
                     colisaoBaixo = True
-                    obsBaixo = obstaculo
+                    obsBaixo = entidade
                 if cEsquerda:
                     colisaoEsquerda = True
-                    obsEsquerda = obstaculo
+                    obsEsquerda = entidade
                 if cDireita:
                     colisaoDireita = True
-                    obsDireta = obstaculo
+                    obsDireta = entidade
                     #print('ENTROU NA 109')
             
 
