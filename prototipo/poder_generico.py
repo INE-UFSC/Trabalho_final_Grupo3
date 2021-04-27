@@ -3,7 +3,7 @@ import pygame
 class Poder_Generico():
     def __init__(tem_tempo: bool, duracao: int):
         self.__tem_tempo = tem_tempo
-        self.__duracao = durcao 
+        self.__duracao = duracao 
         self.__nome_funcionalidade = nome_funcionalidade
 
     @property
