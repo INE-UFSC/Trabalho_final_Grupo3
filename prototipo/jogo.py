@@ -93,7 +93,6 @@ class Jogo:
                     if evento.key == pygame.K_a:
                         esquerda = 0.5
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: espaco = True
-                    if evento.key == pygame.K_t: bola_fogo = True
                 if evento.type == pygame.KEYUP:
                     if evento.key == pygame.K_w: cima = 0
                     if evento.key == pygame.K_s: baixo = 0
@@ -102,7 +101,8 @@ class Jogo:
                     if evento.key == pygame.K_a:
                         esquerda = 0
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: espaco = False
-                    if evento.key == pygame.K_t: bola_fogo = False
+                if evento.type == pygame.MOUSEBUTTONDOWN: bola_fogo = True
+                elif evento.type == pygame.MOUSEBUTTONUP: bola_fogo = False
 
             ##### FILA DE RENDERIZACAO #####
             screen.fill(self.__background_colour) # Preenche com o a cor de fundo
