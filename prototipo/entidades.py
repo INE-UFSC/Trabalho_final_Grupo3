@@ -75,7 +75,8 @@ class Estatico():
         pass
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        self.renderizar(tela, mapa)
+        if mapa.campo_visivel.colliderect(self.corpo):
+            self.renderizar(tela, mapa)
         return False
 
 class Movel(Estatico):
@@ -168,7 +169,8 @@ class Movel(Estatico):
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.mover(dimensoes_tela, mapa)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        self.renderizar(tela, mapa)
+        if mapa.campo_visivel.colliderect(self.corpo):
+            self.renderizar(tela, mapa)
         return False
 
 class Entidade(Movel):
