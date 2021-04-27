@@ -144,7 +144,7 @@ class Jogador:
         obsBaixo, obsCima, obsEsquerda, obsDireita = 0,0,0,0
 
         ##### COLISOES COM OBSTACULOS #####
-        for obstaculo in mapa.lista_de_obstaculos:
+        for obstaculo in mapa.lista_de_entidades:
 
             cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo, obstaculo.nome)
 
@@ -162,7 +162,7 @@ class Jogador:
                 colisaoDireita = True
                 obsDireita = obstaculo
 
-        for inimigo in mapa.lista_de_inimigos:
+        for inimigo in mapa.lista_de_entidades:
             cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(inimigo.corpo, inimigo.nome)
 
             # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
@@ -234,7 +234,7 @@ class Jogador:
         ##### MOVIMENTA O JOGADOR E FAZ O SIDESCROLL #####
         sidescroll = False
         self.__y += self.__vely
-        print(self.__x, dimensoes_tela[0], self.__velx)
+        #print(self.__x, dimensoes_tela[0], self.__velx)
         if (self.__x <= 150 and self.__velx < 0) or (self.__x >= dimensoes_tela[0]-150 and self.__velx > 0):
             sidescroll = True
         else:

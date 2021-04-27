@@ -8,8 +8,7 @@ class Bloco(Estatico):
         altura = 30
         super().__init__(nome, x, y, altura, largura)
 
-    def atualizar(self, tela):
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+    def renderizar(self, tela):
         pygame.draw.rect(tela, (255, 102, 0), self.corpo)
 
 class CanoVertical(Estatico):
@@ -18,8 +17,7 @@ class CanoVertical(Estatico):
         altura= base-topo
         super().__init__(nome, x, topo, altura, largura)
 
-    def atualizar(self, tela):
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+    def renderizar(self, tela):
         pygame.draw.rect(tela, (11, 137, 0), self.corpo)
 
 class CanoHorizontal(Estatico):
@@ -28,8 +26,7 @@ class CanoHorizontal(Estatico):
         largura = direita-esquerda
         super().__init__(nome, esquerda, y, altura, largura)
 
-    def atualizar(self, tela):
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+    def renderizar(self, tela):
         pygame.draw.rect(tela, (11, 137, 0), self.corpo)
 
 class Chao(Estatico): 
@@ -37,8 +34,7 @@ class Chao(Estatico):
         altura = 10
         super().__init__(nome, esquerda, y, altura, direita-esquerda)
 
-    def atualizar(self, tela):
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+    def renderizar(self, tela):
         pygame.draw.rect(tela, (184, 20, 20), self.corpo)
 
 class Vida(Estatico):
@@ -47,8 +43,7 @@ class Vida(Estatico):
         largura = 60
         super().__init__(nome, x, y, altura, largura)
 
-    def atualizar(self, tela):
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+    def renderizar(self, tela):
         pygame.draw.rect(tela, (10, 237, 0), self.corpo)
 
 class Tempo(Estatico):
@@ -57,8 +52,7 @@ class Tempo(Estatico):
         largura = 60
         super().__init__(nome, x, y, altura, largura)
 
-    def atualizar(self, tela):
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+    def renderizar(self, tela):
         pygame.draw.rect(tela, (160, 160, 160), self.corpo)
 
 class Moeda(Estatico):
@@ -67,6 +61,5 @@ class Moeda(Estatico):
         largura = 60
         super().__init__(nome, x, y, altura, largura)
 
-    def atualizar(self, tela):
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+    def renderizar(self, tela):
         pygame.draw.rect(tela, (254, 254, 0), self.corpo)

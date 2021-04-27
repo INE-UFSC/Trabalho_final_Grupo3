@@ -1,6 +1,6 @@
 import pygame, time, math, random
 from jogador import Jogador
-from mapa import Mapa
+from mapa import Mapa, fase1, fase2
 from inimigos import *
 from menu import Menu,Tela,Botao
 from efeitosrender import *
@@ -50,6 +50,7 @@ class Jogo:
         aberto = True
         relogio = pygame.time.Clock()
         screen = self.__screen
+
         ##### ENTRADAS DO JOGADOR #####
         cima, baixo, direita, esquerda = 0, 0, 0, 0
         atrito = 0.5
@@ -57,12 +58,15 @@ class Jogo:
         bola_fogo = False
 
         ###### INSTANCIAS DE OBJETOS ######
-        (width,height) = self.__screen.get_size()
         jogador = Jogador('mario',200, 550, 0, 1)
+
+        ##### MAPA #####
+        (width, height) = self.__screen.get_size()
         mapa = Mapa((width,height))
-        mapa.iniciar()
+        mapa.iniciar(fase2)
 
         while rodando:
+            ##### LEITURA DE ENTRADAS #####
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT: 
                     rodando = False
@@ -88,12 +92,11 @@ class Jogo:
 
             ##### FILA DE ATUALIZACAO #####
             sidescroll = jogador.mover(direita, esquerda, espaco, (width, height), mapa, atrito)
-            #print(sidescroll)
 
             ##### FILA DE RENDERIZACAO #####
             screen.fill(self.__background_colour) # Preenche com o a cor de fundo
 
-            mapa.atualizar(screen, sidescroll)
+            mapa.atualizar(screen, sidescroll, (width,height))
             jogador.poderes(screen, mapa, bola_fogo)
             jogador.atualizar(screen)
             if jogador.vida == "morto":
