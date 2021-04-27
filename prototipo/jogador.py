@@ -1,7 +1,7 @@
 import pygame
 from obstaculos import Bloco
 from entidades import gravidade, colisao_analisada
-from poder_generico import BolaFogo
+from poder_generico import BolaFogo,VermelhoDoMago
 
 class Jogador: 
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
@@ -17,9 +17,11 @@ class Jogador:
         self.__vely = 0
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
         self.__corpoveloz = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
-        self.__poder = ''
+        self.__poder = VermelhoDoMago()
         self.__velocidade_max = 5
         self.__velocidade_min = -5
+        self.__recarga = 0
+        self.__face = 1
 
     @property
     def nome (self):
@@ -52,6 +54,10 @@ class Jogador:
     @property
     def vida(self):
         return self.__vida
+    
+    @property
+    def face(self):
+        return self.__face
 
     def checar_colisao(self, corpo, nome):
         colisaoBaixo, colisaoCima, colisaoEsquerda, colisaoDireita = False, False, False, False
@@ -121,8 +127,10 @@ class Jogador:
     def atualizar(self, screen):
         pygame.draw.rect(screen, (0, 0, 255), self.__corpoveloz)
         pygame.draw.rect(screen, self.__cor, self.__corpo)
-        # if self.__poder != '':
-        #     self.__poder.atualizar(screen)
+        if self.__recarga > 0:
+            self.__recarga -= 1
+        if self.__poder != '':
+            self.__poder.atualizar(screen)
     
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
 
@@ -222,9 +230,17 @@ class Jogador:
         ##### MATA O JOGADOR SE CAIR NO BURACO #####
         if self.__y > screen[1]: self.__vida = "morto"
 
+        ##### INDICA A DIRECAO DO JOGADOR PARA DIRECIONAR PODERES #####
+        if self.__velx > 0:
+            self.__face = 1
+        elif self.__velx < 0:
+            self.__face = -1
+
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 
     def poderes(self, screen, mapa, bola_fogo = False, outros_poderes = False):
-        if bola_fogo == True: 
-            self.__poder = BolaFogo(self.corpo.center, screen, mapa)
+        ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
+        if bola_fogo == True and self.__recarga == 0: 
+            self.__poder.atirar(self,screen,mapa)
+            self.__recarga = 24        # TORNAR ESSA PARTE MAIS GENERICA

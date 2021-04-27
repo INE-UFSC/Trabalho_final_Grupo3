@@ -1,10 +1,10 @@
 import mapa
 import pygame
-class Poder_Generico():
-    def __init__(tem_tempo: bool, duracao: int):
+class Poder_Generico:
+    def __init__(self,tem_tempo: bool, duracao: int):
         self.__tem_tempo = tem_tempo
         self.__duracao = duracao 
-        self.__nome_funcionalidade = nome_funcionalidade
+        'self.__nome_funcionalidade = nome_funcionalidade'
 
     @property
     def tem_tempo (self):
@@ -28,17 +28,33 @@ class Poder_Generico():
     @nome_funcionalidade.setter
     def nome_funcionalidade (self, nome_funcionalidade):
         self.__nome_funcionalidade = nome_funcionalidade'''
+    
+    def atirar(self):   ### ERA PRA SER ABSTRATO MAS FDS
+        pass
 
-class BolaFogo(Poder_Generico):
-    def __init__(self, pos_inicial , screen, mapa):
+
+class VermelhoDoMago(Poder_Generico):
+    def __init__(self):
+        super().__init__(False,0)
+        self.__bolas = []
+    def atirar(self,jogador,screen,mapa):
+        self.__bolas.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
+    def atualizar(self,tela):
+        for fogo in self.__bolas:
+            if fogo.atualizar(tela):
+                self.__bolas.remove(fogo)
+
+
+class BolaFogo:
+    def __init__(self, pos_inicial , screen, mapa, vel):
         self.vida = 1
         self.largura = 15
         self.altura = 15
         self.duracao = 100
         self.mapa = mapa
         self.vely = 0
-        self.velx = 3
-        self.x = pos_inicial[0] + 25
+        self.velx = 3 * vel
+        self.x = pos_inicial[0] + 25 * vel
         self.y = pos_inicial[1]
         self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
@@ -126,10 +142,9 @@ class BolaFogo(Poder_Generico):
             self.mover()
             self.corpo.x = self.x
             self.corpo.y = self.y
-            pygame.draw.rect(tela, (205,157,205), self.corpo)
+            pygame.draw.rect(tela, [245,87+self.duracao,65], self.corpo)
             self.duracao -= 1
-        
-        else:
-            pass
+            return False
+        return True
 
         

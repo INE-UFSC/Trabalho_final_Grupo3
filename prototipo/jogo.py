@@ -97,7 +97,7 @@ class Jogo:
 
             #jogador.colisao(retangulo)
             jogador.mover(direita, esquerda ,espaco, (width, height), mapa, atrito)
-            jogador.poderes((width, height), mapa, bola_fogo)
+            jogador.poderes(screen, mapa, bola_fogo)
             jogador.atualizar(screen)
             if jogador.vida == "morto":
                 rodando = False
