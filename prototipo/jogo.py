@@ -94,8 +94,6 @@ class Jogo:
 
             ##### FILA DE RENDERIZACAO #####
             screen.fill(self.__background_colour) # Preenche com o a cor de fundo
-            #circulo.atualizar((R,G,B),size)
-            #circulo.move(direita, esquerda ,espaco)
 
             mapa.atualizar(screen, campo_visivel, (width,height))
 
@@ -105,10 +103,6 @@ class Jogo:
             campo_visivel = jogador.atualizar(screen,campo_visivel)
             if jogador.vida == "morto":
                 rodando = False
-
-            #jogador.colisao(retangulo)
-            # jogador.colisao(mapa1)
-            # pygame.draw.circle(screen, (R, G, B), (400, 250), size, 10)
 
             ##### RENDERIZACAO DA TELA #####
             pygame.display.flip()
