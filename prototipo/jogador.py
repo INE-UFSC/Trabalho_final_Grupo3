@@ -1,7 +1,7 @@
 import pygame
 from obstaculos import Bloco
 from entidades import gravidade, colisao_analisada
-from poder_generico import BolaFogo,VermelhoDoMago
+from poderes import PoderManifestado,VermelhoDoMago
 
 class Jogador: 
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
@@ -140,7 +140,7 @@ class Jogador:
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
 
         ##### MOVIMENTO HORIZONTAL #####
-        aceleracao = direita - esquerda
+        aceleracao = (direita - esquerda)
         self.__velx += aceleracao
 
         ##### COLISOES #####
@@ -150,22 +150,23 @@ class Jogador:
 
         ##### COLISOES COM OBSTACULOS #####
         for obstaculo in mapa.lista_de_entidades:
+            if not(isinstance(obstaculo,PoderManifestado)):
 
-            cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo, obstaculo.nome)
+                cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(obstaculo.corpo, obstaculo.nome)
 
-            # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
-            if cCima:
-                colisaoCima = True
-                obsCima = obstaculo
-            if cBaixo:
-                colisaoBaixo = True
-                obsBaixo = obstaculo
-            if cEsquerda:
-                colisaoEsquerda = True
-                obsEsquerda = obstaculo
-            if cDireita:
-                colisaoDireita = True
-                obsDireita = obstaculo
+                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
+                if cCima:
+                    colisaoCima = True
+                    obsCima = obstaculo
+                if cBaixo:
+                    colisaoBaixo = True
+                    obsBaixo = obstaculo
+                if cEsquerda:
+                    colisaoEsquerda = True
+                    obsEsquerda = obstaculo
+                if cDireita:
+                    colisaoDireita = True
+                    obsDireita = obstaculo
 
         ##### REPOSICIONAMENTO POS COLISAO #####
         if colisaoDireita and colisaoEsquerda: #ESMAGAMENTO

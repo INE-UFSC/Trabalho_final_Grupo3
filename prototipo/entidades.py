@@ -7,7 +7,7 @@ gravidade = 0.2
 class Estatico():
 
     def __init__(self, nome: str, x:int, y:int, altura: int, largura: int):
-        self.__nome = nome 
+        self.__nome = nome
         self.__x = x
         self.__y = y
         self.__largura = largura
@@ -75,7 +75,9 @@ class Estatico():
         pass
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        self.renderizar(tela, mapa)
+        if mapa.campo_visivel.colliderect(self.corpo):
+            self.renderizar(tela, mapa)
+        return False
 
 class Movel(Estatico):
 
@@ -167,7 +169,9 @@ class Movel(Estatico):
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.mover(dimensoes_tela, mapa)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        self.renderizar(tela, mapa)
+        if mapa.campo_visivel.colliderect(self.corpo):
+            self.renderizar(tela, mapa)
+        return False
 
 class Entidade(Movel):
     def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int):
