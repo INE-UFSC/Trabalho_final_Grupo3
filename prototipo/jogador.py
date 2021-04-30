@@ -100,21 +100,28 @@ class Jogador:
 
             if nome == colisao_analisada: print(nome, dist_x, dist_y, self.__velx, self.__vely)
             if self.__vely >= 0 and dist_x + self.__largura/2 >= dist_y:
+                if nome == colisao_analisada: print("Por baixo")
                 colisaoBaixo = True
             elif self.__vely < 0 and dist_x + self.__largura/2 >= dist_y:
+                if nome == colisao_analisada: print("Por cima")
                 colisaoCima = True
             elif self.__velx > 0 and dist_x < dist_y:
+                if nome == colisao_analisada: print("Pela direita")
                 colisaoDireita = True
             elif self.__velx < 0 and dist_x < dist_y:
+                if nome == colisao_analisada: print("Pela esquerda")
                 colisaoEsquerda = True
             elif not self.__velx and abs(dist_x) < dist_y:
-                print("buff", dist_x)
-                if self.__corpoveloz.right - corpo.left > corpo.right - self.__corpoveloz.left:
-                    colisaoEsquerda = True
-                else: colisaoDireita = True
-            if nome == colisao_analisada: print("------")
+                print("PROBLEMATICA")
+                if self.__corpoveloz.right - corpo.left < corpo.right - self.__corpoveloz.left:
+                    colisaoDireita = True
+                else: colisaoEsquerda = True
+            else:
+                print("NAO ENCONTRADA")
 
-        if colisaoVeloz and nome == colisao_analisada: print(int(colisaoCima), int(colisaoBaixo), int(colisaoDireita), int(colisaoEsquerda))
+        if colisaoVeloz and nome == colisao_analisada:
+            print(int(colisaoCima), int(colisaoBaixo), int(colisaoDireita), int(colisaoEsquerda))
+            print("-----------")
         return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
 
     @property
@@ -173,12 +180,14 @@ class Jogador:
             self.__vida = "morto" #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
 
         if colisaoEsquerda:
+            #print("COLISAO PELA ESQUERDA", obsEsquerda.nome)
             if self.__velx <= 0:
                 self.__velx = 0
                 aceleracao = 0
-                self.__x = obsEsquerda.corpo.right
+                self.__x = obsEsquerda.corpo.right+1
 
         if colisaoDireita:
+            #print("COLISAO PELA DIREITA", obsDireita.nome)
             if self.__velx >= 0:
                 self.__velx = 0
                 aceleracao = 0
@@ -192,7 +201,6 @@ class Jogador:
 
         if colisaoCima:
             if self.__vely < 0:
-                print("AQUI")
                 self.__vely = 0
                 self.__y = obsCima.corpo.bottom
 

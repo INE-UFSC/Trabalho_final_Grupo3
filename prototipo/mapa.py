@@ -53,7 +53,7 @@ height = 600
 fase1 = [[
     CanoVertical('cano1', 550, 475, height),
     CanoVertical('cano2', 800, 475, height),
-    CanoVertical('cano2', 1500, 475, height),
+    CanoVertical('cano3', 1500, 475, height),
 
     Bloco('bloco1', 200, 400),
     Bloco('bloco2', 250, 400),
@@ -64,7 +64,7 @@ fase1 = [[
     Chao('chao2', height-10, 450, 2000),
 
     Borda('borda1', 0),
-    Borda('borda1', 2000),
+    Borda('borda2', 2000),
 
     ##### INIMIGOS #####
 

@@ -112,7 +112,7 @@ class BolaFogo(PoderManifestado):
 
         if not colisaoBaixo: self.vely += gravidade*7
 
-        print(colisaoBaixo, obsBaixo)
+        #print(colisaoBaixo, obsBaixo)
 
         self.y += self.vely
         self.x += self.velx
