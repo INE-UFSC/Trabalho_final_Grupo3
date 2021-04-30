@@ -8,14 +8,22 @@ class Mapa:
         self.__lista_de_entidades = []
         self.__lista_de_display = []
         self.__campo_visivel = pygame.Rect(-50,-50,tamanho[0]+100,tamanho[1]+100)
+        self.conta = 0
+        #self.__fonte = pygame.font.SysFont('Arial',20)
+        #self.__contador = self.__fonte.render('time :'+" "+str(self.conta),0,(0,0,0))
 
     @property
     def lista_de_entidades(self):
         return self.__lista_de_entidades
+    
+    @property
+    def lista_de_display(self):
+        return self.__lista_de_display
 
     @lista_de_entidades.setter
     def lista_de_entidades(self, lista_de_entidades):
         self.__lista_de_entidades = lista_de_entidades
+    
     
     @property
     def campo_visivel(self):
@@ -34,6 +42,8 @@ class Mapa:
                 self.__lista_de_entidades.remove(entidade)
         for elemento_hud in self.__lista_de_display:
             elemento_hud.atualizar(tela,self,dimensoes_tela)
+            if isinstance(elemento_hud, Tempo):
+                elemento_hud.tempo = self.conta
 
 ##### INSTANCIAS DE MAPAS #####
 

@@ -51,9 +51,13 @@ class Vida(Estatico):
         return False
 
 class Tempo(Estatico):
+    pygame.init()
     def __init__(self, nome: str, x: int, y: int):
         altura = 30
-        largura = 60
+        largura = 70
+        self.__fonte = pygame.font.SysFont('Arial',20)
+        self.tempo = 0
+        self.__contador = self.__fonte.render('time :'+" "+str(self.tempo),0,(0,0,0))
         super().__init__(nome, x, y, altura, largura)
 
     def renderizar(self, tela, mapa):
@@ -61,7 +65,12 @@ class Tempo(Estatico):
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.renderizar(tela, mapa)
+        self.__contador = self.__fonte.render('time :'+" "+str(self.tempo),0,(0,0,0))
+        tela.blit(self.__contador, (self.x, self.y))
         return False
+    #@tempo.setter
+    #def tempo(self, tempo):
+     #   self.__tempo = tempo
 
 class Moeda(Estatico):
     def __init__(self, nome: str, x: int, y: int):

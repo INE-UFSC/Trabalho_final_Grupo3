@@ -14,6 +14,7 @@ class Jogo:
         pygame.display.set_caption('Tutorial 1')
         self.__screen.fill(self.__background_colour)
         self.__contadormenu = 0
+        self.__comeco = 0
 
         ##### MENU PRINCIPAL #####
         contadormenu = 0      #usado para criar o efeito rgb do menu
@@ -79,6 +80,7 @@ class Jogo:
         (width, height) = self.__screen.get_size()
         mapa = Mapa((width, height))
         mapa.iniciar(fase1)
+        self.__comeco = pygame.time.get_ticks()/1000
 
         while rodando:
             for evento in pygame.event.get():
@@ -121,6 +123,9 @@ class Jogo:
 
             ##### FPS MELHORADO #####
             relogio.tick(60)
+
+            tempo_jogo = (pygame.time.get_ticks()/1000) - self.__comeco
+            mapa.conta = int(tempo_jogo)
         return aberto
 
 
