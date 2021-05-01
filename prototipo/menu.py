@@ -1,6 +1,6 @@
 import pygame
 
-class Menu:
+class Janela:
     def __init__(self, tela):
         self.__tela = tela
     
@@ -14,26 +14,47 @@ class Menu:
     
     def trocar_tela():
         pass
-    
+
+    def atualizar(self):
+        self.tela.atualizar(superficie)
+
+
 class Tela:
+    def __init__(self,superficie):
+        self.__superficie = superficie
+    
+    @property
+    def superficie(self):
+        return self.__superficie #superficie a se desenhar, no caso desse jogo, window
+    
+    def atualizar(self):
+        pass
+
+
+class Tela_Menu(Tela):
     def __init__(self,listabotoes:list,fundo:list,superficie):
+        super().__init__(superficie)
         self.__listabotoes = listabotoes        #lista de objetos Botao
-        self.__fundo = fundo                    #[red,green,blue] do fundo
-        self.__superficie = superficie          #superficie a se desenhar, no caso desse jogo, window
+        self.__fundo = fundo                    #[red,green,blue] do fundo   
     
     def setfundo(self,fundo:list):
         self.__fundo = fundo
     
-    def renderizar(self,superficie):
-        superficie.fill(self.__fundo)           #preenche o fundo
+    def atualizar(self):
+        result = self.logica_menu()
+        self.superficie.fill(self.__fundo)           #preenche o fundo
         for i in self.__listabotoes:            #renderiza cada botao
-            i.renderizar(superficie)
+            i.renderizar(self.superficie)
         pygame.display.flip()
+        return result
     
     def clicar(self):
         for i in self.__listabotoes:
             if i.clicar():  return self.__listabotoes.index(i)+1
         else: return 0
+    
+    def logica_menu(self):
+        pass
     
 class Botao:
     def __init__(self,x,y,w,h,cor,corhover,texto,borda):
