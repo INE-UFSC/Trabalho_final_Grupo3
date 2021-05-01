@@ -7,7 +7,7 @@ class Mapa:
         self.__tamanho = tamanho
         self.__lista_de_entidades = []
         self.__lista_de_display = []
-        self.__campo_visivel = pygame.Rect(-50,-50,tamanho[0]+100,tamanho[1]+100)
+        self.__campo_visivel = pygame.Rect(0,0,tamanho[0],tamanho[1])
         self.conta = 0
         #self.__fonte = pygame.font.SysFont('Arial',20)
         #self.__contador = self.__fonte.render('time :'+" "+str(self.conta),0,(0,0,0))
@@ -30,8 +30,9 @@ class Mapa:
         return self.__campo_visivel
 
     def iniciar(self,entidades):
-        self.__lista_de_entidades = entidades[0]
-        self.__lista_de_display = entidades[1]
+        lista_todos = entidades.copy()
+        self.__lista_de_entidades = lista_todos[0]
+        self.__lista_de_display = lista_todos[1]
 
     def atualizar(self, tela,campo_visivel,dimensoes_tela):
         # O CAMPO_VISIVEL FAZ COM QUE APENAS OBJETOS NA TELA SEJAM RENDERIZADOS
@@ -68,7 +69,7 @@ fase1 = [[
 
     ##### INIMIGOS #####
 
-    Goomba('goomba1', 600, height - 50)],
+    Goomba('goomba1', 610, height - 50)],
 [    Vida('vida', 140, 50),
     Tempo('tempo', 470, 50),
     Moeda('moeda', 800, 50)]]
