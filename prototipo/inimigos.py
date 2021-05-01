@@ -57,4 +57,4 @@ class Goomba(Entidade):
         self.x += self.velx
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x - 50, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0
+        pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0

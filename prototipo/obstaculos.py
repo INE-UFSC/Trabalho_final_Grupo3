@@ -9,7 +9,7 @@ class Bloco(Estatico):
         super().__init__(nome, x, y, altura, largura)
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, (255, 102, 0), [self.corpo.x-mapa.campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])
+        pygame.draw.rect(tela, (255, 102, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
 
 class CanoVertical(Estatico):
     def __init__(self, nome: str, x: int, topo: int, base: int):
@@ -18,7 +18,7 @@ class CanoVertical(Estatico):
         super().__init__(nome, x, topo, altura, largura)
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, (11, 137, 0), [self.corpo.x-mapa.campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])
+        pygame.draw.rect(tela, (11, 137, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
 
 class CanoHorizontal(Estatico):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
@@ -27,7 +27,7 @@ class CanoHorizontal(Estatico):
         super().__init__(nome, esquerda, y, altura, largura)
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, (11, 137, 0), [self.corpo.x-mapa.campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])
+        pygame.draw.rect(tela, (11, 137, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
 
 class Chao(Estatico): 
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
@@ -35,7 +35,7 @@ class Chao(Estatico):
         super().__init__(nome, esquerda, y, altura, direita-esquerda)
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, (184, 20, 20), [self.corpo.x-mapa.campo_visivel.x-50,self.corpo.y,self.corpo.w,self.corpo.h])
+        pygame.draw.rect(tela, (184, 20, 20), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
 
 class Vida(Estatico):
     def __init__(self, nome: str, x: int, y: int):

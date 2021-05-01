@@ -66,7 +66,7 @@ class BolaFogo(PoderManifestado):
         super().__init__("bola de fogo",x,y,largura,altura,limiteVel,vida,dano_contato, duracao)
         self.mapa = mapa
         self.vely = -1
-        self.velx = 3 * vel
+        self.velx = 6 * vel
 
     def mover(self, dimensoesTela, mapa):
 
@@ -107,7 +107,7 @@ class BolaFogo(PoderManifestado):
 
         ##### VERTICAIS #####
         if colisaoBaixo or colisaoCima:
-            self.vely = -self.vely
+            self.vely = -max(self.vely*4/5,8)
             #self.y = obsBaixo.corpo.top - self.altura'''
 
         if not colisaoBaixo: self.vely += gravidade*7
@@ -118,7 +118,7 @@ class BolaFogo(PoderManifestado):
         self.x += self.velx
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, [245, min(87 + self.duracao,255), 65],[self.corpo.x - mapa.campo_visivel.x - 50, self.corpo.y, self.corpo.w, self.corpo.h])
+        pygame.draw.rect(tela, [245, min(87 + self.duracao,255), 65],[self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
