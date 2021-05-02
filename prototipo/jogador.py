@@ -1,12 +1,13 @@
 import pygame
 from obstaculos import Bloco
 from entidades import gravidade, colisao_analisada
+from inimigos import Goomba
 from poderes import PoderManifestado,VermelhoDoMago
 from sprites import SpriteSheet
 
 class Jogador: 
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
-        self.__vida = vida
+        self.__vida = 10
         self.__nome = nome
         self.__cor = (0,255,0)
         self.__x = x
@@ -184,7 +185,7 @@ class Jogador:
 
         ##### REPOSICIONAMENTO POS COLISAO #####
         if colisaoDireita and colisaoEsquerda: #ESMAGAMENTO
-            self.__vida = "morto" #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
+            self.__vida = 0 #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
 
         if colisaoEsquerda:
             #print("COLISAO PELA ESQUERDA", obsEsquerda.nome)
@@ -211,6 +212,20 @@ class Jogador:
                 self.__vely = 0
                 self.__y = obsCima.corpo.bottom
 
+        #### COLISAO GOOMBA ####
+        for cada_termo in mapa.lista_de_entidades: 
+            if isinstance (cada_termo, Goomba):
+                entidade = cada_termo
+        
+                if obsEsquerda != 0:
+                    if isinstance(obsEsquerda, Goomba):
+                        self.__vida -= entidade.dano_contato
+                
+                if obsDireita != 0: 
+                    if isinstance(obsDireita, Goomba):
+                        self.__vida -= entidade.dano_contato
+
+
         ##### GRAVIDADE ######
         if not colisaoBaixo: self.__vely += gravidade
 
@@ -231,7 +246,7 @@ class Jogador:
         self.__x += self.__velx
 
         ##### MATA O JOGADOR SE CAIR NO BURACO #####
-        if self.__y > screen[1]: self.__vida = "morto"
+        if self.__y > screen[1]: self.__vida = 0
 
         ##### INDICA A DIRECAO DO JOGADOR PARA DIRECIONAR PODERES #####
         if self.__velx > 0:

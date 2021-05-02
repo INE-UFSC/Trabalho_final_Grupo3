@@ -79,7 +79,7 @@ class Tela_De_Jogo(Tela):
             elif evento.type == pygame.MOUSEBUTTONUP: self.__bola_fogo = False
 
         ##### FILA DE RENDERIZACAO #####
-        self.__superficie.fill(self.__background_colour) # Preenche com o a cor de fundo
+        self.__superficie.fill(self.__background_colour) # Preenaa a com o a cor de fundo
 
         self.__mapa.atualizar(self.__superficie, self.__campo_visivel, self.__superficie.get_size())
 
@@ -88,7 +88,7 @@ class Tela_De_Jogo(Tela):
             self.__superficie.get_size(), self.__mapa, self.__atrito)
         self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
         self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__campo_visivel, int(ciclo/15))
-        if self.__jogador.vida == "morto":
+        if self.__jogador.vida <= 0:
             return 1
 
         ##### RENDERIZACAO DA TELA #####

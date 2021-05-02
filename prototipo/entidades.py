@@ -188,11 +188,11 @@ class Entidade(Movel):
         self.__vida = vida
 
     @property
-    def danoContato(self):
+    def dano_contato(self):
         return self.__dano_contato
 
-    @danoContato.setter
-    def danoContato(self, dano_contato):
+    @dano_contato.setter
+    def dano_contato(self, dano_contato):
         self.__dano_contato = dano_contato
 
     def sumir(self):
