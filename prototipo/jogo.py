@@ -54,7 +54,7 @@ class Tela_De_Jogo(Tela):
         self.__mapa.iniciar(nivel)
         self.__comeco = pygame.time.get_ticks()/1000
     
-    def atualizar(self):
+    def atualizar(self, ciclo):
 
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT: 
@@ -87,7 +87,7 @@ class Tela_De_Jogo(Tela):
         self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco, 
             self.__superficie.get_size(), self.__mapa, self.__atrito)
         self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
-        self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__campo_visivel)
+        self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__campo_visivel, int(ciclo/15))
         if self.__jogador.vida == "morto":
             return 1
 
@@ -103,6 +103,7 @@ class Jogo:
         self.__screen = pygame.display.set_mode((width, height)) #Cria o objeto da tela
         pygame.display.set_caption('Luigi Vermelho')
         self.__contadormenu = 0
+        self.__ciclo = 0
 
         telaprincipal = Menu_Principal(self.__screen)
         self.__janela = Janela(telaprincipal)
@@ -129,9 +130,11 @@ class Jogo:
     def rodar(self):
         ###### PYGAME GERAL #####
         relogio = pygame.time.Clock()
+
         nivel = Tela_De_Jogo(self.__screen, fase1)
         while True:
-            jogar = nivel.atualizar()
+            self.__ciclo += 1
+            jogar = nivel.atualizar(self.__ciclo)
             if jogar == 0:
                 return False
             if jogar == 1:

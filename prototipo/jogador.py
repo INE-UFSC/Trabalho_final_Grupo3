@@ -2,16 +2,17 @@ import pygame
 from obstaculos import Bloco
 from entidades import gravidade, colisao_analisada
 from poderes import PoderManifestado,VermelhoDoMago
+from sprites import SpriteSheet
 
 class Jogador: 
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
         self.__vida = vida
         self.__nome = nome
-        self.__cor = (0,0,0)
+        self.__cor = (0,255,0)
         self.__x = x
         self.__y = y
-        self.__altura = 50
-        self.__largura = 25
+        self.__altura = 46
+        self.__largura = 46
         self.__pulo = 9
         self.__velx = velx
         self.__vely = 0
@@ -22,6 +23,7 @@ class Jogador:
         self.__velocidade_min = -5
         self.__recarga = 0
         self.__face = 1
+        self.__imagem = SpriteSheet("andando")
 
     @property
     def nome (self):
@@ -131,9 +133,14 @@ class Jogador:
     def poder(self, poder):
         self.__poder = poder
 
-    def atualizar(self, screen, campo_visivel): ### REQUER AREA VISIVEL PARA RENDERIZAR
-        pygame.draw.rect(screen, (0, 0, 255), [self.__corpoveloz.x-campo_visivel.x,self.__corpoveloz.y,self.__corpoveloz.w,self.__corpoveloz.h])
-        pygame.draw.rect(screen, self.__cor, [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+    def renderizar(self, tela, campo_visivel, ciclo):
+        # pygame.draw.rect(tela, (0, 0, 255), [self.__corpoveloz.x-campo_visivel.x,self.__corpoveloz.y,self.__corpoveloz.w,self.__corpoveloz.h])
+        #pygame.draw.rect(tela, self.__cor, [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+        self.__imagem.imprimir("andando"+str(ciclo%12), self.__x-campo_visivel.x, self.__y, tela, self.__face)
+
+    def atualizar(self, screen, campo_visivel, ciclo): ### REQUER AREA VISIVEL PARA RENDERIZAR
+        print(ciclo)
+        self.renderizar(screen, campo_visivel, ciclo)
         if self.__recarga > 0:
             self.__recarga -= 1
         if self.__poder != '':
