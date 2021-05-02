@@ -71,46 +71,20 @@ class BolaFogo(PoderManifestado):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        colisaoCima, colisaoBaixo, colisaoEsquerda, colisaoDireita = False, False, False, False
-        cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
-        obsBaixo, obsCima, obsEsquerda, obsDireita = 0,0,0,0
-
-        ##### COLISOES COM OBSTACULOS #####
-        
-        for entidade in self.mapa.lista_de_entidades:
-            if not isinstance(entidade,PoderManifestado):
-
-                cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(entidade.corpo)
-                #print(f'{cDireita}')
-
-                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo entidade
-                ## Inutil enquanto a bola so vai reto e so
-                if cCima:
-                    colisaoCima = True
-                    obsCima = entidade
-                if cBaixo:
-                    colisaoBaixo = True
-                    obsBaixo = entidade
-                if cEsquerda:
-                    colisaoEsquerda = True
-                    obsEsquerda = entidade
-                if cDireita:
-                    colisaoDireita = True
-                    obsDireta = entidade
-                    #print('ENTROU NA 109')
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
             
 
         ##### HORIZONTAIS #####
-        if colisaoEsquerda or colisaoDireita:
+        if obsEsquerda or obsDireita:
             #self.duracao = 0
             self.velx = -self.velx
 
         ##### VERTICAIS #####
-        if colisaoBaixo or colisaoCima:
+        if obsBaixo or obsCima:
             self.vely = -max(self.vely*4/5,8)
             #self.y = obsBaixo.corpo.top - self.altura'''
 
-        if not colisaoBaixo: self.vely += gravidade*7
+        if not obsBaixo: self.vely += gravidade*7
 
         #print(colisaoBaixo, obsBaixo)
 

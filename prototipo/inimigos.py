@@ -17,41 +17,19 @@ class Goomba(Entidade):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        colisaoCima, colisaoBaixo, colisaoEsquerda, colisaoDireita = False, False, False, False
-        cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
-        obsBaixo, obsCima, obsEsquerda, obsDireita = 0,0,0,0
-
-        ##### COLISOES COM OBSTACULOS #####
-        for entidade in mapa.lista_de_entidades:
-            if entidade != self:
-
-                cCima, cBaixo, cDireita, cEsquerda = self.checar_colisao(entidade.corpo)
-
-                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
-                if cCima:
-                    colisaoCima = True
-                    obsCima = entidade
-                if cBaixo:
-                    colisaoBaixo = True
-                    obsBaixo = entidade
-                if cEsquerda:
-                    colisaoEsquerda = True
-                    obsEsquerda = entidade
-                if cDireita:
-                    colisaoDireita = True
-                    obsDireta = entidade
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[])
 
         ##### HORIZONTAIS #####
-        if colisaoEsquerda or colisaoDireita:
+        if obsEsquerda or obsDireita:
             self.velx = self.velx * -1
 
         ##### VERTICAIS #####
-        if colisaoBaixo:
+        if obsBaixo:
             self.vely = 0
             self.y = obsBaixo.corpo.top - self.altura
 
         ##### GRAVIDADE ######
-        if not colisaoBaixo: self.vely += gravidade
+        if not obsBaixo: self.vely += gravidade
 
         self.y += self.vely
         self.x += self.velx
