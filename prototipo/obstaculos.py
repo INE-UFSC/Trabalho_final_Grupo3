@@ -56,21 +56,25 @@ class Tempo(Estatico):
         altura = 30
         largura = 70
         self.__fonte = pygame.font.SysFont('Arial',20)
-        self.tempo = 0
+        self.__tempo = 0
         self.__contador = self.__fonte.render('time :'+" "+str(self.tempo),0,(0,0,0))
         super().__init__(nome, x, y, altura, largura)
+    @property
+    def tempo(self):
+        return self.__tempo
+    
+    @tempo.setter
+    def tempo(self, tempo):
+        self.__tempo = tempo
 
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: pygame.draw.rect(tela, (160, 160, 160), self.corpo)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.renderizar(tela, mapa)
-        self.__contador = self.__fonte.render('time :'+" "+str(self.tempo),0,(0,0,0))
+        self.__contador = self.__fonte.render('time :'+" "+str(self.__tempo),0,(0,0,0))
         tela.blit(self.__contador, (self.x, self.y))
         return False
-    #@tempo.setter
-    #def tempo(self, tempo):
-     #   self.__tempo = tempo
 
 class Moeda(Estatico):
     def __init__(self, nome: str, x: int, y: int):
@@ -85,6 +89,19 @@ class Moeda(Estatico):
         self.renderizar(tela, mapa)
         return False
 
+class Vitoria(Estatico):
+    def __init__(self, x):
+        altura = 190
+        y = 590 - altura
+        largura = 100
+        super().__init__("vitoria", x, y, altura, largura)
+    
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (254, 254, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.renderizar(tela, mapa)
+        return False
 
 class Borda(Estatico):
     def __init__(self, nome: str, x: int):

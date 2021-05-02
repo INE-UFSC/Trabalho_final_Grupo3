@@ -38,6 +38,8 @@ class Tela_De_Jogo(Tela):
         (width,height) = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0,0,width,height)
         self.__comeco = 0
+        self.__tempo_maximo = 350
+        self.__fonte = pygame.font.SysFont('Arial',20)
 
         ##### ENTRADAS DO JOGADOR #####
         self.__cima, self.__baixo, self.__direita, self.__esquerda = 0, 0, 0, 0
@@ -89,10 +91,20 @@ class Tela_De_Jogo(Tela):
         self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__campo_visivel, int(ciclo/6))
         if self.__jogador.vida <= 0:
             return 1
+        
+        ### VENCENDO ###
+        if self.__mapa.ganhou:
+            return 3
+            textin = self.__fonte.render("VENCEU", 0, (0,0,0))
+            self.__superficie.blit(textin, (500, 300))
+
 
         ##### RENDERIZACAO DA TELA #####
         pygame.display.flip()
-        self.__mapa.conta = int((pygame.time.get_ticks()/1000) - self.__comeco)
+        tempo_decorrido = int((pygame.time.get_ticks()/1000) - self.__comeco)
+        self.__mapa.conta =  self.__tempo_maximo - tempo_decorrido
+        if self.__mapa.conta == 0:
+            self.__jogador.vida_pra_zero()
         return 2
 
 class Jogo:
@@ -123,8 +135,11 @@ class Jogo:
             if acao == 1:  # botao sair
                 break
             elif acao == 2:  # botao jogar
-                if not self.rodar():  # se o jogador fechar o jogo durante a fase
+                aconteceu = self.rodar()
+                if aconteceu == 0:  # se o jogador fechar o jogo durante a fase
                     break
+                elif aconteceu == 3:
+                    pass
 
     def rodar(self):
         ###### PYGAME GERAL #####
@@ -135,9 +150,11 @@ class Jogo:
             self.__ciclo += 1
             jogar = nivel.atualizar(self.__ciclo)
             if jogar == 0:
-                return False
+                return 0
             if jogar == 1:
-                return True
+                return 1
+            if jogar == 3:
+                return 3
             ##### FPS MELHORADO #####
             relogio.tick(60)
 

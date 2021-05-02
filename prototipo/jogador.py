@@ -1,5 +1,5 @@
 import pygame
-from obstaculos import Bloco
+from obstaculos import Bloco, Vitoria
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Goomba
 from poderes import PoderManifestado,VermelhoDoMago
@@ -71,6 +71,9 @@ class Jogador:
     @property
     def face(self):
         return self.__face
+    
+    def vida_pra_zero(self):
+        self.__vida = 0
 
     def checar_colisao(self, lista_de_entidades, tipos_transparentes):
         ##### COLISOES #####
@@ -206,6 +209,22 @@ class Jogador:
                     if isinstance(obsDireita, Goomba):
                         self.__vida -= entidade.dano_contato
 
+        ### CHECANDO VITÓRIA ###
+        for cada_termo in mapa.lista_de_entidades: 
+            if isinstance (cada_termo, Vitoria):
+                entidade = cada_termo
+
+                if obsEsquerda != 0:
+                    if isinstance(obsEsquerda, Vitoria):
+                        mapa.ganhou = True
+
+                if obsDireita != 0: 
+                    if isinstance(obsDireita, Vitoria):
+                        mapa.ganhou = True
+
+                if obsDireita != 0: 
+                    if isinstance(obsDireita, Vitoria):
+                        mapa.ganhou = True
 
         ##### GRAVIDADE ######
         if not obsBaixo: self.__vely += gravidade

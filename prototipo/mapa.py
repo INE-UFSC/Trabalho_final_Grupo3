@@ -8,9 +8,9 @@ class Mapa:
         self.__lista_de_entidades = []
         self.__lista_de_display = []
         self.__campo_visivel = pygame.Rect(0,0,tamanho[0],tamanho[1])
-        self.conta = 0
-        #self.__fonte = pygame.font.SysFont('Arial',20)
-        #self.__contador = self.__fonte.render('time :'+" "+str(self.conta),0,(0,0,0))
+        self.__conta = 0
+        self.__vitória = pygame.Rect(tamanho[0]-30, 550-30, 30, 100)
+        self.__ganhou = False
 
     @property
     def lista_de_entidades(self):
@@ -23,6 +23,22 @@ class Mapa:
     @lista_de_entidades.setter
     def lista_de_entidades(self, lista_de_entidades):
         self.__lista_de_entidades = lista_de_entidades
+    
+    @property
+    def ganhou(self):
+        return self.__ganhou
+
+    @ganhou.setter
+    def ganhou(self, ganhou):
+        self.__ganhou = ganhou
+    
+    @property
+    def conta(self):
+        return self.__conta
+
+    @conta.setter
+    def conta(self, conta):
+        self.__conta = conta
     
     
     @property
@@ -66,13 +82,14 @@ fase1 = [[
 
     Borda('borda1', 0),
     Borda('borda2', 2000),
+    Vitoria(1900),
 
     ##### INIMIGOS #####
 
     Goomba('goomba1', 610, height - 50)],
 [    Vida('vida', 140, 50),
     Tempo('tempo', 470, 50),
-    Moeda('moeda', 800, 50)]]
+    Moeda('moeda', 800, 50),]]
 
 fase2 = [[
     CanoVertical('cano1', -9000, 475, height),
