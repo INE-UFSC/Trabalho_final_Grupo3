@@ -140,7 +140,6 @@ class Jogador:
         self.__imagem.imprimir("andando"+str(ciclo%12), self.__x-campo_visivel.x, self.__y, tela, self.__face)
 
     def atualizar(self, screen, campo_visivel, ciclo): ### REQUER AREA VISIVEL PARA RENDERIZAR
-        print(ciclo)
         self.renderizar(screen, campo_visivel, ciclo)
         if self.__recarga > 0:
             self.__recarga -= 1

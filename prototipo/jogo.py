@@ -87,7 +87,7 @@ class Tela_De_Jogo(Tela):
         self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco, 
             self.__superficie.get_size(), self.__mapa, self.__atrito)
         self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
-        self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__campo_visivel, int(ciclo/15))
+        self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__campo_visivel, int(ciclo/6))
         if self.__jogador.vida <= 0:
             return 1
 
