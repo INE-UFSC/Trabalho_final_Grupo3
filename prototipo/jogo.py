@@ -40,6 +40,7 @@ class Tela_De_Jogo(Tela):
         self.__comeco = 0
         self.__tempo_maximo = 350
         self.__fonte = pygame.font.SysFont('Arial',20)
+        self.__atrasofim = 0
 
         ##### ENTRADAS DO JOGADOR #####
         self.__cima, self.__baixo, self.__direita, self.__esquerda = 0, 0, 0, 0
@@ -85,24 +86,38 @@ class Tela_De_Jogo(Tela):
         self.__mapa.atualizar(self.__superficie, self.__campo_visivel, self.__superficie.get_size())
 
         # FAZER O JOGADOR RECEBER UM MAPA E SALVAR ONDE ELE TA
+        if self.__atrasofim > 0:
+            self.__direita = 0
+            self.__esquerda = 0
+            self.__espaco = 0
         self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco, 
             self.__superficie.get_size(), self.__mapa, self.__atrito)
         self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
         self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__campo_visivel, int(ciclo/6))
-        if self.__jogador.vida <= 0:
-            return 1
+
+        # PERDENDO POR MORRER
+        if self.__jogador.vida <= 0 and not self.__mapa.ganhou:
+            self.__atrasofim += 1
+            textin = self.__fonte.render("PERDEU", 0, (0,0,0))
+            self.__superficie.blit(textin, (500, 300))
+            if self.__atrasofim >= 150:
+                return 1
         
         ### VENCENDO ###
         if self.__mapa.ganhou:
-            return 3
+            self.__atrasofim += 1
             textin = self.__fonte.render("VENCEU", 0, (0,0,0))
             self.__superficie.blit(textin, (500, 300))
+            if self.__atrasofim >= 150:
+                return 3
 
 
         ##### RENDERIZACAO DA TELA #####
         pygame.display.flip()
         tempo_decorrido = int((pygame.time.get_ticks()/1000) - self.__comeco)
         self.__mapa.conta =  self.__tempo_maximo - tempo_decorrido
+
+        ### PERDENDO POR TEMPO
         if self.__mapa.conta == 0:
             self.__jogador.vida_pra_zero()
         return 2
@@ -134,18 +149,21 @@ class Jogo:
 
             if acao == 1:  # botao sair
                 break
-            elif acao == 2:  # botao jogar
-                aconteceu = self.rodar()
+            elif acao in [2,4,5]:  # botao jogar, fase 1, fase 2
+                if acao == 5:
+                    aconteceu = self.rodar(fase2)
+                else:
+                    aconteceu = self.rodar(fase1)
                 if aconteceu == 0:  # se o jogador fechar o jogo durante a fase
                     break
                 elif aconteceu == 3:
                     pass
 
-    def rodar(self):
+    def rodar(self,nivel):
         ###### PYGAME GERAL #####
         relogio = pygame.time.Clock()
 
-        nivel = Tela_De_Jogo(self.__screen, fase1)
+        nivel = Tela_De_Jogo(self.__screen, nivel)
         while True:
             self.__ciclo += 1
             jogar = nivel.atualizar(self.__ciclo)

@@ -103,5 +103,6 @@ fase2 = [[
     Goomba('goomba',1000,height-50),
     Goomba('goomba',1200,height-50),
     Goomba('goomba',1400,height-50),
-    Goomba('goomba',1600,height-50)
+    Goomba('goomba',1600,height-50),
+    Vitoria(1900)
 ],[]]
