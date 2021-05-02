@@ -8,7 +8,7 @@ class Menu_Principal(Tela_Menu):   #QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
     def __init__(self,superficie):
         botaonivel_1 = Botao(250, 75, 100, 100, (220, 0, 200), (160, 0, 140), "Fase 1", 5)
         botaonivel_2 = Botao(450, 75, 100, 100, (220, 200, 0), (160, 140, 0), "Fase 2", 5)
-        botaonivel_3 = Botao(650, 75, 100, 100, (0, 200, 220), (0, 160, 140), "Fase 3", 5)
+        botaonivel_3 = Botao(650, 75, 100, 100, (0, 200, 220), (0, 120, 140), "Fase 3", 5)
         botaojogar = Botao(375, 350, 250, 50, (30, 220, 30), (30, 160, 30), "Começar", 5)
         botaoplacar = Botao(375, 425, 250, 50, (30, 220, 30), (30, 160, 30), "Placar", 5)
         botaosair = Botao(375, 500, 250, 50, (30, 220, 30), (30, 160, 30), "Sair", 5)
@@ -53,7 +53,7 @@ class Tela_De_Jogo(Tela):
 
         ##### MAPA #####
         self.__mapa = Mapa((width, height))
-        self.__mapa.iniciar(nivel)
+        self.__mapa.iniciar([nivel[0].copy(),nivel[1].copy()])
         self.__comeco = pygame.time.get_ticks()/1000
     
     def atualizar(self, ciclo):
@@ -130,12 +130,11 @@ class Jogo:
         pygame.display.set_caption('Luigi Vermelho')
         self.__contadormenu = 0
         self.__ciclo = 0
-
-        telaprincipal = Menu_Principal(self.__screen)
-        self.__janela = Janela(telaprincipal)
+        self.__janela = Janela(Menu_Principal(self.__screen))
 
     def logica_menu(self):   # logica do sistema de menu
         relogiomenu = pygame.time.Clock()
+        self.__janela.trocar_tela(Menu_Principal(self.__screen))
         while True:
             return self.__janela.tela.atualizar()
             relogiomenu.tick(60)
@@ -162,8 +161,8 @@ class Jogo:
     def rodar(self,nivel):
         ###### PYGAME GERAL #####
         relogio = pygame.time.Clock()
-
-        nivel = Tela_De_Jogo(self.__screen, nivel)
+        self.__janela.trocar_tela(Tela_De_Jogo(self.__screen, nivel))
+        nivel = self.__janela.tela
         while True:
             self.__ciclo += 1
             jogar = nivel.atualizar(self.__ciclo)

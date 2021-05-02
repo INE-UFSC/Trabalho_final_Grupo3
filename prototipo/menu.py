@@ -9,14 +9,14 @@ class Janela:
         return self.__tela
     
     @tela.setter
-    def tela (self, tela):
-        self.__tela = tela
+    def tela(self, telanova):
+        self.__tela = telanova
     
-    def trocar_tela():
-        pass
+    def trocar_tela(self,telanova):
+        self.__tela = telanova
 
     def atualizar(self):
-        self.tela.atualizar(superficie)
+        self.tela.atualizar()
 
 
 class Tela:
