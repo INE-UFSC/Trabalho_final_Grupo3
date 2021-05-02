@@ -1,6 +1,6 @@
 #Arquivo destinado a fazer todos os inimigos
 import pygame
-from entidades import Entidade, gravidade
+from entidades import Entidade, gravidade, renderizar_hitbox, renderizar_sprite
 
 class Goomba(Entidade):
     def __init__(self, nome: str, x: int, y: int):
@@ -57,4 +57,4 @@ class Goomba(Entidade):
         self.x += self.velx
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0
+        if renderizar_hitbox: pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0

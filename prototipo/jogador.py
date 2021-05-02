@@ -1,6 +1,6 @@
 import pygame
 from obstaculos import Bloco
-from entidades import gravidade, colisao_analisada
+from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Goomba
 from poderes import PoderManifestado,VermelhoDoMago
 from sprites import SpriteSheet
@@ -9,7 +9,6 @@ class Jogador:
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
         self.__vida = 10
         self.__nome = nome
-        self.__cor = (0,255,0)
         self.__x = x
         self.__y = y
         self.__altura = 46
@@ -137,9 +136,8 @@ class Jogador:
 
 
     def renderizar(self, tela, campo_visivel, ciclo):
-        # pygame.draw.rect(tela, (0, 0, 255), [self.__corpoveloz.x-campo_visivel.x,self.__corpoveloz.y,self.__corpoveloz.w,self.__corpoveloz.h])
-        #pygame.draw.rect(tela, self.__cor, [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
-        self.__imagem.imprimir("andando"+str(ciclo%12), self.__x-campo_visivel.x, self.__y, tela, self.__face)
+        if renderizar_hitbox: pygame.draw.rect(tela, (0,0,0), [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+        if renderizar_sprite: self.__imagem.imprimir("andando"+str(ciclo%12), self.__x-campo_visivel.x, self.__y, tela, self.__face)
 
     def atualizar(self, screen, campo_visivel, ciclo): ### REQUER AREA VISIVEL PARA RENDERIZAR
         self.renderizar(screen, campo_visivel, ciclo)
