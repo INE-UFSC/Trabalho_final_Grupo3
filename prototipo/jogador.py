@@ -55,6 +55,14 @@ class Jogador:
         return self.__corpo
 
     @property
+    def poder(self):
+        return self.__poder
+
+    @poder.setter
+    def poder(self, poder):
+        self.__poder = poder
+
+    @property
     def vida(self):
         return self.__vida
 
@@ -127,12 +135,6 @@ class Jogador:
             print("-----------")
         return [colisaoCima, colisaoBaixo, colisaoDireita, colisaoEsquerda]
 
-    @property
-    def poder(self):
-        return self.__poder
-
-    def poder(self, poder):
-        self.__poder = poder
 
     def renderizar(self, tela, campo_visivel, ciclo):
         # pygame.draw.rect(tela, (0, 0, 255), [self.__corpoveloz.x-campo_visivel.x,self.__corpoveloz.y,self.__corpoveloz.w,self.__corpoveloz.h])

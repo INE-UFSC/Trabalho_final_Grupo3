@@ -1,7 +1,6 @@
 import pygame, time, math, random
 from jogador import Jogador
 from mapa import Mapa, fase1, fase2
-from inimigos import *
 from menu import *
 from efeitosrender import *
 
