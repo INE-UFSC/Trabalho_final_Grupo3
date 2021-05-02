@@ -2,7 +2,7 @@ import pygame
 from obstaculos import Bloco, Vitoria
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Goomba
-from poderes import PoderManifestado,VermelhoDoMago
+from poderes import PoderManifestado,VermelhoDoMago,BolaFogo
 from sprites import SpriteSheet
 
 class Jogador: 
@@ -165,7 +165,7 @@ class Jogador:
 
         ##### COLISOES #####
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
 
         ##### REPOSICIONAMENTO POS COLISAO #####
         if obsDireita and obsEsquerda: #ESMAGAMENTO
