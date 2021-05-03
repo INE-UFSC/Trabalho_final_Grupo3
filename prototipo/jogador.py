@@ -10,7 +10,7 @@ class Jogador(Movel):
         ##### ATRIBUTOS GERAIS #####
         self.__vida = 100
         self.__nome = nome
-        self.__imagem = SpriteSheet("guri")
+        self.__sprite = SpriteSheet("guri")
 
         ##### ATRIBUTOS POSICIONAIS #####
         altura = 46
@@ -49,7 +49,7 @@ class Jogador(Movel):
 
     def renderizar(self, tela, campo_visivel, ciclo):
         if renderizar_hitbox: pygame.draw.rect(tela, (50,50,255), [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
-        if renderizar_sprite: self.__imagem.imprimir("guri"+str(ciclo%12), self.x-campo_visivel.x, self.y, tela, self.__face, self.velx)
+        if renderizar_sprite: self.__sprite.imprimir("guri"+str(ciclo%12), self.x-campo_visivel.x, self.y, tela, self.__face, self.velx)
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): ### REQUER AREA VISIVEL PARA RENDERIZAR
         self.mover(entradas[0],entradas[1],entradas[2],screen.get_size(),mapa,atrito)

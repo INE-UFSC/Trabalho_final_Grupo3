@@ -16,6 +16,7 @@ class Estatico():
         self.__altura = altura
         self.__corpo = pygame.Rect(x, y, largura, altura)
         self.__imagem = imagem
+        self.__sprite = []
 
     @property
     def nome (self):
@@ -72,6 +73,14 @@ class Estatico():
     @imagem.setter
     def imagem(self, imagem):
         self.__imagem = imagem
+
+    @property
+    def sprite(self):
+        return self.__sprite
+
+    @sprite.setter
+    def sprite(self, sprite):
+        self.__sprite = sprite
 
     def auto_destruir(self, mapa):
          if self in mapa.lista_de_entidades: #RESOLVE PROVISORIAMENTE
