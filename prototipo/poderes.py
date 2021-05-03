@@ -3,11 +3,12 @@ import pygame
 from entidades import *
 
 class PoderGenerico:
-    def __init__(self,tem_tempo: bool, duracao: int, velmax: int, pulo: int):
+    def __init__(self,tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int):
         self.__tem_tempo = tem_tempo
         self.__duracao = duracao
         self.velmax = velmax
         self.pulo = pulo
+        self.recarga = recarga
         'self.__nome_funcionalidade = nome_funcionalidade'
 
     @property
@@ -37,9 +38,9 @@ class PoderGenerico:
         pass
 
 ##### FORMA PADRAO DO JOGADOR #####
-class FormaPadrao(PoderGenerico):
+class CinzaDoHominho(PoderGenerico):
     def __init__(self):
-        super().__init__(False,0,5,9)
+        super().__init__(False,0,5,9,0)
 
     def acao(self, jogador, tela, mapa):
         pass
@@ -47,12 +48,11 @@ class FormaPadrao(PoderGenerico):
 ##### PODER DO DASH #####
 class PretoDoNinja(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0,8,10)
+        super().__init__(False, 0,7,10,60)
         self.boost = 30
 
     def acao(self, jogador, screen, mapa):
-        #jogador.velocidade_max =
-        jogador.velx = 20
+        jogador.velx = jogador.face * 20
         pass
 
     def atualizar(self, tela, campo_visivel):
@@ -60,7 +60,7 @@ class PretoDoNinja(PoderGenerico):
 
 class VermelhoDoMago(PoderGenerico):
     def __init__(self):
-        super().__init__(False,0,5,9)
+        super().__init__(False,0,5,9,30)
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))

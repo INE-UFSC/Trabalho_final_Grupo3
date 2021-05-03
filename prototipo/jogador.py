@@ -2,7 +2,7 @@ import pygame
 from obstaculos import Bloco, Vitoria
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Goomba
-from poderes import PoderManifestado,VermelhoDoMago,BolaFogo, PretoDoNinja
+from poderes import *
 from sprites import SpriteSheet
 
 class Jogador: 
@@ -242,10 +242,18 @@ class Jogador:
             elif self.__velx > 0:
                 self.__velx -= atrito
 
+        ##### AJUSTE DE VELOCIDADE MAXIMA #####
         if self.__velx > self.poder.velmax:
-            self.__velx = self.poder.velmax
+            if self.__velx > self.poder.velmax + 1:
+                self.__velx -= 1
+            else:
+                self.__velx = self.poder.velmax
+
         elif self.__velx < -self.poder.velmax:
-            self.__velx = -self.poder.velmax
+            if self.__velx < -self.poder.velmax - 1:
+                self.__velx += 1
+            else:
+                self.__velx = -self.poder.velmax
 
         ##### ATUALIZACAO DE POSICOES #####
         self.__y += self.__vely
@@ -267,4 +275,4 @@ class Jogador:
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
         if acao and not self.__recarga:
             self.__poder.acao(self,screen,mapa)
-            self.__recarga = 24        # TORNAR ESSA PARTE MAIS GENERICA
+            self.__recarga = self.poder.recarga        # TORNAR ESSA PARTE MAIS GENERICA
