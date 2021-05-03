@@ -1,6 +1,6 @@
-import pygame
 from obstaculos import *
 from inimigos import *
+from poderes import *
 
 class Mapa:
     def __init__(self, tamanho):
@@ -9,7 +9,7 @@ class Mapa:
         self.__lista_de_display = []
         self.__campo_visivel = pygame.Rect(0,0,tamanho[0],tamanho[1])
         self.__conta = ""
-        self.__vitória = pygame.Rect(tamanho[0]-30, 550-30, 30, 100)
+        self.__vitoria = pygame.Rect(tamanho[0]-30, 550-30, 30, 100)
         self.__ganhou = False
         self.__vida_jogador = ""
 
@@ -96,10 +96,16 @@ fase1 = [[
     Borda('borda2', 2000),
     Vitoria(1900),
 
-    ##### INIMIGOS #####
+    ##### PODERES #####
+    ShurikenDoNinja('shuriken1', 1200, 500),
+    OrbeDoMago('orbe1', 275, 300),
 
-    Goomba('goomba1', 610, height - 50)],
-[    Vida('vida', 140, 50),
+    ##### INIMIGOS #####
+    Goomba('goomba1', 610, height - 50)
+
+],
+
+[   Vida('vida', 140, 50),
     Tempo('tempo', 470, 50),
     Moeda('moeda', 800, 50),]]
 

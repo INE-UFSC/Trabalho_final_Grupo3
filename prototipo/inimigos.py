@@ -6,8 +6,8 @@ class Goomba(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
         danoContato = 1
-        largura = 30
-        altura = 30
+        largura = 46
+        altura = 46
         limiteVel = 4
         super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato)
         self.vely = 0

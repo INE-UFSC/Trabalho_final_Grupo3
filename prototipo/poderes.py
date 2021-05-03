@@ -1,7 +1,7 @@
-import mapa
 import pygame
 from entidades import *
 
+##### PODERES NO JOGADOR #####
 class PoderGenerico:
     def __init__(self,tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int):
         self.__tem_tempo = tem_tempo
@@ -58,6 +58,7 @@ class PretoDoNinja(PoderGenerico):
     def atualizar(self, tela, campo_visivel):
         pass
 
+##### PODER DA BOLA DE FOGO #####
 class VermelhoDoMago(PoderGenerico):
     def __init__(self):
         super().__init__(False,0,5,9,30)
@@ -71,6 +72,41 @@ class VermelhoDoMago(PoderGenerico):
         #     if fogo.atualizar(tela,campo_visivel):
         #         self.__bolas.remove(fogo)
 
+
+##### ITENS DOS PODERES NO MAPA #####
+class PoderNoMapa(Movel):
+    def __init__(self, nome, x, y, poder_atribuido):
+        largura = 20
+        altura = 20
+        limite_vel = 4
+        self.poder_atribuido = poder_atribuido
+        super().__init__(nome, x, y, largura, altura, limite_vel)
+
+class ShurikenDoNinja(PoderNoMapa):
+    def __init__(self, nome, x, y):
+        super().__init__(nome, x, y, PretoDoNinja())
+
+    def mover(self, dimensoesTela, mapa):
+        pass
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox:
+            if renderizar_hitbox: pygame.draw.rect(tela, (50, 50, 50),
+                    [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
+
+class OrbeDoMago(PoderNoMapa):
+    def __init__(self, nome, x, y):
+        super().__init__(nome, x, y, VermelhoDoMago())
+
+    def mover(self, dimensoesTela, mapa):
+        pass
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox:
+            if renderizar_hitbox: pygame.draw.rect(tela, (255, 50, 50),
+                    [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
+
+##### OBJETOS CRIADOS POR PODERES #####
 class PoderManifestado(Entidade):
     def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao):
         self.duracao = duracao

@@ -148,6 +148,10 @@ class Jogador:
 
         return [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
+    def coletar(self, item):
+        if isinstance(item,PoderNoMapa):
+            self.poder = item.poder_atribuido
+
     def renderizar(self, tela, campo_visivel, ciclo):
         if renderizar_hitbox: pygame.draw.rect(tela, (0,0,0), [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
         if renderizar_sprite: self.__imagem.imprimir("andando"+str(ciclo%12), self.__x-campo_visivel.x, self.__y, tela, self.__face)
@@ -170,49 +174,58 @@ class Jogador:
         self.__velx += aceleracao
 
         ##### COLISOES #####
-        ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
+        coletaveis = [OrbeDoMago, ShurikenDoNinja] #Tipos coletaveis
+
+        #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
+
+        ##### COLETA ITENS #####
+        for i in range(len(obstaculos)):
+            if type(obstaculos[i]) in coletaveis:
+                self.coletar(obstaculos[i])
+                obstaculos[i].auto_destruir(mapa)
+                obstaculos[i] = False
 
         ##### REPOSICIONAMENTO POS COLISAO #####
-        if obsDireita and obsEsquerda: #ESMAGAMENTO
+        if obstaculos[2] and obstaculos[3]: #ESMAGAMENTO
             self.__vida = 0 #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
 
-        if obsEsquerda:
+        if obstaculos[3]:
             #print("COLISAO PELA ESQUERDA", obsEsquerda.nome)
             if self.__velx <= 0:
                 self.__velx = 0
                 aceleracao = 0
-                self.__x = obsEsquerda.corpo.right+1
+                self.__x = obstaculos[3].corpo.right+1
 
-        if obsDireita:
+        if obstaculos[2]:
             #print("COLISAO PELA DIREITA", obsDireita.nome)
             if self.__velx >= 0:
                 self.__velx = 0
                 aceleracao = 0
-                self.__x = obsDireita.corpo.left - self.__largura
+                self.__x = obstaculos[2].corpo.left - self.__largura
 
-        if obsBaixo:
+        if obstaculos[1]:
             self.__vely = 0
-            self.__y = obsBaixo.corpo.top - self.__altura
+            self.__y = obstaculos[1].corpo.top - self.__altura
             if espaco:
                 self.__vely = -self.poder.pulo
 
-        if obsCima:
+        if obstaculos[0]:
             if self.__vely < 0:
                 self.__vely = 0
-                self.__y = obsCima.corpo.bottom
+                self.__y = obstaculos[0].corpo.bottom
 
         #### COLISAO GOOMBA ####
         for cada_termo in mapa.lista_de_entidades: 
             if isinstance (cada_termo, Goomba):
                 entidade = cada_termo
         
-                if obsEsquerda != 0:
-                    if isinstance(obsEsquerda, Goomba):
+                if obstaculos[3] != 0:
+                    if isinstance(obstaculos[3], Goomba):
                         self.__vida -= entidade.dano_contato
                 
-                if obsDireita != 0: 
-                    if isinstance(obsDireita, Goomba):
+                if obstaculos[2] != 0:
+                    if isinstance(obstaculos[2], Goomba):
                         self.__vida -= entidade.dano_contato
 
         ### CHECANDO VITÓRIA ###
@@ -220,20 +233,20 @@ class Jogador:
             if isinstance (cada_termo, Vitoria):
                 entidade = cada_termo
 
-                if obsEsquerda != 0:
-                    if isinstance(obsEsquerda, Vitoria):
+                if obstaculos[3] != 0:
+                    if isinstance(obstaculos[3], Vitoria):
                         mapa.ganhou = True
 
-                if obsDireita != 0: 
-                    if isinstance(obsDireita, Vitoria):
+                if obstaculos[2] != 0:
+                    if isinstance(obstaculos[2], Vitoria):
                         mapa.ganhou = True
 
-                if obsBaixo != 0: 
-                    if isinstance(obsBaixo, Vitoria):
+                if obstaculos[1] != 0:
+                    if isinstance(obstaculos[1], Vitoria):
                         mapa.ganhou = True
 
         ##### GRAVIDADE ######
-        if not obsBaixo: self.__vely += gravidade
+        if not obstaculos[1]: self.__vely += gravidade
 
         ##### ATRITO ######
         if aceleracao == 0:
