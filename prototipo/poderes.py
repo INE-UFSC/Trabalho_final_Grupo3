@@ -1,5 +1,6 @@
 import pygame
 from entidades import *
+from inimigos import *
 
 ##### PODERES NO JOGADOR #####
 class PoderGenerico:
@@ -38,11 +39,14 @@ class PoderGenerico:
         pass
 
 ##### FORMA PADRAO DO JOGADOR #####
-class CinzaDoHominho(PoderGenerico):
+class CinzaDoGuri(PoderGenerico):
     def __init__(self):
         super().__init__(False,0,5,9,0)
 
     def acao(self, jogador, tela, mapa):
+        pass
+
+    def atualizar(self, tela, campo_visivel):
         pass
 
 ##### PODER DO DASH #####
@@ -131,22 +135,26 @@ class BolaFogo(PoderManifestado):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
-            
+
+        # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
+
+        for i in range(len(obstaculos)):
+            if isinstance(obstaculos[i], Goomba):
+                obstaculos[i].auto_destruir(mapa)
+                self.auto_destruir(mapa)
 
         ##### HORIZONTAIS #####
-        if obsEsquerda or obsDireita:
+        if obstaculos[3] or obstaculos[2]:
             #self.duracao = 0
             self.velx = -self.velx
 
         ##### VERTICAIS #####
-        if obsBaixo or obsCima:
+        if obstaculos[1] or obstaculos[0]:
             self.vely = -max(self.vely*4/5,8)
             #self.y = obsBaixo.corpo.top - self.altura'''
 
-        if not obsBaixo: self.vely += gravidade*7
-
-        #print(colisaoBaixo, obsBaixo)
+        if not obstaculos[1]: self.vely += gravidade*7
 
         self.y += self.vely
         self.x += self.velx

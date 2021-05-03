@@ -74,7 +74,8 @@ class Estatico():
         self.__corpocor = corpocor
 
     def auto_destruir(self, mapa):
-        mapa.lista_de_entidades.remove(self)
+         if self in mapa.lista_de_entidades: #RESOLVE PROVISORIAMENTE
+            mapa.lista_de_entidades.remove(self)
 
     def renderizar(self, tela, mapa):
         pass

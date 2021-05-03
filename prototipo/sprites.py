@@ -11,9 +11,10 @@ class SpriteSheet():
             self.__dados = json.load(f)
 
     def imprimir(self, nome, posx, posy, tela, orientacao):
-        char = "0"
-        if orientacao == 1: char = "r"
-        else: char = "l"
+        char = ""
+        if self.__imagem == "andando.png":
+            if orientacao == 1: char = "r"
+            else: char = "l"
         sprite = self.__dados["frames"][nome+char+".png"]["frame"]
         x, y, w, h = sprite["x"], sprite["y"], sprite["w"], sprite["h"]
         tela.blit(self.__sprite_sheet, (posx, posy), (x, y, w, h))

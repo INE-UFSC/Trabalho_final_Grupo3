@@ -56,6 +56,7 @@ class Mapa:
 
     def iniciar(self,entidades):
         lista_todos = entidades.copy()
+        #for item in lista_todos[0]: print(item.nome)
         self.__lista_de_entidades = lista_todos[0]
         self.__lista_de_display = lista_todos[1]
 
@@ -92,6 +93,7 @@ fase1 = [[
     Chao('chao1', height-10, -200, 350),
     Chao('chao2', height-10, 450, 2000),
 
+    ##### BORDA E VITORIA #####
     Borda('borda1', 0),
     Borda('borda2', 2000),
     Vitoria(1900),
@@ -116,13 +118,18 @@ fase2 = [[
     Chao('chao1', height - 10, -1000, 2000),
 
     ##### INIMIGOS #####
-    Goomba('goomba',100,height-50),
-    Goomba('goomba',600,height-50),
-    Goomba('goomba',1000,height-50),
-    Goomba('goomba',1200,height-50),
-    Goomba('goomba',1400,height-50),
-    Goomba('goomba',1600,height-50),
+    Goomba('goomba1',100,height-50),
+    Goomba('goomba2',600,height-50),
+    Goomba('goomba3',1000,height-50),
+    Goomba('goomba4',1200,height-50),
+    Goomba('goomba5',1400,height-50),
+    Goomba('goomba6',1600,height-50),
+
+    ##### BORDA E VITORIA #####
+    Borda('borda1', 0),
+    Borda('borda2', 2000),
     Vitoria(1900)
+
 ],[Vida('vida', 140, 50),
     Tempo('tempo', 470, 50),
     Moeda('moeda', 800, 50),]]

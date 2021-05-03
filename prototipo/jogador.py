@@ -8,7 +8,7 @@ from sprites import SpriteSheet
 class Jogador(Movel):
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
         ##### ATRIBUTOS GERAIS #####
-        self.__vida = 10
+        self.__vida = 100
         self.__nome = nome
         self.__imagem = SpriteSheet("andando")
 
@@ -21,7 +21,7 @@ class Jogador(Movel):
         self.__face = 1
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
-        self.__poder = PretoDoNinja()
+        self.__poder = VermelhoDoMago()
         self.__recarga = 0
 
         super().__init__(nome, x, y, largura, altura, limite_vel)
@@ -116,31 +116,36 @@ class Jogador(Movel):
         for cada_termo in mapa.lista_de_entidades: 
             if isinstance (cada_termo, Goomba):
                 entidade = cada_termo
-        
-                if obstaculos[3] != 0:
-                    if isinstance(obstaculos[3], Goomba):
-                        self.__vida -= entidade.dano_contato
+
+                if isinstance(obstaculos[3], Goomba):
+                    if self.__poder != CinzaDoGuri():
+                        self.__poder = CinzaDoGuri()
+                    self.__vida -= entidade.dano_contato
                 
-                if obstaculos[2] != 0:
-                    if isinstance(obstaculos[2], Goomba):
-                        self.__vida -= entidade.dano_contato
+                if isinstance(obstaculos[2], Goomba):
+                    if self.__poder != CinzaDoGuri():
+                        self.__poder = CinzaDoGuri()
+                    self.__vida -= entidade.dano_contato
+
+                if isinstance(obstaculos[1], Goomba):
+                    if self.__poder != CinzaDoGuri():
+                        self.__poder = CinzaDoGuri()
+                    obstaculos[1].auto_destruir(mapa)
 
         ### CHECANDO VITÓRIA ###
         for cada_termo in mapa.lista_de_entidades: 
             if isinstance (cada_termo, Vitoria):
                 entidade = cada_termo
 
-                if obstaculos[3] != 0:
-                    if isinstance(obstaculos[3], Vitoria):
-                        mapa.ganhou = True
 
-                if obstaculos[2] != 0:
-                    if isinstance(obstaculos[2], Vitoria):
-                        mapa.ganhou = True
+                if isinstance(obstaculos[3], Vitoria):
+                    mapa.ganhou = True
 
-                if obstaculos[1] != 0:
-                    if isinstance(obstaculos[1], Vitoria):
-                        mapa.ganhou = True
+                if isinstance(obstaculos[2], Vitoria):
+                    mapa.ganhou = True
+
+                if isinstance(obstaculos[1], Vitoria):
+                    mapa.ganhou = True
 
         ##### GRAVIDADE ######
         if not obstaculos[1]: self.vely += gravidade

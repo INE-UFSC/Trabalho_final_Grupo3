@@ -1,5 +1,6 @@
 import pygame
 from entidades import Estatico, renderizar_hitbox, renderizar_sprite
+from sprites import *
 
 # FUNCOES DE ATUALIZAR NECESSITAM DA AREA VISIVEL PARA RENDERIZAR CORRETAMENTE
 class Bloco(Estatico):
@@ -15,10 +16,12 @@ class CanoVertical(Estatico):
     def __init__(self, nome: str, x: int, topo: int, base: int):
         largura = 50
         altura= base-topo
+        #self.imagem = SpriteSheet("muro")
         super().__init__(nome, x, topo, altura, largura)
 
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: pygame.draw.rect(tela, (11, 137, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+        #if renderizar_sprite: self.imagem.imprimir("andando", self.x, self.y,tela, 1)
 
 class CanoHorizontal(Estatico):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
