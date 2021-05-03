@@ -97,6 +97,7 @@ class Tela_De_Jogo(Tela):
 
         # PERDENDO POR MORRER
         if self.__jogador.vida <= 0 and not self.__mapa.ganhou:
+            self.__jogador.vida_pra_zero()
             self.__atrasofim += 1
             textin = self.__fonte.render("PERDEU", 0, (0,0,0))
             self.__superficie.blit(textin, (500, 300))
@@ -111,16 +112,21 @@ class Tela_De_Jogo(Tela):
             if self.__atrasofim >= 150:
                 return 3
 
-
         ##### RENDERIZACAO DA TELA #####
         pygame.display.flip()
         tempo_decorrido = int((pygame.time.get_ticks()/1000) - self.__comeco)
         self.__mapa.conta =  self.__tempo_maximo - tempo_decorrido
+        
+        ##### PASSANDO A VIDA PRO DISPLAY #####d
+        self.__mapa.vida_jogador = self.__jogador.vida
 
         ### PERDENDO POR TEMPO
         if self.__mapa.conta == 0:
             self.__jogador.vida_pra_zero()
         return 2
+
+        ##### PASSANDO A VIDA PRO DISPLAY #####
+        
 
 class Jogo:
     def __init__(self):
