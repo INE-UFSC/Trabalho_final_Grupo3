@@ -12,7 +12,7 @@ class Bloco(Estatico):
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: pygame.draw.rect(tela, (255, 102, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
 
-class CanoVertical(Estatico):
+class Muro(Estatico):
     def __init__(self, nome: str, x: int, topo: int, base: int):
         largura = 45
         altura= base-topo

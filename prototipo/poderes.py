@@ -52,11 +52,11 @@ class CinzaDoGuri(PoderGenerico):
 ##### PODER DO DASH #####
 class PretoDoNinja(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0,7,10,60)
+        super().__init__(False, 0,7,10,80)
         self.boost = 30
 
     def acao(self, jogador, screen, mapa):
-        jogador.velx = jogador.face * 20
+        jogador.velx = jogador.face * 23
         pass
 
     def atualizar(self, tela, campo_visivel):
@@ -65,7 +65,7 @@ class PretoDoNinja(PoderGenerico):
 ##### PODER DA BOLA DE FOGO #####
 class VermelhoDoMago(PoderGenerico):
     def __init__(self):
-        super().__init__(False,0,5,9,30)
+        super().__init__(False,0,5,9,40)
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
@@ -140,7 +140,7 @@ class BolaFogo(PoderManifestado):
         obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
 
         for i in range(len(obstaculos)):
-            if isinstance(obstaculos[i], Goomba):
+            if isinstance(obstaculos[i], Rato):
                 obstaculos[i].auto_destruir(mapa)
                 self.auto_destruir(mapa)
 

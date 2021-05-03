@@ -1,7 +1,7 @@
 import pygame
 from obstaculos import Bloco, Vitoria
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
-from inimigos import Goomba
+from inimigos import Rato
 from poderes import *
 from sprites import SpriteSheet
 
@@ -117,20 +117,20 @@ class Jogador(Movel):
 
         #### COLISAO GOOMBA ####
         for cada_termo in mapa.lista_de_entidades: 
-            if isinstance (cada_termo, Goomba):
+            if isinstance (cada_termo, Rato):
                 entidade = cada_termo
 
-                if isinstance(obstaculos[3], Goomba):
+                if isinstance(obstaculos[3], Rato):
                     if self.__poder != CinzaDoGuri():
                         self.__poder = CinzaDoGuri()
                     self.__vida -= entidade.dano_contato
                 
-                if isinstance(obstaculos[2], Goomba):
+                if isinstance(obstaculos[2], Rato):
                     if self.__poder != CinzaDoGuri():
                         self.__poder = CinzaDoGuri()
                     self.__vida -= entidade.dano_contato
 
-                if isinstance(obstaculos[1], Goomba):
+                if isinstance(obstaculos[1], Rato):
                     if self.__poder != CinzaDoGuri():
                         self.__poder = CinzaDoGuri()
                     obstaculos[1].auto_destruir(mapa)

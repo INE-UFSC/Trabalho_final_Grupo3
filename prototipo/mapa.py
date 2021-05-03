@@ -83,9 +83,9 @@ width = 1000
 height = 600
 
 fase1 = [[
-    CanoVertical('cano1', 550, 475, height),
-    CanoVertical('cano2', 800, 475, height),
-    CanoVertical('cano3', 1500, 475, height),
+    Muro('cano1', 550, 475, height),
+    Muro('cano2', 800, 475, height),
+    Muro('cano3', 1500, 475, height),
 
     Bloco('bloco1', 200, 400),
     Bloco('bloco2', 250, 400),
@@ -106,7 +106,7 @@ fase1 = [[
     OrbeDoMago('orbe1', 275, 300),
 
     ##### INIMIGOS #####
-    Goomba('goomba1', 610, height - 50)
+    Rato('goomba1', 610, height - 50)
 
 ],
 
@@ -115,18 +115,18 @@ fase1 = [[
     Moeda('moeda', 800, 50),]]
 
 fase2 = [[
-    CanoVertical('cano1', -9000, 475, height),
-    CanoVertical('cano2', 1600, 475, height),
+    Muro('cano1', -9000, 475, height),
+    Muro('cano2', 1600, 475, height),
 
     Chao('chao1', height - 10, -1000, 2000),
 
     ##### INIMIGOS #####
-    Goomba('goomba1',100,height-50),
-    Goomba('goomba2',600,height-50),
-    Goomba('goomba3',1000,height-50),
-    Goomba('goomba4',1200,height-50),
-    Goomba('goomba5',1400,height-50),
-    Goomba('goomba6',1600,height-50),
+    Rato('goomba1', 100, height - 50),
+    Rato('goomba2', 600, height - 50),
+    Rato('goomba3', 1000, height - 50),
+    Rato('goomba4', 1200, height - 50),
+    Rato('goomba5', 1400, height - 50),
+    Rato('goomba6', 1600, height - 50),
 
     ##### BORDA E VITORIA #####
     Borda('borda1', 0),

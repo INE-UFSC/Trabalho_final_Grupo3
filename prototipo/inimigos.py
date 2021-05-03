@@ -2,7 +2,7 @@
 import pygame
 from entidades import Entidade, gravidade, renderizar_hitbox, renderizar_sprite
 
-class Goomba(Entidade):
+class Rato(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
         danoContato = 1
