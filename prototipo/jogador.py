@@ -2,7 +2,7 @@ import pygame
 from obstaculos import Bloco, Vitoria
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Goomba
-from poderes import PoderManifestado,VermelhoDoMago,BolaFogo
+from poderes import PoderManifestado,VermelhoDoMago,BolaFogo, PretoDoNinja
 from sprites import SpriteSheet
 
 class Jogador: 
@@ -17,15 +17,13 @@ class Jogador:
         self.__y = y
         self.__altura = 46
         self.__largura = 46
-        self.__pulo = 9
         self.__velx = velx
         self.__vely = 0
-        self.__velocidade_max = 5
         self.__face = 1
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
-        self.__poder = VermelhoDoMago()
+        self.__poder = PretoDoNinja()
         self.__recarga = 0
 
     @property
@@ -51,6 +49,14 @@ class Jogador:
     @velx.setter
     def velx(self, velx):
         self.__velx = velx
+
+    @property
+    def velocidade_max(self):
+        return self.__velmax
+
+    @velocidade_max.setter
+    def velocidade_max(self, velocidade_max):
+        self.__velmax = velocidade_max
 
     @property
     def corpo(self):
@@ -189,7 +195,7 @@ class Jogador:
             self.__vely = 0
             self.__y = obsBaixo.corpo.top - self.__altura
             if espaco:
-                self.__vely = -self.__pulo
+                self.__vely = -self.poder.pulo
 
         if obsCima:
             if self.__vely < 0:
@@ -236,8 +242,10 @@ class Jogador:
             elif self.__velx > 0:
                 self.__velx -= atrito
 
-        if self.__velx >= self.__velocidade_max: self.__velx = self.__velocidade_max
-        elif self.__velx <= -self.__velocidade_max: self.__velx = -self.__velocidade_max
+        if self.__velx > self.poder.velmax:
+            self.__velx = self.poder.velmax
+        elif self.__velx < -self.poder.velmax:
+            self.__velx = -self.poder.velmax
 
         ##### ATUALIZACAO DE POSICOES #####
         self.__y += self.__vely
@@ -255,8 +263,8 @@ class Jogador:
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
         self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 
-    def poderes(self, screen, mapa, bola_fogo = False, outros_poderes = False):
+    def poderes(self, screen, mapa, acao = False, outros_poderes = False):
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
-        if bola_fogo == True and self.__recarga == 0: 
-            self.__poder.atirar(self,screen,mapa)
+        if acao and not self.__recarga:
+            self.__poder.acao(self,screen,mapa)
             self.__recarga = 24        # TORNAR ESSA PARTE MAIS GENERICA
