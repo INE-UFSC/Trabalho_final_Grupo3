@@ -79,16 +79,16 @@ class VermelhoDoMago(PoderGenerico):
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
-    def __init__(self, nome, x, y, poder_atribuido):
+    def __init__(self, nome, x, y, poder_atribuido, imagem):
         largura = 20
         altura = 20
         limite_vel = 4
         self.poder_atribuido = poder_atribuido
-        super().__init__(nome, x, y, largura, altura, limite_vel)
+        super().__init__(nome, x, y, largura, altura, limite_vel, imagem)
 
 class ShurikenDoNinja(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, PretoDoNinja())
+        super().__init__(nome, x, y, PretoDoNinja(), "0")
 
     def mover(self, dimensoesTela, mapa):
         pass
@@ -100,7 +100,7 @@ class ShurikenDoNinja(PoderNoMapa):
 
 class OrbeDoMago(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, VermelhoDoMago())
+        super().__init__(nome, x, y, VermelhoDoMago(), "0")
 
     def mover(self, dimensoesTela, mapa):
         pass
@@ -112,9 +112,9 @@ class OrbeDoMago(PoderNoMapa):
 
 ##### OBJETOS CRIADOS POR PODERES #####
 class PoderManifestado(Entidade):
-    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao):
+    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato)
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem)
 
 class BolaFogo(PoderManifestado):
     def __init__(self, pos_inicial , screen, mapa, vel):
@@ -127,7 +127,7 @@ class BolaFogo(PoderManifestado):
         dano_contato = 0
         duracao = 500
         #self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        super().__init__("bola de fogo",x,y,largura,altura,limiteVel,vida,dano_contato, duracao)
+        super().__init__("bola de fogo",x,y,largura,altura,limiteVel,vida,dano_contato, duracao, "0")
         self.mapa = mapa
         self.vely = -1
         self.velx = 6 * vel

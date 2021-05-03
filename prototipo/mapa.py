@@ -58,6 +58,8 @@ class Mapa:
         lista_todos = entidades.copy()
         #for item in lista_todos[0]: print(item.nome)
         self.__lista_de_entidades = lista_todos[0]
+        for entidade in self.__lista_de_entidades:
+            if entidade.imagem != "0": entidade.imagem = SpriteSheet(entidade.imagem)
         self.__lista_de_display = lista_todos[1]
 
     def atualizar(self, tela,campo_visivel,dimensoes_tela):

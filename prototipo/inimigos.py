@@ -9,7 +9,7 @@ class Goomba(Entidade):
         largura = 46
         altura = 46
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato)
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0")
         self.vely = 0
         self.velx = 1
         self.xinicial = x

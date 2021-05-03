@@ -24,7 +24,7 @@ class Jogador(Movel):
         self.__poder = VermelhoDoMago()
         self.__recarga = 0
 
-        super().__init__(nome, x, y, largura, altura, limite_vel)
+        super().__init__(nome, x, y, largura, altura, limite_vel, "0")
 
     @property
     def poder(self):

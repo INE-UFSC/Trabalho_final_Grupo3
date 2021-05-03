@@ -8,14 +8,14 @@ gravidade = 0.2
 
 class Estatico():
 
-    def __init__(self, nome: str, x:int, y:int, altura: int, largura: int):
+    def __init__(self, nome: str, x:int, y:int, altura: int, largura: int, imagem: str):
         self.__nome = nome
         self.__x = x
         self.__y = y
         self.__largura = largura
         self.__altura = altura
         self.__corpo = pygame.Rect(x, y, largura, altura)
-        self.__corpocor = pygame.Rect(x+2, y+2, largura-4, altura-4)
+        self.__imagem = imagem
 
     @property
     def nome (self):
@@ -64,14 +64,14 @@ class Estatico():
     @corpo.setter
     def corpo(self, corpo):
         self.__corpo = corpo
-    
-    @property
-    def corpocor(self):
-        return self.__corpocor
 
-    @corpocor.setter
-    def corpocor(self, corpocor):
-        self.__corpocor = corpocor
+    @property
+    def imagem(self):
+        return self.__imagem
+
+    @imagem.setter
+    def imagem(self, imagem):
+        self.__imagem = imagem
 
     def auto_destruir(self, mapa):
          if self in mapa.lista_de_entidades: #RESOLVE PROVISORIAMENTE
@@ -87,8 +87,8 @@ class Estatico():
 
 class Movel(Estatico):
 
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int):
-        super().__init__(nome, x, y, largura, altura)
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int, imagem: str):
+        super().__init__(nome, x, y, largura, altura, imagem)
         self.__velx = 0
         self.__vely = 0
         self.__limite_vel = limite_vel
@@ -194,8 +194,8 @@ class Movel(Estatico):
         return False
 
 class Entidade(Movel):
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int):
-        super().__init__(nome, x, y, largura, altura, limiteVel)
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int, imagem:str):
+        super().__init__(nome, x, y, largura, altura, limiteVel, imagem)
         self.__vida = vida
         self.__dano_contato = dano_contato
 
