@@ -8,9 +8,10 @@ class Mapa:
         self.__lista_de_entidades = []
         self.__lista_de_display = []
         self.__campo_visivel = pygame.Rect(0,0,tamanho[0],tamanho[1])
-        self.__conta = 0
+        self.__conta = ""
         self.__vitória = pygame.Rect(tamanho[0]-30, 550-30, 30, 100)
         self.__ganhou = False
+        self.__vida_jogador = ""
 
     @property
     def lista_de_entidades(self):
@@ -31,6 +32,14 @@ class Mapa:
     @ganhou.setter
     def ganhou(self, ganhou):
         self.__ganhou = ganhou
+    
+    @property
+    def vida_jogador(self):
+        return self.__vida_jogador
+
+    @vida_jogador.setter
+    def vida_jogador(self, vida_jogador):
+        self.__vida_jogador = vida_jogador
     
     @property
     def conta(self):
@@ -58,9 +67,12 @@ class Mapa:
             if entidade.atualizar(tela, self, dimensoes_tela):
                 self.__lista_de_entidades.remove(entidade)
         for elemento_hud in self.__lista_de_display:
-            elemento_hud.atualizar(tela,self,dimensoes_tela)
             if isinstance(elemento_hud, Tempo):
                 elemento_hud.tempo = self.conta
+            if isinstance(elemento_hud, Vida):
+                elemento_hud.vida = self.__vida_jogador
+
+            elemento_hud.atualizar(tela,self,dimensoes_tela)
 
 ##### INSTANCIAS DE MAPAS #####
 
@@ -105,4 +117,6 @@ fase2 = [[
     Goomba('goomba',1400,height-50),
     Goomba('goomba',1600,height-50),
     Vitoria(1900)
-],[]]
+],[Vida('vida', 140, 50),
+    Tempo('tempo', 470, 50),
+    Moeda('moeda', 800, 50),]]

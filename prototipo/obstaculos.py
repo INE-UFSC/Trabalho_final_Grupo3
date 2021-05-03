@@ -41,13 +41,25 @@ class Vida(Estatico):
     def __init__(self, nome: str, x: int, y: int):
         altura = 30
         largura = 60
+        self.__fonte = pygame.font.SysFont('Arial',20)
+        self.__vida = ""
         super().__init__(nome, x, y, altura, largura)
+
+    @property
+    def vida(self):
+        return self.__vida
+    
+    @vida.setter
+    def vida(self, vida):
+        self.__vida = vida
 
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: pygame.draw.rect(tela, (10, 237, 0), self.corpo)
     
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.renderizar(tela, mapa)
+        mostra_vida = self.__fonte.render('vida :'+" "+str(self.__vida),0,(0,0,0))
+        tela.blit(mostra_vida, (self.x, self.y))
         return False
 
 class Tempo(Estatico):

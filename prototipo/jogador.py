@@ -228,8 +228,8 @@ class Jogador:
                     if isinstance(obsDireita, Vitoria):
                         mapa.ganhou = True
 
-                if obsDireita != 0: 
-                    if isinstance(obsDireita, Vitoria):
+                if obsBaixo != 0: 
+                    if isinstance(obsBaixo, Vitoria):
                         mapa.ganhou = True
 
         ##### GRAVIDADE ######
