@@ -213,6 +213,3 @@ class Entidade(Movel):
     @dano_contato.setter
     def dano_contato(self, dano_contato):
         self.__dano_contato = dano_contato
-
-    def sumir(self):
-        pass

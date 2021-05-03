@@ -6,7 +6,7 @@ class PoderGenerico:
     def __init__(self,tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int):
         self.__tem_tempo = tem_tempo
         self.__duracao = duracao
-        self.velmax = velmax
+        self.limite_vel = velmax
         self.pulo = pulo
         self.recarga = recarga
         'self.__nome_funcionalidade = nome_funcionalidade'
