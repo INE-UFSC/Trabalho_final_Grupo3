@@ -86,7 +86,7 @@ class PoderNoMapa(Movel):
         self.poder_atribuido = poder_atribuido
         super().__init__(nome, x, y, largura, altura, limite_vel, imagem)
 
-class ShurikenDoNinja(PoderNoMapa):
+class BandanaDoNinja(PoderNoMapa):
     def __init__(self, nome, x, y):
         super().__init__(nome, x, y, PretoDoNinja(), "0")
 
@@ -98,7 +98,7 @@ class ShurikenDoNinja(PoderNoMapa):
             if renderizar_hitbox: pygame.draw.rect(tela, (50, 50, 50),
                     [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
-class OrbeDoMago(PoderNoMapa):
+class CartolaDoMago(PoderNoMapa):
     def __init__(self, nome, x, y):
         super().__init__(nome, x, y, VermelhoDoMago(), "0")
 
@@ -137,7 +137,7 @@ class BolaFogo(PoderManifestado):
         ##### COLISOES #####
 
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, CartolaDoMago, BandanaDoNinja])
 
         for i in range(len(obstaculos)):
             if isinstance(obstaculos[i], Rato):

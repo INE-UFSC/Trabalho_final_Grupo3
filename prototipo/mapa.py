@@ -102,11 +102,11 @@ fase1 = [[
     Vitoria(1900),
 
     ##### PODERES #####
-    ShurikenDoNinja('shuriken1', 1200, 500),
-    OrbeDoMago('orbe1', 275, 300),
+    BandanaDoNinja('shuriken1', 1200, 500),
+    CartolaDoMago('orbe1', 275, 300),
 
     ##### INIMIGOS #####
-    Rato('goomba1', 610, height - 50)
+    Rato('rato1', 610, height - 50)
 
 ],
 
@@ -121,12 +121,12 @@ fase2 = [[
     Chao('chao1', height - 10, -1000, 2000),
 
     ##### INIMIGOS #####
-    Rato('goomba1', 100, height - 50),
-    Rato('goomba2', 600, height - 50),
-    Rato('goomba3', 1000, height - 50),
-    Rato('goomba4', 1200, height - 50),
-    Rato('goomba5', 1400, height - 50),
-    Rato('goomba6', 1600, height - 50),
+    Rato('rato1', 100, height - 50),
+    Rato('rato2', 600, height - 50),
+    Rato('rato3', 1000, height - 50),
+    Rato('rato4', 1200, height - 50),
+    Rato('rato5', 1400, height - 50),
+    Rato('rato6', 1600, height - 50),
 
     ##### BORDA E VITORIA #####
     Borda('borda1', 0),
