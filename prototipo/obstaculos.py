@@ -20,7 +20,7 @@ class CanoVertical(Estatico):
 
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: pygame.draw.rect(tela, (11, 137, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
-        if renderizar_sprite: self.imagem.imprimir("muro", self.x-mapa.campo_visivel.x, self.y,tela, 1)
+        if renderizar_sprite: self.imagem.imprimir("muro", self.x-mapa.campo_visivel.x, self.y,tela, 1, 0)
 
 class CanoHorizontal(Estatico):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):

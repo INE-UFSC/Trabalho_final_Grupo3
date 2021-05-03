@@ -10,18 +10,16 @@ class Jogador(Movel):
         ##### ATRIBUTOS GERAIS #####
         self.__vida = 100
         self.__nome = nome
-        self.__imagem = SpriteSheet("andando")
+        self.__imagem = SpriteSheet("guri")
 
         ##### ATRIBUTOS POSICIONAIS #####
         altura = 46
         largura = 46
         limite_vel = 5
-        self.__velx = velx
-        self.__vely = 0
         self.__face = 1
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
-        self.__poder = VermelhoDoMago()
+        self.__poder = CinzaDoGuri()
         self.__recarga = 0
 
         super().__init__(nome, x, y, largura, altura, limite_vel, "0")
@@ -50,14 +48,19 @@ class Jogador(Movel):
             self.poder = item.poder_atribuido
 
     def renderizar(self, tela, campo_visivel, ciclo):
-        if renderizar_hitbox: pygame.draw.rect(tela, (0,0,0), [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
-        if renderizar_sprite: self.__imagem.imprimir("andando"+str(ciclo%12), self.x-campo_visivel.x, self.y, tela, self.__face)
+        if renderizar_hitbox: pygame.draw.rect(tela, (50,50,255), [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+        if renderizar_sprite: self.__imagem.imprimir("guri"+str(ciclo%12), self.x-campo_visivel.x, self.y, tela, self.__face, self.velx)
 
-    def atualizar(self, screen, campo_visivel, ciclo): ### REQUER AREA VISIVEL PARA RENDERIZAR
+    def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): ### REQUER AREA VISIVEL PARA RENDERIZAR
+        self.mover(entradas[0],entradas[1],entradas[2],screen.get_size(),mapa,atrito)
+
         self.renderizar(screen, campo_visivel, ciclo)
+
+        ##### ATUALIZACAO DOS PODERES #####
         if self.__recarga > 0: self.__recarga -= 1
-        if self.__poder != '':
-            self.__poder.atualizar(screen,campo_visivel)
+        self.__poder.atualizar(screen,campo_visivel)
+
+        ##### SIDESCROLL #####
         if self.x > campo_visivel.x + 600:
             return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
         elif self.x < campo_visivel.x + 400:

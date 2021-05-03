@@ -94,10 +94,11 @@ fase1 = [[
 
     Chao('chao1', height-10, -200, 350),
     Chao('chao2', height-10, 450, 2000),
+    Chao('chao3', height-10, 2500, 3000),
 
     ##### BORDA E VITORIA #####
     Borda('borda1', 0),
-    Borda('borda2', 2000),
+    Borda('borda2', 3000),
     Vitoria(1900),
 
     ##### PODERES #####

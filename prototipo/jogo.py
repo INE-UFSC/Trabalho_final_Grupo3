@@ -80,8 +80,8 @@ class Tela_De_Jogo(Tela):
             if evento.type == pygame.MOUSEBUTTONDOWN: self.__bola_fogo = True
             elif evento.type == pygame.MOUSEBUTTONUP: self.__bola_fogo = False
 
-        ##### FILA DE RENDERIZACAO #####
-        self.__superficie.fill(self.__background_colour) # Preenaa a com o a cor de fundo
+        ##### FILA DE RENDERIZACAO E ATUALIZACAO #####
+        self.__superficie.fill(self.__background_colour) # Preenche a cor de fundo
 
         self.__mapa.atualizar(self.__superficie, self.__campo_visivel, self.__superficie.get_size())
 
@@ -90,10 +90,10 @@ class Tela_De_Jogo(Tela):
             self.__direita = 0
             self.__esquerda = 0
             self.__espaco = 0
-        self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco, 
-            self.__superficie.get_size(), self.__mapa, self.__atrito)
+        #self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco,#self.__superficie.get_size(), self.__mapa, self.__atrito)
         self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
-        self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__campo_visivel, int(ciclo/6))
+        self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__mapa, self.__campo_visivel, int(ciclo/6),
+                                                        [self.__direita, self.__esquerda, self.__espaco],self.__atrito)
 
         # PERDENDO POR MORRER
         if self.__jogador.vida <= 0 and not self.__mapa.ganhou:
