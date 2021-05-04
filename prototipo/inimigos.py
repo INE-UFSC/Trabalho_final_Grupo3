@@ -14,6 +14,7 @@ class Rato(Entidade):
         self.vely = 0
         self.velx = 1
         self.xinicial = x
+        self.escala_tempo = 1
 
     def mover(self, dimensoesTela, mapa):
 
@@ -30,10 +31,10 @@ class Rato(Entidade):
             self.y = obsBaixo.corpo.top - self.altura
 
         ##### GRAVIDADE ######
-        if not obsBaixo: self.vely += gravidade
+        if not obsBaixo: self.vely += gravidade * self.escala_tempo
 
-        self.y += self.vely
-        self.x += self.velx
+        self.y += self.vely * self.escala_tempo
+        self.x += self.velx * self.escala_tempo
 
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0

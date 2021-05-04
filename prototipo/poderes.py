@@ -47,7 +47,7 @@ class CinzaDoGuri(PoderGenerico):
     def acao(self, jogador, tela, mapa):
         pass
 
-    def atualizar(self, tela, campo_visivel):
+    def atualizar(self, tela, mapa):
         pass
 
 ##### PODER DO DASH #####
@@ -59,7 +59,7 @@ class PretoDoNinja(PoderGenerico):
         jogador.velx = jogador.face * 23
         pass
 
-    def atualizar(self, tela, campo_visivel):
+    def atualizar(self, tela, mapa):
         pass
 
 ##### PODER DA BOLA DE FOGO #####
@@ -70,7 +70,7 @@ class VermelhoDoMago(PoderGenerico):
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
 
-    def atualizar(self,tela,campo_visivel):
+    def atualizar(self,tela,mapa):
         pass
         # for fogo in self.__bolas:
         #     if fogo.atualizar(tela,campo_visivel):
@@ -86,6 +86,22 @@ class AzulDoNerd(PoderGenerico):
 
     def atualizar(self, tela, campo_visivel):
         pass
+
+### PODER DE PARAR O TEMPO ###
+class PlatinaEstelar(PoderGenerico):
+    def __init__(self):
+        super().__init__(False, 300, 5, 9, 600)
+        self.__stamina = 0
+    
+    def acao(self, jogador, screen, mapa):
+        mapa.escala_tempo = 0
+        self.__stamina = 300
+    
+    def atualizar(self,tela,mapa):
+        if self.__stamina > 0:
+            self.__stamina -= 1
+        if self.__stamina <= 0:
+            mapa.escala_tempo = 1
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
@@ -123,6 +139,18 @@ class OculosDoNerd(PoderNoMapa):
             pygame.draw.rect(tela, (50, 50, 255),
                              [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
+class BoneMarinheiro(PoderNoMapa):
+    def __init__(self, nome, x, y):
+        super().__init__(nome, x, y, PlatinaEstelar(), "0")
+    
+    def mover(self, dimensoesTela, mapa):
+        pass
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox:
+            if renderizar_hitbox: pygame.draw.rect(tela, (80, 10, 120),
+                    [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
+
 ##### OBJETOS CRIADOS POR PODERES #####
 class PoderManifestado(Entidade):
     def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem):
@@ -141,6 +169,7 @@ class BolaFogo(PoderManifestado):
         duracao = 500
         #self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
         super().__init__("bola de fogo",x,y,largura,altura,limiteVel,vida,dano_contato, duracao, "0")
+        self.escala_tempo = 1.0
         self.mapa = mapa
         self.vely = -1
         self.velx = 6 * vel
@@ -166,20 +195,22 @@ class BolaFogo(PoderManifestado):
         if obstaculos[1] or obstaculos[0]:
             self.vely = -max(self.vely*4/5,8)
             #self.y = obsBaixo.corpo.top - self.altura'''
+        print(self.escala_tempo,mapa.escala_tempo)
+        if not obstaculos[1]: self.vely += gravidade*7*self.escala_tempo
 
-        if not obstaculos[1]: self.vely += gravidade*7
-
-        self.y += self.vely
-        self.x += self.velx
+        self.y += self.vely*self.escala_tempo
+        self.x += self.velx*self.escala_tempo
 
     def renderizar(self, tela, mapa):
         pygame.draw.rect(tela, [245, min(87 + self.duracao,255), 65],[self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        if self.escala_tempo != mapa.escala_tempo:
+            self.escala_tempo += max(min(mapa.escala_tempo-self.escala_tempo,0.05),-0.05)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
         if (self.duracao >  0):
             self.mover(dimensoes_tela, mapa)
             self.renderizar(tela, mapa)
-            self.duracao -= 1
+            self.duracao -= 1*self.escala_tempo
             return False
         return True
