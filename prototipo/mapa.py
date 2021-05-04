@@ -104,6 +104,7 @@ fase1 = [[
     ##### PODERES #####
     BandanaDoNinja('shuriken1', 1200, 500),
     CartolaDoMago('orbe1', 275, 300),
+    OculosDoNerd('oculos1', 1525, 300),
 
     ##### INIMIGOS #####
     Rato('rato1', 610, height - 50)

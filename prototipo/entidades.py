@@ -135,7 +135,10 @@ class Movel(Estatico):
 
         ##### COLISOES COM OBSTACULOS #####
         for entidade in lista_de_entidades:
-            if entidade != self and not type(entidade) in tipos_transparentes :
+            transparente = False
+            for tipo in tipos_transparentes:
+                transparente = transparente or isinstance(entidade,tipo)
+            if entidade != self and not transparente:
 
                 cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
                 if self.__velx < 0:  # movimento para a esquerda
@@ -173,9 +176,9 @@ class Movel(Estatico):
                     else:  # movimentacao pra esquerda
                         dist_x = entidade.corpo.right - self.__corpoveloz.left
 
-                    if self.__vely >= 0 and dist_x + self.largura / 2 >= dist_y:
+                    if self.__vely >= 0 and dist_x + 4 >= dist_y:
                         cBaixo = True
-                    elif self.__vely < 0 and dist_x + self.largura / 2 >= dist_y:
+                    elif self.__vely < 0 and dist_x + 4 >= dist_y:
                         cCima = True
                     elif self.__velx > 0 and dist_x < dist_y:
                         cDireita = True

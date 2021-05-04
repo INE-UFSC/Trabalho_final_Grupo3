@@ -74,10 +74,16 @@ class Jogador(Movel):
         self.velx += aceleracao
 
         ##### COLISOES #####
-        coletaveis = [CartolaDoMago, BandanaDoNinja] #Tipos coletaveis
+        coletaveis = [CartolaDoMago, BandanaDoNinja, OculosDoNerd] #Tipos coletaveis
 
         #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
         obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
+
+        ##### PERMITE
+        if type(self.poder) == AzulDoNerd:
+            obstaculos[0] = 0
+            obstaculos[2] = 0
+            obstaculos[3] = 0
 
         ##### COLETA ITENS #####
         for i in range(len(obstaculos)):
@@ -90,6 +96,7 @@ class Jogador(Movel):
         if obstaculos[2] and obstaculos[3]: #ESMAGAMENTO
             self.__vida = 0 #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
 
+        ##### COLISAO ESQUERDA #####
         if obstaculos[3]:
             #print("COLISAO PELA ESQUERDA", obsEsquerda.nome)
             if self.velx <= 0:
@@ -97,6 +104,7 @@ class Jogador(Movel):
                 aceleracao = 0
                 self.x = obstaculos[3].corpo.right+1
 
+        ##### COLISAO DIREITA #####
         if obstaculos[2]:
             #print("COLISAO PELA DIREITA", obsDireita.nome)
             if self.velx >= 0:
@@ -104,29 +112,32 @@ class Jogador(Movel):
                 aceleracao = 0
                 self.x = obstaculos[2].corpo.left - self.largura
 
+        ##### COLISAO BAIXO #####
         if obstaculos[1]:
             self.vely = 0
             self.y = obstaculos[1].corpo.top - self.altura
             if espaco:
                 self.vely = -self.poder.pulo
 
+        ##### COLISAO CIMA #####
         if obstaculos[0]:
             if self.vely < 0:
                 self.vely = 0
                 self.y = obstaculos[0].corpo.bottom
 
-        #### COLISAO GOOMBA ####
-        for entidade in mapa.lista_de_entidades:
-            if isinstance (entidade, Entidade):
-                for i in range (len(obstaculos)):
-                    if isinstance(obstaculos[i], Entidade):
-                        if entidade.contato[i] == 'morrer':
-                            entidade.auto_destruir(mapa)
+        #### COLISAO INIMIGOS ####
+        if type(self.__poder) != AzulDoNerd:
+            for entidade in mapa.lista_de_entidades:
+                if isinstance (entidade, Entidade):
+                    for i in range (len(obstaculos)):
+                        if isinstance(obstaculos[i], Entidade):
+                            if entidade.contato[i] == 'morrer':
+                                entidade.auto_destruir(mapa)
 
-                        elif entidade.contato[i] == 'dano':
-                            if self.__poder != CinzaDoGuri():
-                                self.__poder = CinzaDoGuri()
-                            self.__vida -= entidade.dano_contato
+                            elif entidade.contato[i] == 'dano':
+                                if self.__poder != CinzaDoGuri():
+                                    self.__poder = CinzaDoGuri()
+                                self.__vida -= entidade.dano_contato
 
         ### CHECANDO VITÓRIA ###
         for cada_termo in mapa.lista_de_entidades: 

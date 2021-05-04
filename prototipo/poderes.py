@@ -1,5 +1,6 @@
 import pygame
 from entidades import *
+from obstaculos import *
 from inimigos import *
 
 ##### PODERES NO JOGADOR #####
@@ -53,7 +54,6 @@ class CinzaDoGuri(PoderGenerico):
 class PretoDoNinja(PoderGenerico):
     def __init__(self):
         super().__init__(False, 0,7,10,80)
-        self.boost = 30
 
     def acao(self, jogador, screen, mapa):
         jogador.velx = jogador.face * 23
@@ -76,6 +76,16 @@ class VermelhoDoMago(PoderGenerico):
         #     if fogo.atualizar(tela,campo_visivel):
         #         self.__bolas.remove(fogo)
 
+##### PODER DA INTANGIBILIDADE #####
+class AzulDoNerd(PoderGenerico):
+    def __init__(self):
+        super().__init__(False, 0,5,9,40)
+
+    def acao(self, jogador, screen, mapa):
+        pass
+
+    def atualizar(self, tela, campo_visivel):
+        pass
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
@@ -90,9 +100,6 @@ class BandanaDoNinja(PoderNoMapa):
     def __init__(self, nome, x, y):
         super().__init__(nome, x, y, PretoDoNinja(), "0")
 
-    def mover(self, dimensoesTela, mapa):
-        pass
-
     def renderizar(self, tela, mapa):
         if renderizar_hitbox:
             if renderizar_hitbox: pygame.draw.rect(tela, (50, 50, 50),
@@ -102,13 +109,19 @@ class CartolaDoMago(PoderNoMapa):
     def __init__(self, nome, x, y):
         super().__init__(nome, x, y, VermelhoDoMago(), "0")
 
-    def mover(self, dimensoesTela, mapa):
-        pass
-
     def renderizar(self, tela, mapa):
         if renderizar_hitbox:
             if renderizar_hitbox: pygame.draw.rect(tela, (255, 50, 50),
                     [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
+
+class OculosDoNerd(PoderNoMapa):
+    def __init__(self, nome, x, y):
+        super().__init__(nome, x, y, AzulDoNerd(), "0")
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, (50, 50, 255),
+                             [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
 ##### OBJETOS CRIADOS POR PODERES #####
 class PoderManifestado(Entidade):
