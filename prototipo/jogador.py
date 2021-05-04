@@ -77,7 +77,7 @@ class Jogador(Movel):
         coletaveis = [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro] #Tipos coletaveis
 
         #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
 
         ##### PERMITE
         if type(self.poder) == AzulDoNerd:
@@ -140,19 +140,27 @@ class Jogador(Movel):
                                 self.__vida -= entidade.dano_contato
 
         ### CHECANDO VITÓRIA ###
-        for cada_termo in mapa.lista_de_entidades: 
-            if isinstance (cada_termo, Vitoria):
-                entidade = cada_termo
+        entidade_vitoria = 0
+        for ganhar in mapa.lista_de_entidades:
+            if isinstance(ganhar, Vitoria):
+                entidade_vitoria = ganhar
+
+        if self.corpo.colliderect(entidade_vitoria.corpo):
+            mapa.ganhou = True
+        
+        #for cada_termo in mapa.lista_de_entidades: 
+        #    if isinstance (cada_termo, Vitoria):
+        #        entidade = cada_termo
 
 
-                if isinstance(obstaculos[3], Vitoria):
-                    mapa.ganhou = True
+         #       if isinstance(obstaculos[3], Vitoria):
+         #           mapa.ganhou = True
 
-                if isinstance(obstaculos[2], Vitoria):
-                    mapa.ganhou = True
+         #       if isinstance(obstaculos[2], Vitoria):
+          #          mapa.ganhou = True
 
-                if isinstance(obstaculos[1], Vitoria):
-                    mapa.ganhou = True
+            #    if isinstance(obstaculos[1], Vitoria):
+            #        mapa.ganhou = True
 
         ##### GRAVIDADE ######
         if not obstaculos[1]: self.vely += gravidade
@@ -162,9 +170,18 @@ class Jogador(Movel):
             if self.velx < 0:
                 self.velx += atrito
             elif self.velx > 0:
-                self.velx -= atrito
+                self.velx -= atrito 
 
         ##### AJUSTE DE VELOCIDADE MAXIMA #####
+        if mapa.ganhou:
+            dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.right
+            if dist_meio_vitoria < 0:
+                self.velx = -1
+            elif dist_meio_vitoria > 0:
+                self.velx = 1
+            else:
+                self.velx = 0
+
         if self.velx > self.poder.limite_vel:
             if self.velx > self.poder.limite_vel + 1:
                 self.velx -= 1
