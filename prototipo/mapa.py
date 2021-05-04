@@ -109,7 +109,8 @@ fase1 = [[
     BebeVerde('orbe',1600,550),
     BoneMarinheiro('cabelo', 1400, 500),
     ##### INIMIGOS #####
-    Rato('rato1', 610, height - 50)
+    Rato('rato1', 610, height - 50),
+    Voador('rato2', 100, height - 500,200)
 
 ],
 
