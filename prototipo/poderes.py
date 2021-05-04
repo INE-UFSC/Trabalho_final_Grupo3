@@ -182,7 +182,7 @@ class BolaFogo(PoderManifestado):
         obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, CartolaDoMago, BandanaDoNinja])
 
         for i in range(len(obstaculos)):
-            if isinstance(obstaculos[i], Rato):
+            if isinstance(obstaculos[i], Entidade):
                 obstaculos[i].auto_destruir(mapa)
                 self.auto_destruir(mapa)
 

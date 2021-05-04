@@ -135,6 +135,13 @@ class Jogador(Movel):
                                 entidade.auto_destruir(mapa)
 
                             elif entidade.contato[i] == 'dano':
+                                ##EMPURRA O JOGGADOR
+                                if self.face == 1:
+                                    self.velx -= 12
+                                    self.vely -= 2.75
+                                else: 
+                                    self.velx += 12
+                                    self.vely -= 2.75
                                 if self.__poder != CinzaDoGuri():
                                     self.__poder = CinzaDoGuri()
                                 self.__vida -= entidade.dano_contato
