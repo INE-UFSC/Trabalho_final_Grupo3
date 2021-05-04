@@ -21,6 +21,7 @@ class Jogador(Movel):
         ##### ATRIBUTOS COMPORTAMENTAIS #####
         self.__poder = CinzaDoGuri()
         self.__recarga = 0
+        self.__invisivel = 0
 
         super().__init__(nome, x, y, largura, altura, limite_vel, "0")
 
@@ -58,7 +59,7 @@ class Jogador(Movel):
 
         ##### ATUALIZACAO DOS PODERES #####
         if self.__recarga > 0: self.__recarga -= 1
-        self.__poder.atualizar(screen,mapa)
+        self.__invisivel = self.__poder.atualizar(screen,mapa)
 
         ##### SIDESCROLL #####
         if self.x > campo_visivel.x + 600:
@@ -80,7 +81,8 @@ class Jogador(Movel):
         obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
 
         ##### PERMITE
-        if type(self.poder) == AzulDoNerd:
+        print(self.__invisivel)
+        if self.__invisivel:
             for i in range(len(obstaculos)):
                 if isinstance(obstaculos[i],Entidade): 
                     obstaculos[i] = 0
@@ -128,7 +130,7 @@ class Jogador(Movel):
                 self.y = obstaculos[0].corpo.bottom
 
         #### COLISAO INIMIGOS ####
-        if type(self.__poder) != AzulDoNerd:
+        if not self.__invisivel:
             for entidade in mapa.lista_de_entidades:
                 if isinstance (entidade, Entidade):
                     for i in range (len(obstaculos)):

@@ -115,7 +115,7 @@ fase1 = [[
 
 [   Vida('vida', 140, 50),
     Tempo('tempo', 470, 50),
-    Moeda('moeda', 800, 50),]]
+    Biscoitos('moeda', 800, 50),]]
 
 fase2 = [[
     Muro('cano1', -9000, 475, height),
@@ -138,4 +138,4 @@ fase2 = [[
 
 ],[Vida('vida', 140, 50),
     Tempo('tempo', 470, 50),
-    Moeda('moeda', 800, 50),]]
+    Biscoitos('moeda', 800, 50),]]

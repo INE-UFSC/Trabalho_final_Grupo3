@@ -42,7 +42,7 @@ class Chao(Estatico):
 class Vida(Estatico):
     def __init__(self, nome: str, x: int, y: int):
         altura = 30
-        largura = 60
+        largura = 100
         self.__fonte = pygame.font.SysFont('Arial',20)
         self.__vida = ""
         super().__init__(nome, x, y, altura, largura, "0")
@@ -90,7 +90,7 @@ class Tempo(Estatico):
         tela.blit(self.__contador, (self.x, self.y))
         return False
 
-class Moeda(Estatico):
+class Biscoitos(Estatico):
     def __init__(self, nome: str, x: int, y: int):
         altura = 30
         largura = 60

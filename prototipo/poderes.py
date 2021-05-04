@@ -59,10 +59,12 @@ class PretoDoNinja(PoderGenerico):
     def acao(self, jogador, screen, mapa):
         jogador.velx = jogador.face * 23
         self.descanso = self.recarga
+        
 
     def atualizar(self, tela, mapa):
         if self.descanso > 0:
             self.descanso -= 1
+        return 0
 
 ##### PODER DA BOLA DE FOGO #####
 class VermelhoDoMago(PoderGenerico):
@@ -72,10 +74,12 @@ class VermelhoDoMago(PoderGenerico):
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
         self.descanso = self.recarga
+        
 
     def atualizar(self,tela,mapa):
         if self.descanso > 0:
             self.descanso -= 1
+        return 0
         # for fogo in self.__bolas:
         #     if fogo.atualizar(tela,campo_visivel):
         #         self.__bolas.remove(fogo)
@@ -83,13 +87,21 @@ class VermelhoDoMago(PoderGenerico):
 ##### PODER DA INTANGIBILIDADE #####
 class AzulDoNerd(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0,5,9,40)
+        super().__init__(False, 0,5,9,600)
+        self.__stamina = 0
 
     def acao(self, jogador, screen, mapa):
-        pass
+        self.descanso = self.recarga
+        self.__stamina = 300  
 
     def atualizar(self, tela, campo_visivel):
-        pass
+        if self.descanso > 0:
+            self.descanso -= 1
+        if self.__stamina > 0:
+            self.__stamina -= 1
+            return True
+        else:
+            return 0
 
 ### PODER DE PARAR O TEMPO ###
 class PlatinaEstelar(PoderGenerico):
@@ -101,7 +113,7 @@ class PlatinaEstelar(PoderGenerico):
         mapa.escala_tempo = 0
         self.__stamina = 300
         self.descanso = self.recarga
-    
+
     def atualizar(self,tela,mapa):
         self.__mapa = mapa
         if self.__stamina > 0:
@@ -110,19 +122,21 @@ class PlatinaEstelar(PoderGenerico):
             mapa.escala_tempo = 1
         if self.descanso > 0:
             self.descanso -= 1
+        return 0
 
 class FeitoNoCeu(PoderGenerico):
     def __init__(self):
         super().__init__(False, 300, 5, 9, 600)
         self.__stamina = 0
-    
+
     def acao(self, jogador, screen, mapa):
         self.__stamina = 1
-    
+
     def atualizar(self,tela,mapa):
         self.__mapa = mapa
         if self.__stamina >= 1:
             mapa.escala_tempo += 0.05
+        return 0
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):

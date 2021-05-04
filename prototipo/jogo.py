@@ -116,7 +116,8 @@ class Tela_De_Jogo(Tela):
         pygame.display.flip()
         self.__tempo_maximo += 1/60 - self.__mapa.escala_tempo/60
         tempo_decorrido = pygame.time.get_ticks()/1000 - self.__comeco
-        self.__mapa.conta =  int(max(self.__tempo_maximo - tempo_decorrido,0))
+        if not self.__mapa.ganhou:
+            self.__mapa.conta =  int(max(self.__tempo_maximo - tempo_decorrido,0))
         
         ##### PASSANDO A VIDA PRO DISPLAY #####d
         self.__mapa.vida_jogador = self.__jogador.vida
