@@ -104,13 +104,25 @@ class PlatinaEstelar(PoderGenerico):
     
     def atualizar(self,tela,mapa):
         self.__mapa = mapa
-        print(self.descanso)
         if self.__stamina > 0:
             self.__stamina -= 1
         if self.__stamina <= 0:
             mapa.escala_tempo = 1
         if self.descanso > 0:
             self.descanso -= 1
+
+class FeitoNoCeu(PoderGenerico):
+    def __init__(self):
+        super().__init__(False, 300, 5, 9, 600)
+        self.__stamina = 0
+    
+    def acao(self, jogador, screen, mapa):
+        self.__stamina = 1
+    
+    def atualizar(self,tela,mapa):
+        self.__mapa = mapa
+        if self.__stamina >= 1:
+            mapa.escala_tempo += 0.05
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
@@ -158,6 +170,18 @@ class BoneMarinheiro(PoderNoMapa):
     def renderizar(self, tela, mapa):
         if renderizar_hitbox:
             if renderizar_hitbox: pygame.draw.rect(tela, (80, 10, 120),
+                    [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
+
+class BebeVerde(PoderNoMapa):
+    def __init__(self, nome, x, y):
+        super().__init__(nome, x, y, FeitoNoCeu(), "0")
+    
+    def mover(self, dimensoesTela, mapa):
+        pass
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox:
+            if renderizar_hitbox: pygame.draw.rect(tela, (5, 200, 40),
                     [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
 ##### OBJETOS CRIADOS POR PODERES #####
