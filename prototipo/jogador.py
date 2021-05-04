@@ -76,7 +76,7 @@ class Jogador(Movel):
         self.velx += aceleracao
 
         ##### COLISOES #####
-        coletaveis = [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro,BebeVerde] #Tipos coletaveis
+        coletaveis = [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe] #Tipos coletaveis
 
         #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
         obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])

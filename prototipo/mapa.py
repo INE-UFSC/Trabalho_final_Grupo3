@@ -106,7 +106,7 @@ fase1 = [[
     BandanaDoNinja('shuriken1', 1200, 500),
     CartolaDoMago('orbe1', 275, 300),
     OculosDoNerd('oculos1', 1525, 300),
-    BebeVerde('orbe',1600,550),
+    VerdeBebe('orbe', 1600, 550),
     BoneMarinheiro('cabelo', 1400, 500),
     ##### INIMIGOS #####
     Rato('rato1', 610, height - 50),
