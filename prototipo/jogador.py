@@ -58,7 +58,7 @@ class Jogador(Movel):
 
         ##### ATUALIZACAO DOS PODERES #####
         if self.__recarga > 0: self.__recarga -= 1
-        self.__poder.atualizar(screen,campo_visivel)
+        self.__poder.atualizar(screen,mapa)
 
         ##### SIDESCROLL #####
         if self.x > campo_visivel.x + 600:
@@ -74,7 +74,7 @@ class Jogador(Movel):
         self.velx += aceleracao
 
         ##### COLISOES #####
-        coletaveis = [CartolaDoMago, BandanaDoNinja] #Tipos coletaveis
+        coletaveis = [CartolaDoMago, BandanaDoNinja, BoneMarinheiro] #Tipos coletaveis
 
         #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
         obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])

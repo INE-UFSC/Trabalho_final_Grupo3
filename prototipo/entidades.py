@@ -98,6 +98,7 @@ class Movel(Estatico):
 
     def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int, imagem: str):
         super().__init__(nome, x, y, largura, altura, imagem)
+        self.escala_tempo = 1.0
         self.__velx = 0
         self.__vely = 0
         self.__limite_vel = limite_vel
@@ -139,17 +140,17 @@ class Movel(Estatico):
 
                 cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
                 if self.__velx < 0:  # movimento para a esquerda
-                    cveloz_left = self.corpo.left - 1 + self.__velx
+                    cveloz_left = self.corpo.left - 1 + self.__velx*self.escala_tempo
                     cveloz_largura = self.corpo.right - cveloz_left + 1
                 else:  # movimento para a direita
                     cveloz_left = self.corpo.left - 1
-                    cveloz_largura = self.corpo.right - cveloz_left + 1 + self.__velx
+                    cveloz_largura = self.corpo.right - cveloz_left + 1 + self.__velx*self.escala_tempo
                 if self.__vely < 0:  # movimento para cima
-                    cveloz_top = self.corpo.top - 1 + self.__vely
+                    cveloz_top = self.corpo.top - 1 + self.__vely*self.escala_tempo
                     cveloz_altura = self.corpo.bottom - cveloz_top + 1
                 else:  # movimento para baixo
                     cveloz_top = self.corpo.top
-                    cveloz_altura = self.corpo.bottom - cveloz_top + 1 + self.__vely
+                    cveloz_altura = self.corpo.bottom - cveloz_top + 1 + self.__vely*self.escala_tempo
                 self.__corpoveloz = pygame.Rect(cveloz_left, cveloz_top, cveloz_largura, cveloz_altura)
                 colisaoVeloz = self.__corpoveloz.colliderect(entidade.corpo)
 
@@ -196,6 +197,8 @@ class Movel(Estatico):
         return[obsCima,obsBaixo,obsDireita,obsEsquerda]
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        if self.escala_tempo != mapa.escala_tempo:
+            self.escala_tempo += max(min(mapa.escala_tempo-self.escala_tempo,0.05),-0.05)
         self.mover(dimensoes_tela, mapa)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
         if mapa.campo_visivel.colliderect(self.corpo):

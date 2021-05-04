@@ -12,6 +12,7 @@ class Mapa:
         self.__vitoria = pygame.Rect(tamanho[0]-30, 550-30, 30, 100)
         self.__ganhou = False
         self.__vida_jogador = ""
+        self.escala_tempo = 1
 
     @property
     def lista_de_entidades(self):
@@ -104,7 +105,7 @@ fase1 = [[
     ##### PODERES #####
     BandanaDoNinja('shuriken1', 1200, 500),
     CartolaDoMago('orbe1', 275, 300),
-
+    BoneMarinheiro('cabelo', 1400, 500),
     ##### INIMIGOS #####
     Rato('rato1', 610, height - 50)
 
