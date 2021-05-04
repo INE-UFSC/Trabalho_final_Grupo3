@@ -81,10 +81,10 @@ class Jogador(Movel):
 
         ##### PERMITE
         if type(self.poder) == AzulDoNerd:
+            for i in range(len(obstaculos)):
+                if isinstance(obstaculos[i],Entidade): 
+                    obstaculos[i] = 0
 
-            obstaculos[0] = 0
-            obstaculos[2] = 0
-            obstaculos[3] = 0
 
         ##### COLETA ITENS #####
         for i in range(len(obstaculos)):
