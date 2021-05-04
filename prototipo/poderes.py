@@ -11,6 +11,7 @@ class PoderGenerico:
         self.limite_vel = velmax
         self.pulo = pulo
         self.recarga = recarga
+        self.descanso = 0
         'self.__nome_funcionalidade = nome_funcionalidade'
 
     @property
@@ -57,10 +58,11 @@ class PretoDoNinja(PoderGenerico):
 
     def acao(self, jogador, screen, mapa):
         jogador.velx = jogador.face * 23
-        pass
+        self.descanso = self.recarga
 
     def atualizar(self, tela, mapa):
-        pass
+        if self.descanso > 0:
+            self.descanso -= 1
 
 ##### PODER DA BOLA DE FOGO #####
 class VermelhoDoMago(PoderGenerico):
@@ -69,9 +71,11 @@ class VermelhoDoMago(PoderGenerico):
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
+        self.descanso = self.recarga
 
     def atualizar(self,tela,mapa):
-        pass
+        if self.descanso > 0:
+            self.descanso -= 1
         # for fogo in self.__bolas:
         #     if fogo.atualizar(tela,campo_visivel):
         #         self.__bolas.remove(fogo)
@@ -96,12 +100,17 @@ class PlatinaEstelar(PoderGenerico):
     def acao(self, jogador, screen, mapa):
         mapa.escala_tempo = 0
         self.__stamina = 300
+        self.descanso = self.recarga
     
     def atualizar(self,tela,mapa):
+        self.__mapa = mapa
+        print(self.descanso)
         if self.__stamina > 0:
             self.__stamina -= 1
         if self.__stamina <= 0:
             mapa.escala_tempo = 1
+        if self.descanso > 0:
+            self.descanso -= 1
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
@@ -195,7 +204,6 @@ class BolaFogo(PoderManifestado):
         if obstaculos[1] or obstaculos[0]:
             self.vely = -max(self.vely*4/5,8)
             #self.y = obsBaixo.corpo.top - self.altura'''
-        print(self.escala_tempo,mapa.escala_tempo)
         if not obstaculos[1]: self.vely += gravidade*7*self.escala_tempo
 
         self.y += self.vely*self.escala_tempo

@@ -98,7 +98,7 @@ class Tela_De_Jogo(Tela):
         # PERDENDO POR MORRER
         if self.__jogador.vida <= 0 and not self.__mapa.ganhou:
             self.__jogador.vida_pra_zero()
-            self.__atrasofim += 1
+            self.__atrasofim += 1 
             textin = self.__fonte.render("PERDEU", 0, (0,0,0))
             self.__superficie.blit(textin, (500, 300))
             if self.__atrasofim >= 150:
