@@ -57,7 +57,6 @@ class Jogador(Movel):
         self.renderizar(screen, campo_visivel, ciclo)
 
         ##### ATUALIZACAO DOS PODERES #####
-        if self.__recarga > 0: self.__recarga -= 1
         self.__poder.atualizar(screen,mapa)
 
         ##### SIDESCROLL #####
@@ -89,6 +88,7 @@ class Jogador(Movel):
         for i in range(len(obstaculos)):
             if type(obstaculos[i]) in coletaveis:
                 self.coletar(obstaculos[i])
+                mapa.escala_tempo = 1
                 obstaculos[i].auto_destruir(mapa)
                 obstaculos[i] = False
 
@@ -195,6 +195,5 @@ class Jogador(Movel):
 
     def poderes(self, screen, mapa, acao = False, outros_poderes = False):
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
-        if acao and not self.__recarga:
+        if acao and not self.poder.descanso:
             self.__poder.acao(self,screen,mapa)
-            self.__recarga = self.poder.recarga        # TORNAR ESSA PARTE MAIS GENERICA
