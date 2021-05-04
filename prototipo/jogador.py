@@ -11,6 +11,7 @@ class Jogador(Movel):
         self.__vida = 100
         self.__nome = nome
         self.__sprite = SpriteSheet("guri")
+        self.__posicao_comeco = (200, 550)
 
         ##### ATRIBUTOS POSICIONAIS #####
         altura = 46
@@ -81,7 +82,6 @@ class Jogador(Movel):
         obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
 
         ##### PERMITE
-        print(self.__invisivel)
         if self.__invisivel:
             for i in range(len(obstaculos)):
                 if isinstance(obstaculos[i],Entidade): 
@@ -141,11 +141,12 @@ class Jogador(Movel):
                             elif entidade.contato[i] == 'dano':
                                 ##EMPURRA O JOGGADOR
                                 if self.face == 1:
-                                    self.velx -= 4
-                                    self.vely -= 2.75
+                                    self.x = self.__posicao_comeco[0]
+                                    self.y = self.__posicao_comeco[1]
                                 else: 
-                                    self.velx += 4
-                                    self.vely -= 2.75
+                                    self.x = self.__posicao_comeco[0]
+                                    self.y = self.__posicao_comeco[1]
+ 
                                 if self.__poder != CinzaDoGuri():
                                     self.__poder = CinzaDoGuri()
                                 self.__vida -= entidade.dano_contato
