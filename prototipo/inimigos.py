@@ -9,7 +9,8 @@ class Rato(Entidade):
         largura = 46
         altura = 46
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0")
+        contatos = ['dano', 'morrer', 'dano', 'dano']
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos)
         self.vely = 0
         self.velx = 1
         self.xinicial = x

@@ -206,10 +206,11 @@ class Movel(Estatico):
         return False
 
 class Entidade(Movel):
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int, imagem:str):
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int, imagem:str, contato: list):
         super().__init__(nome, x, y, largura, altura, limiteVel, imagem)
         self.__vida = vida
         self.__dano_contato = dano_contato
+        self.__contato = contato
 
     @property
     def vida(self):
@@ -226,3 +227,11 @@ class Entidade(Movel):
     @dano_contato.setter
     def dano_contato(self, dano_contato):
         self.__dano_contato = dano_contato
+
+    @property
+    def contato(self):
+        return self.__contato
+    
+    @contato.setter
+    def contato(self,contato):
+        self.__contato = contato
