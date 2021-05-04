@@ -114,7 +114,7 @@ class CartolaDoMago(PoderNoMapa):
 class PoderManifestado(Entidade):
     def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem)
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem, [0,0,0,0])
 
 class BolaFogo(PoderManifestado):
     def __init__(self, pos_inicial , screen, mapa, vel):

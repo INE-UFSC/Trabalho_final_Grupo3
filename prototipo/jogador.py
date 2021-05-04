@@ -117,23 +117,33 @@ class Jogador(Movel):
 
         #### COLISAO GOOMBA ####
         for cada_termo in mapa.lista_de_entidades: 
-            if isinstance (cada_termo, Rato):
+            if isinstance (cada_termo, Entidade):
                 entidade = cada_termo
+                for i in range (len(obstaculos)):
+                    if isinstance(obstaculos[i], Entidade):
+                        if entidade.contato[i] == 'morrer':
+                            entidade.auto_destruir(mapa)
+                        
+                        elif entidade.contato[i] == 'dano':
+                            if self.__poder != CinzaDoGuri():
+                                self.__poder = CinzaDoGuri()
+                            self.__vida -= entidade.dano_contato
 
-                if isinstance(obstaculos[3], Rato):
-                    if self.__poder != CinzaDoGuri():
-                        self.__poder = CinzaDoGuri()
-                    self.__vida -= entidade.dano_contato
+
+
+                '''if isinstance(obstaculos[3], Entidade):
+                    
+                    
                 
-                if isinstance(obstaculos[2], Rato):
+                if isinstance(obstaculos[2], Entidade):
                     if self.__poder != CinzaDoGuri():
                         self.__poder = CinzaDoGuri()
                     self.__vida -= entidade.dano_contato
 
-                if isinstance(obstaculos[1], Rato):
+                if isinstance(obstaculos[1], Entidade):
                     if self.__poder != CinzaDoGuri():
                         self.__poder = CinzaDoGuri()
-                    obstaculos[1].auto_destruir(mapa)
+                    obstaculos[1].auto_destruir(mapa)'''
 
         ### CHECANDO VITÓRIA ###
         for cada_termo in mapa.lista_de_entidades: 
