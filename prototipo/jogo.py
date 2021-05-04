@@ -114,8 +114,9 @@ class Tela_De_Jogo(Tela):
 
         ##### RENDERIZACAO DA TELA #####
         pygame.display.flip()
-        tempo_decorrido = int((pygame.time.get_ticks()/1000) - self.__comeco)
-        self.__mapa.conta =  self.__tempo_maximo - tempo_decorrido
+        self.__tempo_maximo += 1/60 - self.__mapa.escala_tempo/60
+        tempo_decorrido = pygame.time.get_ticks()/1000 - self.__comeco
+        self.__mapa.conta =  int(max(self.__tempo_maximo - tempo_decorrido,0))
         
         ##### PASSANDO A VIDA PRO DISPLAY #####d
         self.__mapa.vida_jogador = self.__jogador.vida
