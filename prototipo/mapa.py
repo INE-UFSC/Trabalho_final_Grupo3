@@ -110,7 +110,7 @@ fase1 = [[
     BoneMarinheiro('cabelo', 1400, 500),
     ##### INIMIGOS #####
     Rato('rato1', 610, height - 50),
-    Voador('rato2', 500, height - 200)
+    Voador('rato2', 100, height - 500,200)
 
 ],
 

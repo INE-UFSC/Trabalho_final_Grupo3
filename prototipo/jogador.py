@@ -130,19 +130,19 @@ class Jogador(Movel):
         #### COLISAO INIMIGOS ####
         if type(self.__poder) != AzulDoNerd:
             for entidade in mapa.lista_de_entidades:
-                if isinstance (entidade, Entidade):
-                    for i in range (len(obstaculos)):
-                        if isinstance(obstaculos[i], Entidade):
+                for i in range (len(obstaculos)):
+                    if isinstance(obstaculos[i], Entidade):
+                        if obstaculos[i] == entidade:
                             if entidade.contato[i] == 'morrer':
                                 entidade.auto_destruir(mapa)
 
                             elif entidade.contato[i] == 'dano':
                                 ##EMPURRA O JOGGADOR
                                 if self.face == 1:
-                                    self.velx -= 12
+                                    self.velx -= 4
                                     self.vely -= 2.75
                                 else: 
-                                    self.velx += 12
+                                    self.velx += 4
                                     self.vely -= 2.75
                                 if self.__poder != CinzaDoGuri():
                                     self.__poder = CinzaDoGuri()
