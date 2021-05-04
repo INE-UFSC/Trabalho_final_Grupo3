@@ -74,21 +74,23 @@ class Jogador(Movel):
         self.velx += aceleracao
 
         ##### COLISOES #####
-        coletaveis = [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro] #Tipos coletaveis
+        coletaveis = [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro,BebeVerde] #Tipos coletaveis
 
         #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
 
         ##### PERMITE
         if type(self.poder) == AzulDoNerd:
-            obstaculos[0] = 0
-            obstaculos[2] = 0
-            obstaculos[3] = 0
+            for i in range(len(obstaculos)):
+                if isinstance(obstaculos[i],Entidade): 
+                    obstaculos[i] = 0
+
 
         ##### COLETA ITENS #####
         for i in range(len(obstaculos)):
             if type(obstaculos[i]) in coletaveis:
                 self.coletar(obstaculos[i])
+                mapa.escala_tempo = 1
                 obstaculos[i].auto_destruir(mapa)
                 obstaculos[i] = False
 
@@ -147,19 +149,13 @@ class Jogador(Movel):
                                 self.__vida -= entidade.dano_contato
 
         ### CHECANDO VITÓRIA ###
-        for cada_termo in mapa.lista_de_entidades: 
-            if isinstance (cada_termo, Vitoria):
-                entidade = cada_termo
+        entidade_vitoria = 0
+        for ganhar in mapa.lista_de_entidades:
+            if isinstance(ganhar, Vitoria):
+                entidade_vitoria = ganhar
 
-
-                if isinstance(obstaculos[3], Vitoria):
-                    mapa.ganhou = True
-
-                if isinstance(obstaculos[2], Vitoria):
-                    mapa.ganhou = True
-
-                if isinstance(obstaculos[1], Vitoria):
-                    mapa.ganhou = True
+        if self.corpo.colliderect(entidade_vitoria.corpo):
+            mapa.ganhou = True
 
         ##### GRAVIDADE ######
         if not obstaculos[1]: self.vely += gravidade
@@ -169,9 +165,19 @@ class Jogador(Movel):
             if self.velx < 0:
                 self.velx += atrito
             elif self.velx > 0:
-                self.velx -= atrito
+                self.velx -= atrito 
 
         ##### AJUSTE DE VELOCIDADE MAXIMA #####
+        # entrando no castelo #
+        if mapa.ganhou:
+            dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.right
+            if dist_meio_vitoria < 0:
+                self.velx = -1
+            elif dist_meio_vitoria > 0:
+                self.velx = 1
+            else:
+                self.velx = 0
+
         if self.velx > self.poder.limite_vel:
             if self.velx > self.poder.limite_vel + 1:
                 self.velx -= 1
@@ -202,6 +208,5 @@ class Jogador(Movel):
 
     def poderes(self, screen, mapa, acao = False, outros_poderes = False):
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
-        if acao and not self.__recarga:
+        if acao and not self.poder.descanso:
             self.__poder.acao(self,screen,mapa)
-            self.__recarga = self.poder.recarga        # TORNAR ESSA PARTE MAIS GENERICA
