@@ -89,7 +89,6 @@ class PlatinaEstelar(PoderGenerico):
     def atualizar(self,tela,mapa):
         if self.__stamina > 0:
             self.__stamina -= 1
-            print(self.__stamina)
         if self.__stamina <= 0:
             mapa.escala_tempo = 1
 
