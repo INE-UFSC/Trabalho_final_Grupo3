@@ -57,6 +57,7 @@ class Jogador(Movel):
         self.renderizar(screen, campo_visivel, ciclo)
 
         ##### ATUALIZACAO DOS PODERES #####
+        if self.__recarga > 0: self.__recarga -= 1
         self.__poder.atualizar(screen,mapa)
 
         ##### SIDESCROLL #####
@@ -80,6 +81,7 @@ class Jogador(Movel):
 
         ##### PERMITE
         if type(self.poder) == AzulDoNerd:
+
             obstaculos[0] = 0
             obstaculos[2] = 0
             obstaculos[3] = 0
@@ -147,20 +149,6 @@ class Jogador(Movel):
 
         if self.corpo.colliderect(entidade_vitoria.corpo):
             mapa.ganhou = True
-        
-        #for cada_termo in mapa.lista_de_entidades: 
-        #    if isinstance (cada_termo, Vitoria):
-        #        entidade = cada_termo
-
-
-         #       if isinstance(obstaculos[3], Vitoria):
-         #           mapa.ganhou = True
-
-         #       if isinstance(obstaculos[2], Vitoria):
-          #          mapa.ganhou = True
-
-            #    if isinstance(obstaculos[1], Vitoria):
-            #        mapa.ganhou = True
 
         ##### GRAVIDADE ######
         if not obstaculos[1]: self.vely += gravidade
@@ -173,6 +161,7 @@ class Jogador(Movel):
                 self.velx -= atrito 
 
         ##### AJUSTE DE VELOCIDADE MAXIMA #####
+        # entrando no castelo #
         if mapa.ganhou:
             dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.right
             if dist_meio_vitoria < 0:
