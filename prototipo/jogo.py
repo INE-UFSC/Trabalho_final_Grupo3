@@ -1,5 +1,6 @@
 import pygame, time, math, random
 from jogador import Jogador
+from poderes import FeitoNoCeu
 from mapa import Mapa, fase1
 from menu import *
 from efeitosrender import *
@@ -100,8 +101,9 @@ class Tela_De_Jogo(Tela):
             self.__direita = 0
             self.__esquerda = 0
             self.__espaco = 0
-        #self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco,#self.__superficie.get_size(), self.__mapa, self.__atrito)
-        self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
+        else:
+            #self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco,#self.__superficie.get_size(), self.__mapa, self.__atrito)
+            self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
         self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__mapa, self.__campo_visivel, int(ciclo/6),
                                                         [self.__direita, self.__esquerda, self.__espaco],self.__atrito)
 
@@ -109,8 +111,11 @@ class Tela_De_Jogo(Tela):
         if self.__jogador.vida <= 0 and not self.__mapa.ganhou:
             self.__jogador.vida_pra_zero()
             self.__atrasofim += 1 
-            textin = self.__fonte.render("PERDEU", 0, (0,0,0))
-            self.__superficie.blit(textin, (500, 300))
+            if isinstance(self.__jogador.poder,FeitoNoCeu) and self.__mapa.conta <= 0:
+                textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", 0, (0,0,0))
+            else:
+                textin = self.__fonte.render("PERDEU", 0, (0,0,0))
+            self.__superficie.blit(textin, (500-textin.get_size()[0]/2, 300-textin.get_size()[1]/2))
             if self.__atrasofim >= 150:
                 return 1
         
@@ -168,9 +173,11 @@ class Jogo:
 
             if acao == 1:  # botao sair
                 break
-            elif acao in [2,4,5]:  # botao jogar, fase 1, fase 2
+            elif acao in [2,4,5,6]:  # botao jogar, fase 1, fase 2
                 if acao == 5:
                     aconteceu = self.rodar("fase2")
+                elif acao == 6:
+                    aconteceu = self.rodar("fase3")
                 else:
                     aconteceu = self.rodar("fase1")
                 if aconteceu == 0:  # se o jogador fechar o jogo durante a fase
@@ -190,7 +197,10 @@ class Jogo:
         '''
         ###### PYGAME GERAL #####
         relogio = pygame.time.Clock()
-        self.__janela.trocar_tela(Tela_De_Jogo(self.__screen, nivel))
+        try:
+            self.__janela.trocar_tela(Tela_De_Jogo(self.__screen, nivel))
+        except:
+            return 3
         nivel = self.__janela.tela
         while True:
             self.__ciclo += 1

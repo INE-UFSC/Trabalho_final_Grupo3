@@ -1,4 +1,5 @@
 import pygame
+import math
 from entidades import *
 from obstaculos import *
 from inimigos import *
@@ -136,7 +137,7 @@ class FeitoNoCeu(PoderGenerico):
     def atualizar(self,tela,mapa):
         self.__mapa = mapa
         if self.__stamina >= 1:
-            mapa.escala_tempo += 0.05
+            mapa.escala_tempo += 0.05 * (math.log(mapa.escala_tempo,2)+1)
         return 0
 
 ##### ITENS DOS PODERES NO MAPA #####
