@@ -4,13 +4,12 @@ from poderes import *
 import json
 
 class Mapa:
-    def __init__(self, tamanho):
-        self.__tamanho = tamanho
+    def __init__(self, tamanho_campo):
         self.__lista_de_entidades = []
         self.__lista_de_display = []
-        self.__campo_visivel = pygame.Rect(0,0,tamanho[0],tamanho[1])
+        self.__campo_visivel = pygame.Rect(0,0,tamanho_campo[0],tamanho_campo[1])
         self.__conta = ""
-        self.__vitoria = pygame.Rect(tamanho[0]-30, 550-30, 30, 100)
+        self.__vitoria = pygame.Rect(tamanho_campo[0]-30, 550-30, 30, 100)
         self.__ganhou = False
         self.__vida_jogador = ""
         self.escala_tempo = 1
@@ -55,6 +54,10 @@ class Mapa:
     @property
     def campo_visivel(self):
         return self.__campo_visivel
+    
+    @property
+    def tamanho(self):
+        return self.__tamanho
 
     def iniciar(self,entidades):
         listatipos = {"Muro":Muro,"Bloco":Bloco,"Chao":Chao,"Borda":Borda,"Vitoria":Vitoria,
@@ -77,6 +80,7 @@ class Mapa:
             except:
                 item = listatipos[item[0]](item[1])
             self.__lista_de_display.append(item)
+        self.__tamanho = lista_todos[2]
         for entidade in self.__lista_de_entidades:
             if entidade.imagem != "0": entidade.sprite = SpriteSheet(entidade.imagem)
 
@@ -118,8 +122,8 @@ fase1 = [[
     ["Bloco",('bloco4', 350, 400)],
 
     ["Chao",('chao1', height-10, -200, 350)],
-    ["Chao",('chao2', height-10, 450, 2000)],
-    ["Chao",('chao3', height-10, 2500, 3000)],
+    ["Chao",('chao2', height-10, 450, 2205)],
+    ["Chao",('chao3', height-10, 2500, 3205)],
 
     ##### BORDA E VITORIA #####
     ["Borda",('borda1', 0)],
@@ -141,13 +145,15 @@ fase1 = [[
 
 [   ["Vida",('vida', 140, 50)],
     ["Tempo",('tempo', 470, 50)],
-    ["Biscoitos",('moeda', 800, 50)]]]
+    ["Biscoitos",('moeda', 800, 50)]],
+
+    (2200,600)]
 
 fase2 = [[
     ["Muro",('cano1', -9000, 475, height)],
     ["Muro",('cano2', 1600, 475, height)],
 
-    ["Chao",('chao1', height - 10, -1000, 2000)],
+    ["Chao",('chao1', height - 10, -1000, 2105)],
 
     ##### INIMIGOS #####
     ["Rato",('rato1', 100, height - 50)],
@@ -165,7 +171,9 @@ fase2 = [[
 
 ],[["Vida",('vida', 140, 50)],
     ["Tempo",('tempo', 470, 50)],
-    ["Biscoitos",('moeda', 800, 50)]]]
+    ["Biscoitos",('moeda', 800, 50)]],
+
+    (2100,600)]
 
 
 with open("mapas.json",'w') as m:

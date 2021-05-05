@@ -63,10 +63,16 @@ class Jogador(Movel):
         self.__invisivel = self.__poder.atualizar(screen,mapa)
 
         ##### SIDESCROLL #####
-        if self.x > campo_visivel.x + 600:
-            return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
+        if self.x > campo_visivel.x + 600 or self.x > mapa.tamanho[0]-400:
+            if campo_visivel.x < mapa.tamanho[0] - campo_visivel.w:
+                return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
+            else:
+                return pygame.Rect(mapa.tamanho[0]-campo_visivel.w,0,campo_visivel.w,campo_visivel.h)
         elif self.x < campo_visivel.x + 400 or self.x < 400:
-            return pygame.Rect(self.x-400,0,campo_visivel.w,campo_visivel.h) if campo_visivel.x > 0 else pygame.Rect(0,0,campo_visivel.w,campo_visivel.h)
+            if campo_visivel.x > 0:
+                return pygame.Rect(self.x-400,0,campo_visivel.w,campo_visivel.h)
+            else:
+                return pygame.Rect(0,0,campo_visivel.w,campo_visivel.h)
         return campo_visivel
 
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
