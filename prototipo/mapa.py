@@ -59,7 +59,7 @@ class Mapa:
     def iniciar(self,entidades):
         listatipos = {"Muro":Muro,"Bloco":Bloco,"Chao":Chao,"Borda":Borda,"Vitoria":Vitoria,
             "BandanaDoNinja":BandanaDoNinja,"CartolaDoMago":CartolaDoMago,
-            "OculosDoNerd":OculosDoNerd,"BebeVerde":BebeVerde,
+            "OculosDoNerd":OculosDoNerd,"VerdeBebe":VerdeBebe,
             "BoneMarinheiro":BoneMarinheiro,"Rato":Rato,"Voador":Voador,
             "Vida":Vida,"Tempo":Tempo,"Biscoitos":Biscoitos} 
         with open("mapas.json") as m:
@@ -130,7 +130,7 @@ fase1 = [[
     ["BandanaDoNinja",('shuriken1', 1200, 500)],
     ["CartolaDoMago",('orbe1', 275, 300)],
     ["OculosDoNerd",('oculos1', 1525, 300)],
-    ["BebeVerde",('orbe',1600,550)],
+    ["VerdeBebe",('orbe',1600,550)],
     ["BoneMarinheiro",('cabelo', 1400, 500)],
     ##### INIMIGOS #####
     ["Rato",('rato1', 610, height - 50)],
