@@ -72,7 +72,8 @@ class Voador(Entidade):
 
 
         ##### GRAVIDADE ######
-        if self.altitude.collidelist([x.corpo for x in mapa.lista_de_entidades if x != self]) != -1:
+        if (self.altitude.collidelist([x.corpo for x in mapa.lista_de_entidades if x != self]) != -1
+            or self.altitude.y+self.altitude.h > dimensoesTela[1]):
             self.vely -= gravidade * self.escala_tempo * 0.2
         else:
             self.vely += gravidade * self.escala_tempo * 0.2

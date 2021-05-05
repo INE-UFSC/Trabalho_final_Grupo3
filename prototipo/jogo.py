@@ -199,7 +199,7 @@ class Jogo:
         relogio = pygame.time.Clock()
         try:
             self.__janela.trocar_tela(Tela_De_Jogo(self.__screen, nivel))
-        except:
+        except KeyError:
             return 3
         nivel = self.__janela.tela
         while True:
