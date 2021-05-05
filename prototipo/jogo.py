@@ -1,6 +1,6 @@
 import pygame, time, math, random
 from jogador import Jogador
-from mapa import Mapa, fase1, fase2
+from mapa import Mapa, fase1
 from menu import *
 from efeitosrender import *
 
@@ -19,7 +19,7 @@ class Menu_Principal(Tela_Menu):   #QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
                 botaonivel_3, botaoconfig],cormenu,superficie)
         self.__contador_menu = 0
 
-    def logica_menu(self):
+    def logica_menu(self)->int:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT: return 1
             if evento.type == pygame.MOUSEBUTTONDOWN:
@@ -53,11 +53,21 @@ class Tela_De_Jogo(Tela):
 
         ##### MAPA #####
         self.__mapa = Mapa((width, height))
-        self.__mapa.iniciar([nivel[0].copy(),nivel[1].copy()])
+        self.__mapa.iniciar(nivel)
         self.__comeco = pygame.time.get_ticks()/1000
     
-    def atualizar(self, ciclo):
+    def atualizar(self, ciclo)->int:
+        '''Logica de jogo, envolvendo controles, colisao e renderizacao
 
+        Deve ser chamada pela funcao gerente 60 vezes por segundo
+
+        @param ciclo: responsavel pelas frames de animacao do Guri
+        
+        @returns: 0 se a janela for fechada
+                 1 se o Guri morrer ou o tempo acabar
+                 2 se o jogo continuar
+                 3 se o Guri ganhar
+        '''
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT: 
                 return 0
@@ -127,7 +137,6 @@ class Tela_De_Jogo(Tela):
             self.__jogador.vida_pra_zero()
         return 2
 
-        ##### PASSANDO A VIDA PRO DISPLAY #####
         
 
 class Jogo:
@@ -140,7 +149,10 @@ class Jogo:
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))
 
-    def logica_menu(self):   # logica do sistema de menu
+    def logica_menu(self)->int:
+        '''logica do sistema do menu principal
+        cria uma tela de menu, e gerencia botoes
+        '''
         relogiomenu = pygame.time.Clock()
         self.__janela.trocar_tela(Menu_Principal(self.__screen))
         while True:
@@ -158,15 +170,24 @@ class Jogo:
                 break
             elif acao in [2,4,5]:  # botao jogar, fase 1, fase 2
                 if acao == 5:
-                    aconteceu = self.rodar(fase2)
+                    aconteceu = self.rodar("fase2")
                 else:
-                    aconteceu = self.rodar(fase1)
+                    aconteceu = self.rodar("fase1")
                 if aconteceu == 0:  # se o jogador fechar o jogo durante a fase
                     break
                 elif aconteceu == 3:
                     pass
 
-    def rodar(self,nivel):
+    def rodar(self,nivel)->int:
+        ''' Funcao responsavel por colocar o jogo propriamente dito na tela
+        Loop define a taxa de quadros do jogo
+        
+        @param nivel: nome do nivel a ser inicializado
+
+        @returns: valor retornado pela funcao atualizar do nivel,
+                  a nao ser que o valor seja 2, ou seja, o jogo continua
+                  rodando normalmente, sem ter chegado a condicao de fim alguma
+        '''
         ###### PYGAME GERAL #####
         relogio = pygame.time.Clock()
         self.__janela.trocar_tela(Tela_De_Jogo(self.__screen, nivel))
@@ -174,12 +195,8 @@ class Jogo:
         while True:
             self.__ciclo += 1
             jogar = nivel.atualizar(self.__ciclo)
-            if jogar == 0:
-                return 0
-            if jogar == 1:
-                return 1
-            if jogar == 3:
-                return 3
+            if jogar != 2:
+                return jogar
             ##### FPS MELHORADO #####
             relogio.tick(60)
 
