@@ -58,7 +58,7 @@ class Voador(Entidade):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro,BebeVerde])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe])
 
         ##### HORIZONTAIS #####
         if obsEsquerda or obsDireita:

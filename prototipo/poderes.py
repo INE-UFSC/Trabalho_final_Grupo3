@@ -103,7 +103,7 @@ class AzulDoNerd(PoderGenerico):
         else:
             return 0
 
-### PODER DE PARAR O TEMPO ###
+##### PODER DE PARAR O TEMPO #####
 class PlatinaEstelar(PoderGenerico):
     def __init__(self):
         super().__init__(False, 300, 5, 9, 600)
@@ -124,6 +124,7 @@ class PlatinaEstelar(PoderGenerico):
             self.descanso -= 1
         return 0
 
+##### PODER DE ACELERAR O TEMPO #####
 class FeitoNoCeu(PoderGenerico):
     def __init__(self):
         super().__init__(False, 300, 5, 9, 600)
@@ -186,7 +187,7 @@ class BoneMarinheiro(PoderNoMapa):
             if renderizar_hitbox: pygame.draw.rect(tela, (80, 10, 120),
                     [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
-class BebeVerde(PoderNoMapa):
+class VerdeBebe(PoderNoMapa):
     def __init__(self, nome, x, y):
         super().__init__(nome, x, y, FeitoNoCeu(), "0")
     
