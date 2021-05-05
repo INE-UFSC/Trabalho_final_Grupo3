@@ -60,7 +60,7 @@ class Mapa:
         listatipos = {"Muro":Muro,"Bloco":Bloco,"Chao":Chao,"Borda":Borda,"Vitoria":Vitoria,
             "BandanaDoNinja":BandanaDoNinja,"CartolaDoMago":CartolaDoMago,
             "OculosDoNerd":OculosDoNerd,"VerdeBebe":VerdeBebe,
-            "BoneMarinheiro":BoneMarinheiro,"Rato":Rato,"Voador":Voador,
+            "BoneMarinheiro":BoneMarinheiro,"Rato":Rato,"Voador":Voador, "Atirador":Atirador,
             "Vida":Vida,"Tempo":Tempo,"Biscoitos":Biscoitos} 
         with open("mapas.json") as m:
             lista_mapas = json.load(m)

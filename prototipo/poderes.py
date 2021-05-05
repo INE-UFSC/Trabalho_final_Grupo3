@@ -124,6 +124,20 @@ class PlatinaEstelar(PoderGenerico):
             self.descanso -= 1
         return 0
 
+#### PODER DO INIMIGO ####
+class Projetil(PoderGenerico):
+    def __init__(self):
+        super().__init__(False,0,5,9,40)
+
+    def acao(self, jogador, screen, mapa):
+        mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
+        self.descanso = self.recarga
+        
+
+    def atualizar(self,tela,mapa):
+        if self.descanso > 0:
+            self.descanso -= 1
+
 ##### PODER DE ACELERAR O TEMPO #####
 class FeitoNoCeu(PoderGenerico):
     def __init__(self):
@@ -138,6 +152,8 @@ class FeitoNoCeu(PoderGenerico):
         if self.__stamina >= 1:
             mapa.escala_tempo += 0.05
         return 0
+
+    
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
