@@ -73,10 +73,8 @@ class Voador(Entidade):
 
         ##### GRAVIDADE ######
         if self.altitude.collidelist([x.corpo for x in mapa.lista_de_entidades if x != self]) != -1:
-            print(self.altitude.collidelist([x.corpo for x in mapa.lista_de_entidades]))
             self.vely -= gravidade * self.escala_tempo * 0.2
         else:
-            print(self.altitude.collidelist([x.corpo for x in mapa.lista_de_entidades]))
             self.vely += gravidade * self.escala_tempo * 0.2
 
         if self.vely < -1:
@@ -88,7 +86,6 @@ class Voador(Entidade):
 
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: 
-            pygame.draw.rect(tela, (0, 0, 250), [self.altitude.x - mapa.campo_visivel.x, self.altitude.y, self.altitude.w, self.altitude.h])
             pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0
        
       
