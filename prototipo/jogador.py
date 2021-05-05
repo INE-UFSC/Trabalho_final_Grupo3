@@ -65,7 +65,7 @@ class Jogador(Movel):
         ##### SIDESCROLL #####
         if self.x > campo_visivel.x + 600:
             return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
-        elif self.x < campo_visivel.x + 400:
+        elif self.x < campo_visivel.x + 400 or self.x < 400:
             return pygame.Rect(self.x-400,0,campo_visivel.w,campo_visivel.h) if campo_visivel.x > 0 else pygame.Rect(0,0,campo_visivel.w,campo_visivel.h)
         return campo_visivel
 
