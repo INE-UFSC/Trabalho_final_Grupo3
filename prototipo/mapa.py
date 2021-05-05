@@ -134,6 +134,7 @@ fase1 = [[
     ["BoneMarinheiro",('cabelo', 1400, 500)],
     ##### INIMIGOS #####
     ["Rato",('rato1', 610, height - 50)],
+    ["Rato",('rato3', 900, height - 50)],
     ["Voador",('rato2', 100, height - 500,200)]
 
 ],
@@ -154,7 +155,8 @@ fase2 = [[
     ["Rato",('rato3', 1000, height - 50)],
     ["Rato",('rato4', 1200, height - 50)],
     ["Rato",('rato5', 1400, height - 50)],
-    ["Rato",('rato6', 1600, height - 50)],
+    ["Voador",('voador1', 100, height - 250,200)],
+    ["Voador",('voador2', 600, height - 250,200)],
 
     ##### BORDA E VITORIA #####
     ["Borda",('borda1', 0)],
