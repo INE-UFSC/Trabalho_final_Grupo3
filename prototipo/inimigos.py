@@ -96,6 +96,7 @@ class Atirador(Entidade):
         super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos)
         self.vely = 0
         self.velx = 2
+        self.__vel_projetil = 3
         self.xinicial = x
         self.escala_tempo = 1
         self.__poder = Projetil()
@@ -115,8 +116,10 @@ class Atirador(Entidade):
             self.renderizar(tela, mapa)
         
         #### DETERMINA A VELOCIDADE DO PROJETIL PRA SEGUIR O JOGADOR ####
-        vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura))/60
-        velx = (mapa.jogador.x - self.x)/60
+        dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura))**2 + (mapa.jogador.x - self.x)**2)**(1/2)
+        divisor = dstancia/self.__vel_projetil
+        vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura))/divisor
+        velx = (mapa.jogador.x - self.x)/divisor
         if self.corpo.colliderect(mapa.campo_visivel):
             if self.__descanso_poder == 0:
                 self.__poder.acao(self,tela, mapa, velx, vely)
