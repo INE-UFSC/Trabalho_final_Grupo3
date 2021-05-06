@@ -4,6 +4,7 @@ from entidades import *
 from obstaculos import *
 from inimigos import *
 
+
 ##### PODERES NO JOGADOR #####
 class PoderGenerico:
     def __init__(self,tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int):
@@ -125,6 +126,23 @@ class PlatinaEstelar(PoderGenerico):
             self.descanso -= 1
         return 0
 
+#### PODER DO INIMIGO ####
+class Projetil(PoderGenerico):
+    def __init__(self):
+        super().__init__(False,0,5,9,40)
+
+    def acao(self, jogador, screen, mapa):
+        if jogador.face == 1:
+            mapa.lista_de_entidades.append(BolaFogo([jogador.corpo.right,jogador.y], screen, mapa, jogador.face))
+        elif jogador.face == -1:
+            mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
+        self.descanso = self.recarga
+        
+
+    def atualizar(self,tela,mapa):
+        if self.descanso > 0:
+            self.descanso -= 1
+
 ##### PODER DE ACELERAR O TEMPO #####
 class FeitoNoCeu(PoderGenerico):
     def __init__(self):
@@ -139,6 +157,8 @@ class FeitoNoCeu(PoderGenerico):
         if self.__stamina >= 1:
             mapa.escala_tempo += 0.05 * (math.log(mapa.escala_tempo,2)+1)
         return 0
+
+    
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
