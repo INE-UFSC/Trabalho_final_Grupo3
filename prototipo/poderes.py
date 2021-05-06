@@ -142,69 +142,44 @@ class FeitoNoCeu(PoderGenerico):
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
-    def __init__(self, nome, x, y, poder_atribuido, imagem):
+    def __init__(self, nome, x, y, poder_atribuido, imagem,cor=[0,0,0]):
         largura = 20
         altura = 20
         limite_vel = 4
         self.poder_atribuido = poder_atribuido
-        super().__init__(nome, x, y, largura, altura, limite_vel, imagem)
+        super().__init__(nome, x, y, largura, altura, limite_vel, imagem,cor)
+
 
 class BandanaDoNinja(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, PretoDoNinja(), "0")
+        super().__init__(nome, x, y, PretoDoNinja(), "0",(50, 50, 50))
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox:
-            if renderizar_hitbox: pygame.draw.rect(tela, (50, 50, 50),
-                    [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
 class CartolaDoMago(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, VermelhoDoMago(), "0")
+        super().__init__(nome, x, y, VermelhoDoMago(), "0",(255, 50, 50))
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox:
-            if renderizar_hitbox: pygame.draw.rect(tela, (255, 50, 50),
-                    [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
 class OculosDoNerd(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, AzulDoNerd(), "0")
+        super().__init__(nome, x, y, AzulDoNerd(), "0",(50, 50, 255))
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, (50, 50, 255),
-                             [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
 class BoneMarinheiro(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, PlatinaEstelar(), "0")
-    
-    def mover(self, dimensoesTela, mapa):
-        pass
+        super().__init__(nome, x, y, PlatinaEstelar(), "0",(80, 10, 120))
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox:
-            if renderizar_hitbox: pygame.draw.rect(tela, (80, 10, 120),
-                    [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
 class VerdeBebe(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, FeitoNoCeu(), "0")
-    
-    def mover(self, dimensoesTela, mapa):
-        pass
+        super().__init__(nome, x, y, FeitoNoCeu(), "0",(5, 200, 40))
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox:
-            if renderizar_hitbox: pygame.draw.rect(tela, (5, 200, 40),
-                    [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
 
 ##### OBJETOS CRIADOS POR PODERES #####
 class PoderManifestado(Entidade):
-    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem):
+    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem,cor=[0,0,0]):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem, [0,0,0,0])
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem, [0,0,0,0],cor)
 
 class BolaFogo(PoderManifestado):
     def __init__(self, pos_inicial , screen, mapa, vel):
@@ -250,7 +225,10 @@ class BolaFogo(PoderManifestado):
         self.x += self.velx*self.escala_tempo
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, [245, min(87 + self.duracao,255), 65],[self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])
+        pygame.draw.rect(tela, [245, min(87 + self.duracao,255), 65],[self.corpo.x - mapa.campo_visivel.x, 
+                                                                      self.corpo.y - mapa.campo_visivel.y, 
+                                                                      self.corpo.w, 
+                                                                      self.corpo.h])
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.escala_tempo != mapa.escala_tempo:

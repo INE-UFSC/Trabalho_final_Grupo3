@@ -50,8 +50,8 @@ class Jogador(Movel):
             self.poder = item.poder_atribuido
 
     def renderizar(self, tela, campo_visivel, ciclo):
-        if renderizar_hitbox: pygame.draw.rect(tela, (50,50,255), [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
-        if renderizar_sprite: self.__sprite.imprimir("guri"+str(ciclo%12), self.x-campo_visivel.x, self.y, tela, self.__face, self.velx)
+        if renderizar_hitbox: pygame.draw.rect(tela, (50,50,255), [self.corpo.x-campo_visivel.x,self.corpo.y-campo_visivel.y,self.corpo.w,self.corpo.h])
+        if renderizar_sprite: self.__sprite.imprimir("guri"+str(ciclo%12), self.x-campo_visivel.x, self.y-campo_visivel.y, tela, self.__face, self.velx)
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): ### REQUER AREA VISIVEL PARA RENDERIZAR
         self.mover(entradas[0],entradas[1],entradas[2],screen.get_size(),mapa,atrito)
@@ -63,17 +63,31 @@ class Jogador(Movel):
         self.__invisivel = self.__poder.atualizar(screen,mapa)
 
         ##### SIDESCROLL #####
-        if self.x > campo_visivel.x + 600 or self.x > mapa.tamanho[0]-400:
-            if campo_visivel.x < mapa.tamanho[0] - campo_visivel.w:
-                return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
-            else:
-                return pygame.Rect(mapa.tamanho[0]-campo_visivel.w,0,campo_visivel.w,campo_visivel.h)
-        elif self.x < campo_visivel.x + 400 or self.x < 400:
-            if campo_visivel.x > 0:
-                return pygame.Rect(self.x-400,0,campo_visivel.w,campo_visivel.h)
-            else:
-                return pygame.Rect(0,0,campo_visivel.w,campo_visivel.h)
-        return campo_visivel
+        x_min = min(0,campo_visivel.x)
+        x_max = max(mapa.tamanho[0]-campo_visivel.w,campo_visivel.x)
+        y_min = min(0,campo_visivel.y)
+        y_max = max(mapa.tamanho[1]-campo_visivel.h,campo_visivel.y)
+        if self.x > campo_visivel.x + 600:
+            campo_x = max(0,min((mapa.tamanho[0]-campo_visivel.w,self.x-600)))
+            #if campo_visivel.x < mapa.tamanho[0] - campo_visivel.w:
+            #    return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
+            #else:
+            #    return pygame.Rect(mapa.tamanho[0]-campo_visivel.w,0,campo_visivel.w,campo_visivel.h)
+        elif self.x < campo_visivel.x + 400:
+            campo_x = max(0,min((mapa.tamanho[0]-campo_visivel.w,self.x-400)))
+            #if campo_visivel.x > 0:
+            #    return pygame.Rect(self.x-400,0,campo_visivel.w,campo_visivel.h)
+            #else:
+            #    return pygame.Rect(0,0,campo_visivel.w,campo_visivel.h)
+        else:
+            campo_x = campo_visivel.x
+        if self.y > campo_visivel.y + 300:
+            campo_y = max(0,min((mapa.tamanho[1]-campo_visivel.h,self.y-300)))
+        elif self.y < campo_visivel.y + 200:
+            campo_y = max(0,min((mapa.tamanho[1]-campo_visivel.h,self.y-200)))
+        else:
+            campo_y = campo_visivel.y
+        return pygame.Rect(campo_x,campo_y,campo_visivel.w,campo_visivel.h)
 
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
 
@@ -204,7 +218,7 @@ class Jogador(Movel):
         self.x += self.velx
 
         ##### MATA O JOGADOR SE CAIR NO BURACO #####
-        if self.y > screen[1]: self.__vida = 0
+        if self.y > mapa.tamanho[1]: self.__vida = 0
 
         ##### INDICA A DIRECAO DO JOGADOR PARA DIRECIONAR PODERES #####
         if self.velx > 0:

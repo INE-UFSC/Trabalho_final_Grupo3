@@ -1,5 +1,6 @@
 #Arquivos com as classes abstratas do jogo
 import pygame
+from sprites import SpriteSheet
 
 colisao_analisada = "cano3"
 renderizar_hitbox = True
@@ -8,7 +9,7 @@ gravidade = 0.2
 
 class Estatico():
 
-    def __init__(self, nome: str, x:int, y:int, altura: int, largura: int, imagem: str):
+    def __init__(self, nome: str, x:int, y:int, altura: int, largura: int, imagem: str, cor = [0,0,0]):
         self.__nome = nome
         self.__x = x
         self.__y = y
@@ -16,7 +17,11 @@ class Estatico():
         self.__altura = altura
         self.__corpo = pygame.Rect(x, y, largura, altura)
         self.__imagem = imagem
-        self.__sprite = []
+        try:
+            self.__sprite = SpriteSheet(imagem)
+        except FileNotFoundError:
+            self.__sprite = [] #nao possui sprite
+        self.__cor = cor
 
     @property
     def nome (self):
@@ -81,13 +86,26 @@ class Estatico():
     @sprite.setter
     def sprite(self, sprite):
         self.__sprite = sprite
+    
+    @property
+    def cor(self):
+        return self.__cor
 
     def auto_destruir(self, mapa):
          if self in mapa.lista_de_entidades: #RESOLVE PROVISORIAMENTE
             mapa.lista_de_entidades.remove(self)
 
     def renderizar(self, tela, mapa):
-        pass
+        if renderizar_hitbox: 
+            pygame.draw.rect(tela, self.__cor, [self.corpo.x - mapa.campo_visivel.x, 
+                                                self.corpo.y - mapa.campo_visivel.y,
+                                                self.corpo.w, 
+                                                self.corpo.h])
+        if renderizar_sprite:
+            try:
+                self.sprite.imprimir(self.__imagem, self.x-mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,tela, 1, 0)
+            except AttributeError:
+                pass #nao possui sprite
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if mapa.campo_visivel.colliderect(self.corpo):
@@ -96,8 +114,8 @@ class Estatico():
 
 class Movel(Estatico):
 
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int, imagem: str):
-        super().__init__(nome, x, y, largura, altura, imagem)
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int, imagem: str,cor = [0,0,0]):
+        super().__init__(nome, x, y, largura, altura, imagem,cor)
         self.escala_tempo = 1.0
         self.__velx = 0
         self.__vely = 0
@@ -209,8 +227,8 @@ class Movel(Estatico):
         return False
 
 class Entidade(Movel):
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int, imagem:str, contato: list):
-        super().__init__(nome, x, y, largura, altura, limiteVel, imagem)
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int, imagem:str, contato: list,cor = [0,0,0]):
+        super().__init__(nome, x, y, largura, altura, limiteVel, imagem,cor)
         self.__vida = vida
         self.__dano_contato = dano_contato
         self.__contato = contato

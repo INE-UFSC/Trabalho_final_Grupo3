@@ -108,18 +108,17 @@ class Mapa:
 #       [["tipo",(parametros)],["tipo",(parametros)]]
 # ]
 
-width = 1000
-height = 600
-
+width = 2200
+height = 700
 fase1 = [[
-    ["Muro",('cano1', 550, 475, height)],
-    ["Muro",('cano2', 800, 475, height)],
-    ["Muro",('cano3', 1500, 475, height)],
+    ["Muro",('cano1', 550, height-125, height)],
+    ["Muro",('cano2', 800, height-125, height)],
+    ["Muro",('cano3', 1500, height-125, height)],
 
-    ["Bloco",('bloco1', 200, 400)],
-    ["Bloco",('bloco2', 250, 400)],
-    ["Bloco",('bloco3', 300, 400)],
-    ["Bloco",('bloco4', 350, 400)],
+    ["Bloco",('bloco1', 200, height-350)],
+    ["Bloco",('bloco2', 250, height-300)],
+    ["Bloco",('bloco3', 300, height-250)],
+    ["Bloco",('bloco4', 350, height-200)],
 
     ["Chao",('chao1', height-10, -200, 350)],
     ["Chao",('chao2', height-10, 450, 2205)],
@@ -128,14 +127,14 @@ fase1 = [[
     ##### BORDA E VITORIA #####
     ["Borda",('borda1', 0)],
     ["Borda",('borda2', 3000)],
-    ["Vitoria",(1900)],
+    ["Vitoria",(1900,height-200,100,190)],
 
     ##### PODERES #####
-    ["BandanaDoNinja",('shuriken1', 1200, 500)],
-    ["CartolaDoMago",('orbe1', 275, 300)],
-    ["OculosDoNerd",('oculos1', 1525, 300)],
-    ["VerdeBebe",('orbe',1600,550)],
-    ["BoneMarinheiro",('cabelo', 1400, 500)],
+    ["BandanaDoNinja",('shuriken1', 1200, height-100)],
+    ["CartolaDoMago",('orbe1', 250, height-500)],
+    ["OculosDoNerd",('oculos1', 1525, height-300)],
+    ["VerdeBebe",('orbe',1600,height-50)],
+    ["BoneMarinheiro",('cabelo', 1400, height-100)],
     ##### INIMIGOS #####
     ["Rato",('rato1', 610, height - 50)],
     ["Rato",('rato3', 900, height - 50)],
@@ -147,11 +146,13 @@ fase1 = [[
     ["Tempo",('tempo', 470, 50)],
     ["Biscoitos",('moeda', 800, 50)]],
 
-    (2200,600)]
+    (width,height)]
 
+width = 2100
+height = 600
 fase2 = [[
-    ["Muro",('cano1', -9000, 475, height)],
-    ["Muro",('cano2', 1600, 475, height)],
+    ["Muro",('cano1', -9000, height-125, height)],
+    ["Muro",('cano2', 1600, height-125, height)],
 
     ["Chao",('chao1', height - 10, -1000, 2105)],
 
@@ -167,7 +168,7 @@ fase2 = [[
     ##### BORDA E VITORIA #####
     ["Borda",('borda1', 0)],
     ["Borda",('borda2', 2000)],
-    ["Vitoria",(1900)]
+    ["Vitoria",(1900,height-200,100,190)]
 
 ],[["Vida",('vida', 140, 50)],
     ["Tempo",('tempo', 470, 50)],

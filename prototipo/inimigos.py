@@ -11,7 +11,7 @@ class Rato(Entidade):
         altura = 46
         limiteVel = 4
         contatos = ['dano', 'morrer', 'dano', 'dano']
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos)
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos,(88, 51, 0))
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -37,9 +37,6 @@ class Rato(Entidade):
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox: pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0
-
 class Voador(Entidade):
     def __init__(self, nome: str, x: int, y: int,altitude: int):
         vida = 1
@@ -48,7 +45,7 @@ class Voador(Entidade):
         altura = 26
         limiteVel = 4
         contatos = ['dano', 'morrer', 'dano', 'dano']
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos)
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos,(88, 51, 0))
         self.altitude = pygame.Rect(x,y+largura+2,largura,altura+altitude) # CAMPO UTILIZADO PARA CHECAR ALTURA DE VOO
         self.vely = 0
         self.velx = 1
@@ -85,9 +82,6 @@ class Voador(Entidade):
         self.altitude.x = self.x
         self.altitude.y = self.y + self.largura + 2
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox: 
-            pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0
        
       
 
