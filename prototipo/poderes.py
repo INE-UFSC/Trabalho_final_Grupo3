@@ -161,13 +161,36 @@ class FeitoNoCeu(PoderGenerico):
     
 
 ##### ITENS DOS PODERES NO MAPA #####
-class PoderNoMapa(Movel):
-    def __init__(self, nome, x, y, poder_atribuido, imagem,cor=[0,0,0]):
+class Coletavel(Movel):
+    def __init__(self, nome, x, y, imagem,cor=[0,0,0]):
         largura = 20
         altura = 20
         limite_vel = 4
-        self.poder_atribuido = poder_atribuido
         super().__init__(nome, x, y, largura, altura, limite_vel, imagem,cor)
+    
+    def acao(self):
+        pass
+
+class BiscoitoNoMapa(Coletavel):
+    def __init__(self, nome, x, y, imagem,cor=[0,0,0]):
+        super().__init__(nome, x, y, imagem, cor)
+    
+    def acao(self, jogador, mapa):
+        jogador.coletar_moeda(self)
+        mapa.escala_tempo = 1
+        self.auto_destruir(mapa)
+        self = False
+
+class PoderNoMapa(Coletavel):
+    def __init__(self, nome, x, y, poder_atribuido, imagem,cor=[0,0,0]):
+        self.poder_atribuido = poder_atribuido
+        super().__init__(nome, x, y, imagem,cor)
+    
+    def acao(self, jogador, mapa):
+        jogador.coletar_poder(self)
+        mapa.escala_tempo = 1
+        self.auto_destruir(mapa)
+        self = False
 
 
 class BandanaDoNinja(PoderNoMapa):

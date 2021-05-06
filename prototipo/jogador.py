@@ -23,6 +23,7 @@ class Jogador(Movel):
         self.__poder = CinzaDoGuri()
         self.__recarga = 0
         self.__invisivel = 0
+        self.__moedas = 0
 
         super().__init__(nome, x, y, largura, altura, limite_vel, "0")
 
@@ -33,6 +34,14 @@ class Jogador(Movel):
     @poder.setter
     def poder(self, poder):
         self.__poder = poder
+    
+    @property
+    def moedas(self):
+        return self.__moedas
+
+    @moedas.setter
+    def moedas(self, moedas):
+        self.__moedas = moedas
 
     @property
     def vida(self):
@@ -45,9 +54,11 @@ class Jogador(Movel):
     def vida_pra_zero(self):
         self.__vida = 0
 
-    def coletar(self, item):
-        if isinstance(item,PoderNoMapa):
-            self.poder = item.poder_atribuido
+    def coletar_poder(self, item):
+        self.poder = item.poder_atribuido
+    
+    def coletar_moeda(self):
+            self.__moedas += 1
 
     def renderizar(self, tela, campo_visivel, ciclo):
         if renderizar_hitbox: pygame.draw.rect(tela, (50,50,255), [self.corpo.x-campo_visivel.x,self.corpo.y-campo_visivel.y,self.corpo.w,self.corpo.h])
@@ -110,11 +121,9 @@ class Jogador(Movel):
 
         ##### COLETA ITENS #####
         for i in range(len(obstaculos)):
-            if type(obstaculos[i]) in coletaveis:
-                self.coletar(obstaculos[i])
-                mapa.escala_tempo = 1
-                obstaculos[i].auto_destruir(mapa)
-                obstaculos[i] = False
+            if isinstance(obstaculos[i], Coletavel):
+                obstaculos[i].acao(self, mapa)
+                obstaculos[i] = 0
 
         ##### REPOSICIONAMENTO POS COLISAO #####
         if obstaculos[2] and obstaculos[3]: #ESMAGAMENTO
