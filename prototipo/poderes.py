@@ -169,29 +169,27 @@ class Coletavel(Movel):
         limite_vel = 4
         super().__init__(nome, x, y, largura, altura, limite_vel, imagem,cor)
     
-    def acao(self):
+    def coleta(self, jogador, mapa):
         pass
 
 class BiscoitoNoMapa(Coletavel):
     def __init__(self, nome, x, y, imagem,cor=(0,0,0)):
         super().__init__(nome, x, y, imagem, cor)
     
-    def acao(self, jogador, mapa):
+    def coleta(self, jogador, mapa):
         jogador.coletar_moeda(self)
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
-        self = False
 
 class PoderNoMapa(Coletavel):
     def __init__(self, nome, x, y, poder_atribuido, imagem,cor=(0,0,0)):
         self.poder_atribuido = poder_atribuido
         super().__init__(nome, x, y, imagem,cor)
     
-    def acao(self, jogador, mapa):
+    def coleta(self, jogador, mapa):
         jogador.coletar_poder(self)
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
-        self = False
 
     def sofreu_colisao_outros(self, entidade, direcao):
         return 0

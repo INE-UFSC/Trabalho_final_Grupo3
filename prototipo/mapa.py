@@ -118,8 +118,8 @@ def carregar_mapa():
         ["Bloco",('bloco2', 250, height-300)],
         ["Bloco",('bloco3', 300, height-250)],
         ["Bloco",('bloco4', 350, height-200)],
-        ["Bloco",('bloco4', 1000, height-200)],
-        ["Bloco",('bloco4', 1020, height-200)],
+        ["Bloco",('bloco5', 1000, height-200)],
+        ["Bloco",('bloco6', 1020, height-200)],
 
         ["Chao",('chao1', height-10, -200, 350)],
         ["Chao",('chao2', height-10, 450, 2205)],
@@ -134,6 +134,7 @@ def carregar_mapa():
         ["OculosDoNerd",('oculos1', 1525, height-300)],
         ["VerdeBebe",('orbe',1600,height-50)],
         ["BoneMarinheiro",('cabelo', 1400, height-100)],
+
         ##### INIMIGOS #####
         ["Rato",('rato1', 610, height - 50)],
         ["Rato",('rato3', 900, height - 50)],

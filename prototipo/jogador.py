@@ -129,8 +129,6 @@ class Jogador(Movel):
         self.velx += self.__aceleracao
 
         ##### COLISOES #####
-        coletaveis = [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe] #Tipos coletaveis
-
         #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
         obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
@@ -166,7 +164,7 @@ class Jogador(Movel):
         ##### COLETA ITENS #####
         for i in range(len(obstaculos)):
             if isinstance(obstaculos[i], Coletavel):
-                obstaculos[i].acao(self, mapa)
+                obstaculos[i].coleta(self, mapa)
                 obstaculos[i] = 0
 
         ##### REPOSICIONAMENTO POS COLISAO #####
