@@ -4,6 +4,7 @@ from entidades import *
 from obstaculos import *
 from inimigos import *
 
+
 ##### PODERES NO JOGADOR #####
 class PoderGenerico:
     def __init__(self,tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int):
@@ -131,7 +132,10 @@ class Projetil(PoderGenerico):
         super().__init__(False,0,5,9,40)
 
     def acao(self, jogador, screen, mapa):
-        mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
+        if jogador.face == 1:
+            mapa.lista_de_entidades.append(BolaFogo([jogador.corpo.right,jogador.y], screen, mapa, jogador.face))
+        elif jogador.face == -1:
+            mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
         self.descanso = self.recarga
         
 

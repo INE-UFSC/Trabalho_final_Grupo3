@@ -1,10 +1,11 @@
 from obstaculos import *
 from inimigos import *
 from poderes import *
+from jogador import Jogador
 import json
 
 class Mapa:
-    def __init__(self, tamanho_campo):
+    def __init__(self, tamanho_campo, jogador):
         self.__lista_de_entidades = []
         self.__lista_de_display = []
         self.__campo_visivel = pygame.Rect(0,0,tamanho_campo[0],tamanho_campo[1])
@@ -13,6 +14,7 @@ class Mapa:
         self.__ganhou = False
         self.__vida_jogador = ""
         self.escala_tempo = 1
+        self.__jogador = jogador
 
     @property
     def lista_de_entidades(self):
@@ -58,6 +60,10 @@ class Mapa:
     @property
     def tamanho(self):
         return self.__tamanho
+    
+    @property
+    def jogador(self):
+        return self.__jogador
 
     def iniciar(self,entidades):
         listatipos = {"Muro":Muro,"Bloco":Bloco,"Chao":Chao,"Borda":Borda,"Vitoria":Vitoria,
@@ -137,6 +143,7 @@ fase1 = [[
     ["VerdeBebe",('orbe',1600,550)],
     ["BoneMarinheiro",('cabelo', 1400, 500)],
     ##### INIMIGOS #####
+    ["Atirador",('atiro', 1150, height - 50)],
     ["Rato",('rato1', 610, height - 50)],
     ["Rato",('rato3', 900, height - 50)],
     ["Voador",('rato2', 100, height - 500,200)]

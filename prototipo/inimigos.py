@@ -54,6 +54,7 @@ class Voador(Entidade):
         self.velx = 1
         self.xinicial = x
         self.escala_tempo = 1
+        
 
     def mover(self, dimensoesTela, mapa):
 
@@ -84,6 +85,7 @@ class Voador(Entidade):
         self.x += self.velx * self.escala_tempo
         self.altitude.x = self.x
         self.altitude.y = self.y + self.largura + 2
+        
 
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: 
@@ -104,7 +106,11 @@ class Atirador(Entidade):
         self.escala_tempo = 1
         self.__poder = Projetil()
         self.__descanso_poder = 300
-        print("eu existo")
+        self.__face = 1
+
+    @property
+    def face(self):
+        return self.__face
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.escala_tempo != mapa.escala_tempo:
@@ -122,8 +128,6 @@ class Atirador(Entidade):
         return False
 
     def mover(self, dimensoesTela, mapa):
-        print("eu existo")
-
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[])
 
@@ -141,6 +145,14 @@ class Atirador(Entidade):
 
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
+
+        if self.corpo.colliderect(mapa.campo_visivel):
+            self.velx = 0
+            dist_x_jogador = self.x - mapa.jogador.x
+            if dist_x_jogador > 0:
+                self.__face = -1
+            elif dist_x_jogador < 0:
+                self.__face = 1
 
     def renderizar(self, tela, mapa):
         if renderizar_hitbox: pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0      

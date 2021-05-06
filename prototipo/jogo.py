@@ -1,6 +1,6 @@
 import pygame, time, math, random
 from jogador import Jogador
-from poderes import FeitoNoCeu
+from poderes import *
 from mapa import Mapa, fase1
 from menu import *
 from efeitosrender import *
@@ -53,7 +53,7 @@ class Tela_De_Jogo(Tela):
         self.__jogador = Jogador('mario',200, 550, 0, 1)
 
         ##### MAPA #####
-        self.__mapa = Mapa((width, height))
+        self.__mapa = Mapa((width, height), self.__jogador)
         self.__mapa.iniciar(nivel)
         self.__comeco = pygame.time.get_ticks()/1000
     
