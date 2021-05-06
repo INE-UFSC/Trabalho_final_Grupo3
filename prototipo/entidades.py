@@ -9,7 +9,7 @@ gravidade = 0.2
 
 class Estatico():
 
-    def __init__(self, nome: str, x:int, y:int, altura: int, largura: int, imagem: str, cor = [0,0,0]):
+    def __init__(self, nome: str, x:int, y:int, altura: int, largura: int, imagem: str, cor = (0,0,0)):
         self.__nome = nome
         self.__x = x
         self.__y = y
@@ -145,7 +145,7 @@ class Estatico():
 
 class Movel(Estatico):
 
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int, imagem: str,cor = [0,0,0]):
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int, imagem: str,cor = (0,0,0)):
         super().__init__(nome, x, y, largura, altura, imagem,cor)
         self.escala_tempo = 1.0
         self.__velx = 0

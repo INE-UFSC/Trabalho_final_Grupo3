@@ -113,9 +113,9 @@ class Tela_De_Jogo(Tela):
             self.__jogador.vida_pra_zero()
             self.__atrasofim += 1 
             if isinstance(self.__jogador.poder,FeitoNoCeu) and self.__mapa.conta <= 0:
-                textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", 0, (0,0,0))
+                textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", False, (0,0,0))
             else:
-                textin = self.__fonte.render("PERDEU", 0, (0,0,0))
+                textin = self.__fonte.render("PERDEU", False, (0,0,0))
             self.__superficie.blit(textin, (500-textin.get_size()[0]/2, 300-textin.get_size()[1]/2))
             if self.__atrasofim >= 150:
                 return 1
@@ -123,7 +123,7 @@ class Tela_De_Jogo(Tela):
         ### VENCENDO ###
         if self.__mapa.ganhou:
             self.__atrasofim += 1
-            textin = self.__fonte.render("VENCEU", 0, (0,0,0))
+            textin = self.__fonte.render("VENCEU", False, (0,0,0))
             self.__superficie.blit(textin, (500, 300))
             if self.__atrasofim >= 150:
                 return 3

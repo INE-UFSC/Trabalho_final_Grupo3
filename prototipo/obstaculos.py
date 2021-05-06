@@ -47,7 +47,7 @@ class Vida(Estatico):
     
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.renderizar(tela, mapa)
-        mostra_vida = self.__fonte.render('vida :'+" "+str(self.__vida),0,(0,0,0))
+        mostra_vida = self.__fonte.render('vida :'+" "+str(self.__vida),False,(0,0,0))
         tela.blit(mostra_vida, (self.x, self.y))
         return False
 
@@ -58,7 +58,7 @@ class Tempo(Estatico):
         largura = 70
         self.__fonte = pygame.font.SysFont('Arial',20)
         self.__tempo = 0
-        self.__contador = self.__fonte.render('time :'+" "+str(self.tempo),0,(0,0,0))
+        self.__contador = self.__fonte.render('time :'+" "+str(self.tempo),False,(0,0,0))
         super().__init__(nome, x, y, altura, largura, "0",(160, 160, 160))
     @property
     def tempo(self):
@@ -73,7 +73,7 @@ class Tempo(Estatico):
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.renderizar(tela, mapa)
-        self.__contador = self.__fonte.render('time :'+" "+str(self.__tempo),0,(0,0,0))
+        self.__contador = self.__fonte.render('time :'+" "+str(self.__tempo),False,(0,0,0))
         tela.blit(self.__contador, (self.x, self.y))
         return False
 
