@@ -126,6 +126,8 @@ fase1 = [[
     ["Bloco",('bloco2', 250, height-300)],
     ["Bloco",('bloco3', 300, height-250)],
     ["Bloco",('bloco4', 350, height-200)],
+    ["Bloco",('bloco4', 1000, height-200)],
+    ["Bloco",('bloco4', 1020, height-200)],
 
     ["Chao",('chao1', height-10, -200, 350)],
     ["Chao",('chao2', height-10, 450, 2205)],
@@ -141,11 +143,11 @@ fase1 = [[
     ["VerdeBebe",('orbe',1600,height-50)],
     ["BoneMarinheiro",('cabelo', 1400, height-100)],
     ##### INIMIGOS #####
-    ["Atirador",('atiro', 1150, height - 50)],
     ["Rato",('rato1', 610, height - 50)],
     ["Rato",('rato3', 900, height - 50)],
     ["Voador",('rato2', 100, height - 500,200)],
-    ["Atirador",('atiro', 1150, height - 50)]
+    ["Atirador",('atiro', 1150, height - 50)],
+    ["Atirador",('atiro2', 1000, height - 205)]
 
 ],
 

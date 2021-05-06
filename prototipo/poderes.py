@@ -131,11 +131,11 @@ class Projetil(PoderGenerico):
     def __init__(self):
         super().__init__(False,0,5,9,40)
 
-    def acao(self, jogador, screen, mapa):
+    def acao(self, jogador, screen, mapa, velx, vely):
         if jogador.face == 1:
-            mapa.lista_de_entidades.append(BolaFogo([jogador.corpo.right,jogador.y], screen, mapa, jogador.face))
+            mapa.lista_de_entidades.append(Bala([jogador.corpo.right,jogador.y], screen, mapa, jogador.face, velx, vely))
         elif jogador.face == -1:
-            mapa.lista_de_entidades.append(BolaFogo([jogador.x,jogador.y], screen, mapa, jogador.face))
+            mapa.lista_de_entidades.append(Bala([jogador.x,jogador.y], screen, mapa, jogador.face, velx, vely))
         self.descanso = self.recarga
         
 
@@ -196,10 +196,16 @@ class VerdeBebe(PoderNoMapa):
 
 
 ##### OBJETOS CRIADOS POR PODERES #####
+
 class PoderManifestado(Entidade):
     def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem,cor=[0,0,0]):
         self.duracao = duracao
         super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem, [0,0,0,0],cor)
+
+class PoderManifestadoInimigo(Entidade):
+    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem, contato, cor=[0,0,0]):
+        self.duracao = duracao
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem, contato, cor)
 
 class BolaFogo(PoderManifestado):
     def __init__(self, pos_inicial , screen, mapa, vel):
@@ -241,6 +247,48 @@ class BolaFogo(PoderManifestado):
             #self.y = obsBaixo.corpo.top - self.altura'''
         if not obstaculos[1]: self.vely += gravidade*7*self.escala_tempo
 
+        self.y += self.vely*self.escala_tempo
+        self.x += self.velx*self.escala_tempo
+
+    def renderizar(self, tela, mapa):
+        pygame.draw.rect(tela, [245, min(87 + self.duracao,255), 65],[self.corpo.x - mapa.campo_visivel.x, 
+                                                                      self.corpo.y - mapa.campo_visivel.y, 
+                                                                      self.corpo.w, 
+                                                                      self.corpo.h])
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        if self.escala_tempo != mapa.escala_tempo:
+            self.escala_tempo += max(min(mapa.escala_tempo-self.escala_tempo,0.05),-0.05)
+        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        if (self.duracao >  0):
+            self.mover(dimensoes_tela, mapa)
+            self.renderizar(tela, mapa)
+            self.duracao -= 1*self.escala_tempo
+            return False
+        return True
+
+
+class Bala(PoderManifestadoInimigo):
+    def __init__(self, pos_inicial , screen, mapa, lado, velx, vely):
+        x = pos_inicial[0] + 25 * lado
+        largura = 15
+        altura = 15
+        y = pos_inicial[1] + altura
+        vida = 1
+        limiteVel = 300
+        dano_contato = 50
+        duracao = 500
+        contatos = ['dano', 'dano', 'dano', 'dano']
+        #self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        super().__init__("bala",x,y,largura,altura,limiteVel,vida,dano_contato, duracao, "0", contatos)
+        self.escala_tempo = 1.0
+        self.mapa = mapa
+        self.vely = vely
+        self.velx = velx
+
+    def mover(self, dimensoesTela, mapa):
+        
+        #### SE MOVE ####
         self.y += self.vely*self.escala_tempo
         self.x += self.velx*self.escala_tempo
 

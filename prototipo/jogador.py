@@ -162,7 +162,15 @@ class Jogador(Movel):
         if not self.__invisivel:
             for entidade in mapa.lista_de_entidades:
                 for i in range (len(obstaculos)):
-                    if isinstance(obstaculos[i], Entidade):
+                    if isinstance(obstaculos[i], PoderManifestadoInimigo):
+                        if obstaculos[i] == entidade:
+                            print(entidade.contato[i])
+                            ##EMPURRA O JOGGADOR
+                            self.x = self.__posicao_comeco[0]
+                            self.y = self.__posicao_comeco[1]
+                            entidade.auto_destruir(mapa)
+                            self.__vida -= entidade.dano_contato
+                    elif isinstance(obstaculos[i], Entidade):
                         if obstaculos[i] == entidade:
                             if entidade.contato[i] == 'morrer':
                                 entidade.auto_destruir(mapa)

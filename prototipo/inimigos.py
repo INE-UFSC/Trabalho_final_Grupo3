@@ -20,7 +20,7 @@ class Rato(Entidade):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[Bala, CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe])
 
         ##### HORIZONTAIS #####
         if obsEsquerda or obsDireita:
@@ -56,7 +56,7 @@ class Voador(Entidade):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe])
 
         ##### HORIZONTAIS #####
         if obsEsquerda or obsDireita:
@@ -95,7 +95,7 @@ class Atirador(Entidade):
         contatos = ['dano', 'morrer', 'dano', 'dano']
         super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos)
         self.vely = 0
-        self.velx = 1
+        self.velx = 2
         self.xinicial = x
         self.escala_tempo = 1
         self.__poder = Projetil()
@@ -114,20 +114,24 @@ class Atirador(Entidade):
         if mapa.campo_visivel.colliderect(self.corpo):
             self.renderizar(tela, mapa)
         
-        if self.__descanso_poder == 0:
-            self.__poder.acao(self,tela, mapa)
-            self.__descanso_poder = 300
-        else:
-            self.__descanso_poder -= 1
+        #### DETERMINA A VELOCIDADE DO PROJETIL PRA SEGUIR O JOGADOR ####
+        vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura))/60
+        velx = (mapa.jogador.x - self.x)/60
+        if self.corpo.colliderect(mapa.campo_visivel):
+            if self.__descanso_poder == 0:
+                self.__poder.acao(self,tela, mapa, velx, vely)
+                self.__descanso_poder = 300
+            else:
+                self.__descanso_poder -= 1
         return False
 
     def mover(self, dimensoesTela, mapa):
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[Bala])
 
         ##### HORIZONTAIS #####
         if obsEsquerda or obsDireita:
-            self.velx = self.velx * -1
+            self.velx = self.__face * -1
 
         ##### VERTICAIS #####
         if obsBaixo:
@@ -140,6 +144,7 @@ class Atirador(Entidade):
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
 
+        #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
         if self.corpo.colliderect(mapa.campo_visivel):
             self.velx = 0
             dist_x_jogador = self.x - mapa.jogador.x
@@ -147,3 +152,5 @@ class Atirador(Entidade):
                 self.__face = -1
             elif dist_x_jogador < 0:
                 self.__face = 1
+        else:
+            self.velx = 2 * self.__face
