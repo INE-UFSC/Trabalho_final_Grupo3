@@ -147,8 +147,3 @@ class Atirador(Entidade):
                 self.__face = -1
             elif dist_x_jogador < 0:
                 self.__face = 1
-
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox: pygame.draw.rect(tela, (88, 51, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y, self.corpo.w, self.corpo.h])  # 88, 51, 0      
-
-        
