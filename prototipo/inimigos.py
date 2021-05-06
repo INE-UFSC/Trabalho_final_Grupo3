@@ -10,8 +10,7 @@ class Rato(Entidade):
         largura = 46
         altura = 46
         limiteVel = 4
-        contatos = ['dano', 'morrer', 'dano', 'dano']
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos,(88, 51, 0))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0",(88, 51, 0))
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -20,19 +19,15 @@ class Rato(Entidade):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[Bala, CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[Bala, PoderNoMapa])
 
-        ##### HORIZONTAIS #####
-        if obsEsquerda or obsDireita:
-            self.velx = self.velx * -1
-
-        ##### VERTICAIS #####
-        if obsBaixo:
-            self.vely = 0
-            self.y = obsBaixo.corpo.top - self.altura
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsBaixo: obsBaixo.sofreu_colisao_outros(self, "baixo")
 
         ##### GRAVIDADE ######
-        if not obsBaixo: self.vely += gravidade * self.escala_tempo
+        else: self.vely += gravidade * self.escala_tempo
 
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
@@ -44,8 +39,7 @@ class Voador(Entidade):
         largura = 26
         altura = 26
         limiteVel = 4
-        contatos = ['dano', 'morrer', 'dano', 'dano']
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos,(88, 51, 0))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0",(88, 51, 0))
         self.altitude = pygame.Rect(x,y+largura+2,largura,altura+altitude) # CAMPO UTILIZADO PARA CHECAR ALTURA DE VOO
         self.vely = 0
         self.velx = 1
@@ -56,7 +50,7 @@ class Voador(Entidade):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa, Estatico])
 
         ##### HORIZONTAIS #####
         if obsEsquerda or obsDireita:
@@ -65,8 +59,6 @@ class Voador(Entidade):
         ##### VERTICAIS #####
         if obsBaixo or obsCima:
             self.vely = -self.vely
-            '''if self.y < 100: 
-                self.y = obsBaixo.corpo.top - self.altura'''
 
 
         ##### GRAVIDADE ######
@@ -82,8 +74,6 @@ class Voador(Entidade):
         self.x += self.velx * self.escala_tempo
         self.altitude.x = self.x
         self.altitude.y = self.y + self.largura + 2
-        
-
        
 class Atirador(Entidade):
     def __init__(self, nome: str, x: int, y: int):
@@ -92,8 +82,7 @@ class Atirador(Entidade):
         largura = 40
         altura = 66
         limiteVel = 4
-        contatos = ['dano', 'morrer', 'dano', 'dano']
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", contatos)
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (255,25,25))
         self.vely = 0
         self.velx = 2
         self.__vel_projetil = 3
@@ -132,17 +121,15 @@ class Atirador(Entidade):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[Bala])
 
-        ##### HORIZONTAIS #####
-        if obsEsquerda or obsDireita:
-            self.velx = self.__face * -1
-
-        ##### VERTICAIS #####
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
         if obsBaixo:
-            self.vely = 0
-            self.y = obsBaixo.corpo.top - self.altura
+            obsBaixo.sofreu_colisao_outros(self, "baixo")
 
         ##### GRAVIDADE ######
-        if not obsBaixo: self.vely += gravidade * self.escala_tempo
+        else:
+            self.vely += gravidade * self.escala_tempo
 
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
