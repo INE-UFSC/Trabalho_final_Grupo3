@@ -162,12 +162,18 @@ class FeitoNoCeu(PoderGenerico):
 
 ##### ITENS DOS PODERES NO MAPA #####
 class PoderNoMapa(Movel):
-    def __init__(self, nome, x, y, poder_atribuido, imagem,cor=[0,0,0]):
+    def __init__(self, nome, x, y, poder_atribuido, imagem,cor=(0,0,0)):
         largura = 20
         altura = 20
         limite_vel = 4
         self.poder_atribuido = poder_atribuido
         super().__init__(nome, x, y, largura, altura, limite_vel, imagem,cor)
+
+    def sofreu_colisao_outros(self, entidade, direcao):
+        return 0
+
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        return 0
 
 
 class BandanaDoNinja(PoderNoMapa):
@@ -198,14 +204,18 @@ class VerdeBebe(PoderNoMapa):
 ##### OBJETOS CRIADOS POR PODERES #####
 
 class PoderManifestado(Entidade):
-    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem,cor=[0,0,0]):
+    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem,cor=(0,0,0)):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem, [0,0,0,0],cor)
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem,cor)
 
 class PoderManifestadoInimigo(Entidade):
-    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem, contato, cor=[0,0,0]):
+    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, dano_contato, duracao, imagem, cor=(0,0,0)):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem, contato, cor)
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, dano_contato, imagem, cor)
+
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        self.auto_destruir(mapa)
+        return self.dano_contato
 
 class BolaFogo(PoderManifestado):
     def __init__(self, pos_inicial , screen, mapa, vel):
@@ -229,7 +239,7 @@ class BolaFogo(PoderManifestado):
         ##### COLISOES #####
 
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, CartolaDoMago, BandanaDoNinja])
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, PoderNoMapa])
 
         for i in range(len(obstaculos)):
             if isinstance(obstaculos[i], Entidade):
@@ -266,7 +276,6 @@ class BolaFogo(PoderManifestado):
             self.duracao -= 1*self.escala_tempo
             return False
         return True
-
 
 class Bala(PoderManifestadoInimigo):
     def __init__(self, pos_inicial , screen, mapa, lado, velx, vely):

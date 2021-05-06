@@ -18,6 +18,7 @@ class Jogador(Movel):
         largura = 46
         limite_vel = 5
         self.__face = 1
+        self.__aceleracao = 0
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
         self.__poder = CinzaDoGuri()
@@ -33,6 +34,22 @@ class Jogador(Movel):
     @poder.setter
     def poder(self, poder):
         self.__poder = poder
+
+    @property
+    def aceleracao(self):
+        return self.__aceleracao
+
+    @aceleracao.setter
+    def aceleracao(self, aceleracao):
+        self.__aceleracao = aceleracao
+
+    @property
+    def posicao_comeco(self):
+        return self.__posicao_comeco
+
+    @posicao_comeco.setter
+    def posicao_comeco(self, posicao_comeco):
+        self.__posicao_comeco = posicao_comeco
 
     @property
     def vida(self):
@@ -89,24 +106,51 @@ class Jogador(Movel):
             campo_y = campo_visivel.y
         return pygame.Rect(campo_x,campo_y,campo_visivel.w,campo_visivel.h)
 
+    def respawn(self):
+        ##### EMPURRA O JOGADOR #####
+        self.x = self.posicao_comeco[0]
+        self.y = self.posicao_comeco[1]
+
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
 
         ##### MOVIMENTO HORIZONTAL #####
-        aceleracao = (direita - esquerda)
-        self.velx += aceleracao
+        self.__aceleracao = (direita - esquerda)
+        self.velx += self.__aceleracao
 
         ##### COLISOES #####
         coletaveis = [CartolaDoMago, BandanaDoNinja, OculosDoNerd, BoneMarinheiro, VerdeBebe] #Tipos coletaveis
 
         #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
+        obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
+        dano_total = 0
+
+        if obsCima:
+            dano_sofrido = obsCima.sofreu_colisao_jogador(self, "cima", mapa)
+            dano_total += dano_sofrido
+        if obsBaixo:
+            dano_sofrido = obsBaixo.sofreu_colisao_jogador(self, "baixo", mapa)
+            dano_total += dano_sofrido
+        if obsDireita:
+            dano_sofrido = obsDireita.sofreu_colisao_jogador(self, "direita", mapa)
+            dano_total += dano_sofrido
+        if obsEsquerda:
+            dano_sofrido = obsEsquerda.sofreu_colisao_jogador(self, "esquerda", mapa)
+            dano_total += dano_sofrido
+
+        #print(dano_total)
+        if dano_total:
+            if type(self.__poder) != CinzaDoGuri:
+                self.__poder = CinzaDoGuri()
+            else:
+                self.__vida -= dano_total
+                if not self.__vida: self.respawn()
 
         ##### PERMITE
         if self.__invisivel:
             for i in range(len(obstaculos)):
                 if isinstance(obstaculos[i],Entidade): 
                     obstaculos[i] = 0
-
 
         ##### COLETA ITENS #####
         for i in range(len(obstaculos)):
@@ -117,76 +161,79 @@ class Jogador(Movel):
                 obstaculos[i] = False
 
         ##### REPOSICIONAMENTO POS COLISAO #####
-        if obstaculos[2] and obstaculos[3]: #ESMAGAMENTO
-            self.__vida = 0 #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
+        if obsDireita and obsEsquerda: #ESMAGAMENTO
+            self.__vida = 0
 
-        ##### COLISAO ESQUERDA #####
-        if obstaculos[3]:
-            #print("COLISAO PELA ESQUERDA", obsEsquerda.nome)
-            if self.velx <= 0:
-                self.velx = 0
-                aceleracao = 0
-                self.x = obstaculos[3].corpo.right+1
+        # ##### COLISAO ESQUERDA #####
+        # if obsEsquerda:
+        #     if self.velx <= 0:
+        #         self.velx = 0
+        #         aceleracao = 0
+        #         self.x = obsEsquerda.corpo.right+1
+
+        ##### IMPEDE QUE O JOGADOR PASSE DA BORDA ESQUERDA #####
         if self.x <= 0:
             if self.velx <= 0:
                 self.velx = 0
                 aceleracao = 0
                 self.x = 0
-        ##### COLISAO DIREITA #####
-        if obstaculos[2]:
-            #print("COLISAO PELA DIREITA", obsDireita.nome)
-            if self.velx >= 0:
-                self.velx = 0
-                aceleracao = 0
-                self.x = obstaculos[2].corpo.left - self.largura
+
+        # ##### COLISAO DIREITA #####
+        # if obsDireita:
+        #     if self.velx >= 0:
+        #         self.velx = 0
+        #         aceleracao = 0
+        #         self.x = obsDireita.corpo.left - self.largura
+
+        ##### IMPEDE QUE O JOGADOR PASSE DA BORDA DIREITA #####
         if self.x >= mapa.tamanho[0]-self.largura:
             if self.velx >= 0:
                 self.velx = 0
                 aceleracao = 0
                 self.x = mapa.tamanho[0]-self.largura
 
-        ##### COLISAO BAIXO #####
-        if obstaculos[1]:
-            self.vely = 0
-            self.y = obstaculos[1].corpo.top - self.altura
-            if espaco:
-                self.vely = -self.poder.pulo
+        # ##### COLISAO BAIXO #####
+        # if obsBaixo:
+        #     self.vely = 0
+        #     self.y = obstaculos[1].corpo.top - self.altura
+        #     if espaco:
+        #         self.vely = -self.poder.pulo
 
-        ##### COLISAO CIMA #####
-        if obstaculos[0]:
-            if self.vely < 0:
-                self.vely = 0
-                self.y = obstaculos[0].corpo.bottom
+        # ##### COLISAO CIMA #####
+        # if obsCima:
+        #     if self.vely < 0:
+        #         self.vely = 0
+        #         self.y = obsCima.corpo.bottom
 
         #### COLISAO INIMIGOS ####
-        if not self.__invisivel:
-            for entidade in mapa.lista_de_entidades:
-                for i in range (len(obstaculos)):
-                    if isinstance(obstaculos[i], PoderManifestadoInimigo):
-                        if obstaculos[i] == entidade:
-                            print(entidade.contato[i])
-                            ##EMPURRA O JOGGADOR
-                            self.x = self.__posicao_comeco[0]
-                            self.y = self.__posicao_comeco[1]
-                            entidade.auto_destruir(mapa)
-                            self.__vida -= entidade.dano_contato
-                    elif isinstance(obstaculos[i], Entidade):
-                        if obstaculos[i] == entidade:
-                            if entidade.contato[i] == 'morrer':
-                                entidade.auto_destruir(mapa)
-
-                            elif entidade.contato[i] == 'dano':
-                                ##EMPURRA O JOGGADOR
-                                if self.face == 1:
-                                    self.x = self.__posicao_comeco[0]
-                                    self.y = self.__posicao_comeco[1]
-                                else: 
-                                    self.x = self.__posicao_comeco[0]
-                                    self.y = self.__posicao_comeco[1]
- 
-                                if self.__poder != CinzaDoGuri():
-                                    self.__poder = CinzaDoGuri()
-                                self.__vida -= entidade.dano_contato
+        # if not self.__invisivel:
+        #     for entidade in mapa.lista_de_entidades:
+        #         for i in range (len(obstaculos)):
+        #             if isinstance(obstaculos[i], PoderManifestadoInimigo):
+        #                 if obstaculos[i] == entidade:
+        #                     print(entidade.contato[i])
+        #                     ##EMPURRA O JOGGADOR
+        #                     self.x = self.__posicao_comeco[0]
+        #                     self.y = self.__posicao_comeco[1]
+        #                     entidade.auto_destruir(mapa)
+        #                     self.__vida -= entidade.dano_contato
+        #             elif isinstance(obstaculos[i], Entidade):
+        #                 if obstaculos[i] == entidade:
+        #                     if entidade.contato[i] == 'morrer':
+        #                         entidade.auto_destruir(mapa)
+        #
+        #                     elif entidade.contato[i] == 'dano':
+        #                         ##EMPURRA O JOGGADOR
+        #                         if self.face == 1:
+        #                             self.x = self.__posicao_comeco[0]
+        #                             self.y = self.__posicao_comeco[1]
+        #                         else:
+        #                             self.x = self.__posicao_comeco[0]
+        #                             self.y = self.__posicao_comeco[1]
+        #
+        #                         if self.__poder != CinzaDoGuri():
+        #                             self.__poder = CinzaDoGuri()
+        #                         self.__vida -= entidade.dano_contato
 
         ### CHECANDO VITÓRIA ###
         entidade_vitoria = 0
@@ -198,14 +245,18 @@ class Jogador(Movel):
             mapa.ganhou = True
 
         ##### GRAVIDADE ######
-        if not obstaculos[1]: self.vely += gravidade
+        if not obsBaixo: self.vely += gravidade
 
         ##### ATRITO ######
-        if aceleracao == 0:
+        if self.__aceleracao == 0:
             if self.velx < 0:
                 self.velx += atrito
             elif self.velx > 0:
-                self.velx -= atrito 
+                self.velx -= atrito
+
+        #### PULO ####
+        if obsBaixo and espaco:
+            self.vely = -self.poder.pulo
 
         ##### AJUSTE DE VELOCIDADE MAXIMA #####
         # entrando no castelo #

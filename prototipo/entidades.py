@@ -112,6 +112,37 @@ class Estatico():
             self.renderizar(tela, mapa)
         return False
 
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        ##### COLISAO ESQUERDA #####
+        if direcao == "esquerda":
+            if jogador.velx <= 0:
+                jogador.velx = 0
+                aceleracao = 0
+                jogador.x = self.corpo.right + 1
+        ##### COLISAO DIREITA #####
+        elif direcao == "direita":
+            if jogador.velx >= 0:
+                jogador.velx = 0
+                aceleracao = 0
+                jogador.x = self.corpo.left - jogador.largura
+        ##### COLISAO BAIXO #####
+        elif direcao == "baixo":
+            jogador.vely = 0
+            jogador.y = self.corpo.top - jogador.altura
+        ##### COLISAO CIMA #####
+        elif direcao == "cima":
+            if jogador.vely < 0:
+                jogador.vely = 0
+                jogador.y = self.corpo.bottom
+        return 0
+
+    def sofreu_colisao_outros(self, entidade, direcao):
+        if direcao in ["direita","esquerda"]:
+            entidade.velx = -entidade.velx
+        if direcao in ["baixo"]:
+            entidade.vely = 0
+            entidade.y = self.corpo.top - entidade.altura
+
 class Movel(Estatico):
 
     def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int, imagem: str,cor = [0,0,0]):
@@ -226,12 +257,22 @@ class Movel(Estatico):
             self.renderizar(tela, mapa)
         return False
 
+    # def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    #     pass
+
+    def sofreu_colisao_outros(self, entidade, direcao):
+        if direcao in ["direita","esquerda"]:
+            entidade.velx = -entidade.velx
+            self.velx = -self.velx
+        if direcao in ["baixo"]:
+            entidade.vely = 0
+            entidade.y = self.corpo.top - entidade.altura
+
 class Entidade(Movel):
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int, imagem:str, contato: list,cor = [0,0,0]):
+    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int, imagem:str,cor = (0,0,0)):
         super().__init__(nome, x, y, largura, altura, limiteVel, imagem,cor)
         self.__vida = vida
         self.__dano_contato = dano_contato
-        self.__contato = contato
 
     @property
     def vida(self):
@@ -256,3 +297,31 @@ class Entidade(Movel):
     @contato.setter
     def contato(self,contato):
         self.__contato = contato
+
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        ##### COLISAO ESQUERDA #####
+        if direcao == "esquerda":
+            if jogador.velx <= 0:
+                jogador.velx = 0
+                jogador.aceleracao = 0
+                jogador.x = self.corpo.right + 1
+            return self.__dano_contato
+        ##### COLISAO DIREITA #####
+        elif direcao == "direita":
+            if jogador.velx >= 0:
+                jogador.velx = 0
+                jogador.aceleracao = 0
+                jogador.x = self.corpo.left - jogador.largura
+            return self.__dano_contato
+        ##### COLISAO BAIXO #####
+        elif direcao == "baixo":
+            jogador.vely = 0
+            jogador.y = self.corpo.top - jogador.altura
+            self.auto_destruir(mapa)
+            return 0
+        ##### COLISAO CIMA #####
+        elif direcao == "cima":
+            if jogador.vely < 0:
+                jogador.vely = 0
+                jogador.y = self.corpo.bottom
+            return self.__dano_contato

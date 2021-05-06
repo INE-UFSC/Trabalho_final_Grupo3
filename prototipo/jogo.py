@@ -61,7 +61,7 @@ class Tela_De_Jogo(Tela):
     def atualizar(self, ciclo):
         '''Logica de jogo, envolvendo controles, colisao e renderizacao
 
-        Deve ser chamada pela funcao gerente 60 vezes por segundo
+        Deve ser chamada pela funcdao gerente 60 vezes por segundo
 
         @param ciclo: responsavel pelas frames de animacao do Guri
         
