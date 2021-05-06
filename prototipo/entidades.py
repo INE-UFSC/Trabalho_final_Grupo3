@@ -266,10 +266,18 @@ class Movel(Estatico):
     #     pass
 
     def sofreu_colisao_outros(self, entidade, direcao):
-        if direcao in ["direita","esquerda"]:
-            entidade.velx = -entidade.velx
-            self.velx = -self.velx
-        if direcao in ["baixo"]:
+        if direcao == "esquerda":
+            if entidade.velx <= 0:
+                entidade.velx = - entidade.velx
+                entidade.x = self.corpo.right + 1
+                self.velx = - self.velx
+        ##### COLISAO DIREITA #####
+        elif direcao == "direita":
+            if entidade.velx >= 0:
+                entidade.x = self.corpo.left - entidade.largura
+                entidade.velx = - entidade.velx
+                self.velx = - self.velx
+        elif direcao in ["baixo"]:
             entidade.vely = 0
             entidade.y = self.corpo.top - entidade.altura
 
