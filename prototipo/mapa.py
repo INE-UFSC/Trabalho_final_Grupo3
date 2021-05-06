@@ -114,7 +114,7 @@ class Mapa:
 #       [["tipo",(parametros)],["tipo",(parametros)]]
 # ]
 
-width = 2200
+width = 3200
 height = 700
 fase1 = [[
     ["Muro",('cano1', 550, height-125, height)],
@@ -131,8 +131,6 @@ fase1 = [[
     ["Chao",('chao3', height-10, 2500, 3205)],
 
     ##### BORDA E VITORIA #####
-    ["Borda",('borda1', 0)],
-    ["Borda",('borda2', 3000)],
     ["Vitoria",(1900,height-200,100,190)],
 
     ##### PODERES #####
@@ -145,7 +143,8 @@ fase1 = [[
     ["Atirador",('atiro', 1150, height - 50)],
     ["Rato",('rato1', 610, height - 50)],
     ["Rato",('rato3', 900, height - 50)],
-    ["Voador",('rato2', 100, height - 500,200)]
+    ["Voador",('rato2', 100, height - 500,200)],
+    ["Atirador",('atiro', 1150, height - 50)]
 
 ],
 
@@ -173,8 +172,6 @@ fase2 = [[
     ["Voador",('voador2', 600, height - 250,200)],
 
     ##### BORDA E VITORIA #####
-    ["Borda",('borda1', 0)],
-    ["Borda",('borda2', 2000)],
     ["Vitoria",(1900,height-200,100,190)]
 
 ],[["Vida",('vida', 140, 50)],
