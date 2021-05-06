@@ -127,7 +127,11 @@ class Jogador(Movel):
                 self.velx = 0
                 aceleracao = 0
                 self.x = obstaculos[3].corpo.right+1
-
+        if self.x <= 0:
+            if self.velx <= 0:
+                self.velx = 0
+                aceleracao = 0
+                self.x = 0
         ##### COLISAO DIREITA #####
         if obstaculos[2]:
             #print("COLISAO PELA DIREITA", obsDireita.nome)
@@ -135,6 +139,11 @@ class Jogador(Movel):
                 self.velx = 0
                 aceleracao = 0
                 self.x = obstaculos[2].corpo.left - self.largura
+        if self.x >= mapa.tamanho[0]-self.largura:
+            if self.velx >= 0:
+                self.velx = 0
+                aceleracao = 0
+                self.x = mapa.tamanho[0]-self.largura
 
         ##### COLISAO BAIXO #####
         if obstaculos[1]:
