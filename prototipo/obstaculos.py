@@ -23,7 +23,7 @@ class CanoHorizontal(Estatico):
 
 class Chao(Estatico): 
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
-        altura = 10
+        altura = 25
         super().__init__(nome, esquerda, y, altura, direita-esquerda, "0",(184, 20, 20))
 
 class Vida(Estatico):

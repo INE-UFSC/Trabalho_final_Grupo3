@@ -5,7 +5,7 @@ from jogador import Jogador
 import json
 
 class Mapa:
-    def __init__(self, tamanho_campo, jogador):
+    def __init__(self, tamanho_campo):
         self.__lista_de_entidades = []
         self.__lista_de_display = []
         self.__campo_visivel = pygame.Rect(0,0,tamanho_campo[0],tamanho_campo[1])
@@ -14,7 +14,6 @@ class Mapa:
         self.__ganhou = False
         self.__vida_jogador = ""
         self.escala_tempo = 1
-        self.__jogador = jogador
 
     @property
     def lista_de_entidades(self):
@@ -87,8 +86,10 @@ class Mapa:
                 item = listatipos[item[0]](item[1])
             self.__lista_de_display.append(item)
         self.__tamanho = lista_todos[2]
+        self.__jogador = Jogador("mario", 200, self.tamanho[1]-50, 0, 100)
         for entidade in self.__lista_de_entidades:
             if entidade.imagem != "0": entidade.sprite = SpriteSheet(entidade.imagem)
+        return self.__jogador
 
     def atualizar(self, tela,campo_visivel,dimensoes_tela):
         # O CAMPO_VISIVEL FAZ COM QUE APENAS OBJETOS NA TELA SEJAM RENDERIZADOS
@@ -178,8 +179,32 @@ fase2 = [[
     ["Tempo",('tempo', 470, 50)],
     ["Biscoitos",('moeda', 800, 50)]],
 
-    (2100,600)]
+    (width,height)]
 
+width = 1000
+height = 2000
+fase3 = [[
+    ["Muro",('cano1', -9000, height-125, height)],
+    ["Muro",('cano2', 825, height-150, height)],
+    ["Muro",('cano2', 500, height-75, height)],
+    ["Muro",('cano3', 225, height-400, height-250)],
+
+    ["Chao",('chao1', height - 10, 0, 1000)],
+    ["Chao",('chao2', height - 250, 0, 700)],
+    ["Chao",('chao3', height - 500, 400, 700)],
+
+    ##### INIMIGOS #####
+    ["Rato",('rato1', 600, height - 50)],
+    
+
+    ##### BORDA E VITORIA #####
+    ["Vitoria",(500,height-690,100,190)]
+
+],[["Vida",('vida', 140, 50)],
+    ["Tempo",('tempo', 470, 50)],
+    ["Biscoitos",('moeda', 800, 50)]],
+
+    (width,height)]
 
 with open("mapas.json",'w') as m:
-    json.dump({"fase1":fase1,"fase2":fase2},m)
+    json.dump({"fase1":fase1,"fase2":fase2,"fase3":fase3},m)

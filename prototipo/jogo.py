@@ -1,6 +1,6 @@
 import pygame, time, math, random
 from jogador import Jogador
-from poderes import *
+from poderes import FeitoNoCeu
 from mapa import Mapa, fase1
 from menu import *
 from efeitosrender import *
@@ -50,14 +50,15 @@ class Tela_De_Jogo(Tela):
         self.__bola_fogo = False
 
         ###### INSTANCIAS DE OBJETOS ######
-        self.__jogador = Jogador('mario',200, 550, 0, 1)
+        self.__jogador = Jogador('mario',200, -1000, 0, 1)
 
         ##### MAPA #####
-        self.__mapa = Mapa((width, height), self.__jogador)
-        self.__mapa.iniciar(nivel)
+        self.__mapa = Mapa((width, height))
+        #self.__jogador = Jogador('mario',200, 0, 0, 1)
+        self.__jogador = self.__mapa.iniciar(nivel)
         self.__comeco = pygame.time.get_ticks()/1000
     
-    def atualizar(self, ciclo)->int:
+    def atualizar(self, ciclo):
         '''Logica de jogo, envolvendo controles, colisao e renderizacao
 
         Deve ser chamada pela funcao gerente 60 vezes por segundo
@@ -154,7 +155,7 @@ class Jogo:
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))
 
-    def logica_menu(self)->int:
+    def logica_menu(self):
         '''logica do sistema do menu principal
         cria uma tela de menu, e gerencia botoes
         '''
@@ -185,7 +186,7 @@ class Jogo:
                 elif aconteceu == 3:
                     pass
 
-    def rodar(self,nivel)->int:
+    def rodar(self,nivel):
         ''' Funcao responsavel por colocar o jogo propriamente dito na tela
         Loop define a taxa de quadros do jogo
         

@@ -11,7 +11,7 @@ class Jogador(Movel):
         self.__vida = 100
         self.__nome = nome
         self.__sprite = SpriteSheet("guri")
-        self.__posicao_comeco = (200, 550)
+        self.__posicao_comeco = (x, y)
 
         ##### ATRIBUTOS POSICIONAIS #####
         altura = 46
