@@ -135,7 +135,7 @@ class Atirador(Entidade):
         self.x += self.velx * self.escala_tempo
 
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
-        if self.corpo.colliderect(mapa.campo_visivel):
+        if self.corpo.colliderect(mapa.campo_menor):
             self.velx = 0
             dist_x_jogador = self.x - mapa.jogador.x
             if dist_x_jogador > 0:

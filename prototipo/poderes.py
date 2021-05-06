@@ -66,7 +66,7 @@ class PretoDoNinja(PoderGenerico):
     def atualizar(self, tela, mapa):
         if self.descanso > 0:
             self.descanso -= 1
-        return 0
+        return False
 
 ##### PODER DA BOLA DE FOGO #####
 class VermelhoDoMago(PoderGenerico):
@@ -103,7 +103,7 @@ class AzulDoNerd(PoderGenerico):
             self.__stamina -= 1
             return True
         else:
-            return 0
+            return False
 
 ##### PODER DE PARAR O TEMPO #####
 class PlatinaEstelar(PoderGenerico):
@@ -124,7 +124,7 @@ class PlatinaEstelar(PoderGenerico):
             mapa.escala_tempo = 1
         if self.descanso > 0:
             self.descanso -= 1
-        return 0
+        return False
 
 #### PODER DO INIMIGO ####
 class Projetil(PoderGenerico):
@@ -156,7 +156,7 @@ class FeitoNoCeu(PoderGenerico):
         self.__mapa = mapa
         if self.__stamina >= 1:
             mapa.escala_tempo += 0.05 * (math.log(mapa.escala_tempo,2)+1)
-        return 0
+        return False
 
     
 
@@ -318,7 +318,7 @@ class Bala(PoderManifestadoInimigo):
         self.velx = velx
 
     def mover(self, dimensoesTela, mapa):
-        
+
         #### SE MOVE ####
         self.y += self.vely*self.escala_tempo
         self.x += self.velx*self.escala_tempo

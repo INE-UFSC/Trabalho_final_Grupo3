@@ -29,6 +29,10 @@ class Jogador(Movel):
         super().__init__(nome, x, y, largura, altura, limite_vel, "0")
 
     @property
+    def invisivel(self):
+        return self.__invisivel
+
+    @property
     def poder(self):
         return self.__poder
 

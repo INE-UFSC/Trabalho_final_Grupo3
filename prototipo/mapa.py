@@ -14,6 +14,7 @@ class Mapa:
         self.__ganhou = False
         self.__vida_jogador = ""
         self.escala_tempo = 1
+        self.campo_menor = pygame.Rect(0,0,tamanho_campo[0],tamanho_campo[1])
 
     @property
     def lista_de_entidades(self):
