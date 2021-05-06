@@ -118,11 +118,11 @@ class Atirador(Entidade):
         vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura))/60
         velx = (mapa.jogador.x - self.x)/60
         if self.corpo.colliderect(mapa.campo_visivel):
-            if self.__descanso_poder == 0:
+            if self.__descanso_poder <= 0:
                 self.__poder.acao(self,tela, mapa, velx, vely)
                 self.__descanso_poder = 300
             else:
-                self.__descanso_poder -= 1
+                self.__descanso_poder -= 1* self.escala_tempo
         return False
 
     def mover(self, dimensoesTela, mapa):

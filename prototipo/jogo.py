@@ -1,7 +1,7 @@
 import pygame, time, math, random
 from jogador import Jogador
 from poderes import FeitoNoCeu
-from mapa import Mapa, fase1
+from mapa import Mapa, carregar_mapa
 from menu import *
 from efeitosrender import *
 
@@ -213,5 +213,6 @@ class Jogo:
 
 
 pygame.init()
+carregar_mapa()
 jogo = Jogo()
 jogo.menu_inicial()

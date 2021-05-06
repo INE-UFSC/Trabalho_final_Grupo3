@@ -114,99 +114,99 @@ class Mapa:
 #       [["tipo",(parametros)],["tipo",(parametros)]],
 #       [["tipo",(parametros)],["tipo",(parametros)]]
 # ]
+def carregar_mapa():
+    width = 3200
+    height = 700
+    fase1 = [[
+        ["Muro",('cano1', 550, height-125, height)],
+        ["Muro",('cano2', 800, height-125, height)],
+        ["Muro",('cano3', 1500, height-125, height)],
 
-width = 3200
-height = 700
-fase1 = [[
-    ["Muro",('cano1', 550, height-125, height)],
-    ["Muro",('cano2', 800, height-125, height)],
-    ["Muro",('cano3', 1500, height-125, height)],
+        ["Bloco",('bloco1', 200, height-350)],
+        ["Bloco",('bloco2', 250, height-300)],
+        ["Bloco",('bloco3', 300, height-250)],
+        ["Bloco",('bloco4', 350, height-200)],
+        ["Bloco",('bloco4', 1000, height-200)],
+        ["Bloco",('bloco4', 1020, height-200)],
 
-    ["Bloco",('bloco1', 200, height-350)],
-    ["Bloco",('bloco2', 250, height-300)],
-    ["Bloco",('bloco3', 300, height-250)],
-    ["Bloco",('bloco4', 350, height-200)],
-    ["Bloco",('bloco4', 1000, height-200)],
-    ["Bloco",('bloco4', 1020, height-200)],
+        ["Chao",('chao1', height-10, -200, 350)],
+        ["Chao",('chao2', height-10, 450, 2205)],
+        ["Chao",('chao3', height-10, 2500, 3205)],
 
-    ["Chao",('chao1', height-10, -200, 350)],
-    ["Chao",('chao2', height-10, 450, 2205)],
-    ["Chao",('chao3', height-10, 2500, 3205)],
+        ##### BORDA E VITORIA #####
+        ["Vitoria",(1900,height-200,100,190)],
 
-    ##### BORDA E VITORIA #####
-    ["Vitoria",(1900,height-200,100,190)],
+        ##### PODERES #####
+        ["BandanaDoNinja",('shuriken1', 1200, height-100)],
+        ["CartolaDoMago",('orbe1', 250, height-500)],
+        ["OculosDoNerd",('oculos1', 1525, height-300)],
+        ["VerdeBebe",('orbe',1600,height-50)],
+        ["BoneMarinheiro",('cabelo', 1400, height-100)],
+        ##### INIMIGOS #####
+        ["Rato",('rato1', 610, height - 50)],
+        ["Rato",('rato3', 900, height - 50)],
+        ["Voador",('rato2', 100, height - 500,200)],
+        ["Atirador",('atiro', 1150, height - 50)],
+        ["Atirador",('atiro2', 1000, height - 205)]
 
-    ##### PODERES #####
-    ["BandanaDoNinja",('shuriken1', 1200, height-100)],
-    ["CartolaDoMago",('orbe1', 250, height-500)],
-    ["OculosDoNerd",('oculos1', 1525, height-300)],
-    ["VerdeBebe",('orbe',1600,height-50)],
-    ["BoneMarinheiro",('cabelo', 1400, height-100)],
-    ##### INIMIGOS #####
-    ["Rato",('rato1', 610, height - 50)],
-    ["Rato",('rato3', 900, height - 50)],
-    ["Voador",('rato2', 100, height - 500,200)],
-    ["Atirador",('atiro', 1150, height - 50)],
-    ["Atirador",('atiro2', 1000, height - 205)]
+    ],
 
-],
+    [   ["Vida",('vida', 140, 50)],
+        ["Tempo",('tempo', 470, 50)],
+        ["Biscoitos",('moeda', 800, 50)]],
 
-[   ["Vida",('vida', 140, 50)],
-    ["Tempo",('tempo', 470, 50)],
-    ["Biscoitos",('moeda', 800, 50)]],
+        (width,height)]
 
-    (width,height)]
+    width = 2100
+    height = 600
+    fase2 = [[
+        ["Muro",('cano1', -9000, height-125, height)],
+        ["Muro",('cano2', 1600, height-125, height)],
 
-width = 2100
-height = 600
-fase2 = [[
-    ["Muro",('cano1', -9000, height-125, height)],
-    ["Muro",('cano2', 1600, height-125, height)],
+        ["Chao",('chao1', height - 10, -1000, 2105)],
 
-    ["Chao",('chao1', height - 10, -1000, 2105)],
+        ##### INIMIGOS #####
+        ["Rato",('rato1', 100, height - 50)],
+        ["Rato",('rato2', 600, height - 50)],
+        ["Rato",('rato3', 1000, height - 50)],
+        ["Rato",('rato4', 1200, height - 50)],
+        ["Rato",('rato5', 1400, height - 50)],
+        ["Voador",('voador1', 100, height - 250,200)],
+        ["Voador",('voador2', 600, height - 250,200)],
 
-    ##### INIMIGOS #####
-    ["Rato",('rato1', 100, height - 50)],
-    ["Rato",('rato2', 600, height - 50)],
-    ["Rato",('rato3', 1000, height - 50)],
-    ["Rato",('rato4', 1200, height - 50)],
-    ["Rato",('rato5', 1400, height - 50)],
-    ["Voador",('voador1', 100, height - 250,200)],
-    ["Voador",('voador2', 600, height - 250,200)],
+        ##### BORDA E VITORIA #####
+        ["Vitoria",(1900,height-200,100,190)]
 
-    ##### BORDA E VITORIA #####
-    ["Vitoria",(1900,height-200,100,190)]
+    ],[["Vida",('vida', 140, 50)],
+        ["Tempo",('tempo', 470, 50)],
+        ["Biscoitos",('moeda', 800, 50)]],
 
-],[["Vida",('vida', 140, 50)],
-    ["Tempo",('tempo', 470, 50)],
-    ["Biscoitos",('moeda', 800, 50)]],
+        (width,height)]
 
-    (width,height)]
+    width = 1000
+    height = 2000
+    fase3 = [[
+        ["Muro",('cano1', -9000, height-125, height)],
+        ["Muro",('cano2', 825, height-150, height)],
+        ["Muro",('cano2', 500, height-75, height)],
+        ["Muro",('cano3', 225, height-400, height-250)],
 
-width = 1000
-height = 2000
-fase3 = [[
-    ["Muro",('cano1', -9000, height-125, height)],
-    ["Muro",('cano2', 825, height-150, height)],
-    ["Muro",('cano2', 500, height-75, height)],
-    ["Muro",('cano3', 225, height-400, height-250)],
+        ["Chao",('chao1', height - 10, 0, 1000)],
+        ["Chao",('chao2', height - 250, 0, 700)],
+        ["Chao",('chao3', height - 500, 400, 700)],
 
-    ["Chao",('chao1', height - 10, 0, 1000)],
-    ["Chao",('chao2', height - 250, 0, 700)],
-    ["Chao",('chao3', height - 500, 400, 700)],
+        ##### INIMIGOS #####
+        ["Rato",('rato1', 600, height - 50)],
+        
 
-    ##### INIMIGOS #####
-    ["Rato",('rato1', 600, height - 50)],
-    
+        ##### BORDA E VITORIA #####
+        ["Vitoria",(500,height-690,100,190)]
 
-    ##### BORDA E VITORIA #####
-    ["Vitoria",(500,height-690,100,190)]
+    ],[["Vida",('vida', 140, 50)],
+        ["Tempo",('tempo', 470, 50)],
+        ["Biscoitos",('moeda', 800, 50)]],
 
-],[["Vida",('vida', 140, 50)],
-    ["Tempo",('tempo', 470, 50)],
-    ["Biscoitos",('moeda', 800, 50)]],
+        (width,height)]
 
-    (width,height)]
-
-with open("mapas.json",'w') as m:
-    json.dump({"fase1":fase1,"fase2":fase2,"fase3":fase3},m)
+    with open("mapas.json",'w') as m:
+        json.dump({"fase1":fase1,"fase2":fase2,"fase3":fase3},m)
