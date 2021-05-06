@@ -106,14 +106,6 @@ class Mapa:
 
             elemento_hud.atualizar(tela,self,dimensoes_tela)
 
-##### INSTANCIAS DE MAPAS #####
-
-### !!! RODAR ESTE ARQUIVO QUANDO FOR ADICIONAR MAPA !!! ###
-
-# faseX = [
-#       [["tipo",(parametros)],["tipo",(parametros)]],
-#       [["tipo",(parametros)],["tipo",(parametros)]]
-# ]
 def carregar_mapa():
     width = 3200
     height = 700
