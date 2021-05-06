@@ -117,13 +117,11 @@ class Estatico():
         if direcao == "esquerda":
             if jogador.velx <= 0:
                 jogador.velx = 0
-                aceleracao = 0
                 jogador.x = self.corpo.right + 1
         ##### COLISAO DIREITA #####
         elif direcao == "direita":
             if jogador.velx >= 0:
                 jogador.velx = 0
-                aceleracao = 0
                 jogador.x = self.corpo.left - jogador.largura
         ##### COLISAO BAIXO #####
         elif direcao == "baixo":
@@ -137,9 +135,16 @@ class Estatico():
         return 0
 
     def sofreu_colisao_outros(self, entidade, direcao):
-        if direcao in ["direita","esquerda"]:
-            entidade.velx = -entidade.velx
-        if direcao in ["baixo"]:
+        if direcao == "esquerda":
+            if entidade.velx <= 0:
+                entidade.velx = - entidade.velx
+                entidade.x = self.corpo.right + 1
+        ##### COLISAO DIREITA #####
+        elif direcao == "direita":
+            if entidade.velx >= 0:
+                entidade.x = self.corpo.left - entidade.largura
+                entidade.velx = - entidade.velx
+        elif direcao in ["baixo"]:
             entidade.vely = 0
             entidade.y = self.corpo.top - entidade.altura
 
