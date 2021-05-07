@@ -135,6 +135,7 @@ class Estatico():
         return 0
 
     def sofreu_colisao_outros(self, entidade, direcao):
+        ##### COLISAO ESQUERDA #####
         if direcao == "esquerda":
             if entidade.velx <= 0:
                 entidade.velx = - entidade.velx

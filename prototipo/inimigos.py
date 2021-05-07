@@ -9,7 +9,7 @@ class Rato(Entidade):
         danoContato = 50
         largura = 46
         altura = 46
-        limiteVel = 4
+        limiteVel = 1
         super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0",(88, 51, 0))
         self.vely = 0
         self.velx = 1
@@ -20,6 +20,65 @@ class Rato(Entidade):
 
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[Bala, PoderNoMapa])
+
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsBaixo: obsBaixo.sofreu_colisao_outros(self, "baixo")
+
+        ##### GRAVIDADE ######
+        else: self.vely += gravidade * self.escala_tempo
+
+        self.y += self.vely * self.escala_tempo
+        self.x += self.velx * self.escala_tempo
+
+class PorcoEspinho(Entidade):
+    def __init__(self, nome:str, x:int, y:int):
+        vida = 1
+        danoContato = 100
+        largura = 46
+        altura = 46
+        limiteVel = 1
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (50, 50, 50))
+        self.vely = 0
+        self.velx = 0.5
+        self.xinicial = x
+        self.escala_tempo = 1
+
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        ##### COLISAO ESQUERDA #####
+        if not jogador.invisivel:
+            if direcao == "esquerda":
+                if jogador.velx <= 0:
+                    jogador.velx = 0
+                    jogador.aceleracao = 0
+                    jogador.x = self.corpo.right + 1
+                return self.__dano_contato
+            ##### COLISAO DIREITA #####
+            elif direcao == "direita":
+                if jogador.velx >= 0:
+                    jogador.velx = 0
+                    jogador.aceleracao = 0
+                    jogador.x = self.corpo.left - jogador.largura
+                return self.__dano_contato
+            ##### COLISAO BAIXO #####
+            elif direcao == "baixo":
+                jogador.vely = 0
+                jogador.y = self.corpo.top - jogador.altura
+                self.auto_destruir(mapa)
+                return self.__dano_contato
+            ##### COLISAO CIMA #####
+            elif direcao == "cima":
+                if jogador.vely < 0:
+                    jogador.vely = 0
+                    jogador.y = self.corpo.bottom
+                return self.__dano_contato
+        else:
+            return 0
+
+    def mover(self, dimensoesTela, mapa):
+        ##### COLISOES #####
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
         if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
         if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")

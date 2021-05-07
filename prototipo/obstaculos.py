@@ -3,30 +3,34 @@ from entidades import Estatico, renderizar_hitbox, renderizar_sprite
 from sprites import *
 
 # FUNCOES DE ATUALIZAR NECESSITAM DA AREA VISIVEL PARA RENDERIZAR CORRETAMENTE
-class Bloco(Estatico):
+class Obstaculo(Estatico):
+    def __init__(self, nome:str, x: int, y:int, altura: int, largura: int, arquivo: str, cor:tuple):
+        super().__init__(nome, x, y, altura, largura, arquivo ,cor)
+
+class Bloco(Obstaculo):
     def __init__(self, nome: str, x: int, y: int):
         largura = 30
         altura = 30
         super().__init__(nome, x, y, altura, largura, "0",(255, 102, 0))
 
-class Muro(Estatico):
+class Muro(Obstaculo):
     def __init__(self, nome: str, x: int, topo: int, base: int):
         largura = 45
         altura= base-topo
         super().__init__(nome, x, topo, altura, largura, "muro",(11, 137, 0))
 
-class CanoHorizontal(Estatico):
+class CanoHorizontal(Obstaculo):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
         altura = 50
         largura = direita-esquerda
         super().__init__(nome, esquerda, y, altura, largura, "0",(11, 137, 0))
 
-class Chao(Estatico): 
+class Chao(Obstaculo):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
         altura = 25
         super().__init__(nome, esquerda, y, altura, direita-esquerda, "0",(184, 20, 20))
 
-class Vida(Estatico):
+class Vida(Obstaculo):
     def __init__(self, nome: str, x: int, y: int):
         altura = 30
         largura = 100
@@ -51,7 +55,7 @@ class Vida(Estatico):
         tela.blit(mostra_vida, (self.x, self.y))
         return False
 
-class Tempo(Estatico):
+class Tempo(Obstaculo):
     pygame.init()
     def __init__(self, nome: str, x: int, y: int):
         altura = 30
@@ -77,7 +81,7 @@ class Tempo(Estatico):
         tela.blit(self.__contador, (self.x, self.y))
         return False
 
-class Biscoitos(Estatico):
+class Biscoitos(Obstaculo):
     def __init__(self, nome: str, x: int, y: int):
         altura = 30
         largura = 60
@@ -90,7 +94,7 @@ class Biscoitos(Estatico):
         self.renderizar(tela, mapa)
         return False
 
-class Vitoria(Estatico):
+class Vitoria(Obstaculo):
     def __init__(self, x,y,largura,altura):
         super().__init__("vitoria", x, y, altura, largura, "0",(254, 254, 0))
     
@@ -98,7 +102,7 @@ class Vitoria(Estatico):
         self.renderizar(tela, mapa)
         return False
 
-class Borda(Estatico):
+class Borda(Obstaculo):
     def __init__(self, nome: str, x: int):
         y = -1000
         altura = 2000

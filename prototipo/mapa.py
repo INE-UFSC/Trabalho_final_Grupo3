@@ -138,9 +138,10 @@ def carregar_mapa():
 
         ##### INIMIGOS #####
         ["Rato",('rato1', 610, height - 50)],
-        ["Rato",('rato3', 900, height - 50)],
-        ["Voador",('rato2', 100, height - 500,200)],
-        ["Atirador",('atiro', 1150, height - 50)],
+        #["Rato",('rato3', 900, height - 50)],
+        ["Voador",('voador1', 100, height - 500,200)],
+        #["PorcoEspinho", ('porcoespinho1', 900, height - 50)],
+        #["Atirador",('atiro', 1150, height - 50)],
         ["Atirador",('atiro2', 1000, height - 205)]
 
     ],

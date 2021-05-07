@@ -143,14 +143,12 @@ class Tela_De_Jogo(Tela):
             self.__jogador.vida_pra_zero()
         return 2
 
-        
-
 class Jogo:
     def __init__(self):
         ###### INFORMACOES TA TELA ######
         (width, height) = (1000, 600)  # Tamanho da tela
         self.__screen = pygame.display.set_mode((width, height)) #Cria o objeto da tela
-        pygame.display.set_caption('Luigi Vermelho')
+        pygame.display.set_caption('As Aventuras do Guri')
         self.__contadormenu = 0
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))
