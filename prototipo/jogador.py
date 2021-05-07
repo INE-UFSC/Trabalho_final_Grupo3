@@ -17,6 +17,7 @@ class Jogador(Movel):
         altura = 46
         largura = 46
         limite_vel = 5
+        self.__tamanho_jogador = (altura, largura)
         self.__face = 1
         self.__aceleracao = 0
 
@@ -29,9 +30,19 @@ class Jogador(Movel):
         super().__init__(nome, x, y, largura, altura, limite_vel, "0")
 
     @property
+<<<<<<< Updated upstream
     def invisivel(self):
         return self.__invisivel
 
+=======
+    def tamanho_jogador(self):
+        return self.__tamanho_jogador
+
+    @tamanho_jogador.setter
+    def tamanho_jogador(self, tamanho_jogador):
+        self.__tamanho_jogador = tamanho_jogador
+    
+>>>>>>> Stashed changes
     @property
     def poder(self):
         return self.__poder

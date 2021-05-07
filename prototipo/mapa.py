@@ -70,7 +70,7 @@ class Mapa:
             "BandanaDoNinja":BandanaDoNinja,"CartolaDoMago":CartolaDoMago,
             "OculosDoNerd":OculosDoNerd,"VerdeBebe":VerdeBebe,
             "BoneMarinheiro":BoneMarinheiro,"Rato":Rato,"Voador":Voador, "Atirador":Atirador,
-            "Vida":Vida,"Tempo":Tempo,"Biscoitos":Biscoitos} 
+            "Vida":Vida,"Tempo":Tempo,"Biscoitos":Biscoitos, "Chakra":Chakra} 
         with open("mapas.json") as m:
             lista_mapas = json.load(m)
         lista_todos = lista_mapas[entidades]
@@ -135,7 +135,11 @@ def carregar_mapa():
         ["OculosDoNerd",('oculos1', 1525, height-300)],
         ["VerdeBebe",('orbe',1600,height-50)],
         ["BoneMarinheiro",('cabelo', 1400, height-100)],
+<<<<<<< Updated upstream
 
+=======
+        
+>>>>>>> Stashed changes
         ##### INIMIGOS #####
         ["Rato",('rato1', 610, height - 50)],
         #["Rato",('rato3', 900, height - 50)],
@@ -193,6 +197,8 @@ def carregar_mapa():
         ##### INIMIGOS #####
         ["Rato",('rato1', 600, height - 50)],
         
+        ### PODERES #####
+        ["Chakra", ("Chakra", 200, height-125)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria",(500,height-690,100,190)]

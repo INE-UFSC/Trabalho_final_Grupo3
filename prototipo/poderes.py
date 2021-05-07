@@ -3,6 +3,7 @@ import math
 from entidades import *
 from obstaculos import *
 from inimigos import *
+from time import sleep
 
 
 ##### PODERES NO JOGADOR #####
@@ -158,6 +159,21 @@ class FeitoNoCeu(PoderGenerico):
             mapa.escala_tempo += 0.05 * (math.log(mapa.escala_tempo,2)+1)
         return False
 
+###### ataque ninja #####
+class JutsuDosClones(PoderGenerico):
+    def __init__(self):
+        super().__init__(False,0,5,9,40)
+
+    def acao(self, jogador, screen, mapa):
+        mapa.lista_de_entidades.append(Clones([jogador.x,jogador.y], screen, mapa, jogador.face, jogador.tamanho_jogador))
+        self.descanso = self.recarga
+        
+
+    def atualizar(self,tela,mapa):
+        if self.descanso > 0:
+            self.descanso -= 1
+        return 0
+
     
 
 ##### ITENS DOS PODERES NO MAPA #####
@@ -221,6 +237,12 @@ class BoneMarinheiro(PoderNoMapa):
 class VerdeBebe(PoderNoMapa):
     def __init__(self, nome, x, y):
         super().__init__(nome, x, y, FeitoNoCeu(), "0",(5, 200, 40))
+
+class Chakra(PoderNoMapa):
+    def __init__(self, nome, x, y):
+        super().__init__(nome, x, y, JutsuDosClones(), "0",(255, 255, 0))
+
+
 
 
 ##### OBJETOS CRIADOS POR PODERES #####
@@ -288,6 +310,7 @@ class BolaFogo(PoderManifestado):
                                                                       self.corpo.w, 
                                                                       self.corpo.h])
 
+
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo-self.escala_tempo,0.05),-0.05)
@@ -333,6 +356,103 @@ class Bala(PoderManifestadoInimigo):
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo-self.escala_tempo,0.05),-0.05)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        if (self.duracao >  0):
+            self.mover(dimensoes_tela, mapa)
+            self.renderizar(tela, mapa)
+            self.duracao -= 1*self.escala_tempo
+            return False
+        return True
+
+
+class Clones(PoderManifestado):
+    def __init__(self, pos_inicial , screen, mapa, vel, tamanho_jogador):
+        x = pos_inicial[0] + 50*vel
+        y = pos_inicial[1] - 105
+        largura =  tamanho_jogador[1]
+        altura = tamanho_jogador[0]
+        vida = 1
+        limiteVel = 3 * vel
+        dano_contato = 0
+        duracao = 120
+        #self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        super().__init__("JutsuDosClones",x,y,largura,altura,limiteVel,vida,dano_contato, duracao, "0")
+        self.escala_tempo = 1.0
+        self.mapa = mapa
+        self.vely = 8
+        self.velx = 6 * vel
+        self.x1 = pos_inicial[0] + 50 * vel ##segundo clone
+        self.y1 = pos_inicial[1] 
+        self.x2 = (pos_inicial[0] + 200 * vel) ##terceiro clone
+        self.y2 = pos_inicial[1] - 105
+
+    def mover(self, dimensoesTela, mapa):
+
+        ##### COLISOES #####
+
+        # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [Clones, PoderNoMapa])
+
+        for i in range(len(obstaculos)):
+            if isinstance(obstaculos[i], Entidade):
+                obstaculos[i].auto_destruir(mapa)
+                self.auto_destruir(mapa)
+
+        ##### HORIZONTAIS #####
+        if obstaculos[3] or obstaculos[2]:
+            #self.duracao = 0
+            #self.velx = -self.velx
+            self.auto_destruir(mapa)
+
+        ##### VERTICAIS #####
+        if obstaculos[1] or obstaculos[0]:
+            pass
+            # self.auto_destruir(mapa)
+            #self.vely = -max(self.vely*4/5,8)
+            #self.y = obsBaixo.corpo.top - self.altura'''
+        #if not obstaculos[1]: self.vely += gravidade*self.escala_tempo
+
+        self.y += self.vely*self.escala_tempo
+        self.x += self.velx*self.escala_tempo
+        if self.duracao < 70 and self.duracao > 40:
+            #self.y1 += self.vely*self.escala_tempo
+            self.x1 += self.velx*self.escala_tempo
+        elif self.duracao < 40:
+            self.y2 += self.vely*self.escala_tempo
+            self.x2 -= self.velx*self.escala_tempo
+
+    def renderizar(self, tela, mapa):
+
+        if self.duracao >= 80:
+            pygame.draw.rect(tela, (50,50,0),[self.corpo.x - mapa.campo_visivel.x, 
+                                                                      self.corpo.y - mapa.campo_visivel.y, 
+                                                                      self.corpo.w, 
+                                                                      self.corpo.h])
+    
+
+        if self.duracao < 70 and self.duracao > 40:
+            pygame.draw.rect(tela, (50,50,0),[self.corpo.x - mapa.campo_visivel.x, 
+                                                                      self.corpo.y - mapa.campo_visivel.y, 
+                                                                      self.corpo.w, 
+                                                                      self.corpo.h])
+        if self.duracao < 50:
+            pygame.draw.rect(tela, (50,50,0),[self.corpo.x - mapa.campo_visivel.x, 
+                                                                      self.corpo.y - mapa.campo_visivel.y, 
+                                                                      self.corpo.w, 
+                                                                      self.corpo.h])
+
+                    
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        if self.escala_tempo != mapa.escala_tempo:
+            self.escala_tempo += max(min(mapa.escala_tempo-self.escala_tempo,0.05),-0.05)
+        
+        if self.duracao >= 90: 
+            self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        if self.duracao < 80 and self.duracao > 40: 
+            self.corpo = pygame.Rect(self.x1, self.y1, self.largura, self.altura)
+        elif self.duracao < 50: 
+            self.corpo = pygame.Rect(self.x2, self.y2, self.largura, self.altura)
+
         if (self.duracao >  0):
             self.mover(dimensoes_tela, mapa)
             self.renderizar(tela, mapa)
