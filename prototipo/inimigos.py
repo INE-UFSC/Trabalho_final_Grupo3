@@ -53,26 +53,26 @@ class PorcoEspinho(Entidade):
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.right + 1
-                return self.__dano_contato
+                return self.dano_contato
             ##### COLISAO DIREITA #####
             elif direcao == "direita":
                 if jogador.velx >= 0:
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.left - jogador.largura
-                return self.__dano_contato
+                return self.dano_contato
             ##### COLISAO BAIXO #####
             elif direcao == "baixo":
                 jogador.vely = 0
                 jogador.y = self.corpo.top - jogador.altura
                 self.auto_destruir(mapa)
-                return self.__dano_contato
+                return self.dano_contato
             ##### COLISAO CIMA #####
             elif direcao == "cima":
                 if jogador.vely < 0:
                     jogador.vely = 0
                     jogador.y = self.corpo.bottom
-                return self.__dano_contato
+                return self.dano_contato
         else:
             return 0
 
