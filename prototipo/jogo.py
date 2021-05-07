@@ -162,6 +162,7 @@ class Jogo:
         while True:
             return self.__janela.tela.atualizar()
             relogiomenu.tick(60)
+            print("AAAAAAAAAAAAAAAAAAAAAA")
 
     def menu_inicial(self): # Menu inicial do jogo
         while True:

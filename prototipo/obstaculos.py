@@ -95,7 +95,7 @@ class Biscoitos(Obstaculo):
         return False
 
 class Vitoria(Obstaculo):
-    def __init__(self, x,y,largura,altura):
+    def __init__(self, x: int,y: int, largura: int, altura: int):
         super().__init__("vitoria", x, y, altura, largura, "0",(254, 254, 0))
     
     def atualizar(self, tela, mapa, dimensoes_tela):
@@ -107,4 +107,16 @@ class Borda(Obstaculo):
         y = -1000
         altura = 2000
         largura = 1
-        super().__init__(nome, x, y, altura, largura, "0")
+        super().__init__(nome, x, y, altura, largura, "0", (0,0,0))
+
+class BarraPoder(Obstaculo):
+    def __init__(self, x: int, y: int):
+        altura = 40
+        largura = 60
+        super().__init__("barrapoder", x, y, altura, largura, "0", (0, 0, 0))
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.renderizar(tela, mapa)
+        return False
+    def renderizar(self, tela, mapa):
+        pygame.draw.rect(tela, self.cor, self.corpo)

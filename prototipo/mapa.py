@@ -70,7 +70,8 @@ class Mapa:
             "BandanaDoNinja":BandanaDoNinja,"CartolaDoMago":CartolaDoMago,
             "OculosDoNerd":OculosDoNerd,"VerdeBebe":VerdeBebe,
             "BoneMarinheiro":BoneMarinheiro,"Rato":Rato,"Voador":Voador, "Atirador":Atirador,
-            "Vida":Vida,"Tempo":Tempo,"Biscoitos":Biscoitos, "Chakra":Chakra, "PorcoEspinho":PorcoEspinho}
+            "Vida":Vida,"Tempo":Tempo,"Biscoitos":Biscoitos, "Chakra":Chakra, "PorcoEspinho":PorcoEspinho,
+            "BarraPoder":BarraPoder}
         with open("mapas.json") as m:
             lista_mapas = json.load(m)
         lista_todos = lista_mapas[entidades]
@@ -97,6 +98,7 @@ class Mapa:
         # PODE AJUDAR CASO OS MAPAS FIQUEM MUITO GRANDES
         self.__campo_visivel = campo_visivel
         for entidade in self.__lista_de_entidades:
+            #print(type(entidade).__name__)
             if entidade.atualizar(tela, self, dimensoes_tela):
                 self.__lista_de_entidades.remove(entidade)
         for elemento_hud in self.__lista_de_display:
@@ -133,9 +135,9 @@ def carregar_mapa():
         ["BandanaDoNinja",('shuriken1', 1200, height-100)],
         ["CartolaDoMago",('orbe1', 250, height-500)],
         ["OculosDoNerd",('oculos1', 1525, height-300)],
-        #["VerdeBebe",('orbe', 1600, height-50)],
+        ["VerdeBebe",('orbe', 1600, height-50)],
         ["BoneMarinheiro",('cabelo', 1400, height-100)],
-        ["Chakra",('chakra', 1600, height-50)],
+        #["Chakra",('chakra', 1600, height-50)],
         ##### INIMIGOS #####
         ["Rato",('rato1', 610, height - 50)],
         #["Rato",('rato3', 900, height - 50)],
@@ -175,6 +177,7 @@ def carregar_mapa():
     ],[["Vida",('vida', 140, 50)],
         ["Tempo",('tempo', 470, 50)],
         ["Biscoitos",('moeda', 800, 50)]],
+        ["BarraPoder", ('barrapoder', 500, 300)],
 
         (width,height)]
 
@@ -201,9 +204,10 @@ def carregar_mapa():
 
     ],[["Vida",('vida', 140, 50)],
         ["Tempo",('tempo', 470, 50)],
-        ["Biscoitos",('moeda', 800, 50)]],
+        ["Biscoitos",('moeda', 800, 50)],
+        ["BarraPoder",('barrapoder', 800, 300)]],
 
         (width,height)]
 
-    with open("mapas.json",'w') as m:
-        json.dump({"fase1":fase1,"fase2":fase2,"fase3":fase3},m)
+    with open("mapas.json",'w') as imagem:
+        json.dump({"fase1":fase1,"fase2":fase2,"fase3":fase3}, imagem)
