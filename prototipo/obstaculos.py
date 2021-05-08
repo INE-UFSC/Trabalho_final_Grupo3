@@ -138,9 +138,13 @@ class BarraPoder(Obstaculo):
     def __init__(self, x: int, y: int):
         altura = 40
         largura = 140
+        self.__largura_atual = largura
         super().__init__("barrapoder", x, y, altura, largura, "0", (0, 0, 0))
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        self.cor = mapa.jogador.poder.cor
+        self.__largura_atual = (abs(mapa.jogador.poder.descanso - mapa.jogador.poder.recarga))/mapa.jogador.poder.recarga * self.largura
+        self.corpo = pygame.Rect(self.x,self.y,self.__largura_atual,self.altura)
         self.renderizar(tela, mapa)
         return False
 

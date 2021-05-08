@@ -8,9 +8,10 @@ from time import sleep
 
 ##### PODERES NO JOGADOR #####
 class PoderGenerico:
-    def __init__(self, tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int):
+    def __init__(self, tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int, cor: tuple):
         self.__tem_tempo = tem_tempo
         self.__duracao = duracao
+        self.__cor = cor
         self.limite_vel = velmax
         self.pulo = pulo
         self.recarga = recarga
@@ -33,6 +34,14 @@ class PoderGenerico:
     def duracao(self, duracao):
         self.__duracao = duracao
 
+    @property
+    def cor(self):
+        return self.__cor
+
+    @cor.setter
+    def cor(self, cor):
+        self.__cor = cor
+
     '''@property
     def nome_funcionalidade (self):
         return self.__nome_funcionalidade
@@ -48,7 +57,7 @@ class PoderGenerico:
 ##### FORMA PADRAO DO JOGADOR #####
 class CinzaDoGuri(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 0)
+        super().__init__(False, 0, 5, 9, 1, (150,150,150))
 
     def acao(self, jogador, tela, mapa):
         pass
@@ -60,7 +69,7 @@ class CinzaDoGuri(PoderGenerico):
 ##### PODER DO DASH #####
 class PretoDoNinja(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 7, 10, 80)
+        super().__init__(False, 0, 7, 10, 80, (50, 50, 50))
 
     def acao(self, jogador, screen, mapa):
         jogador.velx = jogador.face * 23
@@ -75,7 +84,7 @@ class PretoDoNinja(PoderGenerico):
 ##### PODER DA BOLA DE FOGO #####
 class VermelhoDoMago(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 40)
+        super().__init__(False, 0, 5, 9, 40, (255, 50, 50))
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(BolaFogo([jogador.x, jogador.y], screen, mapa, jogador.face))
@@ -93,7 +102,7 @@ class VermelhoDoMago(PoderGenerico):
 ##### PODER DA INTANGIBILIDADE #####
 class AzulDoNerd(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 600)
+        super().__init__(False, 0, 5, 9, 600, (50, 50, 255))
         self.__stamina = 0
 
     def acao(self, jogador, screen, mapa):
@@ -113,7 +122,7 @@ class AzulDoNerd(PoderGenerico):
 ##### PODER DE PARAR O TEMPO #####
 class PlatinaEstelar(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 300, 5, 9, 600)
+        super().__init__(False, 300, 5, 9, 600, (80, 10, 120))
         self.__stamina = 0
 
     def acao(self, jogador, screen, mapa):
@@ -135,7 +144,7 @@ class PlatinaEstelar(PoderGenerico):
 #### PODER DO INIMIGO ####
 class Projetil(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 40)
+        super().__init__(False, 0, 5, 9, 40, (0, 0, 0))
 
     def acao(self, jogador, screen, mapa, velx, vely):
         if jogador.face == 1:
@@ -153,7 +162,7 @@ class Projetil(PoderGenerico):
 ##### PODER DE ACELERAR O TEMPO #####
 class FeitoNoCeu(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 300, 5, 9, 600)
+        super().__init__(False, 300, 5, 9, 600, (5, 200, 40))
         self.__stamina = 0
 
     def acao(self, jogador, screen, mapa):
@@ -169,7 +178,7 @@ class FeitoNoCeu(PoderGenerico):
 ###### ataque ninja #####
 class JutsuDosClones(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 40)
+        super().__init__(False, 0, 5, 9, 40, (255, 255, 0))
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(

@@ -98,6 +98,10 @@ class Estatico():
     def cor(self):
         return self.__cor
 
+    @cor.setter
+    def cor(self, cor):
+        self.__cor = cor
+
     def auto_destruir(self, mapa):
         if self in mapa.lista_de_entidades:  # RESOLVE PROVISORIAMENTE
             mapa.lista_de_entidades.remove(self)
