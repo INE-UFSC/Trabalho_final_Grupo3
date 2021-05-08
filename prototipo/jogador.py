@@ -165,12 +165,13 @@ class Jogador(Movel):
             dano_total += dano_sofrido
 
         # print(dano_total)
-        if dano_total:
-            if type(self.__poder) != CinzaDoGuri:
-                self.__poder = CinzaDoGuri()
-            else:
-                self.__vida -= dano_total
-                if not self.__vida: self.respawn()
+        if not self.invisivel:
+            if dano_total:
+                if type(self.__poder) != CinzaDoGuri:
+                    self.__poder = CinzaDoGuri()
+                else:
+                    self.__vida -= dano_total
+                    if not self.__vida: self.respawn()
 
         ##### PERMITE
         if self.__invisivel:
