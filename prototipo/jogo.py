@@ -21,14 +21,18 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
                           botaonivel_3, botaoconfig], cormenu, superficie)
         self.__contador_menu = 0
 
+    def atualizar(self):
+        self.__contador_menu += 0.2
+        self.setfundo(misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 10))
+        return super().atualizar()
+
+
     def logica_menu(self) -> int:
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT: return 1
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 acao = self.clicar()
                 return acao
-        self.__contador_menu += 1
-        self.setfundo(misturacor(psicodelico(self.__contador_menu), [240, 240, 240], 1, 7))
 
     def menu_inicial(self):
         pass
@@ -156,22 +160,19 @@ class Jogo:
         (width, height) = (1000, 600)  # Tamanho da tela
         self.__screen = pygame.display.set_mode((width, height))  # Cria o objeto da tela
         pygame.display.set_caption('As Aventuras do Guri')
-        self.__contadormenu = 0
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))
+        self.__relogio = pygame.time.Clock()
 
     def logica_menu(self):
         '''logica do sistema do menu principal
         cria uma tela de menu, e gerencia botoes
         '''
-        relogiomenu = pygame.time.Clock()
-        self.__janela.trocar_tela(Menu_Principal(self.__screen))
-        while True:
-            return self.__janela.tela.atualizar()
-            relogiomenu.tick(60)
-            print("AAAAAAAAAAAAAAAAAAAAAA")
+        return self.__janela.tela.atualizar()
+        print("AAAAAAAAAAAAAAAAAAAAAA") # funcao retorna antes, isso e inutil
 
     def menu_inicial(self):  # Menu inicial do jogo
+        self.__janela.trocar_tela(Menu_Principal(self.__screen))
         while True:
             acao = self.logica_menu()
 
@@ -191,6 +192,7 @@ class Jogo:
                     break
                 elif aconteceu == 3:
                     pass
+            self.__relogio.tick(60)
 
     def rodar(self, nivel):
         ''' Funcao responsavel por colocar o jogo propriamente dito na tela
@@ -203,7 +205,6 @@ class Jogo:
                   rodando normalmente, sem ter chegado a condicao de fim alguma
         '''
         ###### PYGAME GERAL #####
-        relogio = pygame.time.Clock()
         try:
             self.__janela.trocar_tela(Tela_De_Jogo(self.__screen, nivel))
         except KeyError:
@@ -213,9 +214,10 @@ class Jogo:
             self.__ciclo += 1
             jogar = nivel.atualizar(self.__ciclo)
             if jogar != 2:
+                self.__janela.trocar_tela(Menu_Principal(self.__screen))
                 return jogar
             ##### FPS MELHORADO #####
-            relogio.tick(60)
+            self.__relogio.tick(60)
 
 
 pygame.init()
