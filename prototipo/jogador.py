@@ -19,6 +19,7 @@ class Jogador(Movel):
                          "verde": Sprite("rabisco_verde"),
                          "marrom": Sprite("rabisco_marrom")}
         self.__posicao_comeco = (x, y)
+        self.__tipos_transparentes = [BolaFogo, Vitoria]
 
         ##### ATRIBUTOS POSICIONAIS #####
         altura = 46
@@ -30,6 +31,7 @@ class Jogador(Movel):
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
         self.__poder = Cinza()
+        self.__recuperacao = 0
         self.__recarga = 0
         self.__invisivel = 0
         self.__moedas = 0
@@ -88,6 +90,18 @@ class Jogador(Movel):
     def face(self):
         return self.__face
 
+    @property
+    def tipos_transparentes(self):
+        return self.__tipos_transparentes
+    
+    @tipos_transparentes.setter
+    def tipos_transparentes(self,tipos):
+        self.__tipos_transparentes = tipos
+    
+    @property
+    def recuperacao(self):
+        return self.__recuperacao
+
     def vida_pra_zero(self):
         self.__vida = 0
 
@@ -98,12 +112,14 @@ class Jogador(Movel):
         self.__moedas += 1
 
     def renderizar(self, tela, campo_visivel, ciclo):
+    
         if renderizar_hitbox:
             pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
                                                 self.corpo.w, self.corpo.h])
         if renderizar_sprite:
-            self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
-                                   self.__face, self.velx, self.vely, ciclo % 12)
+            if self.recuperacao % 15 < 10:
+                self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
+                                self.__face, self.velx, self.vely, ciclo % 12)
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
         self.mover(entradas[0], entradas[1], entradas[2], screen.get_size(), mapa, atrito)
@@ -154,7 +170,7 @@ class Jogador(Movel):
 
         ##### COLISOES #####
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, self.__tipos_transparentes)
         obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
         dano_total = 0
 
@@ -173,9 +189,12 @@ class Jogador(Movel):
 
         # print(dano_total)
         if not self.invisivel:
-            if dano_total:
+            if dano_total and not self.__recuperacao:
                 self.__vida -= dano_total
-                if not self.__vida: self.respawn()
+                self.__recuperacao = 90
+            elif self.__recuperacao > 0:
+                self.__recuperacao -= 1
+
 
         ##### PERMITE
         if self.__invisivel:

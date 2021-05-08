@@ -3,6 +3,7 @@ from jogador import Jogador
 from poderes import Verde
 from mapa import Mapa, carregar_mapa
 from menu import *
+from entidades import classes_instanciaveis
 from efeitosrender import *
 
 
@@ -56,7 +57,7 @@ class Tela_De_Jogo(Tela):
         self.__bola_fogo = False
 
         ###### INSTANCIAS DE OBJETOS ######
-        self.__jogaddor = Jogador('mario', 200, -1000, 0, 1)
+        self.__jogador = Jogador('mario', 200, -1000, 0, 1)
 
         ##### MAPA #####
         self.__mapa = Mapa((width, height))
@@ -109,7 +110,7 @@ class Tela_De_Jogo(Tela):
         if self.__atrasofim > 0:
             self.__direita = 0
             self.__esquerda = 0
-            self.__espaco = 0
+            self.__espaco = not self.__mapa.ganhou
         else:
             # self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco,#self.__superficie.get_size(), self.__mapa, self.__atrito)
             self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
@@ -126,6 +127,8 @@ class Tela_De_Jogo(Tela):
                     self.__textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", False, (0, 0, 0))
                 else:
                     self.__textin = self.__fonte.render("PERDEU", False, (0, 0, 0))
+            else:
+                self.__jogador.tipos_transparentes = classes_instanciaveis
             self.__superficie.blit(self.__textin, (500 - self.__textin.get_size()[0] / 2, 300 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 return 1

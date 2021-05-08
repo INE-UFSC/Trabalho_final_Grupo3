@@ -179,7 +179,7 @@ class Atirador(Entidade):
         #### DETERMINA A VELOCIDADE DO PROJETIL PRA SEGUIR O JOGADOR ####
         dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
                 mapa.jogador.x - self.x) ** 2) ** (1 / 2)
-        divisor = max(dstancia / self.__vel_projetil,0.1)
+        divisor = max(dstancia / self.__vel_projetil,0.001)
         vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) / divisor
         velx = (mapa.jogador.x - self.x) / divisor
         if self.corpo.colliderect(mapa.campo_visivel):
@@ -207,7 +207,6 @@ class Atirador(Entidade):
         
 
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
-        print(self.x)
         if self.corpo.colliderect(mapa.campo_visivel):
             dist_x_jogador = self.x - mapa.jogador.x
             if dist_x_jogador > 0:

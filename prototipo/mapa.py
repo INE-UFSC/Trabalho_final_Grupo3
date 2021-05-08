@@ -91,7 +91,6 @@ class Mapa:
         for item in interface:
             for classe in classes_instanciaveis:
                 if item[0] == classe.__name__:
-                    print(*item[1])
                     objeto = classe(*item[1])
                     self.__lista_de_display.append(objeto)
             # try:
