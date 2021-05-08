@@ -11,7 +11,13 @@ class Jogador(Movel):
         ##### ATRIBUTOS GERAIS #####
         self.__vida = 5
         self.__nome = nome
-        self.__sprite = Sprite("rabisco")
+        self.__sprite = {"cinza": Sprite("rabisco_cinza"),
+                         "laranja": Sprite("rabisco_laranja"),
+                         "vermelho": Sprite("rabisco_vermelho"),
+                         "roxo": Sprite("rabisco_roxo"),
+                         "azul": Sprite("rabisco_azul"),
+                         "verde": Sprite("rabisco_verde"),
+                         "marrom": Sprite("rabisco_marrom")}
         self.__posicao_comeco = (x, y)
 
         ##### ATRIBUTOS POSICIONAIS #####
@@ -96,7 +102,7 @@ class Jogador(Movel):
             pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
                                                 self.corpo.w, self.corpo.h])
         if renderizar_sprite:
-            self.__sprite.imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
+            self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
                                    self.__face, self.velx, self.vely, ciclo % 12)
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
