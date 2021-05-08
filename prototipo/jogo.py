@@ -117,11 +117,12 @@ class Tela_De_Jogo(Tela):
         if self.__jogador.vida <= 0 and not self.__mapa.ganhou:
             self.__jogador.vida_pra_zero()
             self.__atrasofim += 1
-            if isinstance(self.__jogador.poder, FeitoNoCeu) and self.__mapa.conta <= 0:
-                textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", False, (0, 0, 0))
-            else:
-                textin = self.__fonte.render("PERDEU", False, (0, 0, 0))
-            self.__superficie.blit(textin, (500 - textin.get_size()[0] / 2, 300 - textin.get_size()[1] / 2))
+            if self.__atrasofim <= 1:
+                if isinstance(self.__jogador.poder, FeitoNoCeu) and self.__mapa.conta <= 0:
+                    self.__textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", False, (0, 0, 0))
+                else:
+                    self.__textin = self.__fonte.render("PERDEU", False, (0, 0, 0))
+            self.__superficie.blit(self.__textin, (500 - self.__textin.get_size()[0] / 2, 300 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 return 1
 
