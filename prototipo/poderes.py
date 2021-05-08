@@ -103,40 +103,41 @@ class VermelhoDoMago(PoderGenerico):
 class AzulDoNerd(PoderGenerico):
     def __init__(self):
         super().__init__(False, 0, 5, 9, 600, (50, 50, 255))
-        self.__stamina = 0
+        self.ativo = False
 
     def acao(self, jogador, screen, mapa):
-        self.descanso = self.recarga
-        self.__stamina = 300
+        self.descanso = 0
+        self.ativo = True
 
     def atualizar(self, tela, campo_visivel):
-        if self.descanso > 0:
-            self.descanso -= 1
-        if self.__stamina > 0:
-            self.__stamina -= 1
+        if self.ativo:
+            self.descanso += 2
+            if self.descanso >= self.recarga:
+                self.ativo = False
             return True
-        else:
-            return False
+        elif self.descanso > 0:
+            self.descanso -= 1
+        return False
 
 
 ##### PODER DE PARAR O TEMPO #####
 class PlatinaEstelar(PoderGenerico):
     def __init__(self):
         super().__init__(False, 300, 5, 9, 600, (80, 10, 120))
-        self.__stamina = 0
+        self.ativo = False
 
     def acao(self, jogador, screen, mapa):
         mapa.escala_tempo = 0
-        self.__stamina = 300
-        self.descanso = self.recarga
+        self.ativo = True
+        self.descanso = 0
 
     def atualizar(self, tela, mapa):
-        self.__mapa = mapa
-        if self.__stamina > 0:
-            self.__stamina -= 1
-        if self.__stamina <= 0:
-            mapa.escala_tempo = 1
-        if self.descanso > 0:
+        if self.ativo:
+            self.descanso += 2
+            if self.descanso >= self.recarga:
+                self.ativo = False
+                mapa.escala_tempo = 1.0
+        elif self.descanso > 0:
             self.descanso -= 1
         return False
 
@@ -163,14 +164,13 @@ class Projetil(PoderGenerico):
 class FeitoNoCeu(PoderGenerico):
     def __init__(self):
         super().__init__(False, 300, 5, 9, 600, (5, 200, 40))
-        self.__stamina = 0
+        self.ativo = False
 
     def acao(self, jogador, screen, mapa):
-        self.__stamina = 1
+        self.ativo = True
 
     def atualizar(self, tela, mapa):
-        self.__mapa = mapa
-        if self.__stamina >= 1:
+        if self.ativo:
             mapa.escala_tempo += 0.05 * (math.log(mapa.escala_tempo, 2) + 1)
         return False
 
@@ -275,8 +275,10 @@ class PoderManifestadoInimigo(Entidade):
         super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor)
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-        self.auto_destruir(mapa)
-        return self.dano_contato
+        if not jogador.invisivel:
+            self.auto_destruir(mapa)
+            return self.dano_contato
+        return 0
 
 @instanciavel
 class BolaFogo(PoderManifestado):
