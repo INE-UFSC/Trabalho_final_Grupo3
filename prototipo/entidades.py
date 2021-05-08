@@ -8,6 +8,7 @@ renderizar_sprite = True
 gravidade = 0.2
 classes_instanciaveis = []
 
+#Decorator que indica o que a classe pode ser instanciada no mapa
 def instanciavel(classe):
     classes_instanciaveis.append(classe)
     return classe

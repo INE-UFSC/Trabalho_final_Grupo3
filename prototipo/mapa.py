@@ -83,7 +83,6 @@ class Mapa:
             for classe in classes_instanciaveis:
                 if item[0] == classe.__name__:
                     objeto = classe(*item[1])
-                    print(objeto)
                     self.__lista_de_entidades.append(objeto)
             # try:
             #     item = listatipos[item[0]](*item[1])
@@ -92,8 +91,8 @@ class Mapa:
         for item in interface:
             for classe in classes_instanciaveis:
                 if item[0] == classe.__name__:
+                    print(*item[1])
                     objeto = classe(*item[1])
-                    print(objeto)
                     self.__lista_de_display.append(objeto)
             # try:
             #     item = listatipos[item[0]](*item[1])
@@ -164,7 +163,8 @@ def carregar_mapa():
 
         [["Vida", ('vida', 140, 50)],
          ["Tempo", ('tempo', 470, 50)],
-         ["Biscoitos", ('moeda', 800, 50)]],
+         ["Biscoitos", ('moeda', 800, 50)],
+         ["BarraPoder", (800, 100)]],
 
         (width, height)]
 
@@ -191,7 +191,7 @@ def carregar_mapa():
     ], [["Vida", ('vida', 140, 50)],
         ["Tempo", ('tempo', 470, 50)],
         ["Biscoitos", ('moeda', 800, 50)]],
-        ["BarraPoder", ('barrapoder', 500, 300)],
+        ["BarraPoder", (500, 300)],
 
         (width, height)]
 
@@ -219,7 +219,7 @@ def carregar_mapa():
     ], [["Vida", ('vida', 140, 50)],
         ["Tempo", ('tempo', 470, 50)],
         ["Biscoitos", ('moeda', 800, 50)],
-        ["BarraPoder", ('barrapoder', 800, 300)]],
+        ["BarraPoder", (800, 100)]],
 
         (width, height)]
 

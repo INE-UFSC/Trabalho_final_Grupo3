@@ -137,7 +137,7 @@ class Borda(Obstaculo):
 class BarraPoder(Obstaculo):
     def __init__(self, x: int, y: int):
         altura = 40
-        largura = 60
+        largura = 140
         super().__init__("barrapoder", x, y, altura, largura, "0", (0, 0, 0))
 
     def atualizar(self, tela, mapa, dimensoes_tela):
