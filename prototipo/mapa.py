@@ -164,7 +164,7 @@ def carregar_mapa():
         [["Vida", ('vida', 140, 50)],
          ["Tempo", ('tempo', 470, 50)],
          ["Biscoitos", ('moeda', 800, 50)],
-         ["BarraPoder", (800, 100)]],
+         ["BarraPoder", (800, 120)]],
 
         (width, height)]
 
