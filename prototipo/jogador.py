@@ -168,12 +168,8 @@ class Jogador(Movel):
         # print(dano_total)
         if not self.invisivel:
             if dano_total:
-                if type(self.__poder) != Cinza:
-                    self.__poder = Cinza()
-                    mapa.escala_tempo = 1.0
-                else:
-                    self.__vida -= dano_total
-                    if not self.__vida: self.respawn()
+                self.__vida -= dano_total
+                if not self.__vida: self.respawn()
 
         ##### PERMITE
         if self.__invisivel:
