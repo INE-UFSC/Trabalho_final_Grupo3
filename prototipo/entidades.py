@@ -265,7 +265,11 @@ class Movel(Estatico):
 
                 # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
                 if cCima: obsCima = entidade
-                if cBaixo: obsBaixo = entidade
+                if cBaixo:
+                    if obsBaixo and not isinstance(obsBaixo, Movel) and isinstance(obsBaixo, Movel):
+                        pass
+                    else:
+                        obsBaixo = entidade
                 if cEsquerda: obsEsquerda = entidade
                 if cDireita: obsDireita = entidade
 
