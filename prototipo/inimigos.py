@@ -162,6 +162,7 @@ class Atirador(Entidade):
         self.__poder = Projetil()
         self.__descanso_poder = 300
         self.__face = 1
+        self.__gravidade = 1
 
     @property
     def face(self):
@@ -201,7 +202,7 @@ class Atirador(Entidade):
 
         ##### GRAVIDADE ######
         else:
-            self.vely += gravidade * self.escala_tempo
+            self.vely += self.__gravidade * self.escala_tempo
 
         
 
@@ -214,5 +215,5 @@ class Atirador(Entidade):
             elif dist_x_jogador < 0:
                 self.__face = 1
         else:
-            self.y += self.vely * self.escala_tempo
             self.x += self.velx * self.escala_tempo
+        self.y += self.vely * self.escala_tempo
