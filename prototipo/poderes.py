@@ -402,27 +402,40 @@ class Bala(PoderManifestadoInimigo):
 @instanciavel
 class Clones(PoderManifestado):
     def __init__(self, pos_inicial, screen, mapa, vel, tamanho_jogador):
-        x = pos_inicial[0] + 50 * vel
-        y = pos_inicial[1] - 105
+        x = pos_inicial[0] + vel + 50
+        y = pos_inicial[1] 
         largura = tamanho_jogador[1]
         altura = tamanho_jogador[0]
-        vida = 1
+        vida = 10
         limiteVel = 3 * vel
-        dano_contato = 0
-        duracao = 120
+        dano_contato = 50
+        duracao = 500
         # self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
         super().__init__("JutsuDosClones", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "0")
+        self.contato = False
+        self.pos_inicial = pos_inicial
         self.escala_tempo = 1.0
         self.mapa = mapa
-        self.vely = 8
-        self.velx = 6 * vel
-        self.x1 = pos_inicial[0] + 50 * vel  ##segundo clone
-        self.y1 = pos_inicial[1]
-        self.x2 = (pos_inicial[0] + 200 * vel)  ##terceiro clone
-        self.y2 = pos_inicial[1] - 105
+        self.vely = 0
+        self.velx = 1 * vel
+        self.obstaculo_destruido = 0
+
+        ### IDEIA: SEGUNDO E TERCEIRO CLONE NAO SAO OBJETOS, APENAS DESENHOS
+        ### QUANDO ELES CHEGAM NO INIMIO QUEM DE FATO MATA É O PRIMEIRO CLONE
+        
+        ### SEGUNDO CLONE #######
+        self.x2 = pos_inicial[0] + vel
+        self.y2 = pos_inicial[1] - 2*tamanho_jogador[0]
+        self.vely2 = 0
+        self.velx2 = 0* vel
+
+        ### TERCEIRO CLONE #####
+        self.x3 = (pos_inicial[0] + (8*tamanho_jogador[1]) * vel)  ##terceiro clone
+        self.y3 = pos_inicial[1] - 2*tamanho_jogador[0]
+        self.vely3 = 0
+        self.velx3 = 0 * vel
 
     def mover(self, dimensoesTela, mapa):
-
         ##### COLISOES #####
 
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
@@ -430,62 +443,82 @@ class Clones(PoderManifestado):
 
         for i in range(len(obstaculos)):
             if isinstance(obstaculos[i], Entidade):
-                obstaculos[i].auto_destruir(mapa)
-                self.auto_destruir(mapa)
+                
+                self.obstaculo_destruido = obstaculos[i]
+                self.velx2 = (obstaculos[i].corpo.center[0] - self.corpo2.center[0])*0.04
+                self.vely2 =  (obstaculos[i].corpo.center[1]- self.corpo2.center[1])*0.04
+                self.velx3 = (obstaculos[i].corpo.center[0] - self.corpo3.center[0])*0.04
+                self.vely3 =  (obstaculos[i].corpo.center[1]- self.corpo3.center[1])*0.04
+                obstaculos[i].velx = 0
+                self.velx = 0
+                self.contato = True
+                    
 
         ##### HORIZONTAIS #####
-        if obstaculos[3] or obstaculos[2]:
+        if obstaculos[2] or obstaculos[3]:
             # self.duracao = 0
-            # self.velx = -self.velx
-            self.auto_destruir(mapa)
+            self.velx = -self.velx
+            #self.auto_destruir(mapa)
 
         ##### VERTICAIS #####
         if obstaculos[1] or obstaculos[0]:
-            pass
-            # self.auto_destruir(mapa)
+            #self.auto_destruir(mapa)
             # self.vely = -max(self.vely*4/5,8)
-            # self.y = obsBaixo.corpo.top - self.altura'''
-        # if not obstaculos[1]: self.vely += gravidade*self.escala_tempo
+            self.y = obstaculos[1].corpo.top - (self.altura)
+        if not obstaculos[1]: self.vely += gravidade*self.escala_tempo
 
-        self.y += self.vely * self.escala_tempo
-        self.x += self.velx * self.escala_tempo
-        if self.duracao < 70 and self.duracao > 40:
-            # self.y1 += self.vely*self.escala_tempo
-            self.x1 += self.velx * self.escala_tempo
-        elif self.duracao < 40:
-            self.y2 += self.vely * self.escala_tempo
-            self.x2 -= self.velx * self.escala_tempo
+        
+        if self.x < 2*self.pos_inicial[0]:
+        #print(self.x)
+            self.y += self.vely * self.escala_tempo
+            self.x += self.velx * self.escala_tempo
+        
 
     def renderizar(self, tela, mapa):
 
-        if self.duracao >= 80:
-            pygame.draw.rect(tela, (50, 50, 0), [self.corpo.x - mapa.campo_visivel.x,
+        
+        pygame.draw.rect(tela, (50, 50, 0), [self.corpo.x - mapa.campo_visivel.x,
                                                  self.corpo.y - mapa.campo_visivel.y,
                                                  self.corpo.w,
                                                  self.corpo.h])
+        
+        
+        if self.contato == True:
+            pygame.draw.rect(tela, (50, 50, 0), [self.corpo2.x - mapa.campo_visivel.x,
+                                                    self.corpo2.y - mapa.campo_visivel.y,
+                                                    self.corpo2.w,
+                                                    self.corpo2.h])
 
-        if self.duracao < 70 and self.duracao > 40:
-            pygame.draw.rect(tela, (50, 50, 0), [self.corpo.x - mapa.campo_visivel.x,
-                                                 self.corpo.y - mapa.campo_visivel.y,
-                                                 self.corpo.w,
-                                                 self.corpo.h])
-        if self.duracao < 50:
-            pygame.draw.rect(tela, (50, 50, 0), [self.corpo.x - mapa.campo_visivel.x,
-                                                 self.corpo.y - mapa.campo_visivel.y,
-                                                 self.corpo.w,
-                                                 self.corpo.h])
+            pygame.draw.rect(tela, (50, 50, 0), [self.corpo3.x - mapa.campo_visivel.x,
+                                                    self.corpo3.y - mapa.campo_visivel.y,
+                                                    self.corpo3.w,
+                                                    self.corpo3.h])
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
 
-        if self.duracao >= 90:
-            self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        if self.duracao < 80 and self.duracao > 40:
-            self.corpo = pygame.Rect(self.x1, self.y1, self.largura, self.altura)
-        elif self.duracao < 50:
-            self.corpo = pygame.Rect(self.x2, self.y2, self.largura, self.altura)
+        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        #.corpo1 = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        self.corpo2 = pygame.Rect(self.x2, self.y2, self.largura, self.altura)
+        self.corpo3 = pygame.Rect(self.x3, self.y3, self.largura, self.altura)
 
+        
+        ### SEGUNDO E TERCEIRO CLONE PRECISAM SE MECHER POR AQUI, 
+        ### POIS DPS DE CAPTURAR O INIMIGO, O CLONE1 NAO SE MECHEE MAIS 
+        if self.contato == True: 
+                    
+                self.y2 += self.vely2 * self.escala_tempo
+                self.x2 += self.velx2 * self.escala_tempo
+                
+                self.y3 += self.vely3 * self.escala_tempo
+                self.x3 += self.velx3 * self.escala_tempo
+
+                if int(self.x2) == int(self.x3): 
+                    self.obstaculo_destruido.auto_destruir(mapa)
+                    self.auto_destruir(mapa)
+        
+        
         if (self.duracao > 0):
             self.mover(dimensoes_tela, mapa)
             self.renderizar(tela, mapa)
