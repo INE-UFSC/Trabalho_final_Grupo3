@@ -67,7 +67,6 @@ class PoderGenerico:
 class Cinza(PoderGenerico):
     def __init__(self):
         super().__init__("Cinza", False, 0, 5, 9, 1, (150,150,150))
-        self.sprite = SpriteSheetBarras()
 
     def acao(self, jogador, tela, mapa):
         pass
@@ -80,7 +79,6 @@ class Cinza(PoderGenerico):
 class Vermelho(PoderGenerico):
     def __init__(self):
         super().__init__("Vermelho", False, 0, 7, 10, 80, (50, 50, 50))
-        self.sprite = SpriteSheetBarras()
 
     def acao(self, jogador, screen, mapa):
         jogador.velx = jogador.face * 23
@@ -96,7 +94,6 @@ class Vermelho(PoderGenerico):
 class Laranja(PoderGenerico):
     def __init__(self):
         super().__init__("Laranja", False, 0, 5, 9, 40, (255, 50, 50))
-        self.sprite = SpriteSheetBarras()
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(BolaFogo([jogador.x, jogador.y], screen, mapa, jogador.face))
@@ -115,7 +112,6 @@ class Laranja(PoderGenerico):
 class Azul(PoderGenerico):
     def __init__(self):
         super().__init__("Azul", False, 0, 5, 9, 600, (50, 50, 255))
-        self.sprite = SpriteSheetBarras()
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -137,7 +133,6 @@ class Azul(PoderGenerico):
 class Roxo(PoderGenerico):
     def __init__(self):
         super().__init__("Roxo", False, 300, 5, 9, 600, (80, 10, 120))
-        self.sprite = SpriteSheetBarras()
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -178,7 +173,6 @@ class Projetil(PoderGenerico):
 class Verde(PoderGenerico):
     def __init__(self):
         super().__init__("Verde", False, 300, 5, 9, 600, (5, 200, 40))
-        self.sprite = SpriteSheetBarras()
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -194,7 +188,6 @@ class Verde(PoderGenerico):
 class Marrom(PoderGenerico):
     def __init__(self):
         super().__init__("Marrom", False, 0, 5, 9, 40, (255, 255, 0))
-        self.sprite = SpriteSheetBarras()
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(
@@ -366,7 +359,7 @@ class Bala(PoderManifestadoInimigo):
         y = pos_inicial[1] + altura
         vida = 1
         limiteVel = 300
-        dano_contato = 50
+        dano_contato = 1
         duracao = 500
         contatos = ['dano', 'dano', 'dano', 'dano']
         # self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)

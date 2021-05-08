@@ -8,7 +8,7 @@ from poderes import *
 class Rato(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
-        danoContato = 50
+        danoContato = 1
         largura = 46
         altura = 46
         limiteVel = 1
@@ -41,7 +41,7 @@ class Rato(Entidade):
 class PorcoEspinho(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
-        danoContato = 100
+        danoContato = 2
         largura = 46
         altura = 46
         limiteVel = 1
@@ -104,7 +104,7 @@ class PorcoEspinho(Entidade):
 class Voador(Entidade):
     def __init__(self, nome: str, x: int, y: int, altitude: int):
         vida = 1
-        danoContato = 50
+        danoContato = 1
         largura = 26
         altura = 26
         limiteVel = 4
@@ -149,7 +149,7 @@ class Voador(Entidade):
 class Atirador(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
-        danoContato = 10
+        danoContato = 1
         largura = 40
         altura = 66
         limiteVel = 4
@@ -162,6 +162,7 @@ class Atirador(Entidade):
         self.__poder = Projetil()
         self.__descanso_poder = 300
         self.__face = 1
+        self.__gravidade = 1
 
     @property
     def face(self):
@@ -201,18 +202,18 @@ class Atirador(Entidade):
 
         ##### GRAVIDADE ######
         else:
-            self.vely += gravidade * self.escala_tempo
+            self.vely += self.__gravidade * self.escala_tempo
 
-        self.y += self.vely * self.escala_tempo
-        self.x += self.velx * self.escala_tempo
+        
 
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
+        print(self.x)
         if self.corpo.colliderect(mapa.campo_visivel):
-            self.velx = 0
             dist_x_jogador = self.x - mapa.jogador.x
             if dist_x_jogador > 0:
                 self.__face = -1
             elif dist_x_jogador < 0:
                 self.__face = 1
         else:
-            self.velx = 2 * self.__face
+            self.x += self.velx * self.escala_tempo
+        self.y += self.vely * self.escala_tempo
