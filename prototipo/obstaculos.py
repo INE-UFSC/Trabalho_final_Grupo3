@@ -136,17 +136,20 @@ class Borda(Obstaculo):
 @instanciavel
 class BarraPoder(Obstaculo):
     def __init__(self, x: int, y: int):
-        altura = 40
-        largura = 140
+        altura = 20
+        largura = 100
         self.__largura_atual = largura
-        super().__init__("barrapoder", x, y, altura, largura, "0", (0, 0, 0))
+        self.__cor_poder = (0, 0, 0)
+        self.__corpo_poder = []
+        super().__init__("barrapoder", x, y, altura, largura, "0", (199, 115, 51))
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        self.cor = mapa.jogador.poder.cor
+        self.__cor_poder = mapa.jogador.poder.cor
         self.__largura_atual = (abs(mapa.jogador.poder.descanso - mapa.jogador.poder.recarga))/mapa.jogador.poder.recarga * self.largura
-        self.corpo = pygame.Rect(self.x,self.y,self.__largura_atual,self.altura)
+        self.__corpo_poder = pygame.Rect(self.x, self.y, self.__largura_atual, self.altura)
         self.renderizar(tela, mapa)
         return False
 
     def renderizar(self, tela, mapa):
         pygame.draw.rect(tela, self.cor, self.corpo)
+        pygame.draw.rect(tela, self.__cor_poder, self.__corpo_poder)

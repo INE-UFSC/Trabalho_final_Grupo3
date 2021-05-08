@@ -52,7 +52,7 @@ class Tela_De_Jogo(Tela):
         self.__bola_fogo = False
 
         ###### INSTANCIAS DE OBJETOS ######
-        self.__jogador = Jogador('mario', 200, -1000, 0, 1)
+        self.__jogaddor = Jogador('mario', 200, -1000, 0, 1)
 
         ##### MAPA #####
         self.__mapa = Mapa((width, height))
