@@ -23,7 +23,7 @@ class Jogador(Movel):
         self.__aceleracao = 0
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
-        self.__poder = CinzaDoGuri()
+        self.__poder = Cinza()
         self.__recarga = 0
         self.__invisivel = 0
         self.__moedas = 0
@@ -167,8 +167,8 @@ class Jogador(Movel):
         # print(dano_total)
         if not self.invisivel:
             if dano_total:
-                if type(self.__poder) != CinzaDoGuri:
-                    self.__poder = CinzaDoGuri()
+                if type(self.__poder) != Cinza:
+                    self.__poder = Cinza()
                     mapa.escala_tempo = 1.0
                 else:
                     self.__vida -= dano_total

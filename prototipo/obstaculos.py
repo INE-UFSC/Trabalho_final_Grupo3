@@ -137,11 +137,12 @@ class Borda(Obstaculo):
 class BarraPoder(Obstaculo):
     def __init__(self, x: int, y: int):
         altura = 40
-        largura = 120
+        largura = 188
         self.__largura_atual = largura
         self.__cor_poder = (0, 0, 0)
         self.__corpo_poder = []
-        super().__init__("barrapoder", x, y, altura, largura, "barra_poder", (205, 133, 63))
+        super().__init__("barrapoder", x, y, altura, largura, "0", (205, 133, 63))
+        self.sprite = SpriteSheetBarras()
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.__cor_poder = mapa.jogador.poder.cor
@@ -153,6 +154,7 @@ class BarraPoder(Obstaculo):
     def renderizar(self, tela, mapa):
         pygame.draw.rect(tela, self.cor, self.corpo)
         pygame.draw.rect(tela, self.__cor_poder, self.__corpo_poder)
-        self.sprite.imprimir(self.imagem, self.x-40, self.y-6, tela, 0, 0)
+        self.sprite.imprimir(tela, self.x-70, self.y-18, mapa.jogador.poder.nome)
+        #self.sprite.imprimir(self.imagem, self.x-40, self.y-6, tela, 0, 0)
        # except AttributeError:
         #    pass

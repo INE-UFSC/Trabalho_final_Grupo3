@@ -1,6 +1,6 @@
 import pygame, time, math, random
 from jogador import Jogador
-from poderes import FeitoNoCeu
+from poderes import Verde
 from mapa import Mapa, carregar_mapa
 from menu import *
 from efeitosrender import *
@@ -122,7 +122,7 @@ class Tela_De_Jogo(Tela):
             self.__jogador.vida_pra_zero()
             self.__atrasofim += 1
             if self.__atrasofim <= 1:
-                if isinstance(self.__jogador.poder, FeitoNoCeu) and self.__mapa.conta <= 0:
+                if isinstance(self.__jogador.poder, Verde) and self.__mapa.conta <= 0:
                     self.__textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", False, (0, 0, 0))
                 else:
                     self.__textin = self.__fonte.render("PERDEU", False, (0, 0, 0))

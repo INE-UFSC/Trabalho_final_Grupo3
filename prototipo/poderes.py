@@ -8,7 +8,8 @@ from time import sleep
 
 ##### PODERES NO JOGADOR #####
 class PoderGenerico:
-    def __init__(self, tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int, cor: tuple):
+    def __init__(self, nome: str, tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int, cor: tuple):
+        self.__nome = nome
         self.__tem_tempo = tem_tempo
         self.__duracao = duracao
         self.__cor = cor
@@ -42,6 +43,14 @@ class PoderGenerico:
     def cor(self, cor):
         self.__cor = cor
 
+    @property
+    def nome(self):
+        return self.__nome
+
+    @nome.setter
+    def nome(self, nome):
+        self.__nome = nome
+
     '''@property
     def nome_funcionalidade (self):
         return self.__nome_funcionalidade
@@ -55,9 +64,10 @@ class PoderGenerico:
 
 
 ##### FORMA PADRAO DO JOGADOR #####
-class CinzaDoGuri(PoderGenerico):
+class Cinza(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 1, (150,150,150))
+        super().__init__("Cinza", False, 0, 5, 9, 1, (150,150,150))
+        self.sprite = SpriteSheetBarras()
 
     def acao(self, jogador, tela, mapa):
         pass
@@ -67,9 +77,10 @@ class CinzaDoGuri(PoderGenerico):
 
 
 ##### PODER DO DASH #####
-class PretoDoNinja(PoderGenerico):
+class Vermelho(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 7, 10, 80, (50, 50, 50))
+        super().__init__("Vermelho", False, 0, 7, 10, 80, (50, 50, 50))
+        self.sprite = SpriteSheetBarras()
 
     def acao(self, jogador, screen, mapa):
         jogador.velx = jogador.face * 23
@@ -82,9 +93,10 @@ class PretoDoNinja(PoderGenerico):
 
 
 ##### PODER DA BOLA DE FOGO #####
-class VermelhoDoMago(PoderGenerico):
+class Laranja(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 40, (255, 50, 50))
+        super().__init__("Laranja", False, 0, 5, 9, 40, (255, 50, 50))
+        self.sprite = SpriteSheetBarras()
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(BolaFogo([jogador.x, jogador.y], screen, mapa, jogador.face))
@@ -100,9 +112,10 @@ class VermelhoDoMago(PoderGenerico):
 
 
 ##### PODER DA INTANGIBILIDADE #####
-class AzulDoNerd(PoderGenerico):
+class Azul(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 600, (50, 50, 255))
+        super().__init__("Azul", False, 0, 5, 9, 600, (50, 50, 255))
+        self.sprite = SpriteSheetBarras()
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -121,9 +134,10 @@ class AzulDoNerd(PoderGenerico):
 
 
 ##### PODER DE PARAR O TEMPO #####
-class PlatinaEstelar(PoderGenerico):
+class Roxo(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 300, 5, 9, 600, (80, 10, 120))
+        super().__init__("Roxo", False, 300, 5, 9, 600, (80, 10, 120))
+        self.sprite = SpriteSheetBarras()
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -145,7 +159,7 @@ class PlatinaEstelar(PoderGenerico):
 #### PODER DO INIMIGO ####
 class Projetil(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 40, (0, 0, 0))
+        super().__init__("Projetil", False, 0, 5, 9, 40, (0, 0, 0))
 
     def acao(self, jogador, screen, mapa, velx, vely):
         if jogador.face == 1:
@@ -161,9 +175,10 @@ class Projetil(PoderGenerico):
 
 
 ##### PODER DE ACELERAR O TEMPO #####
-class FeitoNoCeu(PoderGenerico):
+class Verde(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 300, 5, 9, 600, (5, 200, 40))
+        super().__init__("Verde", False, 300, 5, 9, 600, (5, 200, 40))
+        self.sprite = SpriteSheetBarras()
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -176,9 +191,10 @@ class FeitoNoCeu(PoderGenerico):
 
 
 ###### ataque ninja #####
-class JutsuDosClones(PoderGenerico):
+class Marrom(PoderGenerico):
     def __init__(self):
-        super().__init__(False, 0, 5, 9, 40, (255, 255, 0))
+        super().__init__("Marrom", False, 0, 5, 9, 40, (255, 255, 0))
+        self.sprite = SpriteSheetBarras()
 
     def acao(self, jogador, screen, mapa):
         mapa.lista_de_entidades.append(
@@ -233,32 +249,32 @@ class PoderNoMapa(Coletavel):
 @instanciavel
 class BandanaDoNinja(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, PretoDoNinja(), "0", (50, 50, 50))
+        super().__init__(nome, x, y, Vermelho(), "0", (50, 50, 50))
 
 @instanciavel
 class CartolaDoMago(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, VermelhoDoMago(), "0", (255, 50, 50))
+        super().__init__(nome, x, y, Laranja(), "0", (255, 50, 50))
 
 @instanciavel
 class OculosDoNerd(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, AzulDoNerd(), "0", (50, 50, 255))
+        super().__init__(nome, x, y, Azul(), "0", (50, 50, 255))
 
 @instanciavel
 class BoneMarinheiro(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, PlatinaEstelar(), "0", (80, 10, 120))
+        super().__init__(nome, x, y, Roxo(), "0", (80, 10, 120))
 
 @instanciavel
 class VerdeBebe(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, FeitoNoCeu(), "0", (5, 200, 40))
+        super().__init__(nome, x, y, Verde(), "0", (5, 200, 40))
 
 @instanciavel
 class Chakra(PoderNoMapa):
     def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, JutsuDosClones(), "0", (255, 255, 0))
+        super().__init__(nome, x, y, Marrom(), "0", (255, 255, 0))
 
 
 ##### OBJETOS CRIADOS POR PODERES #####
