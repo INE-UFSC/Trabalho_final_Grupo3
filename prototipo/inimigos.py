@@ -203,16 +203,16 @@ class Atirador(Entidade):
         else:
             self.vely += gravidade * self.escala_tempo
 
-        self.y += self.vely * self.escala_tempo
-        self.x += self.velx * self.escala_tempo
+        
 
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
+        print(self.x)
         if self.corpo.colliderect(mapa.campo_visivel):
-            self.velx = 0
             dist_x_jogador = self.x - mapa.jogador.x
             if dist_x_jogador > 0:
                 self.__face = -1
             elif dist_x_jogador < 0:
                 self.__face = 1
         else:
-            self.velx = 2 * self.__face
+            self.y += self.vely * self.escala_tempo
+            self.x += self.velx * self.escala_tempo
