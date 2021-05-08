@@ -25,7 +25,7 @@ class Muro(Obstaculo):
     def __init__(self, nome: str, x: int, topo: int, base: int):
         largura = 45
         altura = base - topo
-        super().__init__(nome, x, topo, altura, largura, "muro", (11, 137, 0))
+        super().__init__(nome, x, topo, altura, largura, "0", (11, 137, 0))
 
 
 @instanciavel
@@ -45,12 +45,12 @@ class Chao(Obstaculo):
 
 @instanciavel
 class Vida(Obstaculo):
-    def __init__(self, nome: str, x: int, y: int):
+    def __init__(self, x: int, y: int):
         altura = 30
         largura = 100
         self.__fonte = pygame.font.SysFont('Arial', 20)
         self.__vida = ""
-        super().__init__(nome, x, y, altura, largura, "0", (10, 237, 0))
+        super().__init__("vida", x, y, altura, largura, "sprites", (10, 237, 0))
 
     @property
     def vida(self):
@@ -60,13 +60,19 @@ class Vida(Obstaculo):
     def vida(self, vida):
         self.__vida = vida
 
+    #def renderizar(self, tela, mapa):
+    #    if renderizar_hitbox: pygame.draw.rect(tela, self.cor, self.corpo)
+
     def renderizar(self, tela, mapa):
-        if renderizar_hitbox: pygame.draw.rect(tela, self.cor, self.corpo)
+        print(self.__vida)
+        nome = self.nome+"_"+str(self.__vida)
+        #pygame.draw.rect(tela, self.cor, self.corpo)
+        self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.renderizar(tela, mapa)
-        mostra_vida = self.__fonte.render('vida :' + " " + str(self.__vida), False, (0, 0, 0))
-        tela.blit(mostra_vida, (self.x, self.y))
+        #mostra_vida = self.__fonte.render('vida :' + " " + str(self.__vida), False, (0, 0, 0))
+        #tela.blit(mostra_vida, (self.x, self.y))
         return False
 
 
@@ -141,8 +147,8 @@ class BarraPoder(Obstaculo):
         self.__largura_atual = largura
         self.__cor_poder = (0, 0, 0)
         self.__corpo_poder = []
-        super().__init__("barrapoder", x, y, altura, largura, "0", (205, 133, 63))
-        self.sprite = SpriteSheetBarras()
+        super().__init__("poder_barra", x, y, altura, largura, "sprites", (205, 133, 63))
+        #self.sprite = SpriteSheetBarras()
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.__cor_poder = mapa.jogador.poder.cor
@@ -154,7 +160,5 @@ class BarraPoder(Obstaculo):
     def renderizar(self, tela, mapa):
         pygame.draw.rect(tela, self.cor, self.corpo)
         pygame.draw.rect(tela, self.__cor_poder, self.__corpo_poder)
-        self.sprite.imprimir(tela, self.x-70, self.y-18, mapa.jogador.poder.nome)
-        #self.sprite.imprimir(self.imagem, self.x-40, self.y-6, tela, 0, 0)
-       # except AttributeError:
-        #    pass
+        nome = self.nome+"_"+mapa.jogador.poder.nome
+        self.sprite.imprimir(tela, nome, self.x-70, self.y-18, 0, 0, 0, 0)

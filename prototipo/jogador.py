@@ -3,15 +3,15 @@ from obstaculos import Bloco, Vitoria
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Rato
 from poderes import *
-from sprites import SpriteSheet
+from sprites import Sprite
 
 
 class Jogador(Movel):
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
         ##### ATRIBUTOS GERAIS #####
-        self.__vida = 100
+        self.__vida = 5
         self.__nome = nome
-        self.__sprite = SpriteSheet("guri")
+        self.__sprite = Sprite("rabisco")
         self.__posicao_comeco = (x, y)
 
         ##### ATRIBUTOS POSICIONAIS #####
@@ -92,11 +92,12 @@ class Jogador(Movel):
         self.__moedas += 1
 
     def renderizar(self, tela, campo_visivel, ciclo):
-        if renderizar_hitbox: pygame.draw.rect(tela, (50, 50, 255),
-                                               [self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
                                                 self.corpo.w, self.corpo.h])
-        if renderizar_sprite: self.__sprite.imprimir("guri" + str(ciclo % 12), self.x - campo_visivel.x,
-                                                     self.y - campo_visivel.y, tela, self.__face, self.velx)
+        if renderizar_sprite:
+            self.__sprite.imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
+                                   self.__face, self.velx, self.vely, ciclo % 12)
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
         self.mover(entradas[0], entradas[1], entradas[2], screen.get_size(), mapa, atrito)

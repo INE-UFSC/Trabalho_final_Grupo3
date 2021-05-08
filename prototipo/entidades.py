@@ -1,6 +1,6 @@
 # Arquivos com as classes abstratas do jogo
 import pygame
-from sprites import SpriteSheet
+from sprites import *
 
 colisao_analisada = "cano3"
 renderizar_hitbox = True
@@ -25,7 +25,7 @@ class Estatico():
         self.__corpo = pygame.Rect(x, y, largura, altura)
         self.__imagem = imagem
         try:
-            self.__sprite = SpriteSheet(imagem)
+            self.__sprite = Sprite(imagem)
         except FileNotFoundError:
             self.__sprite = []  # nao possui sprite
         self.__cor = cor
@@ -114,8 +114,10 @@ class Estatico():
                                                 self.corpo.h])
         if renderizar_sprite:
             try:
-                self.sprite.imprimir(self.__imagem, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, tela,
-                                     1, 0)
+                self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
+                                     0, 0, 0)
+                #self.sprite.imprimir(self.__imagem, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, tela,
+                #                    1, 0)
             except AttributeError:
                 pass  # nao possui sprite
 

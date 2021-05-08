@@ -102,7 +102,7 @@ class Mapa:
         self.__tamanho = lista_todos[2]
         self.__jogador = Jogador("guri", 200, self.tamanho[1] - 50, 0, 100)
         for entidade in self.__lista_de_entidades:
-            if entidade.imagem != "0": entidade.sprite = SpriteSheet(entidade.imagem)
+            if entidade.imagem != "0": entidade.sprite = Sprite(entidade.imagem)
         return self.__jogador
 
     def atualizar(self, tela, campo_visivel, dimensoes_tela):
@@ -161,7 +161,7 @@ def carregar_mapa():
 
     ],
 
-        [["Vida", ('vida', 100, 50)],
+        [["Vida", (60, 30)],
          ["Tempo", ('tempo', 300, 50)],
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],

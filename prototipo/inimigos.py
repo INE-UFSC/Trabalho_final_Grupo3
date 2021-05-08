@@ -8,7 +8,7 @@ from poderes import *
 class Rato(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
-        danoContato = 50
+        danoContato = 1
         largura = 46
         altura = 46
         limiteVel = 1
@@ -41,7 +41,7 @@ class Rato(Entidade):
 class PorcoEspinho(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
-        danoContato = 100
+        danoContato = 2
         largura = 46
         altura = 46
         limiteVel = 1
@@ -104,7 +104,7 @@ class PorcoEspinho(Entidade):
 class Voador(Entidade):
     def __init__(self, nome: str, x: int, y: int, altitude: int):
         vida = 1
-        danoContato = 50
+        danoContato = 1
         largura = 26
         altura = 26
         limiteVel = 4
@@ -149,7 +149,7 @@ class Voador(Entidade):
 class Atirador(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
-        danoContato = 10
+        danoContato = 1
         largura = 40
         altura = 66
         limiteVel = 4
