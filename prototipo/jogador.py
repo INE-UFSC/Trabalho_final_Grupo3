@@ -26,7 +26,6 @@ class Jogador(Movel):
         largura = 46
         limite_vel = 5
         self.__tamanho_jogador = (altura, largura)
-        self.__face = 1
         self.__aceleracao = 0
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
@@ -87,10 +86,6 @@ class Jogador(Movel):
         return self.__vida
 
     @property
-    def face(self):
-        return self.__face
-
-    @property
     def tipos_transparentes(self):
         return self.__tipos_transparentes
     
@@ -119,7 +114,7 @@ class Jogador(Movel):
         if renderizar_sprite:
             if self.recuperacao % 15 < 10:
                 self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
-                                self.__face, self.velx, self.vely, ciclo % 12)
+                                self.face, self.velx, self.vely, ciclo % 12)
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
         self.mover(entradas[0], entradas[1], entradas[2], screen.get_size(), mapa, atrito)
@@ -338,9 +333,9 @@ class Jogador(Movel):
 
         ##### INDICA A DIRECAO DO JOGADOR PARA DIRECIONAR PODERES #####
         if self.velx > 0:
-            self.__face = 1
+            self.face = 1
         elif self.velx < 0:
-            self.__face = -1
+            self.face = -1
 
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)

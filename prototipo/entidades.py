@@ -154,11 +154,13 @@ class Estatico():
             if entidade.velx <= 0:
                 entidade.velx = - entidade.velx
                 entidade.x = self.corpo.right + 1
+                entidade.face = -(entidade.face)
         ##### COLISAO DIREITA #####
         elif direcao == "direita":
             if entidade.velx >= 0:
                 entidade.x = self.corpo.left - entidade.largura
                 entidade.velx = - entidade.velx
+                entidade.face = -(entidade.face)
         elif direcao in ["baixo"]:
             entidade.vely = 0
             entidade.y = self.corpo.top - entidade.altura
@@ -173,6 +175,15 @@ class Movel(Estatico):
         self.__velx = 0
         self.__vely = 0
         self.__limite_vel = limite_vel
+        self.__face = 1
+    
+    @property
+    def face(self):
+        return self.__face
+    
+    @face.setter
+    def face(self, face):
+        self.__face = face
 
     @property
     def velx(self):
@@ -291,14 +302,18 @@ class Movel(Estatico):
         if direcao == "esquerda":
             if entidade.velx <= 0:
                 entidade.velx = - entidade.velx
+                entidade.face = -(entidade.face)
                 entidade.x = self.corpo.right + 1
                 self.velx = - self.velx
+                self.face = - self.face
         ##### COLISAO DIREITA #####
         elif direcao == "direita":
             if entidade.velx >= 0:
                 entidade.x = self.corpo.left - entidade.largura
                 entidade.velx = - entidade.velx
+                entidade.face = -(entidade.face)
                 self.velx = - self.velx
+                self.face = - self.face
         elif direcao in ["baixo"]:
             entidade.vely = 0
             entidade.y = self.corpo.top - entidade.altura

@@ -161,12 +161,8 @@ class Atirador(Entidade):
         self.escala_tempo = 1
         self.__poder = Projetil()
         self.__descanso_poder = 300
-        self.__face = 1
         self.__gravidade = 1
 
-    @property
-    def face(self):
-        return self.__face
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.escala_tempo != mapa.escala_tempo:
@@ -208,11 +204,12 @@ class Atirador(Entidade):
 
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
         if self.corpo.colliderect(mapa.campo_visivel):
+            self.velx = 0
             dist_x_jogador = self.x - mapa.jogador.x
             if dist_x_jogador > 0:
-                self.__face = -1
+                self.face = -1
             elif dist_x_jogador < 0:
-                self.__face = 1
+                self.face = 1
         else:
-            self.x += self.velx * self.escala_tempo
+            self.x += 2 * self.escala_tempo * self.face
         self.y += self.vely * self.escala_tempo
