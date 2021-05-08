@@ -176,21 +176,17 @@ def carregar_mapa():
         ["Chao", ('chao1', height - 10, -1000, 2105)],
 
         ##### INIMIGOS #####
-        ["Rato", ('rato1', 100, height - 50)],
-        ["Rato", ('rato2', 600, height - 50)],
-        ["Rato", ('rato3', 1000, height - 50)],
-        ["Rato", ('rato4', 1200, height - 50)],
-        ["Rato", ('rato5', 1400, height - 50)],
-        ["Voador", ('voador1', 100, height - 250, 200)],
-        ["Voador", ('voador2', 600, height - 250, 200)],
+        #["Rato", ('rato1', 100, height - 50)],
+        ["Coelho", ('coleho', 700, height-50)],
+        #["Voador", ('voador2', 600, height - 250, 200)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (1900, height - 200, 100, 190)]
 
-    ], [["Vida", ('vida', 140, 50)],
-        ["Tempo", ('tempo', 470, 50)],
-        ["Biscoitos", ('moeda', 800, 50)]],
-        ["BarraPoder", (600, 300)],
+    ], [["Vida", (60, 30)],
+         ["Tempo", ('tempo', 300, 50)],
+         ["Biscoitos", ('moeda', 500, 50)],
+         ["BarraPoder", (700, 50)]],
 
         (width, height)]
 
@@ -215,10 +211,10 @@ def carregar_mapa():
         ##### BORDA E VITORIA #####
         ["Vitoria", (500, height - 690, 100, 190)]
 
-    ], [["Vida", ('vida', 140, 50)],
-        ["Tempo", ('tempo', 470, 50)],
-        ["Biscoitos", ('moeda', 800, 50)],
-        ["BarraPoder", (800, 100)]],
+    ], [["Vida", (60, 30)],
+         ["Tempo", ('tempo', 300, 50)],
+         ["Biscoitos", ('moeda', 500, 50)],
+         ["BarraPoder", (700, 50)]],
 
         (width, height)]
 

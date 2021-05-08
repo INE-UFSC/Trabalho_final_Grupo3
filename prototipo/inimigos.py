@@ -213,3 +213,55 @@ class Atirador(Entidade):
         else:
             self.x += 2 * self.escala_tempo * self.face
         self.y += self.vely * self.escala_tempo
+
+
+@instanciavel
+class Coelho(Entidade):
+    def __init__(self, nome: str, x: int, y: int):
+        vida = 1
+        danoContato = 1
+        largura = 46
+        altura = 60
+        limiteVel = 1
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (128, 0, 0))
+        #self.vely = 0
+        #self.velx = 0
+        self.xinicial = x
+        self.escala_tempo = 1
+        self.__descanso_pulo_max = 150
+        self.__descanso_pulo = self.__descanso_pulo_max
+
+    def mover(self, dimensoesTela, mapa):
+
+        ##### COISA PRO PULO MAIS PRA FRENTE #####
+        vely_buff = self.vely
+
+        ##### COLISOES #####
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
+
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsBaixo:
+            obsBaixo.sofreu_colisao_outros(self, "baixo")
+
+
+        ##### GRAVIDADE ######
+        else:
+            self.vely += gravidade * self.escala_tempo
+
+        ##### GERENCIADOR DO PULO #####
+        self.__descanso_pulo = (self.__descanso_pulo-1) % self.__descanso_pulo_max
+
+        if not self.__descanso_pulo and obsBaixo:
+            self.vely -= 9
+
+        if self.vely : self.velx = self.face * 3
+        else: self.velx = 0
+
+        if not self.vely and vely_buff:
+            self.face = -self.face
+
+        ##### REPOSICIONAMENTO #####
+        self.y += self.vely * self.escala_tempo
+        self.x += self.velx * self.escala_tempo
