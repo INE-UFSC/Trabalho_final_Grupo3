@@ -1,4 +1,4 @@
-#Arquivos com as classes abstratas do jogo
+# Arquivos com as classes abstratas do jogo
 import pygame
 from sprites import SpriteSheet
 
@@ -6,10 +6,16 @@ colisao_analisada = "cano3"
 renderizar_hitbox = True
 renderizar_sprite = True
 gravidade = 0.2
+classes_instanciaveis = []
+
+def instanciavel(classe):
+    classes_instanciaveis.append(classe)
+    return classe
+
 
 class Estatico():
 
-    def __init__(self, nome: str, x:int, y:int, altura: int, largura: int, imagem: str, cor = (0,0,0)):
+    def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, imagem: str, cor=(0, 0, 0)):
         self.__nome = nome
         self.__x = x
         self.__y = y
@@ -20,24 +26,24 @@ class Estatico():
         try:
             self.__sprite = SpriteSheet(imagem)
         except FileNotFoundError:
-            self.__sprite = [] #nao possui sprite
+            self.__sprite = []  # nao possui sprite
         self.__cor = cor
 
     @property
-    def nome (self):
-        return self.__nome 
+    def nome(self):
+        return self.__nome
 
     @nome.setter
-    def nome (self, nome):
-         self.__nome = nome
+    def nome(self, nome):
+        self.__nome = nome
 
     @property
     def x(self):
         return self.__x
-     
+
     @x.setter
     def x(self, x):
-         self.__x = x
+        self.__x = x
 
     @property
     def y(self):
@@ -86,26 +92,27 @@ class Estatico():
     @sprite.setter
     def sprite(self, sprite):
         self.__sprite = sprite
-    
+
     @property
     def cor(self):
         return self.__cor
 
     def auto_destruir(self, mapa):
-         if self in mapa.lista_de_entidades: #RESOLVE PROVISORIAMENTE
+        if self in mapa.lista_de_entidades:  # RESOLVE PROVISORIAMENTE
             mapa.lista_de_entidades.remove(self)
 
     def renderizar(self, tela, mapa):
-        if renderizar_hitbox: 
-            pygame.draw.rect(tela, self.__cor, [self.corpo.x - mapa.campo_visivel.x, 
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, self.__cor, [self.corpo.x - mapa.campo_visivel.x,
                                                 self.corpo.y - mapa.campo_visivel.y,
-                                                self.corpo.w, 
+                                                self.corpo.w,
                                                 self.corpo.h])
         if renderizar_sprite:
             try:
-                self.sprite.imprimir(self.__imagem, self.x-mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,tela, 1, 0)
+                self.sprite.imprimir(self.__imagem, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, tela,
+                                     1, 0)
             except AttributeError:
-                pass #nao possui sprite
+                pass  # nao possui sprite
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if mapa.campo_visivel.colliderect(self.corpo):
@@ -149,10 +156,12 @@ class Estatico():
             entidade.vely = 0
             entidade.y = self.corpo.top - entidade.altura
 
+
 class Movel(Estatico):
 
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limite_vel: int, imagem: str,cor = (0,0,0)):
-        super().__init__(nome, x, y, largura, altura, imagem,cor)
+    def __init__(self, nome: str, x: int, y: int, largura: int, altura: int, limite_vel: int, imagem: str,
+                 cor=(0, 0, 0)):
+        super().__init__(nome, x, y, largura, altura, imagem, cor)
         self.escala_tempo = 1.0
         self.__velx = 0
         self.__vely = 0
@@ -193,22 +202,22 @@ class Movel(Estatico):
         for entidade in lista_de_entidades:
             transparente = False
             for tipo in tipos_transparentes:
-                transparente = transparente or isinstance(entidade,tipo)
+                transparente = transparente or isinstance(entidade, tipo)
             if entidade != self and not transparente:
 
                 cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
                 if self.__velx < 0:  # movimento para a esquerda
-                    cveloz_left = self.corpo.left - 1 + self.__velx*self.escala_tempo
+                    cveloz_left = self.corpo.left - 1 + self.__velx * self.escala_tempo
                     cveloz_largura = self.corpo.right - cveloz_left + 1
                 else:  # movimento para a direita
                     cveloz_left = self.corpo.left - 1
-                    cveloz_largura = self.corpo.right - cveloz_left + 1 + self.__velx*self.escala_tempo
+                    cveloz_largura = self.corpo.right - cveloz_left + 1 + self.__velx * self.escala_tempo
                 if self.__vely < 0:  # movimento para cima
-                    cveloz_top = self.corpo.top - 1 + self.__vely*self.escala_tempo
+                    cveloz_top = self.corpo.top - 1 + self.__vely * self.escala_tempo
                     cveloz_altura = self.corpo.bottom - cveloz_top + 1
                 else:  # movimento para baixo
                     cveloz_top = self.corpo.top
-                    cveloz_altura = self.corpo.bottom - cveloz_top + 1 + self.__vely*self.escala_tempo
+                    cveloz_altura = self.corpo.bottom - cveloz_top + 1 + self.__vely * self.escala_tempo
                 self.__corpoveloz = pygame.Rect(cveloz_left, cveloz_top, cveloz_largura, cveloz_altura)
                 colisaoVeloz = self.__corpoveloz.colliderect(entidade.corpo)
 
@@ -217,7 +226,8 @@ class Movel(Estatico):
                     ##### VERTICIAIS #####
                     dist_y = 0
                     if not self.__vely:  # parado
-                        dist_y = min(self.__corpoveloz.bottom - entidade.corpo.top, entidade.corpo.bottom - self.__corpoveloz.top)
+                        dist_y = min(self.__corpoveloz.bottom - entidade.corpo.top,
+                                     entidade.corpo.bottom - self.__corpoveloz.top)
                     elif self.__vely > 0:  # caindo
                         dist_y = self.__corpoveloz.bottom - entidade.corpo.top
                     else:  # subindo
@@ -232,9 +242,9 @@ class Movel(Estatico):
                     else:  # movimentacao pra esquerda
                         dist_x = entidade.corpo.right - self.__corpoveloz.left
 
-                    if self.__vely >= 0 and dist_x  >= dist_y + 2:
+                    if self.__vely >= 0 and dist_x >= dist_y + 2:
                         cBaixo = True
-                    elif self.__vely < 0 and dist_x  >= dist_y + 2:
+                    elif self.__vely < 0 and dist_x >= dist_y + 2:
                         cCima = True
                     elif self.__velx > 0 and dist_x < dist_y:
                         cDireita = True
@@ -252,11 +262,11 @@ class Movel(Estatico):
                 if cEsquerda: obsEsquerda = entidade
                 if cDireita: obsDireita = entidade
 
-        return[obsCima,obsBaixo,obsDireita,obsEsquerda]
+        return [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.escala_tempo != mapa.escala_tempo:
-            self.escala_tempo += max(min(mapa.escala_tempo-self.escala_tempo,0.05),-0.05)
+            self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         self.mover(dimensoes_tela, mapa)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
         if mapa.campo_visivel.colliderect(self.corpo):
@@ -282,9 +292,11 @@ class Movel(Estatico):
             entidade.vely = 0
             entidade.y = self.corpo.top - entidade.altura
 
+
 class Entidade(Movel):
-    def __init__(self, nome: str, x: int, y: int, largura:int, altura:int, limiteVel: int, vida:int, dano_contato:int, imagem:str,cor = (0,0,0)):
-        super().__init__(nome, x, y, largura, altura, limiteVel, imagem,cor)
+    def __init__(self, nome: str, x: int, y: int, largura: int, altura: int, limiteVel: int, vida: int,
+                 dano_contato: int, imagem: str, cor=(0, 0, 0)):
+        super().__init__(nome, x, y, largura, altura, limiteVel, imagem, cor)
         self.__vida = vida
         self.__dano_contato = dano_contato
 
@@ -307,9 +319,9 @@ class Entidade(Movel):
     @property
     def contato(self):
         return self.__contato
-    
+
     @contato.setter
-    def contato(self,contato):
+    def contato(self, contato):
         self.__contato = contato
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):

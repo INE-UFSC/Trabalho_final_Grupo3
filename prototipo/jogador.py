@@ -5,6 +5,7 @@ from inimigos import Rato
 from poderes import *
 from sprites import SpriteSheet
 
+
 class Jogador(Movel):
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
         ##### ATRIBUTOS GERAIS #####
@@ -48,7 +49,7 @@ class Jogador(Movel):
     @poder.setter
     def poder(self, poder):
         self.__poder = poder
-    
+
     @property
     def moedas(self):
         return self.__moedas
@@ -80,55 +81,58 @@ class Jogador(Movel):
     @property
     def face(self):
         return self.__face
-    
+
     def vida_pra_zero(self):
         self.__vida = 0
 
     def coletar_poder(self, item):
         self.poder = item.poder_atribuido
-    
+
     def coletar_moeda(self):
-            self.__moedas += 1
+        self.__moedas += 1
 
     def renderizar(self, tela, campo_visivel, ciclo):
-        if renderizar_hitbox: pygame.draw.rect(tela, (50,50,255), [self.corpo.x-campo_visivel.x,self.corpo.y-campo_visivel.y,self.corpo.w,self.corpo.h])
-        if renderizar_sprite: self.__sprite.imprimir("guri"+str(ciclo%12), self.x-campo_visivel.x, self.y-campo_visivel.y, tela, self.__face, self.velx)
+        if renderizar_hitbox: pygame.draw.rect(tela, (50, 50, 255),
+                                               [self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
+                                                self.corpo.w, self.corpo.h])
+        if renderizar_sprite: self.__sprite.imprimir("guri" + str(ciclo % 12), self.x - campo_visivel.x,
+                                                     self.y - campo_visivel.y, tela, self.__face, self.velx)
 
-    def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): ### REQUER AREA VISIVEL PARA RENDERIZAR
-        self.mover(entradas[0],entradas[1],entradas[2],screen.get_size(),mapa,atrito)
+    def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
+        self.mover(entradas[0], entradas[1], entradas[2], screen.get_size(), mapa, atrito)
 
         self.renderizar(screen, campo_visivel, ciclo)
 
         ##### ATUALIZACAO DOS PODERES #####
         if self.__recarga > 0: self.__recarga -= 1
-        self.__invisivel = self.__poder.atualizar(screen,mapa)
+        self.__invisivel = self.__poder.atualizar(screen, mapa)
 
         ##### SIDESCROLL #####
-        x_min = min(0,campo_visivel.x)
-        x_max = max(mapa.tamanho[0]-campo_visivel.w,campo_visivel.x)
-        y_min = min(0,campo_visivel.y)
-        y_max = max(mapa.tamanho[1]-campo_visivel.h,campo_visivel.y)
+        x_min = min(0, campo_visivel.x)
+        x_max = max(mapa.tamanho[0] - campo_visivel.w, campo_visivel.x)
+        y_min = min(0, campo_visivel.y)
+        y_max = max(mapa.tamanho[1] - campo_visivel.h, campo_visivel.y)
         if self.x > campo_visivel.x + 600:
-            campo_x = max(0,min((mapa.tamanho[0]-campo_visivel.w,self.x-600)))
-            #if campo_visivel.x < mapa.tamanho[0] - campo_visivel.w:
+            campo_x = max(0, min((mapa.tamanho[0] - campo_visivel.w, self.x - 600)))
+            # if campo_visivel.x < mapa.tamanho[0] - campo_visivel.w:
             #    return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
-            #else:
+            # else:
             #    return pygame.Rect(mapa.tamanho[0]-campo_visivel.w,0,campo_visivel.w,campo_visivel.h)
         elif self.x < campo_visivel.x + 400:
-            campo_x = max(0,min((mapa.tamanho[0]-campo_visivel.w,self.x-400)))
-            #if campo_visivel.x > 0:
+            campo_x = max(0, min((mapa.tamanho[0] - campo_visivel.w, self.x - 400)))
+            # if campo_visivel.x > 0:
             #    return pygame.Rect(self.x-400,0,campo_visivel.w,campo_visivel.h)
-            #else:
+            # else:
             #    return pygame.Rect(0,0,campo_visivel.w,campo_visivel.h)
         else:
             campo_x = campo_visivel.x
         if self.y > campo_visivel.y + 300:
-            campo_y = max(0,min((mapa.tamanho[1]-campo_visivel.h,self.y-300)))
+            campo_y = max(0, min((mapa.tamanho[1] - campo_visivel.h, self.y - 300)))
         elif self.y < campo_visivel.y + 200:
-            campo_y = max(0,min((mapa.tamanho[1]-campo_visivel.h,self.y-200)))
+            campo_y = max(0, min((mapa.tamanho[1] - campo_visivel.h, self.y - 200)))
         else:
             campo_y = campo_visivel.y
-        return pygame.Rect(campo_x,campo_y,campo_visivel.w,campo_visivel.h)
+        return pygame.Rect(campo_x, campo_y, campo_visivel.w, campo_visivel.h)
 
     def respawn(self):
         ##### EMPURRA O JOGADOR #####
@@ -142,7 +146,7 @@ class Jogador(Movel):
         self.velx += self.__aceleracao
 
         ##### COLISOES #####
-        #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
+        # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
         obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
         dano_total = 0
@@ -160,7 +164,7 @@ class Jogador(Movel):
             dano_sofrido = obsEsquerda.sofreu_colisao_jogador(self, "esquerda", mapa)
             dano_total += dano_sofrido
 
-        #print(dano_total)
+        # print(dano_total)
         if dano_total:
             if type(self.__poder) != CinzaDoGuri:
                 self.__poder = CinzaDoGuri()
@@ -171,7 +175,7 @@ class Jogador(Movel):
         ##### PERMITE
         if self.__invisivel:
             for i in range(len(obstaculos)):
-                if isinstance(obstaculos[i],Entidade): 
+                if isinstance(obstaculos[i], Entidade):
                     obstaculos[i] = 0
 
         ##### COLETA ITENS #####
@@ -181,7 +185,7 @@ class Jogador(Movel):
                 obstaculos[i] = 0
 
         ##### REPOSICIONAMENTO POS COLISAO #####
-        if obsDireita and obsEsquerda: #ESMAGAMENTO
+        if obsDireita and obsEsquerda:  # ESMAGAMENTO
             self.__vida = 0
 
         # ##### COLISAO ESQUERDA #####
@@ -206,11 +210,11 @@ class Jogador(Movel):
         #         self.x = obsDireita.corpo.left - self.largura
 
         ##### IMPEDE QUE O JOGADOR PASSE DA BORDA DIREITA #####
-        if self.x >= mapa.tamanho[0]-self.largura:
+        if self.x >= mapa.tamanho[0] - self.largura:
             if self.velx >= 0:
                 self.velx = 0
                 aceleracao = 0
-                self.x = mapa.tamanho[0]-self.largura
+                self.x = mapa.tamanho[0] - self.largura
 
         # ##### COLISAO BAIXO #####
         # if obsBaixo:
@@ -315,9 +319,9 @@ class Jogador(Movel):
             self.__face = -1
 
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
-        self.corpo = pygame.Rect(self.x , self.y, self.largura, self.altura)
+        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
-    def poderes(self, screen, mapa, acao = False, outros_poderes = False):
+    def poderes(self, screen, mapa, acao=False, outros_poderes=False):
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
         if acao and not self.poder.descanso:
-            self.__poder.acao(self,screen,mapa)
+            self.__poder.acao(self, screen, mapa)

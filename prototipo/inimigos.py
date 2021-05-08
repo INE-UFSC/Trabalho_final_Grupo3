@@ -1,8 +1,10 @@
-#Arquivo destinado a fazer todos os inimigos
+# Arquivo destinado a fazer todos os inimigos
 import pygame
-from entidades import Entidade, gravidade, renderizar_hitbox, renderizar_sprite
+from entidades import *
 from poderes import *
 
+
+@instanciavel
 class Rato(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
@@ -10,7 +12,7 @@ class Rato(Entidade):
         largura = 46
         altura = 46
         limiteVel = 1
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0",(88, 51, 0))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (88, 51, 0))
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -19,21 +21,25 @@ class Rato(Entidade):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[Bala, PoderNoMapa])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
         if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
         if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
         if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
-        if obsBaixo: obsBaixo.sofreu_colisao_outros(self, "baixo")
+        if obsBaixo:
+            obsBaixo.sofreu_colisao_outros(self, "baixo")
 
         ##### GRAVIDADE ######
-        else: self.vely += gravidade * self.escala_tempo
+        else:
+            self.vely += gravidade * self.escala_tempo
 
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
 
+
+@instanciavel
 class PorcoEspinho(Entidade):
-    def __init__(self, nome:str, x:int, y:int):
+    def __init__(self, nome: str, x: int, y: int):
         vida = 1
         danoContato = 100
         largura = 46
@@ -83,33 +89,38 @@ class PorcoEspinho(Entidade):
         if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
         if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
         if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
-        if obsBaixo: obsBaixo.sofreu_colisao_outros(self, "baixo")
+        if obsBaixo:
+            obsBaixo.sofreu_colisao_outros(self, "baixo")
 
         ##### GRAVIDADE ######
-        else: self.vely += gravidade * self.escala_tempo
+        else:
+            self.vely += gravidade * self.escala_tempo
 
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
 
+
+@instanciavel
 class Voador(Entidade):
-    def __init__(self, nome: str, x: int, y: int,altitude: int):
+    def __init__(self, nome: str, x: int, y: int, altitude: int):
         vida = 1
         danoContato = 50
         largura = 26
         altura = 26
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0",(88, 51, 0))
-        self.altitude = pygame.Rect(x,y+largura+2,largura,altura+altitude) # CAMPO UTILIZADO PARA CHECAR ALTURA DE VOO
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (88, 51, 0))
+        self.altitude = pygame.Rect(x, y + largura + 2, largura,
+                                    altura + altitude)  # CAMPO UTILIZADO PARA CHECAR ALTURA DE VOO
         self.vely = 0
         self.velx = 1
         self.xinicial = x
         self.escala_tempo = 1
 
-
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa, Estatico])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,
+                                                                         [Bala, PoderNoMapa, Estatico])
 
         ##### HORIZONTAIS #####
         if obsEsquerda or obsDireita:
@@ -119,10 +130,9 @@ class Voador(Entidade):
         if obsBaixo or obsCima:
             self.vely = -self.vely
 
-
         ##### GRAVIDADE ######
         if (self.altitude.collidelist([x.corpo for x in mapa.lista_de_entidades if x != self]) != -1
-            or self.altitude.y+self.altitude.h > dimensoesTela[1]):
+                or self.altitude.y + self.altitude.h > dimensoesTela[1]):
             self.vely -= gravidade * self.escala_tempo * 0.2
         else:
             self.vely += gravidade * self.escala_tempo * 0.2
@@ -133,7 +143,9 @@ class Voador(Entidade):
         self.x += self.velx * self.escala_tempo
         self.altitude.x = self.x
         self.altitude.y = self.y + self.largura + 2
-       
+
+
+@instanciavel
 class Atirador(Entidade):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
@@ -141,7 +153,7 @@ class Atirador(Entidade):
         largura = 40
         altura = 66
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (255,25,25))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (255, 25, 25))
         self.vely = 0
         self.velx = 2
         self.__vel_projetil = 3
@@ -157,28 +169,29 @@ class Atirador(Entidade):
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.escala_tempo != mapa.escala_tempo:
-            self.escala_tempo += max(min(mapa.escala_tempo-self.escala_tempo,0.05),-0.05)
+            self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         self.mover(dimensoes_tela, mapa)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
         if mapa.campo_visivel.colliderect(self.corpo):
             self.renderizar(tela, mapa)
-        
+
         #### DETERMINA A VELOCIDADE DO PROJETIL PRA SEGUIR O JOGADOR ####
-        dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura))**2 + (mapa.jogador.x - self.x)**2)**(1/2)
-        divisor = dstancia/self.__vel_projetil
-        vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura))/divisor
-        velx = (mapa.jogador.x - self.x)/divisor
+        dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
+                mapa.jogador.x - self.x) ** 2) ** (1 / 2)
+        divisor = dstancia / self.__vel_projetil
+        vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) / divisor
+        velx = (mapa.jogador.x - self.x) / divisor
         if self.corpo.colliderect(mapa.campo_visivel):
             if self.__descanso_poder <= 0:
-                self.__poder.acao(self,tela, mapa, velx, vely)
+                self.__poder.acao(self, tela, mapa, velx, vely)
                 self.__descanso_poder = 300
             else:
-                self.__descanso_poder -= 1* self.escala_tempo
+                self.__descanso_poder -= 1 * self.escala_tempo
         return False
 
     def mover(self, dimensoesTela, mapa):
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,[Bala])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala])
 
         if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
         if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
