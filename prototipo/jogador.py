@@ -169,6 +169,7 @@ class Jogador(Movel):
             if dano_total:
                 if type(self.__poder) != CinzaDoGuri:
                     self.__poder = CinzaDoGuri()
+                    mapa.escala_tempo = 1.0
                 else:
                     self.__vida -= dano_total
                     if not self.__vida: self.respawn()
