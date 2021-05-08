@@ -64,7 +64,6 @@ class Vida(Obstaculo):
     #    if renderizar_hitbox: pygame.draw.rect(tela, self.cor, self.corpo)
 
     def renderizar(self, tela, mapa):
-        print(self.__vida)
         nome = self.nome+"_"+str(self.__vida)
         #pygame.draw.rect(tela, self.cor, self.corpo)
         self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0)
