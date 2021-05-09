@@ -339,3 +339,35 @@ class Gelatina(Entidade):
 
     def sofreu_colisao_outros(self, entidade, direcao):
         pass
+
+@instanciavel
+class Temporal(Entidade):
+    def __init__(self, nome: str, x: int, y: int):
+        vida = 1
+        danoContato = 1
+        largura = 46
+        altura = 46
+        limiteVel = 1
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (80, 10, 120))
+        self.vely = 0
+        self.velx = 1
+        self.xinicial = x
+        self.escala_tempo = 0
+
+    def mover(self, dimensoesTela, mapa):
+
+        ##### COLISOES #####
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
+
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsBaixo:
+            obsBaixo.sofreu_colisao_outros(self, "baixo")
+
+        ##### GRAVIDADE ######
+        else:
+            self.vely += gravidade * self.escala_tempo
+
+        self.y += self.vely * max(0,(-self.escala_tempo+1))
+        self.x += self.velx * max(0,(-self.escala_tempo+1))

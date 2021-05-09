@@ -224,6 +224,8 @@ class Movel(Estatico):
             if entidade != self and not transparente:
 
                 cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
+
+                ##### DEFINICAO DO CORPO VELOZ #####
                 if self.__velx < 0:  # movimento para a esquerda
                     cveloz_left = self.corpo.left - 1 + self.__velx * self.escala_tempo
                     cveloz_largura = self.corpo.right - cveloz_left + 1
@@ -240,49 +242,64 @@ class Movel(Estatico):
                 colisaoVeloz = self.__corpoveloz.colliderect(entidade.corpo)
 
                 if colisaoVeloz:
-                    # CALCULO DE O QUAO DENTRO O OBJETO TA HORIZONTALMENTE E VERTICALMENTE
-                    ##### VERTICIAIS #####
-                    dist_y = 0
-                    if not self.__vely:  # parado
-                        dist_y = min(self.__corpoveloz.bottom - entidade.corpo.top,
-                                     entidade.corpo.bottom - self.__corpoveloz.top)
-                    elif self.__vely > 0:  # caindo
-                        dist_y = self.__corpoveloz.bottom - entidade.corpo.top
-                    else:  # subindo
-                        dist_y = entidade.corpo.bottom - self.__corpoveloz.top
-                    dist_x = 0
-                    ##### HORIZONTAL #####
-                    if not self.__velx:  # parado
-                        dist_x = min(entidade.corpo.right - self.__corpoveloz.left,
-                                     self.__corpoveloz.right - entidade.corpo.left)  # colisao a direita = +
-                    elif self.__velx > 0:  # movimentacao pra direita
-                        dist_x = self.__corpoveloz.right - entidade.corpo.left
-                    else:  # movimentacao pra esquerda
-                        dist_x = entidade.corpo.right - self.__corpoveloz.left
+                    # Determina o quanto da dentro em cada direcao
+                    distCima = abs(self.__corpoveloz.top - entidade.corpo.bottom)
+                    distBaixo = abs(self.__corpoveloz.bottom - entidade.corpo.top)
+                    distEsquerda = abs(self.__corpoveloz.left - entidade.corpo.right)
+                    distDireita = abs(self.__corpoveloz.right - entidade.corpo.left)
 
-                    if self.__vely >= 0 and dist_x + 4 >= dist_y:
-                        cBaixo = True
-                    elif self.__vely < 0 and dist_x + 4 >= dist_y:
-                        cCima = True
-                    elif self.__velx > 0 and dist_x < dist_y:
-                        cDireita = True
-                    elif self.__velx < 0 and dist_x < dist_y:
-                        cEsquerda = True
-                    elif not self.__velx and abs(dist_x) < dist_y:
-                        if self.__corpoveloz.right - entidade.corpo.left > entidade.corpo.right - self.__corpoveloz.left:
-                            cEsquerda = True
-                        else:
-                            cDireita = True
-
-                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
-                if cCima: obsCima = entidade
-                if cBaixo:
-                    if obsBaixo and not isinstance(obsBaixo, Movel) and isinstance(obsBaixo, Movel):
-                        pass
+                    if distDireita <= distCima and distDireita <= distEsquerda and distDireita <= distBaixo:
+                        obsDireita = entidade
+                    elif distEsquerda <= distCima and distEsquerda <= distBaixo:
+                        obsEsquerda = entidade
+                    elif distCima <= distBaixo:
+                        obsCima = entidade
                     else:
                         obsBaixo = entidade
-                if cEsquerda: obsEsquerda = entidade
-                if cDireita: obsDireita = entidade
+
+
+                    # ##### VERTICIAIS #####
+                    # dist_y = 0
+                    # if not self.__vely:  # parado
+                    #     dist_y = min(self.__corpoveloz.bottom - entidade.corpo.top,
+                    #                  entidade.corpo.bottom - self.__corpoveloz.top)
+                    # elif self.__vely > 0:  # caindo
+                    #     dist_y = self.__corpoveloz.bottom - entidade.corpo.top
+                    # else:  # subindo
+                    #     dist_y = entidade.corpo.bottom - self.__corpoveloz.top
+                    # dist_x = 0
+                    # ##### HORIZONTAL #####
+                    # if not self.__velx:  # parado
+                    #     dist_x = min(entidade.corpo.right - self.__corpoveloz.left,
+                    #                  self.__corpoveloz.right - entidade.corpo.left)  # colisao a direita = +
+                    # elif self.__velx > 0:  # movimentacao pra direita
+                    #     dist_x = self.__corpoveloz.right - entidade.corpo.left
+                    # else:  # movimentacao pra esquerda
+                    #     dist_x = entidade.corpo.right - self.__corpoveloz.left
+
+                    # if self.__vely >= 0 and dist_x + 4 >= dist_y:
+                    #     cBaixo = True
+                    # elif self.__vely < 0 and dist_x + 4 >= dist_y:
+                    #     cCima = True
+                    # elif self.__velx > 0 and dist_x < dist_y:
+                    #     cDireita = True
+                    # elif self.__velx < 0 and dist_x < dist_y:
+                    #     cEsquerda = True
+                    # elif not self.__velx and abs(dist_x) < dist_y:
+                    #     if self.__corpoveloz.right - entidade.corpo.left > entidade.corpo.right - self.__corpoveloz.left:
+                    #         cEsquerda = True
+                    #     else:
+                    #         cDireita = True
+
+                # # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
+                # if cCima: obsCima = entidade
+                # if cBaixo:
+                #     if obsBaixo and not isinstance(obsBaixo, Movel) and isinstance(obsBaixo, Movel):
+                #         pass
+                #     else:
+                #         obsBaixo = entidade
+                # if cEsquerda: obsEsquerda = entidade
+                # if cDireita: obsDireita = entidade
 
         return [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
