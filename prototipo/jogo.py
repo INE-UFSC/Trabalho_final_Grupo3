@@ -17,22 +17,23 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
         botaoconfig = Botao(375, 460, 250, 50, (0, 220, 180), (0, 160, 110), "Configurações", 5)
         botaosair = Botao(375, 515, 250, 50, (220, 30, 30), (160, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
-        super().__init__([botaosair, botaojogar, botaocontinuar, botaonivel_1, botaonivel_2,
-                          botaonivel_3, botaoconfig,botaocontinuar], cormenu, superficie)
+        listabotoes = [botaosair, botaojogar, botaocontinuar, botaonivel_1, botaonivel_2,
+                          botaonivel_3, botaoconfig,botaocontinuar]
+        listatelas = [True,False,[Tela_De_Jogo,[superficie,"fase1"]],True,[Tela_De_Jogo,[superficie,"fase1"]]
+                        ,[Tela_De_Jogo,[superficie,"fase2"]],[Tela_De_Jogo,[superficie,"fase3"]],True,True]
+        super().__init__(listabotoes, cormenu, superficie,listatelas)
         self.__contador_menu = 0
 
-    def atualizar(self):
+    def atualizar(self,ciclo):
         self.__contador_menu -= 0.3
         self.setfundo(misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5))
-        return super().atualizar()
-
-
-    def logica_menu(self) -> int:
         for evento in pygame.event.get():
-            if evento.type == pygame.QUIT: return 1
+            if evento.type == pygame.QUIT: return False
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 acao = self.clicar()
-                return acao
+                print(acao)
+                return self.listatelas[acao]
+        return super().atualizar()
 
     def menu_inicial(self):
         pass
@@ -59,7 +60,7 @@ class Tela_De_Jogo(Tela):
         self.__jogador = Jogador('mario', 200, -1000, 0, 1)
 
         ##### MAPA #####
-        self.__mapa = Mapa((width, height))
+        self.__mapa = Mapa(superficie)
         # self.__jogador = Jogador('mario',200, 0, 0, 1)
         self.__jogador = self.__mapa.iniciar(nivel)
         self.__comeco = pygame.time.get_ticks() / 1000
@@ -78,7 +79,7 @@ class Tela_De_Jogo(Tela):
         '''
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT:
-                return 0
+                return False
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_w: self.__cima = 5
                 if evento.key == pygame.K_s: self.__baixo = 5
@@ -130,7 +131,8 @@ class Tela_De_Jogo(Tela):
                 self.__jogador.tipos_transparentes = classes_instanciaveis
             self.__superficie.blit(self.__textin, (500 - self.__textin.get_size()[0] / 2, 300 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
-                return 1
+                if self.__mapa.proximo: 
+                    return [Menu_Principal,[self.__superficie]]
 
         ### VENCENDO ###
         if self.__mapa.ganhou:
@@ -138,7 +140,7 @@ class Tela_De_Jogo(Tela):
             textin = self.__fonte.render("VENCEU", False, (0, 0, 0))
             self.__superficie.blit(textin, (500, 300))
             if self.__atrasofim >= 150:
-                return 3
+                return [Tela_De_Jogo,[self.__superficie, self.__mapa.proximo]] if self.__mapa.proximo else [Menu_Principal,[self.__superficie]]
 
         ##### RENDERIZACAO DA TELA #####
         pygame.display.flip()
@@ -153,7 +155,7 @@ class Tela_De_Jogo(Tela):
         ### PERDENDO POR TEMPO
         if self.__mapa.conta == 0:
             self.__jogador.vida_pra_zero()
-        return 2
+        return True
 
 
 class Jogo:
@@ -166,58 +168,20 @@ class Jogo:
         self.__janela = Janela(Menu_Principal(self.__screen))
         self.__relogio = pygame.time.Clock()
 
-    def logica_menu(self):
-        '''logica do sistema do menu principal
-        cria uma tela de menu, e gerencia botoes
-        '''
-        return self.__janela.tela.atualizar()
-
     def menu_inicial(self):  # Menu inicial do jogo
         self.__janela.tela = Menu_Principal(self.__screen)
         while True:
-            acao = self.logica_menu()
+            self.__ciclo += 1
+            acao = self.__janela.tela.atualizar(self.__ciclo)
 
             ### se acao == 0, nao fazer nada
             ### caso contrario, fazer a acao correspondente ao botao descrito
 
-            if acao == 1:  # botao sair
+            if acao == False:
                 break
-            elif acao in [2, 4, 5, 6]:  # botao jogar, fase 1, fase 2
-                if acao == 5:
-                    aconteceu = self.rodar("fase2")
-                elif acao == 6:
-                    aconteceu = self.rodar("fase3")
-                else:
-                    aconteceu = self.rodar("fase1")
-                if aconteceu == 0:  # se o jogador fechar o jogo durante a fase
-                    break
-                elif aconteceu == 3:
-                    pass
-            self.__relogio.tick(60)
-
-    def rodar(self, nivel):
-        ''' Funcao responsavel por colocar o jogo propriamente dito na tela
-        Loop define a taxa de quadros do jogo
-        
-        @param nivel: nome do nivel a ser inicializado
-
-        @returns: valor retornado pela funcao atualizar do nivel,
-                  a nao ser que o valor seja 2, ou seja, o jogo continua
-                  rodando normalmente, sem ter chegado a condicao de fim alguma
-        '''
-        ###### PYGAME GERAL #####
-        try:
-            self.__janela.tela = Tela_De_Jogo(self.__screen, nivel)
-        except KeyError:
-            return 3
-        nivel = self.__janela.tela
-        while True:
-            self.__ciclo += 1
-            jogar = nivel.atualizar(self.__ciclo)
-            if jogar != 2:
-                self.__janela.tela = Menu_Principal(self.__screen)
-                return jogar
-            ##### FPS MELHORADO #####
+            elif isinstance(acao,list):
+                self.__ciclo = 0
+                self.__janela.tela = acao[0](*acao[1])
             self.__relogio.tick(60)
 
 

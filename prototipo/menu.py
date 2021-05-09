@@ -29,8 +29,9 @@ class Tela:
 
 
 class Tela_Menu(Tela):
-    def __init__(self,listabotoes:list,fundo:list,superficie):
+    def __init__(self,listabotoes:list,fundo:list,superficie,listatelas):
         super().__init__(superficie)
+        self.__listatelas = listatelas
         self.__listabotoes = listabotoes        #lista de objetos Botao
         self.__fundo = fundo                    #[red,green,blue] do fundo   
     
@@ -52,6 +53,10 @@ class Tela_Menu(Tela):
     
     def logica_menu(self):
         pass
+
+    @property
+    def listatelas(self):
+        return self.__listatelas
     
 class Botao:
     def __init__(self,x,y,w,h,cor,corhover,texto,borda):

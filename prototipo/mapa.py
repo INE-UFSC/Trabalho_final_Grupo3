@@ -6,9 +6,11 @@ import json
 
 
 class Mapa:
-    def __init__(self, tamanho_campo):
+    def __init__(self, superficie):
         self.__lista_de_entidades = []
         self.__lista_de_display = []
+        self.__superficie = superficie
+        tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
         self.__conta = ""
         self.__vitoria = pygame.Rect(tamanho_campo[0] - 30, 550 - 30, 30, 100)
@@ -64,6 +66,10 @@ class Mapa:
     @property
     def jogador(self):
         return self.__jogador
+    
+    @property
+    def proximo(self):
+        return self.__proximo
 
     def iniciar(self, fase):
         # listatipos = {"Lapis": Lapis, "Bloco": Bloco, "Chao": Chao, "Borda": Borda, "Vitoria": Vitoria,
@@ -99,6 +105,7 @@ class Mapa:
             #     item = listatipos[item[0]](item[1])
             # self.__lista_de_display.append(item)
         self.__tamanho = lista_todos[2]
+        self.__proximo = lista_todos[3]
         self.__jogador = Jogador("guri", 200, self.tamanho[1] - 50, 0, 100)
         for entidade in self.__lista_de_entidades:
             if entidade.imagem != "0": entidade.sprite = Sprite(entidade.imagem)
@@ -167,7 +174,9 @@ def carregar_mapa():
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
-        (width, height)]
+        (width, height),
+        
+        "fase2"]
 
     width = 6500
     height = 600
@@ -231,7 +240,9 @@ def carregar_mapa():
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
-        (width, height)]
+        (width, height),
+        
+        "fase3"]
 
     width = 1000
     height = 2000
@@ -259,7 +270,9 @@ def carregar_mapa():
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
-        (width, height)]
+        (width, height),
+        
+        False]
 
     with open("mapas.json", 'w') as imagem:
         json.dump({"fase1": fase1, "fase2": fase2, "fase3": fase3}, imagem)
