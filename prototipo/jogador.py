@@ -287,20 +287,6 @@ class Jogador(Movel):
         if self.corpo.colliderect(entidade_vitoria.corpo):
             mapa.ganhou = True
 
-        #### COLISAO GOOMBA ####
-        for cada_termo in mapa.lista_de_entidades: 
-            if isinstance (cada_termo, Goomba):
-                entidade = cada_termo
-        
-                if obsEsquerda != 0:
-                    if isinstance(obsEsquerda, Goomba):
-                        self.__vida -= entidade.dano_contato
-                
-                if obsDireita != 0: 
-                    if isinstance(obsDireita, Goomba):
-                        self.__vida -= entidade.dano_contato
-
-
         ##### GRAVIDADE ######
         if not obsBaixo: self.vely += gravidade
 
