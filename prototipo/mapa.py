@@ -122,7 +122,7 @@ class Mapa:
 
 
 def carregar_mapa():
-    width = 3200
+    width = 4200
     height = 700
     fase1 = [[
         ["Lapis", ('lapis', 550, height - 125, height)],
@@ -138,10 +138,10 @@ def carregar_mapa():
 
         ["Chao", ('chao1', height - 10, -200, 350)],
         ["Chao", ('chao2', height - 10, 450, 2205)],
-        ["Chao", ('chao3', height - 10, 2500, 3205)],
+        ["Chao", ('chao3', height - 10, 2500, 4205)],
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (1900, height - 200, 100, 190)],
+        ["Vitoria", (4000, height - 200, 100, 190)],
 
         ["Gelatina", ('gelatina', 1000, height - 450)],
 
@@ -156,6 +156,7 @@ def carregar_mapa():
         ["Rato", ('rato1', 610, height - 50)],
         # ["Rato",('rato3', 900, height - 50)],
         ["Voador", ('voador1', 100, height - 500, 200)],
+        ["Temporal", ('temporal', 3500, height - 200)],
         ["PorcoEspinho", ('porco1', 900, height - 50)]
         # ["Atirador",('atiro', 1150, height - 50)],
         # ["Atirador", ('atiro2', 1000, height - 205)]
