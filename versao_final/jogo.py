@@ -22,6 +22,7 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
         self.__contador_menu = 0
 
     def atualizar(self):
+        pygame.mixer.music.stop()
         self.__contador_menu -= 0.3
         self.setfundo(misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5))
         return super().atualizar()
@@ -48,6 +49,7 @@ class Tela_De_Jogo(Tela):
         self.__tempo_maximo = 350
         self.__fonte = pygame.font.SysFont('Arial', 20)
         self.__atrasofim = 0
+        self.musica_de_fundo = pygame.mixer.music.load('musica_fundo.ogg') 
 
         ##### ENTRADAS DO JOGADOR #####
         self.__cima, self.__baixo, self.__direita, self.__esquerda = 0, 0, 0, 0
@@ -208,6 +210,7 @@ class Jogo:
         ###### PYGAME GERAL #####
         try:
             self.__janela.tela = Tela_De_Jogo(self.__screen, nivel)
+            pygame.mixer.music.play(-1)
         except KeyError:
             return 3
         nivel = self.__janela.tela

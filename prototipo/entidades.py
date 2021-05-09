@@ -3,7 +3,7 @@ import pygame
 
 colisao_analisada = "cano3"
 renderizar_hitbox = True
-renderizar_sprite = True
+renderizar_sprite = False
 gravidade = 0.2
 
 class Estatico():

@@ -432,7 +432,7 @@ class Clones(PoderManifestado):
         ##### COLISOES #####
 
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [Clones, PoderNoMapa])
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [Clones, PoderNoMapa, Jogador])
 
         for i in range(len(obstaculos)):
             if isinstance(obstaculos[i], Entidade):

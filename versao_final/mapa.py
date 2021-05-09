@@ -76,6 +76,7 @@ class Mapa:
         #print(classes_instanciaveis)
         with open("mapas.json") as arquivo_mapa:
             dicionaro_mapa = json.load(arquivo_mapa)
+            #print(dicionaro_mapa)
         lista_todos = dicionaro_mapa[fase]
         objetos_no_mapa = lista_todos[0]
         interface = lista_todos[1]
