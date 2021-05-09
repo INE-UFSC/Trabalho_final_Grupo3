@@ -66,7 +66,7 @@ class Mapa:
         return self.__jogador
 
     def iniciar(self, fase):
-        # listatipos = {"Muro": Muro, "Bloco": Bloco, "Chao": Chao, "Borda": Borda, "Vitoria": Vitoria,
+        # listatipos = {"Lapis": Lapis, "Bloco": Bloco, "Chao": Chao, "Borda": Borda, "Vitoria": Vitoria,
         #               "BandanaDoNinja": BandanaDoNinja, "CartolaDoMago": CartolaDoMago,
         #               "OculosDoNerd": OculosDoNerd, "VerdeBebe": VerdeBebe,
         #               "BoneMarinheiro": BoneMarinheiro, "Rato": Rato, "Voador": Voador, "Atirador": Atirador,
@@ -125,9 +125,9 @@ def carregar_mapa():
     width = 3200
     height = 700
     fase1 = [[
-        ["Muro", ('cano1', 550, height - 125, height)],
-        ["Muro", ('cano2', 800, height - 125, height)],
-        ["Muro", ('cano3', 1500, height - 125, height)],
+        ["Lapis", ('lapis', 550, height - 125, height)],
+        ["Lapis", ('lapis', 800, height - 125, height)],
+        ["Lapis", ('lapis', 1500, height - 125, height)],
 
         ["Bloco", ('bloco1', 200, height - 350)],
         ["Bloco", ('bloco2', 250, height - 300)],
@@ -170,10 +170,13 @@ def carregar_mapa():
     width = 2100
     height = 600
     fase2 = [[
-        ["Muro", ('cano1', -9000, height - 125, height)],
-        ["Muro", ('cano2', 1600, height - 125, height)],
+        ["Lapis", ('lapis', -9000, height - 125, height)],
+        ["Lapis", ('lapis', 1600, height - 125, height)],
 
         ["Chao", ('chao1', height - 10, -1000, 2105)],
+
+        ##### PODERES #####
+        ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
 
         ##### INIMIGOS #####
         #["Rato", ('rato1', 100, height - 50)],
@@ -193,10 +196,10 @@ def carregar_mapa():
     width = 1000
     height = 2000
     fase3 = [[
-        ["Muro", ('cano1', -9000, height - 125, height)],
-        ["Muro", ('cano2', 825, height - 150, height)],
-        ["Muro", ('cano2', 500, height - 75, height)],
-        ["Muro", ('cano3', 225, height - 400, height - 250)],
+        ["Lapis", ('lapis', -9000, height - 125, height)],
+        ["Lapis", ('lapis', 825, height - 150, height)],
+        ["Lapis", ('lapis', 500, height - 75, height)],
+        ["Lapis", ('lapis', 225, height - 400, height - 250)],
 
         ["Chao", ('chao1', height - 10, 0, 1000)],
         ["Chao", ('chao2', height - 250, 0, 700)],

@@ -260,9 +260,9 @@ class Movel(Estatico):
                     else:  # movimentacao pra esquerda
                         dist_x = entidade.corpo.right - self.__corpoveloz.left
 
-                    if self.__vely >= 0 and dist_x >= dist_y + 2:
+                    if self.__vely >= 0 and dist_x + 4 >= dist_y:
                         cBaixo = True
-                    elif self.__vely < 0 and dist_x >= dist_y + 2:
+                    elif self.__vely < 0 and dist_x + 4 >= dist_y:
                         cCima = True
                     elif self.__velx > 0 and dist_x < dist_y:
                         cDireita = True

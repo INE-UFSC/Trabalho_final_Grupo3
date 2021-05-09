@@ -172,7 +172,6 @@ class Jogo:
         cria uma tela de menu, e gerencia botoes
         '''
         return self.__janela.tela.atualizar()
-        print("AAAAAAAAAAAAAAAAAAAAAA") # funcao retorna antes, isso e inutil
 
     def menu_inicial(self):  # Menu inicial do jogo
         self.__janela.trocar_tela(Menu_Principal(self.__screen))

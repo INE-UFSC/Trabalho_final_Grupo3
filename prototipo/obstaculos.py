@@ -21,11 +21,11 @@ class Bloco(Obstaculo):
 
 
 @instanciavel
-class Muro(Obstaculo):
+class Lapis(Obstaculo):
     def __init__(self, nome: str, x: int, topo: int, base: int):
         largura = 45
         altura = base - topo
-        super().__init__(nome, x, topo, altura, largura, "0", (11, 137, 0))
+        super().__init__(nome, x, topo, altura, largura, "sprites", (11, 137, 0))
 
 
 @instanciavel

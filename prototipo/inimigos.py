@@ -265,3 +265,34 @@ class Coelho(Entidade):
         ##### REPOSICIONAMENTO #####
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
+
+    # def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    #     ##### COLISAO ESQUERDA #####
+    #     if not jogador.invisivel:
+    #         if direcao == "esquerda":
+    #             if jogador.velx <= 0:
+    #                 jogador.velx = 0
+    #                 jogador.aceleracao = 0
+    #                 jogador.x = self.corpo.right + 1
+    #             return self.dano_contato
+    #         ##### COLISAO DIREITA #####
+    #         elif direcao == "direita":
+    #             if jogador.velx >= 0:
+    #                 jogador.velx = 0
+    #                 jogador.aceleracao = 0
+    #                 jogador.x = self.corpo.left - jogador.largura
+    #             return self.dano_contato
+    #         ##### COLISAO BAIXO #####
+    #         elif direcao == "baixo":
+    #             jogador.vely = 0
+    #             jogador.y = self.corpo.top - jogador.altura
+    #             self.auto_destruir(mapa)
+    #             return 0
+    #         ##### COLISAO CIMA #####
+    #         elif direcao == "cima":
+    #             #if jogador.vely < 0:
+    #             #    jogador.vely = 0
+    #             #    jogador.y = self.corpo.bottom
+    #             return self.dano_contato
+    #     else:
+    #         return 0
