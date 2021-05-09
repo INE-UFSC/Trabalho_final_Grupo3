@@ -11,9 +11,6 @@ class Janela:
     @tela.setter
     def tela(self, telanova):
         self.__tela = telanova
-    
-    def trocar_tela(self,telanova):
-        self.__tela = telanova
 
     def atualizar(self):
         self.tela.atualizar()

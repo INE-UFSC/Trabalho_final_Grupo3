@@ -184,7 +184,7 @@ class Jogador(Movel):
 
         # print(dano_total)
         if not self.invisivel:
-            if dano_total and not self.__recuperacao:
+            if dano_total and not self.__recuperacao and mapa.escala_tempo > 0:
                 self.__vida -= dano_total
                 self.__recuperacao = 90
             elif self.__recuperacao > 0:
