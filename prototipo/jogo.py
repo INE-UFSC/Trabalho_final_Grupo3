@@ -12,19 +12,18 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
         botaonivel_1 = Botao(250, 75, 100, 100, (220, 0, 200), (160, 0, 140), "Fase 1", 5)
         botaonivel_2 = Botao(450, 75, 100, 100, (220, 200, 0), (160, 140, 0), "Fase 2", 5)
         botaonivel_3 = Botao(650, 75, 100, 100, (0, 200, 220), (0, 120, 140), "Fase 3", 5)
-        botaojogar = Botao(375, 350, 250, 50, (30, 220, 30), (30, 160, 30), "Começar", 5)
-        botaoplacar = Botao(375, 425, 250, 50, (30, 220, 30), (30, 160, 30), "Placar", 5)
-        botaosair = Botao(375, 500, 250, 50, (30, 220, 30), (30, 160, 30), "Sair", 5)
-        (width, height) = superficie.get_size()
-        botaoconfig = Botao(width - 100, height - 100, 50, 50, (0, 220, 180), (0, 160, 110), "C", 5)
+        botaojogar = Botao(375, 350, 250, 50, (30, 220, 30), (30, 160, 30), "Novo Jogo", 5)
+        botaocontinuar = Botao(375, 405, 250, 50, (220, 220, 30), (160, 160, 30), "Carregar Jogo", 5)
+        botaoconfig = Botao(375, 460, 250, 50, (0, 220, 180), (0, 160, 110), "Configurações", 5)
+        botaosair = Botao(375, 515, 250, 50, (220, 30, 30), (160, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
-        super().__init__([botaosair, botaojogar, botaoplacar, botaonivel_1, botaonivel_2,
-                          botaonivel_3, botaoconfig], cormenu, superficie)
+        super().__init__([botaosair, botaojogar, botaocontinuar, botaonivel_1, botaonivel_2,
+                          botaonivel_3, botaoconfig,botaocontinuar], cormenu, superficie)
         self.__contador_menu = 0
 
     def atualizar(self):
-        self.__contador_menu += 0.2
-        self.setfundo(misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 10))
+        self.__contador_menu -= 0.3
+        self.setfundo(misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5))
         return super().atualizar()
 
 
@@ -174,7 +173,7 @@ class Jogo:
         return self.__janela.tela.atualizar()
 
     def menu_inicial(self):  # Menu inicial do jogo
-        self.__janela.trocar_tela(Menu_Principal(self.__screen))
+        self.__janela.tela = Menu_Principal(self.__screen)
         while True:
             acao = self.logica_menu()
 
@@ -208,7 +207,7 @@ class Jogo:
         '''
         ###### PYGAME GERAL #####
         try:
-            self.__janela.trocar_tela(Tela_De_Jogo(self.__screen, nivel))
+            self.__janela.tela = Tela_De_Jogo(self.__screen, nivel)
         except KeyError:
             return 3
         nivel = self.__janela.tela
@@ -216,7 +215,7 @@ class Jogo:
             self.__ciclo += 1
             jogar = nivel.atualizar(self.__ciclo)
             if jogar != 2:
-                self.__janela.trocar_tela(Menu_Principal(self.__screen))
+                self.__janela.tela = Menu_Principal(self.__screen)
                 return jogar
             ##### FPS MELHORADO #####
             self.__relogio.tick(60)
