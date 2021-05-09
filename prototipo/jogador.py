@@ -34,6 +34,7 @@ class Jogador(Movel):
         self.__recarga = 0
         self.__invisivel = 0
         self.__moedas = 0
+        self.escala_tempo = 1
 
         super().__init__(nome, x, y, largura, altura, limite_vel, "0")
 
@@ -159,6 +160,8 @@ class Jogador(Movel):
 
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
 
+        self.escala_tempo = 1
+
         ##### MOVIMENTO HORIZONTAL #####
         self.__aceleracao = (direita - esquerda)
         self.velx += self.__aceleracao
@@ -207,13 +210,6 @@ class Jogador(Movel):
         if obsDireita and obsEsquerda:  # ESMAGAMENTO
             self.__vida = 0
 
-        # ##### COLISAO ESQUERDA #####
-        # if obsEsquerda:
-        #     if self.velx <= 0:
-        #         self.velx = 0
-        #         aceleracao = 0
-        #         self.x = obsEsquerda.corpo.right+1
-
         ##### IMPEDE QUE O JOGADOR PASSE DA BORDA ESQUERDA #####
         if self.x <= 0:
             if self.velx <= 0:
@@ -221,62 +217,12 @@ class Jogador(Movel):
                 aceleracao = 0
                 self.x = 0
 
-        # ##### COLISAO DIREITA #####
-        # if obsDireita:
-        #     if self.velx >= 0:
-        #         self.velx = 0
-        #         aceleracao = 0
-        #         self.x = obsDireita.corpo.left - self.largura
-
         ##### IMPEDE QUE O JOGADOR PASSE DA BORDA DIREITA #####
         if self.x >= mapa.tamanho[0] - self.largura:
             if self.velx >= 0:
                 self.velx = 0
                 aceleracao = 0
                 self.x = mapa.tamanho[0] - self.largura
-
-        # ##### COLISAO BAIXO #####
-        # if obsBaixo:
-        #     self.vely = 0
-        #     self.y = obstaculos[1].corpo.top - self.altura
-        #     if espaco:
-        #         self.vely = -self.poder.pulo
-
-        # ##### COLISAO CIMA #####
-        # if obsCima:
-        #     if self.vely < 0:
-        #         self.vely = 0
-        #         self.y = obsCima.corpo.bottom
-
-        #### COLISAO INIMIGOS ####
-        # if not self.__invisivel:
-        #     for entidade in mapa.lista_de_entidades:
-        #         for i in range (len(obstaculos)):
-        #             if isinstance(obstaculos[i], PoderManifestadoInimigo):
-        #                 if obstaculos[i] == entidade:
-        #                     print(entidade.contato[i])
-        #                     ##EMPURRA O JOGGADOR
-        #                     self.x = self.__posicao_comeco[0]
-        #                     self.y = self.__posicao_comeco[1]
-        #                     entidade.auto_destruir(mapa)
-        #                     self.__vida -= entidade.dano_contato
-        #             elif isinstance(obstaculos[i], Entidade):
-        #                 if obstaculos[i] == entidade:
-        #                     if entidade.contato[i] == 'morrer':
-        #                         entidade.auto_destruir(mapa)
-        #
-        #                     elif entidade.contato[i] == 'dano':
-        #                         ##EMPURRA O JOGGADOR
-        #                         if self.face == 1:
-        #                             self.x = self.__posicao_comeco[0]
-        #                             self.y = self.__posicao_comeco[1]
-        #                         else:
-        #                             self.x = self.__posicao_comeco[0]
-        #                             self.y = self.__posicao_comeco[1]
-        #
-        #                         if self.__poder != CinzaDoGuri():
-        #                             self.__poder = CinzaDoGuri()
-        #                         self.__vida -= entidade.dano_contato
 
         ### CHECANDO VITÓRIA ###
         entidade_vitoria = 0
@@ -325,8 +271,8 @@ class Jogador(Movel):
                 self.velx = -self.poder.limite_vel
 
         ##### ATUALIZACAO DE POSICOES #####
-        self.y += self.vely
-        self.x += self.velx
+        self.y += self.vely * self.escala_tempo
+        self.x += self.velx * self.escala_tempo
 
         ##### MATA O JOGADOR SE CAIR NO BURACO #####
         if self.y > mapa.tamanho[1]: self.__vida = 0
