@@ -2,8 +2,6 @@ import pygame
 from entidades import *
 from sprites import *
 
-lista_obstaculos = {"obstaculos",}
-
 
 # FUNCOES DE ATUALIZAR NECESSITAM DA AREA VISIVEL PARA RENDERIZAR CORRETAMENTE
 class Obstaculo(Estatico):
@@ -14,7 +12,6 @@ class Obstaculo(Estatico):
 @instanciavel
 class Bloco(Obstaculo):
     def __init__(self, nome: str, x: int, y: int):
-        lista_obstaculos.add(Bloco)
         largura = 30
         altura = 30
         super().__init__(nome, x, y, altura, largura, "0", (255, 102, 0))

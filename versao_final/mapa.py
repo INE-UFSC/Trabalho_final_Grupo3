@@ -125,6 +125,7 @@ def carregar_mapa():
     width = 3200
     height = 700
     fase1 = [[
+
         ["Lapis", ('lapis', 550, height - 125, height)],
         ["Lapis", ('lapis', 800, height - 125, height)],
         ["Lapis", ('lapis', 1500, height - 125, height)],
@@ -143,6 +144,8 @@ def carregar_mapa():
         ##### BORDA E VITORIA #####
         ["Vitoria", (1900, height - 200, 100, 190)],
 
+        ["Gelatina", ("gelatina", 1000, height - 450)],
+
         ##### PODERES #####
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
         ["CartolaDoMago", ('orbe1', 250, height - 500)],
@@ -154,9 +157,9 @@ def carregar_mapa():
         ["Rato", ('rato1', 610, height - 50)],
         # ["Rato",('rato3', 900, height - 50)],
         ["Voador", ('voador1', 100, height - 500, 200)],
-        ["PorcoEspinho", ('porco1', 900, height - 50)],
+        # ["PorcoEspinho", ('porco1', 900, height - 50)],
         # ["Atirador",('atiro', 1150, height - 50)],
-        ["Atirador", ('atiro2', 1000, height - 205)]
+        # ["Atirador", ('atiro2', 1000, height - 205)]
 
     ],
 

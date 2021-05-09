@@ -299,3 +299,46 @@ class Coelho(Entidade):
     #             return self.dano_contato
     #     else:
     #         return 0
+
+
+
+@instanciavel
+class Gelatina(Entidade):
+    def __init__(self, nome: str, x: int, y: int):
+        vida = 100
+        danoContato = 0
+        largura = 200
+        altura = 200
+        limiteVel = 1
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (50, 50, 255))
+        self.vely = 0
+        self.velx = 0.5
+        self.xinicial = x
+        self.escala_tempo = 1
+
+    def mover(self, dimensoesTela, mapa):
+
+        ##### COLISOES #####
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,
+                                                                         [Bala, PoderNoMapa])
+
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsBaixo:
+            obsBaixo.sofreu_colisao_outros(self, "baixo")
+
+        ##### GRAVIDADE ######
+        else:
+            self.vely += gravidade * self.escala_tempo
+
+        self.y += self.vely * self.escala_tempo
+        self.x += self.velx * self.escala_tempo
+
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        if not jogador.invisivel:
+            jogador.escala_tempo = 0.25
+        return 0
+
+    def sofreu_colisao_outros(self, entidade, direcao):
+        pass #Nada Acontece
