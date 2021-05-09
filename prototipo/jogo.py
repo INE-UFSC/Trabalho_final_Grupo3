@@ -9,18 +9,24 @@ from efeitosrender import *
 
 class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
     def __init__(self, superficie):
-        botaonivel_1 = Botao(250, 75, 100, 100, (220, 0, 200), (160, 0, 140), "Fase 1", 5)
-        botaonivel_2 = Botao(450, 75, 100, 100, (220, 200, 0), (160, 140, 0), "Fase 2", 5)
-        botaonivel_3 = Botao(650, 75, 100, 100, (0, 200, 220), (0, 120, 140), "Fase 3", 5)
+        botaonivel_1 = Botao(250, 75, 100, 50, (220, 0, 0), (160, 0, 0), "Fase 1", 5)
+        botaonivel_2 = Botao(450, 75, 100, 50, (220, 110, 0), (160, 80, 0), "Fase 2", 5)
+        botaonivel_3 = Botao(650, 75, 100, 50, (220, 220, 0), (160, 160, 0), "Fase 3", 5)
+        b4 = Botao(250, 150, 100, 50, (220, 0, 110), (160, 0, 80), "Fase 4", 5)
+        b5 = Botao(450, 150, 100, 50, (220, 110, 110), (160, 80, 80), "Fase 5", 5)
+        b6 = Botao(650, 150, 100, 50, (220, 220, 110), (160, 160, 80), "Fase 6", 5)
+        b7 = Botao(250, 225, 100, 50, (220, 0, 220), (160, 0, 160), "Fase 7", 5)
+        b8 = Botao(450, 225, 100, 50, (220, 110, 220), (160, 80, 160), "Fase 8", 5)
+        b9 = Botao(650, 225, 100, 50, (220, 220, 220), (160, 160, 160), "Fase 9", 5)
         botaojogar = Botao(375, 350, 250, 50, (30, 220, 30), (30, 160, 30), "Novo Jogo", 5)
         botaocontinuar = Botao(375, 405, 250, 50, (220, 220, 30), (160, 160, 30), "Carregar Jogo", 5)
         botaoconfig = Botao(375, 460, 250, 50, (0, 220, 180), (0, 160, 110), "Configurações", 5)
         botaosair = Botao(375, 515, 250, 50, (220, 30, 30), (160, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaocontinuar, botaonivel_1, botaonivel_2,
-                          botaonivel_3, botaoconfig,botaocontinuar]
+                          botaonivel_3, botaoconfig,botaocontinuar,b4,b5,b6,b7,b8,b9]
         listatelas = [True,False,[Tela_De_Jogo,[superficie,"fase1"]],True,[Tela_De_Jogo,[superficie,"fase1"]]
-                        ,[Tela_De_Jogo,[superficie,"fase2"]],[Tela_De_Jogo,[superficie,"fase3"]],True,True]
+                        ,[Tela_De_Jogo,[superficie,"fase2"]],[Tela_De_Jogo,[superficie,"fase3"]],True,True,True,True,True,True,True,True]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         self.__contador_menu = 0
 
