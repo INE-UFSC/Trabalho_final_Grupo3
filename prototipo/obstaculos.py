@@ -23,10 +23,40 @@ class Bloco(Obstaculo):
 @instanciavel
 class Lapis(Obstaculo):
     def __init__(self, nome: str, x: int, topo: int, base: int):
-        largura = 45
+        largura = 44
         altura = base - topo
         super().__init__(nome, x, topo, altura, largura, "sprites", (11, 137, 0))
 
+
+@instanciavel
+class Ponta(Obstaculo):
+    def __init__(self, nome: str, x: int, topo: int, base: int):
+        largura = 44
+        altura = base - topo
+        super().__init__(nome, x, topo, altura, largura, "sprites", (11, 137, 0))
+
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        ##### COLISAO ESQUERDA #####
+        if direcao == "esquerda":
+            if jogador.velx <= 0:
+                jogador.velx = 0
+                jogador.x = self.corpo.right + 1
+        ##### COLISAO DIREITA #####
+        elif direcao == "direita":
+            if jogador.velx >= 0:
+                jogador.velx = 0
+                jogador.x = self.corpo.left - jogador.largura
+        ##### COLISAO BAIXO #####
+        elif direcao == "baixo":
+            jogador.vely = 0
+            jogador.y = self.corpo.top - jogador.altura
+            return 1
+        ##### COLISAO CIMA #####
+        elif direcao == "cima":
+            if jogador.vely < 0:
+                jogador.vely = 0
+                jogador.y = self.corpo.bottom
+        return 0
 
 @instanciavel
 class Cano(Obstaculo):
@@ -39,7 +69,7 @@ class Cano(Obstaculo):
 @instanciavel
 class Chao(Obstaculo):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
-        altura = 25
+        altura = 17
         super().__init__(nome, esquerda, y, altura, direita - esquerda, "0", (184, 20, 20))
 
 

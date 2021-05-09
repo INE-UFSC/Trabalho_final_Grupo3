@@ -167,24 +167,62 @@ def carregar_mapa():
 
         (width, height)]
 
-    width = 2100
+    width = 6500
     height = 600
     fase2 = [[
-        ["Lapis", ('lapis', -9000, height - 125, height)],
-        ["Lapis", ('lapis', 1600, height - 125, height)],
+        ["Voador", ('voador2', 300, height - 450, 400)],
+        ["Chao", ('chao', height - 10, 0, 1200)],
+        ["Lapis", ('lapis', 600, height - 125, height)],
+        ["Rato", ('rato',700, height - 50)],
+        ["Lapis", ('lapis', 900, height - 125, height)],
 
-        ["Chao", ('chao1', height - 10, -1000, 2105)],
+
+        ["Chao", ('chao', height - 10, 1375, 1700)],
+        ["Coelho", ('coelho', 1400, height - 50)],
+
+        ["Chao", ('chao', 250, 1475, 1600)],
+
+        ["Chao", ('chao', height - 10, 1875, 2775)],
+        ["Coelho", ('coelho', 1900, height - 50)],
+        ["Lapis", ('lapis', 2150, height - 125, height)],
+        ["Rato", ('rato', 2200, height - 50)],
+        ["Lapis", ('lapis', 2450, height - 125, height)],
+
+        ["Chao", ('chao', height - 10, 3050, 3425)],
+        ["BandanaDoNinja", ('vermelho', 3225, height - 250)],
+        ["Coelho", ('coelho', 3350, height - 50)],
+
+        ["Chao", ('chao', height - 10, 4000, 7000)],
+
+        ["Ponta", ('ponta', 4400, height - 125, height)],
+        ["Ponta", ('ponta', 4445, height - 125, height)],
+        ["Ponta", ('ponta', 4490, height - 125, height)],
+        ["Ponta", ('ponta', 4535, height - 125, height)],
+        ["Ponta", ('ponta', 4580, height - 125, height)],
+        ["Ponta", ('ponta', 4625, height - 125, height)],
+        ["Ponta", ('ponta', 4670, height - 125, height)],
+        ["Ponta", ('ponta', 4715, height - 125, height)],
+        ["Ponta", ('ponta', 4760, height - 125, height)],
+        ["Ponta", ('ponta', 4805, height - 125, height)],
+        ["Ponta", ('ponta', 4850, height - 125, height)],
+        ["Ponta", ('ponta', 4895, height - 125, height)],
+
+        ["Coelho", ('coelho', 5575, height - 50)],
+        ["Coelho", ('coelho', 5875, height - 50)],
+
+        ["Chao", ('chao', 275, 5400, 5800)],
+        ["Coelho", ('coelho', 5725, 275)],
 
         ##### PODERES #####
-        ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
+        #["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
 
         ##### INIMIGOS #####
         #["Rato", ('rato1', 100, height - 50)],
-        ["Coelho", ('coleho', 700, height-50)],
+        #["Coelho", ('coleho', 975, height-50)],
         #["Voador", ('voador2', 600, height - 250, 200)],
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (1900, height - 200, 100, 190)]
+        ["Vitoria", (6300, height - 200, 100, 190)]
 
     ], [["Vida", (60, 30)],
          ["Tempo", ('tempo', 300, 50)],

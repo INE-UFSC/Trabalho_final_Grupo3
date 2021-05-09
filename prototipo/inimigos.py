@@ -223,13 +223,15 @@ class Coelho(Entidade):
         largura = 46
         altura = 60
         limiteVel = 1
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (128, 0, 0))
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "0", (128, 0, 0))
         #self.vely = 0
         #self.velx = 0
         self.xinicial = x
         self.escala_tempo = 1
         self.__descanso_pulo_max = 150
         self.__descanso_pulo = self.__descanso_pulo_max
+        self.__pulo_lado = True
+        self.face = -1
 
     def mover(self, dimensoesTela, mapa):
 
@@ -256,11 +258,12 @@ class Coelho(Entidade):
         if not self.__descanso_pulo and obsBaixo:
             self.vely -= 9
 
-        if self.vely : self.velx = self.face * 3
+        if self.vely : self.velx = self.face * 3 * self.__pulo_lado
         else: self.velx = 0
 
         if not self.vely and vely_buff:
-            self.face = -self.face
+            if self.__pulo_lado: self.face = -self.face
+            self.__pulo_lado = not(self.__pulo_lado)
 
         ##### REPOSICIONAMENTO #####
         self.y += self.vely * self.escala_tempo
