@@ -57,7 +57,7 @@ class Tela_De_Jogo(Tela):
         self.__tempo_maximo = 350
         self.__fonte = pygame.font.SysFont('Arial', 20)
         self.__atrasofim = 0
-        self.__musica_fundo = pygame.mixer.music.load('musica_fundo.wav')
+        self.__musica_fundo = pygame.mixer.music.load('musica_fundo.ogg')
         pygame.mixer.music.play(-1)
 
         ##### ENTRADAS DO JOGADOR #####
