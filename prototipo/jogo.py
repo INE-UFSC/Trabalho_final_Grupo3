@@ -278,7 +278,7 @@ class Tela_De_Jogo(Tela):
             self.__jogador.vida_pra_zero()
             self.__atrasofim += 1
             if self.__atrasofim <= 1:
-                if isinstance(self.__jogador.poder, Verde) and self.__mapa.conta <= 0:
+                if isinstance(self.__jogador.poder, Verde) and self.__mapa.__tempo_restante <= 0:
                     self.__textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", False, (0, 0, 0))
                 else:
                     self.__textin = self.__fonte.render("PERDEU", False, (0, 0, 0))
@@ -315,13 +315,10 @@ class Tela_De_Jogo(Tela):
         self.__tempo_maximo += 1 / 60 - self.__mapa.escala_tempo / 60
         tempo_decorrido = pygame.time.get_ticks() / 1000 - self.__comeco
         if not self.__mapa.ganhou:
-            self.__mapa.conta = int(max(self.__tempo_maximo - tempo_decorrido, 0))
-
-        ##### PASSANDO A VIDA PRO DISPLAY #####d
-        self.__mapa.vida_jogador = self.__jogador.vida
+            self.__mapa.tempo_restante = int(max(self.__tempo_maximo - tempo_decorrido, 0))
 
         ### PERDENDO POR TEMPO
-        if self.__mapa.conta == 0:
+        if self.__mapa.tempo_restante == 0:
             self.__jogador.vida_pra_zero()
         return True
 

@@ -25,6 +25,8 @@ class Mapa:
         ##### ATRIBUTOS COMPORTAMENTAIS #####
         self.__vida_jogador = ""
         self.__ganhou = False
+        self.__moedas_pegas = ""
+        self.__paletas_pegas = ""
 
     @property
     def lista_de_entidades(self):
@@ -59,12 +61,12 @@ class Mapa:
         self.__vida_jogador = vida_jogador
 
     @property
-    def conta(self):
+    def tempo_restante(self):
         return self.__tempo_restante
 
-    @conta.setter
-    def conta(self, conta):
-        self.__tempo_restante = conta
+    @tempo_restante.setter
+    def tempo_restante(self, tempo_restante):
+        self.__tempo_restante = tempo_restante
 
     @property
     def campo_visivel(self):
@@ -81,6 +83,14 @@ class Mapa:
     @property
     def proxima_fase(self):
         return self.__proxima_fase
+    
+    @property
+    def paletas_pegas(self):
+        return self.__paletas_pegas
+    
+    @property
+    def moedas_pegas(self):
+        return self.__moedas_pegas
 
     def iniciar(self, fase):
         ##### LEITURA DAS FASES A PARTIR DO ARQUIVO JSON #####
@@ -108,6 +118,9 @@ class Mapa:
 
         self.__ciclo = ciclo #Frame atual
         self.__campo_visivel = campo_visivel #Aquilo que o jogador ve
+        self.__vida_jogador = self.__jogador.vida #Pega a vida do jogador pra passar pro hud
+        self.__moedas_pegas = self.__jogador.moedas#Pega as moedas que o jogador tem para passar pro hud
+        self.__paletas_pegas = self.__jogador.paleta
 
         ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
@@ -115,7 +128,8 @@ class Mapa:
                 self.__lista_de_entidades.remove(entidade)
 
         ##### ATUALIZACAO DO HUD #####
-        self.__hud.atualizar(tela, self, dimensoes_tela, self.__tempo_restante, self.__vida_jogador)
+        self.__hud.atualizar(tela, self, dimensoes_tela, self.__tempo_restante, self.__vida_jogador
+                                        , self.__moedas_pegas, self.__paletas_pegas)
 
 
 def carregar_mapa():
