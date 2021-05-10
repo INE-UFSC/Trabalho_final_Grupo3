@@ -109,13 +109,14 @@ class Vida(Obstaculo):
 class Tempo(Obstaculo):
     pygame.init()
 
-    def __init__(self, nome: str, x: int, y: int):
+    def __init__(self, x: int, y: int):
         altura = 30
         largura = 70
+        self.tempomax = 320
         self.__fonte = pygame.font.SysFont('Arial', 20)
         self.__tempo = 0
         self.__contador = self.__fonte.render('time :' + " " + str(self.tempo), False, (0, 0, 0))
-        super().__init__(nome, x, y, altura, largura, "0", (160, 160, 160))
+        super().__init__("tempo", x, y, altura, largura, "sprites", (160, 160, 160))
 
     @property
     def tempo(self):
@@ -126,12 +127,17 @@ class Tempo(Obstaculo):
         self.__tempo = tempo
 
     def renderizar(self, tela, mapa):
-        if renderizar_hitbox: pygame.draw.rect(tela, self.cor, self.corpo)
+        #print(self.__tempo, self.tempomax)
+        if type(self.__tempo) == int  :
+            nome = "tempo_"+str(int(self.__tempo/max((self.tempomax/5),1)))
+        else:
+            nome = "tempo_"
+        self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         self.renderizar(tela, mapa)
-        self.__contador = self.__fonte.render('time :' + " " + str(self.__tempo), False, (0, 0, 0))
-        tela.blit(self.__contador, (self.x, self.y))
+        self.__contador = self.__fonte.render(str(self.__tempo), False, (0, 0, 0))
+        tela.blit(self.__contador, (self.x+70, self.y+35))
         return False
 
 

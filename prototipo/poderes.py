@@ -4,6 +4,7 @@ from entidades import *
 from obstaculos import *
 from inimigos import *
 from time import sleep
+from sprites import *
 
 
 ##### PODERES NO JOGADOR #####
@@ -203,9 +204,7 @@ class Marrom(PoderGenerico):
 ##### ITENS DOS PODERES NO MAPA #####
 @instanciavel
 class Coletavel(Movel):
-    def __init__(self, nome, x, y, imagem, cor=(0, 0, 0)):
-        largura = 20
-        altura = 20
+    def __init__(self, nome, x, y, imagem, cor=(0, 0, 0), largura = 20, altura = 20):
         limite_vel = 4
         super().__init__(nome, x, y, largura, altura, limite_vel, imagem, cor)
 
@@ -214,8 +213,24 @@ class Coletavel(Movel):
 
 @instanciavel
 class BiscoitoNoMapa(Coletavel):
-    def __init__(self, nome, x, y, imagem, cor=(0, 0, 0)):
-        super().__init__(nome, x, y, imagem, cor)
+    def __init__(self, nome, x, y, cor=(245, 245, 220)):
+        super().__init__(nome, x, y, "0", cor, 15, 15)
+        self.__raio = 15
+        renderizar_hitbox = True
+        renderizar_sprite = True
+    
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox:
+            pygame.draw.circle(tela, self.cor, [(self.corpo.x)/2 - mapa.campo_visivel.x,
+                                                (self.corpo.y)/2 - mapa.campo_visivel.y], self.__raio)
+        if renderizar_sprite:
+            try:
+                self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
+                                     0, 0, 0)
+                #self.sprite.imprimir(self.__imagem, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, tela,
+                #                    1, 0)
+            except AttributeError:
+                pass  # nao possui sprite
 
     def coleta(self, jogador, mapa):
         jogador.coletar_moeda(self)

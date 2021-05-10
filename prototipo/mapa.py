@@ -158,6 +158,7 @@ def carregar_mapa():
         ["OculosDoNerd", ('oculos1', 1525, height - 300)],
         ["VerdeBebe", ('orbe', 1600, height - 50)],
         ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
+        ["BiscoitoNoMapa", ('bisc', 550, 200)],
         #["Chakra",('chakra', 1600, height-50)],
         ##### INIMIGOS #####
         ["Rato", ('rato1', 610, height - 50)],
@@ -171,7 +172,7 @@ def carregar_mapa():
     ],
 
         [["Vida", (60, 30)],
-         ["Tempo", ('tempo', 300, 50)],
+         ["Tempo", (220, 30)],
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
@@ -237,7 +238,7 @@ def carregar_mapa():
         ["Vitoria", (6300, height - 200, 100, 190)]
 
     ], [["Vida", (60, 30)],
-         ["Tempo", ('tempo', 300, 50)],
+         ["Tempo", (300, 50)],
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
@@ -267,7 +268,7 @@ def carregar_mapa():
         ["Vitoria", (500, height - 690, 100, 190)]
 
     ], [["Vida", (60, 30)],
-         ["Tempo", ('tempo', 300, 50)],
+         ["Tempo", (300, 50)],
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
