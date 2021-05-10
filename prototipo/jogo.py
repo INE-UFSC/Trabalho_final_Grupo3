@@ -29,6 +29,8 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
                         ,[Tela_De_Jogo,[superficie,"fase2"]],[Tela_De_Jogo,[superficie,"fase3"]],True,True,True,True,True,True,True,True]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         self.__contador_menu = 0
+        pygame.mixer.music.stop()
+
 
     def atualizar(self,ciclo):
         self.__contador_menu -= 0.3
@@ -55,6 +57,8 @@ class Tela_De_Jogo(Tela):
         self.__tempo_maximo = 350
         self.__fonte = pygame.font.SysFont('Arial', 20)
         self.__atrasofim = 0
+        self.__musica_fundo = pygame.mixer.music.load('musica_fundo.wav')
+        pygame.mixer.music.play(-1)
 
         ##### ENTRADAS DO JOGADOR #####
         self.__cima, self.__baixo, self.__direita, self.__esquerda = 0, 0, 0, 0
