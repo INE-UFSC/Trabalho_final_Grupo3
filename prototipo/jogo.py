@@ -62,8 +62,9 @@ class Carregar_Jogo(Tela_Menu):
                 slots = json.load(saves)
         except:
             with open("saves.json","w") as saves:
-                slots = json.dumps({'0':["Novo Jogo","fase1"],'1':["Novo Jogo","fase1"],'2':["Novo Jogo","fase1"]
-                          ,'3':["Novo Jogo","fase1"],'4':["Novo Jogo","fase1"]},saves)
+                slots = {'0':["Novo Jogo","fase1"],'1':["Novo Jogo","fase1"],'2':["Novo Jogo","fase1"]
+                          ,'3':["Novo Jogo","fase1"],'4':["Novo Jogo","fase1"]}
+                json.dump(slots,saves)
         
         encaixe = [slots[str(i)] for i in range(5)]
         deletar_encaixe = ["Deletar" if slots[str(i)][0] != "Novo Jogo" else False for i in range(5)]
