@@ -304,7 +304,7 @@ class Chakra(PoderNoMapa):
 ##### OBJETOS CRIADOS POR PODERES #####
 
 class PoderManifestado(Entidade):
-    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, frame, cor=(0, 0, 0)):
+    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, frame = 0, cor=(0, 0, 0)):
         self.duracao = duracao
         super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, frame, cor)
 
