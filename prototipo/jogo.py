@@ -128,6 +128,27 @@ class Deletar_Save(Tela_Menu):
         return super().atualizar()
 
 
+class Fim_De_Jogo(Tela_Menu):
+    def __init__(self,superficie,nivel,save):
+        texto = Botao(200, 170, 600, 150, (200, 200, 200), (200, 200, 200), "Você perdeu...", 5)
+        continuar = Botao(530, 350, 320, 50, (160, 220, 60), (120, 160, 40), "Tentar Novamente", 5)
+        voltar = Botao(150, 350, 320, 50, (220, 220, 60), (160, 160, 40), "Menu Principal", 5)
+        listabotoes = [voltar,continuar,texto]
+        listatelas = [True,[Menu_Principal,[superficie]],[Tela_De_Jogo,[superficie,nivel,save]],True]
+        cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
+        super().__init__(listabotoes,cormenu,superficie,listatelas)
+        self.__contador_menu = 0
+
+    def atualizar(self,ciclo):
+        self.__contador_menu -= 0.3
+        self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT: return False
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                acao = self.clicar()
+                return self.listatelas[acao]
+        return super().atualizar()
+
 class Tela_De_Jogo(Tela):
     def __init__(self, superficie, nivel,slot):
         super().__init__(superficie)
@@ -253,7 +274,7 @@ class Tela_De_Jogo(Tela):
             self.superficie.blit(self.__textin, (500 - self.__textin.get_size()[0] / 2, 300 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 self.salvar_jogo()
-                return [Menu_Principal,[self.superficie]]
+                return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
 
         ### VENCENDO ###
         if self.__mapa.ganhou:
@@ -273,7 +294,7 @@ class Tela_De_Jogo(Tela):
                 self.__sobreposicao = None
             elif resultado == "Fechar":
                 self.salvar_jogo()
-                return [Menu_Principal,[self.superficie]]
+                return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
         except AttributeError:
             pass
         pygame.display.flip()
