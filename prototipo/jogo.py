@@ -104,9 +104,9 @@ class Novo_Jogo(Carregar_Jogo):
                 print("yes",slots)
         except:
             with open("saves.json","w") as saves:
-                slots = json.dumps({'0':["Slot Vazio","fase1"],'1':["Slot Vazio","fase1"],'2':["Slot Vazio","fase1"]
-                          ,'3':["Slot Vazio","fase1"],'4':["Slot Vazio","fase1"]},saves)
-                print("no",slots)
+                slots = {'0':["Slot Vazio","fase1"],'1':["Slot Vazio","fase1"],'2':["Slot Vazio","fase1"]
+                          ,'3':["Slot Vazio","fase1"],'4':["Slot Vazio","fase1"]}
+                json.dump(slots,saves)
         slot1 = slots['0']
         slot2 = slots['1']
         slot3 = slots['2']
