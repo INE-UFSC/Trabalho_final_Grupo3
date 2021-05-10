@@ -1,10 +1,19 @@
-import pygame, time, math, random
+import pygame, time, math, random, json
 from jogador import Jogador
 from poderes import Verde
 from mapa import Mapa, carregar_mapa
 from menu import *
 from entidades import classes_instanciaveis
 from efeitosrender import *
+
+
+class Tela_Pause(Sobreposicao):
+    def __init__(self,tela):
+        continuar = Botao(400, 350, 200, 50, (220, 0, 0), (160, 0, 0), "Continuar", 5)
+        sair = Botao(400, 410, 200, 50, (220, 0, 0), (160, 0, 0), "Sair", 5)
+        listabotoes = [continuar,sair]
+        listatelas = [True,False,"Fechar"]
+        super().__init__(listabotoes,((50,50,50),(380,340,240,130)),tela,listatelas)
 
 
 class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
@@ -25,8 +34,8 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaocontinuar, botaonivel_1, botaonivel_2,
                           botaonivel_3, botaoconfig,botaocontinuar,b4,b5,b6,b7,b8,b9]
-        listatelas = [True,False,[Tela_De_Jogo,[superficie,"fase1"]],True,[Tela_De_Jogo,[superficie,"fase1"]]
-                        ,[Tela_De_Jogo,[superficie,"fase2"]],[Tela_De_Jogo,[superficie,"fase3"]],True,True,True,True,True,True,True,True]
+        listatelas = [True,False,[Novo_Jogo,[superficie]],[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1"]]
+                ,[Tela_De_Jogo,[superficie,"fase2"]],[Tela_De_Jogo,[superficie,"fase3"]],True,True,True,True,True,True,True,True]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         self.__contador_menu = 0
         pygame.mixer.music.stop()
@@ -46,8 +55,78 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
         pass
 
 
+class Carregar_Jogo(Tela_Menu):
+    def __init__(self,superficie):
+        try:
+            with open("saves.json","r") as saves:
+                slots = json.load(saves)
+                print("yes",slots)
+        except:
+            with open("saves.json","w") as saves:
+                slots = json.dumps({'0':["Slot Vazio","fase1"],'1':["Slot Vazio","fase1"],'2':["Slot Vazio","fase1"]
+                          ,'3':["Slot Vazio","fase1"],'4':["Slot Vazio","fase1"]},saves)
+                print("no",slots)
+        slot1 = slots['0']
+        slot2 = slots['1']
+        slot3 = slots['2']
+        slot4 = slots['3']
+        slot5 = slots['4']
+        b1 = Botao(250, 150, 200, 50, (220, 0, 110), (100, 80, 20), slot1[0], 5)
+        b2 = Botao(250, 210, 200, 50, (220, 0, 110), (100, 80, 20), slot2[0], 5)
+        b3 = Botao(250, 270, 200, 50, (220, 0, 110), (100, 80, 20), slot3[0], 5)
+        b4 = Botao(250, 330, 200, 50, (220, 0, 110), (100, 80, 20), slot4[0], 5)
+        b5 = Botao(250, 390, 200, 50, (220, 0, 110), (100, 80, 20), slot5[0], 5)
+        sair = Botao(200, 470, 200, 50, (220, 0, 110), (100, 80, 20), "Sair", 5)
+        listabotoes = [b1,b2,b3,b4,b5]
+        listatelas = [True,[Tela_De_Jogo,[superficie,slot1[1],'0']],[Tela_De_Jogo,[superficie,slot2[1],'1']]
+        ,[Tela_De_Jogo,[superficie,slot3[1],'2']],[Tela_De_Jogo,[superficie,slot4[1],'3'],],[Tela_De_Jogo,[superficie,slot5[1],'4']]]
+        cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
+        super().__init__(listabotoes,cormenu,superficie,listatelas)
+        self.__contador_menu = 0
+
+    
+    def atualizar(self,ciclo):
+        self.__contador_menu -= 0.3
+        self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT: return False
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                acao = self.clicar()
+                return self.listatelas[acao]
+        return super().atualizar()
+
+
+class Novo_Jogo(Carregar_Jogo):
+    def __init__(self,superficie):
+        try:
+            with open("saves.json","r") as saves:
+                slots = json.load(saves)
+                print("yes",slots)
+        except:
+            with open("saves.json","w") as saves:
+                slots = json.dumps({'0':["Slot Vazio","fase1"],'1':["Slot Vazio","fase1"],'2':["Slot Vazio","fase1"]
+                          ,'3':["Slot Vazio","fase1"],'4':["Slot Vazio","fase1"]},saves)
+                print("no",slots)
+        slot1 = slots['0']
+        slot2 = slots['1']
+        slot3 = slots['2']
+        slot4 = slots['3']
+        slot5 = slots['4']
+        b1 = Botao(250, 150, 200, 50, (220, 0, 110), (100, 80, 20), slot1[0], 5)
+        b2 = Botao(250, 210, 200, 50, (220, 0, 110), (100, 80, 20), slot2[0], 5)
+        b3 = Botao(250, 270, 200, 50, (220, 0, 110), (100, 80, 20), slot3[0], 5)
+        b4 = Botao(250, 330, 200, 50, (220, 0, 110), (100, 80, 20), slot4[0], 5)
+        b5 = Botao(250, 390, 200, 50, (220, 0, 110), (100, 80, 20), slot5[0], 5)
+        sair = Botao(200, 470, 200, 50, (220, 0, 110), (100, 80, 20), "Sair", 5)
+        listabotoes = [b1,b2,b3,b4,b5]
+        listatelas = [True,[Tela_De_Jogo,[superficie,'fase1','0']],[Tela_De_Jogo,[superficie,'fase1','1']]
+        ,[Tela_De_Jogo,[superficie,'fase1','2']],[Tela_De_Jogo,[superficie,'fase1','3'],],[Tela_De_Jogo,[superficie,'fase1','4']]]
+        cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
+        super().__init__(superficie)
+        self.__contador_menu = 0
+
 class Tela_De_Jogo(Tela):
-    def __init__(self, superficie, nivel):
+    def __init__(self, superficie, nivel,slot):
         super().__init__(superficie)
         self.__background_colour = (150, 220, 255)  # Cor do fundo
         (width, height) = superficie.get_size()
@@ -56,6 +135,8 @@ class Tela_De_Jogo(Tela):
         self.__tempo_maximo = 350
         self.__fonte = pygame.font.SysFont('Arial', 20)
         self.__atrasofim = 0
+        self.__nivel = nivel
+        self.__slot = slot
         self.__sobreposicao = None
         self.__musica_fundo = pygame.mixer.music.load('musica_fundo.ogg')
         pygame.mixer.music.play(-1)
@@ -74,6 +155,13 @@ class Tela_De_Jogo(Tela):
         # self.__jogador = Jogador('mario',200, 0, 0, 1)
         self.__jogador = self.__mapa.iniciar(nivel)
         self.__comeco = pygame.time.get_ticks() / 1000
+    
+    def salvar_jogo(self):
+        with open("saves.json","r") as saves:
+            slots = json.load(saves)
+            slots[self.__slot] = [self.__nivel,self.__nivel]
+        with open("saves.json","w") as saves:
+            json.dump(slots,saves)
 
     def atualizar(self, ciclo):
         '''Logica de jogo, envolvendo controles, colisao e renderizacao
@@ -92,6 +180,7 @@ class Tela_De_Jogo(Tela):
         if not pausado:
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
+                    self.salvar_jogo()
                     return False
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_w: self.__cima = 5
@@ -118,6 +207,7 @@ class Tela_De_Jogo(Tela):
         else:
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
+                    self.salvar_jogo()
                     return False
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_ESCAPE:
@@ -160,8 +250,8 @@ class Tela_De_Jogo(Tela):
                 self.__jogador.tipos_transparentes = classes_instanciaveis
             self.superficie.blit(self.__textin, (500 - self.__textin.get_size()[0] / 2, 300 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
-                if self.__mapa.proximo: 
-                    return [Menu_Principal,[self.superficie]]
+                self.salvar_jogo()
+                return [Menu_Principal,[self.superficie]]
 
         ### VENCENDO ###
         if self.__mapa.ganhou:
@@ -171,7 +261,8 @@ class Tela_De_Jogo(Tela):
             textin = self.__fonte.render("VENCEU", False, (0, 0, 0))
             self.superficie.blit(textin, (500, 300))
             if self.__atrasofim >= 150:
-                return [Tela_De_Jogo,[self.superficie, self.__mapa.proximo]] if self.__mapa.proximo else [Menu_Principal,[self.superficie]]
+                self.salvar_jogo
+                return [Tela_De_Jogo,[self.superficie, self.__mapa.proximo,self.__slot]] if self.__mapa.proximo else [Menu_Principal,[self.superficie]]
 
         ##### RENDERIZACAO DA TELA #####
         try:
@@ -179,6 +270,7 @@ class Tela_De_Jogo(Tela):
             if not resultado:
                 self.__sobreposicao = None
             elif resultado == "Fechar":
+                self.salvar_jogo()
                 return [Menu_Principal,[self.superficie]]
         except AttributeError:
             pass

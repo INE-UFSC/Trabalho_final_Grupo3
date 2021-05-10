@@ -114,11 +114,3 @@ class Sobreposicao(Tela_Menu):
             return self.listatelas[acao]
         return True
 
-
-class Tela_Pause(Sobreposicao):
-    def __init__(self,tela):
-        continuar = Botao(400, 350, 200, 50, (220, 0, 0), (160, 0, 0), "Continuar", 5)
-        sair = Botao(400, 410, 200, 50, (220, 0, 0), (160, 0, 0), "Sair", 5)
-        listabotoes = [continuar,sair]
-        listatelas = [True,False,"Fechar"]
-        super().__init__(listabotoes,((50,50,50),(380,340,240,130)),tela,listatelas)
