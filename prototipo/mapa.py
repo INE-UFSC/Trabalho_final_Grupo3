@@ -171,7 +171,7 @@ def carregar_mapa():
     ],
 
         [["Vida", (60, 30)],
-         ["Tempo", ('tempo', 300, 50)],
+         ["Tempo", (220, 30)],
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
@@ -237,7 +237,7 @@ def carregar_mapa():
         ["Vitoria", (6300, height - 200, 100, 190)]
 
     ], [["Vida", (60, 30)],
-         ["Tempo", ('tempo', 300, 50)],
+         ["Tempo", (300, 50)],
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
@@ -267,7 +267,7 @@ def carregar_mapa():
         ["Vitoria", (500, height - 690, 100, 190)]
 
     ], [["Vida", (60, 30)],
-         ["Tempo", ('tempo', 300, 50)],
+         ["Tempo", (300, 50)],
          ["Biscoitos", ('moeda', 500, 50)],
          ["BarraPoder", (700, 50)]],
 
