@@ -82,8 +82,9 @@ class Vermelho(PoderGenerico):
         super().__init__("Vermelho", False, 0, 7, 10, 80, (50, 50, 50))
 
     def acao(self, jogador, screen, mapa):
-        jogador.velx = jogador.face * 23
-        self.descanso = self.recarga
+        if not self.descanso:
+            jogador.velx = jogador.face * 23
+            self.descanso = self.recarga
 
     def atualizar(self, tela, mapa):
         if self.descanso > 0:
@@ -97,8 +98,9 @@ class Laranja(PoderGenerico):
         super().__init__("Laranja", False, 0, 5, 9, 40, (255, 50, 50))
 
     def acao(self, jogador, screen, mapa):
-        mapa.lista_de_entidades.append(BolaFogo([jogador.x, jogador.y], screen, mapa, jogador.face))
-        self.descanso = self.recarga
+        if not self.descanso:
+            mapa.lista_de_entidades.append(BolaFogo([jogador.x, jogador.y], screen, mapa, jogador.face))
+            self.descanso = self.recarga
 
     def atualizar(self, tela, mapa):
         if self.descanso > 0:
@@ -116,8 +118,10 @@ class Azul(PoderGenerico):
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
-        self.descanso = 0
-        self.ativo = True
+        if not self.descanso:
+            self.ativo = True
+        elif self.ativo and self.descanso > 10:
+            self.ativo = False
 
     def atualizar(self, tela, campo_visivel):
         if self.ativo:
@@ -137,9 +141,12 @@ class Roxo(PoderGenerico):
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
-        mapa.escala_tempo = 0
-        self.ativo = True
-        self.descanso = 0
+        if not self.descanso:
+            mapa.escala_tempo = 0
+            self.ativo = True
+        elif self.ativo and self.descanso > 10:
+            mapa.escala_tempo = 1
+            self.ativo = False
 
     def atualizar(self, tela, mapa):
         if self.ativo:
@@ -191,9 +198,10 @@ class Marrom(PoderGenerico):
         super().__init__("Marrom", False, 0, 5, 9, 40, (255, 255, 0))
 
     def acao(self, jogador, screen, mapa):
-        mapa.lista_de_entidades.append(
-            Clones([jogador.x, jogador.y], screen, mapa, jogador.face, jogador.tamanho_jogador))
-        self.descanso = self.recarga
+        if not self.descanso:
+            mapa.lista_de_entidades.append(
+                Clones([jogador.x, jogador.y], screen, mapa, jogador.face, jogador.tamanho_jogador))
+            self.descanso = self.recarga
 
     def atualizar(self, tela, mapa):
         if self.descanso > 0:

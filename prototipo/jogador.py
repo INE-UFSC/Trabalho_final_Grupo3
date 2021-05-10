@@ -301,5 +301,5 @@ class Jogador(Movel):
 
     def poderes(self, screen, mapa, acao=False, outros_poderes=False):
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
-        if acao and not self.poder.descanso:
+        if acao:
             self.__poder.acao(self, screen, mapa)
