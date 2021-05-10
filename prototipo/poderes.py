@@ -304,15 +304,15 @@ class Chakra(PoderNoMapa):
 ##### OBJETOS CRIADOS POR PODERES #####
 
 class PoderManifestado(Entidade):
-    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, cor=(0, 0, 0)):
+    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, frame, cor=(0, 0, 0)):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor)
+        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, frame, cor)
 
-@instanciavel
+
 class PoderManifestadoInimigo(Entidade):
-    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, cor=(0, 0, 0)):
+    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, frames, cor=(0, 0, 0)):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor)
+        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor, frames)
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         if not jogador.invisivel:
@@ -332,7 +332,7 @@ class BolaFogo(PoderManifestado):
         dano_contato = 0
         duracao = 500
         # self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        super().__init__("bola de fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "0")
+        super().__init__("bola de fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "0", 0)
         self.escala_tempo = 1.0
         self.mapa = mapa
         self.vely = -1
