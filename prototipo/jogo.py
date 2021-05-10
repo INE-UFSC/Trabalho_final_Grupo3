@@ -168,10 +168,10 @@ class Tela_De_Jogo(Tela):
 
         Deve ser chamada pela funcdao gerente 60 vezes por segundo
 
-        @param ciclo: responsavel pelas frames de animacao do Guri
+        @param ciclo: responsavel pelas frames de animacao do Rabisco
         
         @returns: 0 se a janela for fechada
-                 1 se o Guri morrer ou o tempo acabar
+                 1 se o Rabisco morrer ou o tempo acabar
                  2 se o jogo continuar
                  3 se o Guri ganhar
         '''
@@ -232,8 +232,7 @@ class Tela_De_Jogo(Tela):
         else:
             # self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco,#self.__superficie.get_size(), self.__mapa, self.__atrito)
             self.__jogador.poderes(self.superficie, self.__mapa, self.__bola_fogo)
-        self.__campo_visivel = self.__jogador.atualizar(self.superficie, self.__mapa, self.__campo_visivel,
-                                                        int(ciclo / 6),
+        self.__campo_visivel = self.__jogador.atualizar(self.superficie,self.__mapa, self.__campo_visivel, int(ciclo / 6),
                                                         [self.__direita, self.__esquerda, self.__espaco], self.__atrito)
 
         # PERDENDO POR MORRER

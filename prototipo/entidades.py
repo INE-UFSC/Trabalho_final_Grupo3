@@ -338,10 +338,11 @@ class Movel(Estatico):
 
 class Entidade(Movel):
     def __init__(self, nome: str, x: int, y: int, largura: int, altura: int, limiteVel: int, vida: int,
-                 dano_contato: int, imagem: str, cor=(0, 0, 0)):
+                 dano_contato: int, imagem: str, cor, frames):
         super().__init__(nome, x, y, largura, altura, limiteVel, imagem, cor)
         self.__vida = vida
         self.__dano_contato = dano_contato
+        self.__frames = frames
 
     @property
     def vida(self):
@@ -397,3 +398,12 @@ class Entidade(Movel):
                 return self.__dano_contato
         else:
             return 0
+
+    def renderizar(self, tela, mapa):
+
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
+                                              self.corpo.w, self.corpo.h])
+        if renderizar_sprite and type(self.sprite) != list:
+            self.sprite.imprimir(tela, self.nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                                    self.face, self.velx, self.vely, int((self.escala_tempo != 0)*mapa.ciclo/6) % self.__frames)
