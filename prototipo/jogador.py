@@ -30,12 +30,13 @@ class Jogador(Movel):
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
         self.__poder = Cinza()
+        self.__poder_armazenado = Cinza()
         self.__recuperacao = 0
         self.__recarga = 0
         self.__invisivel = 0
         self.__moedas = 0
         self.escala_tempo = 1
-        self.__paleta = 0
+        self.__paleta = 5
 
         super().__init__(nome, x, y, largura, altura, limite_vel, "0")
 
@@ -58,6 +59,10 @@ class Jogador(Movel):
     @property
     def poder(self):
         return self.__poder
+    
+    @property
+    def poder_armazenado(self):
+        return self.__poder_armazenado
 
     @poder.setter
     def poder(self, poder):
@@ -107,6 +112,8 @@ class Jogador(Movel):
         self.__vida = 0
 
     def coletar_poder(self, item):
+        if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 5):
+            self.__poder_armazenado = self.__poder
         self.poder = item.poder_atribuido
 
     def coletar_moeda(self):
@@ -131,6 +138,10 @@ class Jogador(Movel):
                                 self.face, self.velx, self.vely, ciclo % 12)
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
+        pega_poder_armazenado = entradas[3]
+        if self.__paleta == 5 and pega_poder_armazenado and not isinstance(self.__poder_armazenado, Cinza):
+            self.__poder = self.__poder_armazenado
+            self.__poder_armazenado = Cinza()
         self.mover(entradas[0], entradas[1], entradas[2], screen.get_size(), mapa, atrito)
 
         self.renderizar(screen, campo_visivel, ciclo)

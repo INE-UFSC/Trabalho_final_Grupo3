@@ -239,6 +239,7 @@ class Tela_De_Jogo(Tela):
         self.__atrito = 0.5
         self.__espaco = False
         self.__bola_fogo = False
+        self.__troca_poder = False
 
         ###### INSTANCIAS DE OBJETOS ######
         self.__jogador = Jogador('mario', 200, -1000, 0, 1)
@@ -285,6 +286,8 @@ class Tela_De_Jogo(Tela):
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: self.__espaco = True
                     if evento.key == pygame.K_ESCAPE:
                         self.__sobreposicao = Tela_Pause(self)
+                    if evento.key == pygame.K_TAB:
+                        self.__troca_poder = True
                 if evento.type == pygame.KEYUP:
                     if evento.key == pygame.K_w: self.__cima = 0
                     if evento.key == pygame.K_s: self.__baixo = 0
@@ -293,6 +296,8 @@ class Tela_De_Jogo(Tela):
                     if evento.key == pygame.K_a:
                         self.__esquerda = 0
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: self.__espaco = False
+                    if evento.key == pygame.K_TAB:
+                        self.__troca_poder = False
                 if evento.type == pygame.MOUSEBUTTONDOWN:
                     self.__bola_fogo = True
                 elif evento.type == pygame.MOUSEBUTTONUP:
@@ -311,6 +316,7 @@ class Tela_De_Jogo(Tela):
             self.__baixo = 0
             self.__espaco = False
             self.__bola_fogo = False
+            self.__troca_poder = False
 
         ##### FILA DE RENDERIZACAO E ATUALIZACAO #####
         self.superficie.fill(self.__background_colour)  # Preenche a cor de fundo
@@ -326,14 +332,14 @@ class Tela_De_Jogo(Tela):
             # self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco,#self.__superficie.get_size(), self.__mapa, self.__atrito)
             self.__jogador.poderes(self.superficie, self.__mapa, self.__bola_fogo)
         self.__campo_visivel = self.__jogador.atualizar(self.superficie,self.__mapa, self.__campo_visivel, int(ciclo / 6),
-                                                        [self.__direita, self.__esquerda, self.__espaco], self.__atrito)
+                                                        [self.__direita, self.__esquerda, self.__espaco, self.__troca_poder], self.__atrito)
 
         # PERDENDO POR MORRER
         if self.__jogador.vida <= 0 and not self.__mapa.ganhou:
             self.__jogador.vida_pra_zero()
             self.__atrasofim += 1
             if self.__atrasofim <= 1:
-                if isinstance(self.__jogador.poder, Verde) and self.__mapa.conta <= 0:
+                if isinstance(self.__jogador.poder, Verde) and self.__mapa.__tempo_restante <= 0:
                     self.__textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", False, (0, 0, 0))
                 else:
                     self.__textin = self.__fonte.render("PERDEU", False, (0, 0, 0))
@@ -370,13 +376,10 @@ class Tela_De_Jogo(Tela):
         self.__tempo_maximo += 1 / 60 - self.__mapa.escala_tempo / 60
         tempo_decorrido = pygame.time.get_ticks() / 1000 - self.__comeco
         if not self.__mapa.ganhou:
-            self.__mapa.conta = int(max(self.__tempo_maximo - tempo_decorrido, 0))
-
-        ##### PASSANDO A VIDA PRO DISPLAY #####d
-        self.__mapa.vida_jogador = self.__jogador.vida
+            self.__mapa.tempo_restante = int(max(self.__tempo_maximo - tempo_decorrido, 0))
 
         ### PERDENDO POR TEMPO
-        if self.__mapa.conta == 0:
+        if self.__mapa.tempo_restante == 0:
             self.__jogador.vida_pra_zero()
         return True
 

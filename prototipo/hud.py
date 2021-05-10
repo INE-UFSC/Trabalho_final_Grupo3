@@ -5,14 +5,18 @@ class Hud:
     def __init__(self):
         self.__vida = Vida(60,30)
         self.__tempo = Tempo(220,30)
-        self.__biscoitos = []
+        self.__biscoitos = Biscoitos('biscoito tela', 350, 30)
         self.__barra_poder = BarraPoder(700,50)
-        self.__paleta = []
+        self.__paleta = Paleta(500, 30)
+        self.__poder_armazenado = ArmazenadoPoder(700, 135)
 
-    def atualizar(self, tela, mapa, dimensoes_tela, tempo, vida):
+    def atualizar(self, tela, mapa, dimensoes_tela, tempo, vida, moedas_pegas, paletas_pegas):
         self.__vida.atualizar(tela, mapa, dimensoes_tela, vida)
         self.__tempo.atualizar(tela, mapa, dimensoes_tela, tempo)
         self.__barra_poder.atualizar(tela, mapa, dimensoes_tela)
+        self.__biscoitos.atualizar(tela, mapa, dimensoes_tela, moedas_pegas)
+        self.__paleta.atualizar(tela, mapa, dimensoes_tela, paletas_pegas)
+        self.__poder_armazenado.atualizar(tela, mapa, dimensoes_tela)
 
 
 class Vida(Estatico):
@@ -51,13 +55,13 @@ class Tempo(Estatico):
             nome = "tempo_"+str(int(self.__tempo/max((self.tempomax/5),1)))
         else:
             nome = "tempo_"
+        self.__contador = self.__fonte.render(str(self.__tempo), False, (0, 0, 0))
+        tela.blit(self.__contador, (self.x+70, self.y+35))
         self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0)
 
     def atualizar(self, tela, mapa, dimensoes_tela, tempo):
         self.__tempo = tempo
         self.renderizar(tela, mapa)
-        self.__contador = self.__fonte.render(str(self.__tempo), False, (0, 0, 0))
-        tela.blit(self.__contador, (self.x+70, self.y+35))
         return False
 
 
@@ -66,11 +70,16 @@ class Biscoitos(Estatico):
         altura = 30
         largura = 60
         super().__init__(nome, x, y, altura, largura, "0", (254, 254, 0))
+        self.__numero_biscoitos = 0
+        self.__fonte = pygame.font.SysFont('Arial', 40)
+        self.__escreve_na_tela = ""
 
     def renderizar(self, tela, mapa):
-        if renderizar_hitbox: pygame.draw.rect(tela, self.cor, self.corpo)
-
-    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.__escreve_na_tela = self.__fonte.render("x" + str(self.__numero_biscoitos), False, (0, 0, 0))
+        tela.blit(self.__escreve_na_tela, (self.x+70, self.y+35))
+        
+    def atualizar(self, tela, mapa, dimensoes_tela, moedas_pegas):
+        self.__numero_biscoitos = moedas_pegas
         self.renderizar(tela, mapa)
         return False
 
@@ -104,10 +113,33 @@ class Paleta(Estatico):
         altura = 40
         largura = 40
         self.__largura_atual = largura
-        self.__coletadas = 0
         super().__init__("paletas", x, y, altura, largura, "0", (205, 133, 63))
+        self.__paletas_coletadas = 0
+        self.__fonte = pygame.font.SysFont('Arial', 40)
+        self.__escreve_na_tela= ""
+    
+    def renderizar(self, tela, mapa):
+        self.__escreve_na_tela = self.__fonte.render("x" + str(self.__paletas_coletadas), False, (0, 0, 0))
+        tela.blit(self.__escreve_na_tela, (self.x+70, self.y+35))
+
+    def atualizar(self, tela, mapa, dimensoes_tela, paletas_pegas):
+        self.__paletas_coletadas = paletas_pegas
+        self.renderizar(tela, mapa)
+        return False
+
+class ArmazenadoPoder(Estatico):
+    def __init__(self, x: int, y: int):
+        altura = 40
+        largura = 40
+        self.__cor_poder = (0, 0, 0)
+        self.__corpo_poder = []
+        super().__init__("poder_armazenado", x, y, altura, largura, "sprites", (205, 133, 63))
         #self.sprite = SpriteSheetBarras()
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        self.__coletadas = mapa.jogador.paleta
+        self.renderizar(tela, mapa)
         return False
+
+    def renderizar(self, tela, mapa):
+        nome = self.nome+"_"+mapa.jogador.poder_armazenado.nome
+        self.sprite.imprimir(tela, nome, self.x-70, self.y-18, 0, 0, 0, 0)
