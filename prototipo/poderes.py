@@ -209,20 +209,27 @@ class Coletavel(Movel):
         super().__init__(nome, x, y, largura, altura, limite_vel, imagem, cor)
 
     def coleta(self, jogador, mapa):
-        pass
+        jogador.coletar_poder(self)
+        mapa.escala_tempo = 1
+        self.auto_destruir(mapa)
+
+    def sofreu_colisao_outros(self, entidade, direcao):
+        return 0
+
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        self.coleta(jogador, mapa)
+        return 0
 
 @instanciavel
 class BiscoitoNoMapa(Coletavel):
     def __init__(self, nome, x, y, cor=(245, 245, 220)):
-        super().__init__(nome, x, y, "0", cor, 15, 15)
-        self.__raio = 15
-        renderizar_hitbox = True
-        renderizar_sprite = True
+        super().__init__(nome, x, y, "0", cor, 20, 20)
+        self.__raio = 10
     
     def renderizar(self, tela, mapa):
         if renderizar_hitbox:
-            pygame.draw.circle(tela, self.cor, [(self.corpo.x)/2 - mapa.campo_visivel.x,
-                                                (self.corpo.y)/2 - mapa.campo_visivel.y], self.__raio)
+            pygame.draw.circle(tela, self.cor, [self.corpo.centerx - mapa.campo_visivel.x,
+                                                self.corpo.centery - mapa.campo_visivel.y], self.__raio)
         if renderizar_sprite:
             try:
                 self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
@@ -233,7 +240,19 @@ class BiscoitoNoMapa(Coletavel):
                 pass  # nao possui sprite
 
     def coleta(self, jogador, mapa):
-        jogador.coletar_moeda(self)
+        jogador.coletar_moeda()
+        mapa.escala_tempo = 1
+        self.auto_destruir(mapa)
+
+@instanciavel
+class Paleta(Coletavel):
+    def __init__(self, nome, x, y, cor=(0, 0, 0)):
+
+        self.poder_atribuido = poder_atribuido
+        super().__init__(nome, x, y, "0", cor)
+
+    def coleta(self, jogador, mapa):
+        jogador.coletar_moeda()
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
 
@@ -242,17 +261,6 @@ class PoderNoMapa(Coletavel):
     def __init__(self, nome, x, y, poder_atribuido, imagem, cor=(0, 0, 0)):
         self.poder_atribuido = poder_atribuido
         super().__init__(nome, x, y, imagem, cor)
-
-    def coleta(self, jogador, mapa):
-        jogador.coletar_poder(self)
-        mapa.escala_tempo = 1
-        self.auto_destruir(mapa)
-
-    def sofreu_colisao_outros(self, entidade, direcao):
-        return 0
-
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-        return 0
 
 @instanciavel
 class BandanaDoNinja(PoderNoMapa):

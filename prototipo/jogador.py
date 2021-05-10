@@ -1,5 +1,5 @@
 import pygame
-from obstaculos import Bloco, Vitoria
+from obstaculos import *
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Rato
 from poderes import *
@@ -35,12 +35,17 @@ class Jogador(Movel):
         self.__invisivel = 0
         self.__moedas = 0
         self.escala_tempo = 1
+        self.__paleta = 0
 
         super().__init__(nome, x, y, largura, altura, limite_vel, "0")
 
     @property
     def invisivel(self):
         return self.__invisivel
+    
+    @property
+    def paleta(self):
+        return self.__paleta
 
     @property
     def tamanho_jogador(self):
@@ -106,6 +111,14 @@ class Jogador(Movel):
 
     def coletar_moeda(self):
         self.__moedas += 1
+    
+    def coletar_paleta(self):
+        if self.__paleta < 5:
+            self.__paleta += 1
+        elif self.__vida < 5:
+            self.__vida += 1
+        else:
+            self.coletar_moeda()
 
     def renderizar(self, tela, campo_visivel, ciclo):
     
@@ -201,10 +214,10 @@ class Jogador(Movel):
                     obstaculos[i] = 0
 
         ##### COLETA ITENS #####
-        for i in range(len(obstaculos)):
-            if isinstance(obstaculos[i], Coletavel):
-                obstaculos[i].coleta(self, mapa)
-                obstaculos[i] = 0
+        #for i in range(len(obstaculos)):
+        #    if isinstance(obstaculos[i], Coletavel):
+        #        obstaculos[i].coleta(self, mapa)
+        #        obstaculos[i] = 0
 
         ##### REPOSICIONAMENTO POS COLISAO #####
         if obsDireita and obsEsquerda:  # ESMAGAMENTO

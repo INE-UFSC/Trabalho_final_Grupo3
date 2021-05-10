@@ -25,7 +25,7 @@ class Lapis(Obstaculo):
     def __init__(self, nome: str, x: int, topo: int, base: int):
         largura = 44
         altura = base - topo
-        super().__init__(nome, x, topo, altura, largura, "0", (11, 137, 0))
+        super().__init__(nome, x, topo, altura, largura, "sprites", (11, 137, 0))
 
 
 @instanciavel
@@ -113,7 +113,7 @@ class Tempo(Obstaculo):
         altura = 30
         largura = 70
         self.tempomax = 320
-        self.__fonte = pygame.font.SysFont('Arial', 20)
+        self.__fonte = pygame.font.SysFont('Arial', 40)
         self.__tempo = 0
         self.__contador = self.__fonte.render('time :' + " " + str(self.tempo), False, (0, 0, 0))
         super().__init__("tempo", x, y, altura, largura, "sprites", (160, 160, 160))
@@ -197,3 +197,17 @@ class BarraPoder(Obstaculo):
         pygame.draw.rect(tela, self.__cor_poder, self.__corpo_poder)
         nome = self.nome+"_"+mapa.jogador.poder.nome
         self.sprite.imprimir(tela, nome, self.x-70, self.y-18, 0, 0, 0, 0)
+
+@instanciavel
+class Paleta(Obstaculo):
+    def __init__(self, x: int, y: int):
+        altura = 40
+        largura = 40
+        self.__largura_atual = largura
+        self.__coletadas = 0
+        super().__init__("paletas", x, y, altura, largura, "0", (205, 133, 63))
+        #self.sprite = SpriteSheetBarras()
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.__coletadas = mapa.jogador.paleta
+        return False
