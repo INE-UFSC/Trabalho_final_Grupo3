@@ -34,8 +34,8 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaocontinuar, botaonivel_1, botaonivel_2,
                           botaonivel_3, botaoconfig,botaocontinuar,b4,b5,b6,b7,b8,b9]
-        listatelas = [True,False,[Novo_Jogo,[superficie]],[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1"]]
-                ,[Tela_De_Jogo,[superficie,"fase2"]],[Tela_De_Jogo,[superficie,"fase3"]],True,True,True,True,True,True,True,True]
+        listatelas = [True,False,[Novo_Jogo,[superficie]],[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1",'6']]
+                ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],True,True,True,True,True,True,True,True]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         self.__contador_menu = 0
         pygame.mixer.music.stop()
