@@ -70,11 +70,11 @@ class Tela_Menu(Tela):
 class Botao:
     def __init__(self,x,y,w,h,cor,texto,borda,estatico=False):
         ### tamanho,posicao,cor e texto do botao
-        self.__x = x
-        self.__y = y
+        self.__x = x-w/2
+        self.__y = y-h/2
         self.__w = w
         self.__h = h
-        self.__centro = [self.__x+self.__w/2,self.__y+self.__h/2]
+        self.__centro = [x,y,w,h]
         self.__cor = cor
         self.__corhover = [cor[0]*3/4,cor[1]*3/4,cor[2]*3/4] if not estatico else cor
         self.__textsf = pygame.font.SysFont(None,28).render(texto,True,(0,0,0))
@@ -82,28 +82,29 @@ class Botao:
         self.__borda = borda
         self.__estatico = estatico
 
-        @property
-        def cor(self):
-            return self.__cor
-        
-        @cor.setter
-        def cor(self,cor):
-            self.__cor = cor
-            self.__corhover = [cor[0]*3/4,cor[1]*3/4,cor[2]*3/4] if not self.__estatico else cor
-        
-        @property
-        def texto(self):
-            return self.__textsf
-        
-        @texto.setter
-        def texto(self,texto):
-            self.__textsf = pygame.font.SysFont(None,28).render(texto,True,(0,0,0))
+    @property
+    def cor(self):
+        return self.__cor
+    
+    @cor.setter
+    def cor(self,cor):
+        self.__cor = cor
+        self.__corhover = [cor[0]*3/4,cor[1]*3/4,cor[2]*3/4] if not self.__estatico else cor
+    
+    @property
+    def texto(self):
+        return self.__textsf
+    
+    @texto.setter
+    def texto(self,texto):
+        self.__textsf = pygame.font.SysFont(None,28).render(texto,True,(0,0,0))
+        self.__texttamanho = self.__textsf.get_size()
 
     def renderizar(self,superficie):
         pos = pygame.mouse.get_pos()
         pygame.draw.rect(superficie,(0,0,0),[self.__x,self.__y,self.__w,self.__h])
         ### cor do botao depende de se o mouse esta em cima dele
-        cor = self.__corhover if self.__x <= pos[0] <= self.__x + self.__w and self.__y <= pos[1] <= self.__y + self.__h else self.__cor
+        cor = self.__corhover if self.__x <= pos[0] <= self.__x + self.__w and self.__y <= pos[1] <= self.__y + self.__h else self.cor
         pygame.draw.rect(superficie,cor,[self.__x+self.__borda,self.__y+self.__borda,self.__w-2*self.__borda,self.__h-2*self.__borda])
         superficie.blit(self.__textsf,[self.__centro[0]-self.__texttamanho[0]/2,self.__centro[1]-self.__texttamanho[1]/2])
         
