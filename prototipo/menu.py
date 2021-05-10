@@ -68,7 +68,7 @@ class Tela_Menu(Tela):
         return self.__listabotoes
     
 class Botao:
-    def __init__(self,x,y,w,h,cor,corhover,texto,borda):
+    def __init__(self,x,y,w,h,cor,texto,borda,estatico=False):
         ### tamanho,posicao,cor e texto do botao
         self.__x = x
         self.__y = y
@@ -76,11 +76,29 @@ class Botao:
         self.__h = h
         self.__centro = [self.__x+self.__w/2,self.__y+self.__h/2]
         self.__cor = cor
-        self.__corhover = corhover
+        self.__corhover = [cor[0]*3/4,cor[1]*3/4,cor[2]*3/4] if not estatico else cor
         self.__textsf = pygame.font.SysFont(None,28).render(texto,True,(0,0,0))
         self.__texttamanho = self.__textsf.get_size()
         self.__borda = borda
-    
+        self.__estatico = estatico
+
+        @property
+        def cor(self):
+            return self.__cor
+        
+        @cor.setter
+        def cor(self,cor):
+            self.__cor = cor
+            self.__corhover = [cor[0]*3/4,cor[1]*3/4,cor[2]*3/4] if not self.__estatico else cor
+        
+        @property
+        def texto(self):
+            return self.__textsf
+        
+        @texto.setter
+        def texto(self,texto):
+            self.__textsf = pygame.font.SysFont(None,28).render(texto,True,(0,0,0))
+
     def renderizar(self,superficie):
         pos = pygame.mouse.get_pos()
         pygame.draw.rect(superficie,(0,0,0),[self.__x,self.__y,self.__w,self.__h])

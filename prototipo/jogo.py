@@ -9,8 +9,8 @@ from efeitosrender import *
 
 class Tela_Pause(Sobreposicao):
     def __init__(self,tela):
-        continuar = Botao(400, 350, 200, 50, (220, 0, 0), (160, 0, 0), "Continuar", 5)
-        sair = Botao(400, 410, 200, 50, (220, 0, 0), (160, 0, 0), "Sair", 5)
+        continuar = Botao(400, 350, 200, 50, (220, 0, 0), "Continuar", 5)
+        sair = Botao(400, 410, 200, 50, (220, 0, 0), "Sair", 5)
         listabotoes = [continuar,sair]
         listatelas = [True,False,"Fechar"]
         super().__init__(listabotoes,((50,50,50),(380,340,240,130)),tela,listatelas)
@@ -18,19 +18,19 @@ class Tela_Pause(Sobreposicao):
 
 class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
     def __init__(self, superficie):
-        botaonivel_1 = Botao(250, 75, 100, 50, (220, 0, 0), (160, 0, 0), "Fase 1", 5)
-        botaonivel_2 = Botao(450, 75, 100, 50, (220, 110, 0), (160, 80, 0), "Fase 2", 5)
-        botaonivel_3 = Botao(650, 75, 100, 50, (220, 220, 0), (160, 160, 0), "Fase 3", 5)
-        b4 = Botao(250, 150, 100, 50, (220, 0, 110), (160, 0, 80), "Fase 4", 5)
-        b5 = Botao(450, 150, 100, 50, (220, 110, 110), (160, 80, 80), "Fase 5", 5)
-        b6 = Botao(650, 150, 100, 50, (220, 220, 110), (160, 160, 80), "Fase 6", 5)
-        b7 = Botao(250, 225, 100, 50, (220, 0, 220), (160, 0, 160), "Fase 7", 5)
-        b8 = Botao(450, 225, 100, 50, (220, 110, 220), (160, 80, 160), "Fase 8", 5)
-        b9 = Botao(650, 225, 100, 50, (220, 220, 220), (160, 160, 160), "Fase 9", 5)
-        botaojogar = Botao(375, 350, 250, 50, (30, 220, 30), (30, 160, 30), "Jogar", 5)
-        botaocontinuar = Botao(375, 405, 250, 50, (220, 220, 30), (160, 160, 30), "-", 5)
-        botaoconfig = Botao(375, 460, 250, 50, (0, 220, 180), (0, 160, 130), "Configurações", 5)
-        botaosair = Botao(375, 515, 250, 50, (220, 30, 30), (160, 30, 30), "Sair", 5)
+        botaonivel_1 = Botao(250, 75, 100, 50, (220, 0, 0), "Fase 1", 5)
+        botaonivel_2 = Botao(450, 75, 100, 50, (220, 110, 0), "Fase 2", 5)
+        botaonivel_3 = Botao(650, 75, 100, 50, (220, 220, 0), "Fase 3", 5)
+        b4 = Botao(250, 150, 100, 50, (220, 0, 110), "Fase 4", 5)
+        b5 = Botao(450, 150, 100, 50, (220, 110, 110), "Fase 5", 5)
+        b6 = Botao(650, 150, 100, 50, (220, 220, 110),  "Fase 6", 5)
+        b7 = Botao(250, 225, 100, 50, (220, 0, 220),  "Fase 7", 5)
+        b8 = Botao(450, 225, 100, 50, (220, 110, 220),  "Fase 8", 5)
+        b9 = Botao(650, 225, 100, 50, (220, 220, 220),  "Fase 9", 5)
+        botaojogar = Botao(375, 350, 250, 50, (30, 220, 30),  "Jogar", 5)
+        botaocontinuar = Botao(375, 405, 250, 50, (220, 220, 30),  "-", 5)
+        botaoconfig = Botao(375, 460, 250, 50, (0, 220, 180), "Configurações", 5)
+        botaosair = Botao(375, 515, 250, 50, (220, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaocontinuar, botaonivel_1, botaonivel_2,
                           botaonivel_3, botaoconfig,botaocontinuar,b4,b5,b6,b7,b8,b9]
@@ -68,12 +68,12 @@ class Carregar_Jogo(Tela_Menu):
         encaixe = [slots[str(i)] for i in range(5)]
         deletar_encaixe = ["Deletar" if slots[str(i)][0] != "Novo Jogo" else False for i in range(5)]
 
-        botoes_encaixe = [Botao(150, 200+60*i, 500, 50, (60, 220, 20), (20, 100, 0), encaixe[i][0], 5) if deletar_encaixe[i] == "Deletar"
-                        else Botao(150, 200+60*i, 500, 50, (160, 160, 160), (120, 120, 120), encaixe[i][0], 5) for i in range(5)]
-        sair = Botao(75, 520, 200, 50, (220, 20, 60), (100, 0, 20), "Sair", 5)
-        botoes_deletar = [Botao(700, 205+60*i, 100, 40, (220, 20, 60), (100, 0, 20), "Deletar", 5) if deletar_encaixe[i] == "Deletar" 
-                        else Botao(-1000, -1000, 50, 50, (0,0,0), (0,0,0), "", 5) for i in range(5)]
-        texto = Botao(100, 50, 400, 100, (200, 200, 200), (200, 200, 200), "Escolha de Jogo Salvo", 5)
+        botoes_encaixe = [Botao(150, 200+60*i, 500, 50, (60, 220, 20), encaixe[i][0], 5) if deletar_encaixe[i] == "Deletar"
+                        else Botao(150, 200+60*i, 500, 50, (160, 160, 160), encaixe[i][0], 5) for i in range(5)]
+        sair = Botao(75, 520, 200, 50, (220, 20, 60), "Sair", 5)
+        botoes_deletar = [Botao(700, 205+60*i, 100, 40, (220, 20, 60), "Deletar", 5) if deletar_encaixe[i] == "Deletar" 
+                        else Botao(-1000, -1000, 50, 50, (0,0,0), "", 5) for i in range(5)]
+        texto = Botao(100, 50, 400, 100, (200, 200, 200), "Escolha de Jogo Salvo", 5)
         
         listabotoes = botoes_encaixe + botoes_deletar + [sair] + [texto]
 
@@ -102,9 +102,9 @@ class Carregar_Jogo(Tela_Menu):
 class Deletar_Save(Tela_Menu):
     def __init__(self,superficie,save):
         self.__save = save
-        texto = Botao(200, 170, 600, 150, (200, 200, 200), (200, 200, 200), "Quer mesmo deletar esse jogo salvo?", 5)
-        deletar = Botao(150, 350, 320, 50, (220, 20, 60), (100, 0, 20), "Deletar", 5)
-        cancelar = Botao(530, 350, 320, 50, (60, 220, 20), (20, 100, 0), "Cancelar", 5)
+        texto = Botao(200, 170, 600, 150, (200, 200, 200), "Quer mesmo deletar esse jogo salvo?", 5)
+        deletar = Botao(150, 350, 320, 50, (220, 20, 60), "Deletar", 5)
+        cancelar = Botao(530, 350, 320, 50, (60, 220, 20), "Cancelar", 5)
         listabotoes = [deletar,cancelar,texto]
         listatelas = [True,[Carregar_Jogo,[superficie]],[Carregar_Jogo,[superficie]],True]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
@@ -130,9 +130,9 @@ class Deletar_Save(Tela_Menu):
 
 class Fim_De_Jogo(Tela_Menu):
     def __init__(self,superficie,nivel,save):
-        texto = Botao(200, 170, 600, 150, (200, 200, 200), (200, 200, 200), "Você perdeu...", 5)
-        continuar = Botao(530, 350, 320, 50, (160, 220, 60), (120, 160, 40), "Tentar Novamente", 5)
-        voltar = Botao(150, 350, 320, 50, (220, 220, 60), (160, 160, 40), "Menu Principal", 5)
+        texto = Botao(200, 170, 600, 150, (200, 200, 200), "Você perdeu...", 5)
+        continuar = Botao(530, 350, 320, 50, (160, 220, 60), "Tentar Novamente", 5)
+        voltar = Botao(150, 350, 320, 50, (220, 220, 60), "Menu Principal", 5)
         listabotoes = [voltar,continuar,texto]
         listatelas = [True,[Menu_Principal,[superficie]],[Tela_De_Jogo,[superficie,nivel,save]],True]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
@@ -148,6 +148,19 @@ class Fim_De_Jogo(Tela_Menu):
                 acao = self.clicar()
                 return self.listatelas[acao]
         return super().atualizar()
+
+
+class Configuracoes(Tela_Menu):
+    def __init__(self,superficie):
+        texto = Botao(200, 170, 600, 150, (200, 200, 200), "Você perdeu...", 5)
+        continuar = Botao(530, 350, 320, 50, (160, 220, 60), "Tentar Novamente", 5)
+        voltar = Botao(150, 350, 320, 50, (220, 220, 60), "Menu Principal", 5)
+        listabotoes = [voltar,continuar,texto]
+        listatelas = [True,[Menu_Principal,[superficie]],[Tela_De_Jogo,[superficie,nivel,save]],True]
+        cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
+        super().__init__(listabotoes,cormenu,superficie,listatelas)
+        self.__contador_menu = 0
+
 
 class Tela_De_Jogo(Tela):
     def __init__(self, superficie, nivel,slot):
@@ -317,7 +330,13 @@ class Jogo:
         ###### INFORMACOES TA TELA ######
         (width, height) = (1000, 600)  # Tamanho da tela
         self.__screen = pygame.display.set_mode((width, height))  # Cria o objeto da tela
-        pygame.display.set_caption('As Aventuras do Guri')
+        caption = ["As Aventuras do Guri",
+                   "A Aventura Bizarra de Guri",
+                   "Super Guri Bros",
+                   "Arte-lharia",
+                   "Uma Pincelada de Vigor",
+                   "Entre Riscos e Riscos"]
+        pygame.display.set_caption(random.choices(caption,[6,1,1,4,4,4])[0])
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))
         self.__relogio = pygame.time.Clock()
@@ -334,7 +353,6 @@ class Jogo:
             if acao == False:
                 break
             elif isinstance(acao,list):
-                self.__ciclo = 0
                 self.__janela.tela = acao[0](*acao[1])
             self.__relogio.tick(60)
 
