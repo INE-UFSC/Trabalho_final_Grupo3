@@ -8,6 +8,7 @@ class Hud:
         self.__biscoitos = Biscoitos('biscoito tela', 350, 30)
         self.__barra_poder = BarraPoder(700,50)
         self.__paleta = Paleta(500, 30)
+        self.__poder_armazenado = ArmazenadoPoder(700, 135)
 
     def atualizar(self, tela, mapa, dimensoes_tela, tempo, vida, moedas_pegas, paletas_pegas):
         self.__vida.atualizar(tela, mapa, dimensoes_tela, vida)
@@ -15,6 +16,7 @@ class Hud:
         self.__barra_poder.atualizar(tela, mapa, dimensoes_tela)
         self.__biscoitos.atualizar(tela, mapa, dimensoes_tela, moedas_pegas)
         self.__paleta.atualizar(tela, mapa, dimensoes_tela, paletas_pegas)
+        self.__poder_armazenado.atualizar(tela, mapa, dimensoes_tela)
 
 
 class Vida(Estatico):
@@ -124,3 +126,20 @@ class Paleta(Estatico):
         self.__paletas_coletadas = paletas_pegas
         self.renderizar(tela, mapa)
         return False
+
+class ArmazenadoPoder(Estatico):
+    def __init__(self, x: int, y: int):
+        altura = 40
+        largura = 40
+        self.__cor_poder = (0, 0, 0)
+        self.__corpo_poder = []
+        super().__init__("poder_armazenado", x, y, altura, largura, "sprites", (205, 133, 63))
+        #self.sprite = SpriteSheetBarras()
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.renderizar(tela, mapa)
+        return False
+
+    def renderizar(self, tela, mapa):
+        nome = self.nome+"_"+mapa.jogador.poder_armazenado.nome
+        self.sprite.imprimir(tela, nome, self.x-70, self.y-18, 0, 0, 0, 0)
