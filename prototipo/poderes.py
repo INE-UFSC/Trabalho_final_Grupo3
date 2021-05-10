@@ -120,7 +120,7 @@ class Azul(PoderGenerico):
     def acao(self, jogador, screen, mapa):
         if not self.descanso:
             self.ativo = True
-        elif self.ativo and self.descanso > 10:
+        elif self.ativo and self.descanso > 30:
             self.ativo = False
 
     def atualizar(self, tela, campo_visivel):
@@ -144,7 +144,7 @@ class Roxo(PoderGenerico):
         if not self.descanso:
             mapa.escala_tempo = 0
             self.ativo = True
-        elif self.ativo and self.descanso > 10:
+        elif self.ativo and self.descanso > 30:
             mapa.escala_tempo = 1
             self.ativo = False
 
