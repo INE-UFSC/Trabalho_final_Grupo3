@@ -147,13 +147,13 @@ class Voador(Entidade):
 
 @instanciavel
 class Atirador(Entidade):
-    def __init__(self, nome: str, x: int, y: int):
+    def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
-        largura = 40
-        altura = 66
+        largura = 90
+        altura = 44
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (255, 25, 25), 0)
+        super().__init__("atirador", x, y, altura, largura, limiteVel, vida, danoContato, "atirador", (255, 25, 25), 8)
         self.vely = 0
         self.velx = 2
         self.__vel_projetil = 3
