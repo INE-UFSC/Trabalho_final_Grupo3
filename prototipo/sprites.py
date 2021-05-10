@@ -3,11 +3,14 @@ import json
 
 class Sprite():
     def __init__(self, arquivo):
+        arquivo = "sprites/"+arquivo
         self.__imagem = arquivo+".png"
         self.__sprite_sheet = pygame.image.load(self.__imagem).convert_alpha()
         self.__arquivo_dados = arquivo+".json"
         self.__dados = {}
         with open(self.__arquivo_dados) as f:
+            # print(self.__arquivo_dados)
+            # print(f)
             self.__dados = json.load(f)
 
     def imprimir(self, tela, nome, posx, posy, orientacao, velx, vely, frame):
@@ -15,7 +18,7 @@ class Sprite():
         elif orientacao == -1: nome = nome + "_left"
         #if vely != 0 and nome != "rabisco": nome = nome + "_jump"
         if velx != 0: nome = nome + "_walk"
-        if self.__imagem != "sprites.png": nome = nome + "_" + str(frame)
+        if self.__imagem != "sprites/sprites.png": nome = nome + "_" + str(frame)
         self.carregar_sprite(nome, posx, posy, tela)
 
     def carregar_sprite(self, nome, posx, posy, tela):

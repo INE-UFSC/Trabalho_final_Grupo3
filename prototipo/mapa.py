@@ -155,12 +155,12 @@ def carregar_mapa():
         ##### BORDA E VITORIA #####
         ["Vitoria", (4000, height - 200, 100, 190)],
 
-        #["Gelatina", (1000, height - 450)],
+        ["Gelatina", (1000, height - 450)],
 
         ##### PODERES #####
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
         ["CartolaDoMago", ('orbe1', 250, height - 500)],
-        #["OculosDoNerd", ('oculos1', 1525, height - 300)],
+        ["OculosDoNerd", ('oculos1', 1525, height - 300)],
         #["VerdeBebe", ('orbe', 1600, height - 50)],
         ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
         ["BiscoitoNoMapa", ('bisc', 550, 550)],
@@ -168,9 +168,9 @@ def carregar_mapa():
         ##### INIMIGOS #####
         #["Rato", ('rato1', 610, height - 50)],
         # ["Rato",('rato3', 900, height - 50)],
-        #["Saltante", (, 700, height - 250)],
+        ["Saltante", (700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
-        #["Temporal", ('temporal', 2000, height - 200)],
+        ["Temporal", ('temporal', 2000, height - 200)],
         # ["PorcoEspinho", ('porco1', 900, height - 50)]
         #["Atirador",(1150, height - 50)],
         ["Atirador",(1000, height - 205)]
