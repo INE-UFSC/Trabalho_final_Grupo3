@@ -13,6 +13,7 @@ class Mapa:
         tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
         self.__conta = ""
+        self.__ciclo = 0
         self.__vitoria = pygame.Rect(tamanho_campo[0] - 30, 550 - 30, 30, 100)
         self.__ganhou = False
         self.__vida_jogador = ""
@@ -38,6 +39,14 @@ class Mapa:
     @ganhou.setter
     def ganhou(self, ganhou):
         self.__ganhou = ganhou
+
+    @property
+    def ciclo(self):
+        return self.__ciclo
+
+    @ciclo.setter
+    def ciclo(self, ciclo):
+        self.__ciclo = ciclo
 
     @property
     def vida_jogador(self):
@@ -111,7 +120,8 @@ class Mapa:
             if entidade.imagem != "0": entidade.sprite = Sprite(entidade.imagem)
         return self.__jogador
 
-    def atualizar(self, tela, campo_visivel, dimensoes_tela):
+    def atualizar(self, tela, campo_visivel, dimensoes_tela, ciclo):
+        self.__ciclo = ciclo
         # O CAMPO_VISIVEL FAZ COM QUE APENAS OBJETOS NA TELA SEJAM RENDERIZADOS
         # PODE AJUDAR CASO OS MAPAS FIQUEM MUITO GRANDES
         self.__campo_visivel = campo_visivel
@@ -132,16 +142,16 @@ def carregar_mapa():
     width = 4200
     height = 700
     fase1 = [[
-        ["Lapis", ('lapis', 550, height - 125, height)],
-        ["Lapis", ('lapis', 800, height - 125, height)],
-        ["Lapis", ('lapis', 1500, height - 125, height)],
+        #["Lapis", ('lapis', 550, height - 125, height)],
+        #["Lapis", ('lapis', 800, height - 125, height)],
+        #["Lapis", ('lapis', 1500, height - 125, height)],
 
         ["Bloco", ('bloco1', 200, height - 350)],
         ["Bloco", ('bloco2', 250, height - 300)],
         ["Bloco", ('bloco3', 300, height - 250)],
         ["Bloco", ('bloco4', 350, height - 200)],
-        ["Bloco", ('bloco5', 1000, height - 200)],
-        ["Bloco", ('bloco6', 1020, height - 200)],
+        #["Bloco", ('bloco5', 1000, height - 200)],
+        #["Bloco", ('bloco6', 1020, height - 200)],
 
         ["Chao", ('chao1', height - 10, -200, 350)],
         ["Chao", ('chao2', height - 10, 450, 2205)],
@@ -150,7 +160,7 @@ def carregar_mapa():
         ##### BORDA E VITORIA #####
         ["Vitoria", (4000, height - 200, 100, 190)],
 
-        ["Gelatina", ('gelatina', 1000, height - 450)],
+        #["Gelatina", ('gelatina', 1000, height - 450)],
 
         ##### PODERES #####
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
@@ -161,8 +171,9 @@ def carregar_mapa():
         ["BiscoitoNoMapa", ('bisc', 550, 550)],
         #["Chakra",('chakra', 1600, height-50)],
         ##### INIMIGOS #####
-        ["Rato", ('rato1', 610, height - 50)],
+        #["Rato", ('rato1', 610, height - 50)],
         # ["Rato",('rato3', 900, height - 50)],
+        ["Saltante", ('coelho', 700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
         ["Temporal", ('temporal', 3500, height - 200)],
         ["PorcoEspinho", ('porco1', 900, height - 50)]
@@ -191,19 +202,19 @@ def carregar_mapa():
 
 
         ["Chao", ('chao', height - 10, 1375, 1700)],
-        ["Coelho", ('coelho', 1400, height - 50)],
+        ["Saltante", ('coelho', 1400, height - 100)],
 
-        ["Chao", ('chao', 250, 1475, 1600)],
+        #["Chao", ('chao', 250, 1475, 1600)],
 
         ["Chao", ('chao', height - 10, 1875, 2775)],
-        ["Coelho", ('coelho', 1900, height - 50)],
+        ["Saltante", ('coelho', 1900, height - 100)],
         ["Lapis", ('lapis', 2150, height - 125, height)],
         ["Rato", ('rato', 2200, height - 50)],
         ["Lapis", ('lapis', 2450, height - 125, height)],
 
         ["Chao", ('chao', height - 10, 3050, 3425)],
-        ["BandanaDoNinja", ('vermelho', 3225, height - 250)],
-        ["Coelho", ('coelho', 3350, height - 50)],
+        ["BandanaDoNinja", ('vermelho', 3225, height - 200)],
+        ["Saltante", ('coelho', 3350, height - 100)],
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 
@@ -220,18 +231,18 @@ def carregar_mapa():
         ["Ponta", ('ponta', 4850, height - 125, height)],
         ["Ponta", ('ponta', 4895, height - 125, height)],
 
-        ["Coelho", ('coelho', 5575, height - 50)],
-        ["Coelho", ('coelho', 5875, height - 50)],
+        ["Saltante", ('coelho', 5575, height - 100)],
+        ["Saltante", ('coelho', 5875, height - 100)],
 
         ["Chao", ('chao', 275, 5400, 5800)],
-        ["Coelho", ('coelho', 5725, 275)],
+        ["Saltante", ('coelho', 5725, 175)],
 
         ##### PODERES #####
         #["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
 
         ##### INIMIGOS #####
         #["Rato", ('rato1', 100, height - 50)],
-        #["Coelho", ('coleho', 975, height-50)],
+        #["Saltante", ('coleho', 975, height-50)],
         #["Voador", ('voador2', 600, height - 250, 200)],
 
         ##### BORDA E VITORIA #####

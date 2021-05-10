@@ -114,7 +114,7 @@ class Tela_De_Jogo(Tela):
         ##### FILA DE RENDERIZACAO E ATUALIZACAO #####
         self.__superficie.fill(self.__background_colour)  # Preenche a cor de fundo
 
-        self.__mapa.atualizar(self.__superficie, self.__campo_visivel, self.__superficie.get_size())
+        self.__mapa.atualizar(self.__superficie, self.__campo_visivel, self.__superficie.get_size(), ciclo)
 
         # FAZER O JOGADOR RECEBER UM MAPA E SALVAR ONDE ELE TA
         if self.__atrasofim > 0:
