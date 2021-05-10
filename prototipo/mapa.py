@@ -158,6 +158,7 @@ def carregar_mapa():
         ["OculosDoNerd", ('oculos1', 1525, height - 300)],
         ["VerdeBebe", ('orbe', 1600, height - 50)],
         ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
+        ["BiscoitoNoMapa", ('bisc', 550, 200)],
         #["Chakra",('chakra', 1600, height-50)],
         ##### INIMIGOS #####
         ["Rato", ('rato1', 610, height - 50)],
