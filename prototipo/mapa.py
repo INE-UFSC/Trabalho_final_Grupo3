@@ -142,16 +142,16 @@ def carregar_mapa():
     width = 4200
     height = 700
     fase1 = [[
-        #["Lapis", ('lapis', 550, height - 125, height)],
-        #["Lapis", ('lapis', 800, height - 125, height)],
-        #["Lapis", ('lapis', 1500, height - 125, height)],
+        ["Lapis", ('lapis', 550, height - 125, height)],
+        ["Lapis", ('lapis', 800, height - 125, height)],
+        ["Lapis", ('lapis', 1500, height - 125, height)],
 
         ["Bloco", ('bloco1', 200, height - 350)],
         ["Bloco", ('bloco2', 250, height - 300)],
         ["Bloco", ('bloco3', 300, height - 250)],
         ["Bloco", ('bloco4', 350, height - 200)],
-        #["Bloco", ('bloco5', 1000, height - 200)],
-        #["Bloco", ('bloco6', 1020, height - 200)],
+        ["Bloco", ('bloco5', 1000, height - 200)],
+        ["Bloco", ('bloco6', 1020, height - 200)],
 
         ["Chao", ('chao1', height - 10, -200, 350)],
         ["Chao", ('chao2', height - 10, 450, 2205)],
@@ -160,7 +160,7 @@ def carregar_mapa():
         ##### BORDA E VITORIA #####
         ["Vitoria", (4000, height - 200, 100, 190)],
 
-        #["Gelatina", ('gelatina', 1000, height - 450)],
+        ["Gelatina", (1000, height - 450)],
 
         ##### PODERES #####
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
@@ -173,7 +173,7 @@ def carregar_mapa():
         ##### INIMIGOS #####
         #["Rato", ('rato1', 610, height - 50)],
         # ["Rato",('rato3', 900, height - 50)],
-        ["Saltante", ('coelho', 700, height - 250)],
+        #["Saltante", ('coelho', 700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
         ["Temporal", ('temporal', 3500, height - 200)],
         ["PorcoEspinho", ('porco1', 900, height - 50)]

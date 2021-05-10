@@ -281,13 +281,13 @@ class Saltante(Entidade):
 
 @instanciavel
 class Gelatina(Entidade):
-    def __init__(self, nome: str, x: int, y: int):
+    def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
         largura = 150
         altura = 150
         limiteVel = 1
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (50, 50, 255))
+        super().__init__("0", x, y, largura, altura, limiteVel, vida, danoContato, "gelatina", (50, 50, 255))
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -318,6 +318,16 @@ class Gelatina(Entidade):
 
     def sofreu_colisao_outros(self, entidade, direcao):
         pass
+
+    def renderizar(self, tela, mapa):
+
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
+                                              self.corpo.w, self.corpo.h])
+        if renderizar_sprite:
+            self.sprite.imprimir(tela, "gelatina", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                                    self.face, self.velx, self.vely, int(mapa.ciclo/6) % 10)
+
 
 
 @instanciavel
