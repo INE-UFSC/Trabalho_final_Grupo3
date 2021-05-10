@@ -12,7 +12,7 @@ class Rato(Entidade):
         largura = 46
         altura = 46
         limiteVel = 1
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (88, 51, 0))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (88, 51, 0), 0)
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -45,7 +45,7 @@ class PorcoEspinho(Entidade):
         largura = 46
         altura = 46
         limiteVel = 1
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (50, 50, 50))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (50, 50, 50), 0)
         self.vely = 0
         self.velx = 0.5
         self.xinicial = x
@@ -108,7 +108,7 @@ class Voador(Entidade):
         largura = 26
         altura = 26
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (88, 51, 0))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (88, 51, 0), 0)
         self.altitude = pygame.Rect(x, y + largura + 2, largura,
                                     altura + altitude)  # CAMPO UTILIZADO PARA CHECAR ALTURA DE VOO
         self.vely = 0
@@ -153,7 +153,7 @@ class Atirador(Entidade):
         largura = 40
         altura = 66
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (255, 25, 25))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (255, 25, 25), 0)
         self.vely = 0
         self.velx = 2
         self.__vel_projetil = 3
@@ -217,13 +217,13 @@ class Atirador(Entidade):
 
 @instanciavel
 class Saltante(Entidade):
-    def __init__(self, nome: str, x: int, y: int):
+    def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
         largura = 54
         altura = 99
         limiteVel = 1
-        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "saltante", (128, 0, 0))
+        super().__init__("saltante", x, y, altura, largura, limiteVel, vida, danoContato, "saltante", (128, 0, 0), 6)
         #self.vely = 0
         #self.velx = 0
         self.xinicial = x
@@ -269,16 +269,6 @@ class Saltante(Entidade):
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
 
-    def renderizar(self, tela, mapa):
-
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                              self.corpo.w, self.corpo.h])
-        if renderizar_sprite:
-            self.sprite.imprimir(tela, "saltante", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                                    self.face, self.velx, self.vely, int(mapa.ciclo/6) % 6)
-
-
 @instanciavel
 class Gelatina(Entidade):
     def __init__(self, x: int, y: int):
@@ -287,7 +277,7 @@ class Gelatina(Entidade):
         largura = 150
         altura = 150
         limiteVel = 1
-        super().__init__("0", x, y, largura, altura, limiteVel, vida, danoContato, "gelatina", (50, 50, 255))
+        super().__init__("gelatina", x, y, largura, altura, limiteVel, vida, danoContato, "gelatina", (50, 50, 255), 9)
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -319,17 +309,6 @@ class Gelatina(Entidade):
     def sofreu_colisao_outros(self, entidade, direcao):
         pass
 
-    def renderizar(self, tela, mapa):
-
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                              self.corpo.w, self.corpo.h])
-        if renderizar_sprite:
-            self.sprite.imprimir(tela, "gelatina", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                                    self.face, self.velx, self.vely, int(mapa.ciclo/6) % 10)
-
-
-
 @instanciavel
 class Temporal(Entidade):
     def __init__(self, nome: str, x: int, y: int):
@@ -338,7 +317,7 @@ class Temporal(Entidade):
         largura = 46
         altura = 46
         limiteVel = 1
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (80, 10, 120))
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (80, 10, 120), 0)
         self.vely = 0
         self.velx = 1
         self.xinicial = x

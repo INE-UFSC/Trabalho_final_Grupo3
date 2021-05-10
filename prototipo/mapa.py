@@ -115,7 +115,7 @@ class Mapa:
             # self.__lista_de_display.append(item)
         self.__tamanho = lista_todos[2]
         self.__proximo = lista_todos[3]
-        self.__jogador = Jogador("guri", 200, self.tamanho[1] - 50, 0, 100)
+        self.__jogador = Jogador("rabisco", 200, self.tamanho[1] - 50, 0, 100)
         for entidade in self.__lista_de_entidades:
             if entidade.imagem != "0": entidade.sprite = Sprite(entidade.imagem)
         return self.__jogador
@@ -125,10 +125,12 @@ class Mapa:
         # O CAMPO_VISIVEL FAZ COM QUE APENAS OBJETOS NA TELA SEJAM RENDERIZADOS
         # PODE AJUDAR CASO OS MAPAS FIQUEM MUITO GRANDES
         self.__campo_visivel = campo_visivel
+
+        ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
-            # print(type(entidade).__name__)
             if entidade.atualizar(tela, self, dimensoes_tela):
                 self.__lista_de_entidades.remove(entidade)
+
         for elemento_hud in self.__lista_de_display:
             if isinstance(elemento_hud, Tempo):
                 elemento_hud.tempo = self.conta
@@ -173,7 +175,7 @@ def carregar_mapa():
         ##### INIMIGOS #####
         #["Rato", ('rato1', 610, height - 50)],
         # ["Rato",('rato3', 900, height - 50)],
-        #["Saltante", ('coelho', 700, height - 250)],
+        #["Saltante", (, 700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
         ["Temporal", ('temporal', 3500, height - 200)],
         ["PorcoEspinho", ('porco1', 900, height - 50)]
@@ -202,19 +204,19 @@ def carregar_mapa():
 
 
         ["Chao", ('chao', height - 10, 1375, 1700)],
-        ["Saltante", ('coelho', 1400, height - 100)],
+        ["Saltante", (1400, height - 100)],
 
         #["Chao", ('chao', 250, 1475, 1600)],
 
         ["Chao", ('chao', height - 10, 1875, 2775)],
-        ["Saltante", ('coelho', 1900, height - 100)],
+        ["Saltante", (1900, height - 100)],
         ["Lapis", ('lapis', 2150, height - 125, height)],
         ["Rato", ('rato', 2200, height - 50)],
         ["Lapis", ('lapis', 2450, height - 125, height)],
 
         ["Chao", ('chao', height - 10, 3050, 3425)],
         ["BandanaDoNinja", ('vermelho', 3225, height - 200)],
-        ["Saltante", ('coelho', 3350, height - 100)],
+        ["Saltante", (3350, height - 100)],
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 
@@ -231,18 +233,18 @@ def carregar_mapa():
         ["Ponta", ('ponta', 4850, height - 125, height)],
         ["Ponta", ('ponta', 4895, height - 125, height)],
 
-        ["Saltante", ('coelho', 5575, height - 100)],
-        ["Saltante", ('coelho', 5875, height - 100)],
+        ["Saltante", (5575, height - 100)],
+        ["Saltante", (5875, height - 100)],
 
         ["Chao", ('chao', 275, 5400, 5800)],
-        ["Saltante", ('coelho', 5725, 175)],
+        ["Saltante", (5725, 175)],
 
         ##### PODERES #####
         #["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
 
         ##### INIMIGOS #####
         #["Rato", ('rato1', 100, height - 50)],
-        #["Saltante", ('coleho', 975, height-50)],
+        #["Saltante", (975, height-50)],
         #["Voador", ('voador2', 600, height - 250, 200)],
 
         ##### BORDA E VITORIA #####
