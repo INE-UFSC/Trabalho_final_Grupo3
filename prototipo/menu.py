@@ -35,7 +35,12 @@ class Tela_Menu(Tela):
         self.__listabotoes = listabotoes        #lista de objetos Botao
         self.__fundo = fundo                    #[red,green,blue] do fundo   
     
-    def setfundo(self,fundo:list):
+    @property
+    def fundo(self):
+        return self.__fundo
+    
+    @fundo.setter
+    def fundo(self,fundo):
         self.__fundo = fundo
     
     def atualizar(self):
@@ -57,6 +62,10 @@ class Tela_Menu(Tela):
     @property
     def listatelas(self):
         return self.__listatelas
+    
+    @property
+    def listabotoes(self):
+        return self.__listabotoes
     
 class Botao:
     def __init__(self,x,y,w,h,cor,corhover,texto,borda):
@@ -87,3 +96,29 @@ class Botao:
             return True
         else:
             return False
+
+
+class Sobreposicao(Tela_Menu):
+    def __init__(self,listabotoes:list,fundo:list,tela,listatelas):
+        super().__init__(listabotoes,fundo,tela.superficie,listatelas)
+        self.__tela_superior = tela
+    
+    def atualizar(self,ciclo):
+        pygame.draw.rect(self.superficie,*self.fundo)
+        for i in self.listabotoes:
+            i.renderizar(self.superficie)
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT: return False
+        if pygame.mouse.get_pressed()[0]:
+            acao = self.clicar()
+            return self.listatelas[acao]
+        return True
+
+
+class Tela_Pause(Sobreposicao):
+    def __init__(self,tela):
+        continuar = Botao(400, 350, 200, 50, (220, 0, 0), (160, 0, 0), "Continuar", 5)
+        sair = Botao(400, 410, 200, 50, (220, 0, 0), (160, 0, 0), "Sair", 5)
+        listabotoes = [continuar,sair]
+        listatelas = [True,False,"Fechar"]
+        super().__init__(listabotoes,((50,50,50),(380,340,240,130)),tela,listatelas)

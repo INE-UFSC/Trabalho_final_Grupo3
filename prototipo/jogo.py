@@ -34,12 +34,11 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
 
     def atualizar(self,ciclo):
         self.__contador_menu -= 0.3
-        self.setfundo(misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5))
+        self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT: return False
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 acao = self.clicar()
-                print(acao)
                 return self.listatelas[acao]
         return super().atualizar()
 
@@ -49,7 +48,7 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
 
 class Tela_De_Jogo(Tela):
     def __init__(self, superficie, nivel):
-        self.__superficie = superficie
+        super().__init__(superficie)
         self.__background_colour = (150, 220, 255)  # Cor do fundo
         (width, height) = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, width, height)
@@ -57,6 +56,7 @@ class Tela_De_Jogo(Tela):
         self.__tempo_maximo = 350
         self.__fonte = pygame.font.SysFont('Arial', 20)
         self.__atrasofim = 0
+        self.__sobreposicao = None
         self.__musica_fundo = pygame.mixer.music.load('musica_fundo.ogg')
         pygame.mixer.music.play(-1)
 
@@ -87,34 +87,52 @@ class Tela_De_Jogo(Tela):
                  2 se o jogo continuar
                  3 se o Guri ganhar
         '''
-        for evento in pygame.event.get():
-            if evento.type == pygame.QUIT:
-                return False
-            if evento.type == pygame.KEYDOWN:
-                if evento.key == pygame.K_w: self.__cima = 5
-                if evento.key == pygame.K_s: self.__baixo = 5
-                if evento.key == pygame.K_d:
-                    self.__direita = 0.5
-                if evento.key == pygame.K_a:
-                    self.__esquerda = 0.5
-                if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: self.__espaco = True
-            if evento.type == pygame.KEYUP:
-                if evento.key == pygame.K_w: self.__cima = 0
-                if evento.key == pygame.K_s: self.__baixo = 0
-                if evento.key == pygame.K_d:
-                    self.__direita = 0
-                if evento.key == pygame.K_a:
-                    self.__esquerda = 0
-                if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: self.__espaco = False
-            if evento.type == pygame.MOUSEBUTTONDOWN:
-                self.__bola_fogo = True
-            elif evento.type == pygame.MOUSEBUTTONUP:
-                self.__bola_fogo = False
+        if isinstance(self.__sobreposicao,Sobreposicao): pausado = True
+        else: pausado = False
+        if not pausado:
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    return False
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_w: self.__cima = 5
+                    if evento.key == pygame.K_s: self.__baixo = 5
+                    if evento.key == pygame.K_d:
+                        self.__direita = 0.5
+                    if evento.key == pygame.K_a:
+                        self.__esquerda = 0.5
+                    if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: self.__espaco = True
+                    if evento.key == pygame.K_ESCAPE:
+                        self.__sobreposicao = Tela_Pause(self)
+                if evento.type == pygame.KEYUP:
+                    if evento.key == pygame.K_w: self.__cima = 0
+                    if evento.key == pygame.K_s: self.__baixo = 0
+                    if evento.key == pygame.K_d:
+                        self.__direita = 0
+                    if evento.key == pygame.K_a:
+                        self.__esquerda = 0
+                    if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: self.__espaco = False
+                if evento.type == pygame.MOUSEBUTTONDOWN:
+                    self.__bola_fogo = True
+                elif evento.type == pygame.MOUSEBUTTONUP:
+                    self.__bola_fogo = False
+        else:
+            for evento in pygame.event.get():
+                if evento.type == pygame.QUIT:
+                    return False
+                if evento.type == pygame.KEYDOWN:
+                    if evento.key == pygame.K_ESCAPE:
+                        self.__sobreposicao = None
+            self.__direita = 0
+            self.__esquerda = 0
+            self.__cima = 0
+            self.__baixo = 0
+            self.__espaco = False
+            self.__bola_fogo = False
 
         ##### FILA DE RENDERIZACAO E ATUALIZACAO #####
-        self.__superficie.fill(self.__background_colour)  # Preenche a cor de fundo
+        self.superficie.fill(self.__background_colour)  # Preenche a cor de fundo
 
-        self.__mapa.atualizar(self.__superficie, self.__campo_visivel, self.__superficie.get_size())
+        self.__mapa.atualizar(self.superficie, self.__campo_visivel, self.superficie.get_size())
 
         # FAZER O JOGADOR RECEBER UM MAPA E SALVAR ONDE ELE TA
         if self.__atrasofim > 0:
@@ -123,8 +141,8 @@ class Tela_De_Jogo(Tela):
             self.__espaco = not self.__mapa.ganhou
         else:
             # self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco,#self.__superficie.get_size(), self.__mapa, self.__atrito)
-            self.__jogador.poderes(self.__superficie, self.__mapa, self.__bola_fogo)
-        self.__campo_visivel = self.__jogador.atualizar(self.__superficie, self.__mapa, self.__campo_visivel,
+            self.__jogador.poderes(self.superficie, self.__mapa, self.__bola_fogo)
+        self.__campo_visivel = self.__jogador.atualizar(self.superficie, self.__mapa, self.__campo_visivel,
                                                         int(ciclo / 6),
                                                         [self.__direita, self.__esquerda, self.__espaco], self.__atrito)
 
@@ -137,22 +155,33 @@ class Tela_De_Jogo(Tela):
                     self.__textin = self.__fonte.render("EM NOME DE DEUS LHES CASTIGAREI", False, (0, 0, 0))
                 else:
                     self.__textin = self.__fonte.render("PERDEU", False, (0, 0, 0))
+                pygame.mixer.music.fadeout(2400)
             else:
                 self.__jogador.tipos_transparentes = classes_instanciaveis
-            self.__superficie.blit(self.__textin, (500 - self.__textin.get_size()[0] / 2, 300 - self.__textin.get_size()[1] / 2))
+            self.superficie.blit(self.__textin, (500 - self.__textin.get_size()[0] / 2, 300 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 if self.__mapa.proximo: 
-                    return [Menu_Principal,[self.__superficie]]
+                    return [Menu_Principal,[self.superficie]]
 
         ### VENCENDO ###
         if self.__mapa.ganhou:
             self.__atrasofim += 1
+            if self.__atrasofim <= 1:
+                pygame.mixer.music.fadeout(2400)
             textin = self.__fonte.render("VENCEU", False, (0, 0, 0))
-            self.__superficie.blit(textin, (500, 300))
+            self.superficie.blit(textin, (500, 300))
             if self.__atrasofim >= 150:
-                return [Tela_De_Jogo,[self.__superficie, self.__mapa.proximo]] if self.__mapa.proximo else [Menu_Principal,[self.__superficie]]
+                return [Tela_De_Jogo,[self.superficie, self.__mapa.proximo]] if self.__mapa.proximo else [Menu_Principal,[self.superficie]]
 
         ##### RENDERIZACAO DA TELA #####
+        try:
+            resultado = self.__sobreposicao.atualizar(ciclo)
+            if not resultado:
+                self.__sobreposicao = None
+            elif resultado == "Fechar":
+                return [Menu_Principal,[self.superficie]]
+        except AttributeError:
+            pass
         pygame.display.flip()
         self.__tempo_maximo += 1 / 60 - self.__mapa.escala_tempo / 60
         tempo_decorrido = pygame.time.get_ticks() / 1000 - self.__comeco
