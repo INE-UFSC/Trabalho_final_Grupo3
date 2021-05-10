@@ -211,7 +211,7 @@ class Jogador(Movel):
 
         # print(dano_total)
         if not self.invisivel:
-            if dano_total and not self.__recuperacao and mapa.escala_tempo > 0:
+            if dano_total and not self.__recuperacao > 0:
                 self.__vida -= dano_total
                 self.__recuperacao = 90
             elif self.__recuperacao > 0:
@@ -231,7 +231,7 @@ class Jogador(Movel):
         #        obstaculos[i] = 0
 
         ##### REPOSICIONAMENTO POS COLISAO #####
-        if obsDireita and obsEsquerda:  # ESMAGAMENTO
+        if isinstance(obsDireita, Obstaculo) and isinstance(obsEsquerda, Obstaculo):  # ESMAGAMENTO
             self.__vida = 0
 
         ##### IMPEDE QUE O JOGADOR PASSE DA BORDA ESQUERDA #####

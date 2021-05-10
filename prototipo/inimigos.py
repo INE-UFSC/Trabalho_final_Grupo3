@@ -269,6 +269,7 @@ class Saltante(Entidade):
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
 
+
 @instanciavel
 class Gelatina(Entidade):
     def __init__(self, x: int, y: int):
@@ -309,6 +310,7 @@ class Gelatina(Entidade):
     def sofreu_colisao_outros(self, entidade, direcao):
         pass
 
+
 @instanciavel
 class Temporal(Entidade):
     def __init__(self, nome: str, x: int, y: int):
@@ -316,12 +318,42 @@ class Temporal(Entidade):
         danoContato = 1
         largura = 46
         altura = 46
-        limiteVel = 1
+        limiteVel = 4
         super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (80, 10, 120), 0)
         self.vely = 0
-        self.velx = 1
         self.xinicial = x
         self.escala_tempo = 0
+        self.aceleracao = 1
+
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        ##### COLISAO ESQUERDA #####
+        if not jogador.invisivel:
+            if direcao == "esquerda":
+                if jogador.velx <= 0:
+                    jogador.velx = 0
+                    jogador.aceleracao = 0
+                    jogador.x = self.corpo.right + 1
+                return self.dano_contato * (mapa.escala_tempo < 1)
+            ##### COLISAO DIREITA #####
+            elif direcao == "direita":
+                if jogador.velx >= 0:
+                    jogador.velx = 0
+                    jogador.aceleracao = 0
+                    jogador.x = self.corpo.left - jogador.largura
+                return self.dano_contato * (mapa.escala_tempo < 1)
+            ##### COLISAO BAIXO #####
+            elif direcao == "baixo":
+                jogador.vely = 0
+                jogador.y = self.corpo.top - jogador.altura
+                return self.dano_contato * (mapa.escala_tempo < 1)
+            ##### COLISAO CIMA #####
+            elif direcao == "cima":
+                if jogador.vely < 0:
+                    jogador.vely = 0
+                    jogador.y = self.corpo.bottom
+                return self.dano_contato * (mapa.escala_tempo < 1)
+        else:
+            return 0
 
     def mover(self, dimensoesTela, mapa):
 
@@ -333,10 +365,25 @@ class Temporal(Entidade):
         if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
         if obsBaixo:
             obsBaixo.sofreu_colisao_outros(self, "baixo")
+            if mapa.jogador.vely < 0:
+                self.vely = -10
 
         ##### GRAVIDADE ######
         else:
-            self.vely += gravidade * self.escala_tempo
+            self.vely += gravidade * max(0,(-self.escala_tempo+1))
 
+        if mapa.jogador.x > self.x:
+            self.face = 1
+        else:
+            self.face = -1
+
+        ##### ACELERACAO #####
+        self.velx += self.aceleracao * self.face
+        if self.velx > self.limite_vel:
+            self.velx = self.limite_vel
+        elif self.velx < - self.limite_vel:
+            self.velx = - self.limite_vel
+
+        ##### REPOSICIONALMENTO #####
         self.y += self.vely * max(0,(-self.escala_tempo+1))
         self.x += self.velx * max(0,(-self.escala_tempo+1))

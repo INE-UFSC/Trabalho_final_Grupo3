@@ -150,6 +150,7 @@ def carregar_mapa():
         ["Chao", ('chao1', height - 10, -200, 350)],
         ["Chao", ('chao2', height - 10, 450, 2205)],
         ["Chao", ('chao3', height - 10, 2500, 4205)],
+        ["PlataformaMovel", (100, 2000, 500)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (4000, height - 200, 100, 190)],
@@ -159,8 +160,8 @@ def carregar_mapa():
         ##### PODERES #####
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
         ["CartolaDoMago", ('orbe1', 250, height - 500)],
-        ["OculosDoNerd", ('oculos1', 1525, height - 300)],
-        ["VerdeBebe", ('orbe', 1600, height - 50)],
+        #["OculosDoNerd", ('oculos1', 1525, height - 300)],
+        #["VerdeBebe", ('orbe', 1600, height - 50)],
         ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
         ["BiscoitoNoMapa", ('bisc', 550, 550)],
         #["Chakra",('chakra', 1600, height-50)],
@@ -169,8 +170,8 @@ def carregar_mapa():
         # ["Rato",('rato3', 900, height - 50)],
         #["Saltante", (, 700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
-        ["Temporal", ('temporal', 3500, height - 200)],
-        ["PorcoEspinho", ('porco1', 900, height - 50)]
+        ["Temporal", ('temporal', 2000, height - 200)],
+        # ["PorcoEspinho", ('porco1', 900, height - 50)]
         # ["Atirador",('atiro', 1150, height - 50)],
         # ["Atirador", ('atiro2', 1000, height - 205)]
 

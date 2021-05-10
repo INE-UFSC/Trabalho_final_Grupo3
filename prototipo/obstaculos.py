@@ -7,6 +7,20 @@ class Obstaculo(Estatico):
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, arquivo: str, cor: tuple):
         super().__init__(nome, x, y, altura, largura, arquivo, cor)
 
+@instanciavel
+class PlataformaMovel(Movel):
+    def __init__(self, x: int , y: int, largura: int):
+        altura = 17
+        super().__init__("plataforma_movel", x, y, altura, largura, 5, "0",  (184, 20, 20))
+        self.vely = 2
+
+    def mover(self, dimensoesTela, mapa):
+        ##### REPOSICIONAMENTO DA PLATAFORMA #####
+        self.y += self.vely * mapa.escala_tempo
+        print(self.y)
+        if self.y >= mapa.tamanho[1]:
+            self.y = 0
+
 
 @instanciavel
 class Bloco(Obstaculo):
@@ -46,13 +60,14 @@ class Ponta(Obstaculo):
         elif direcao == "baixo":
             jogador.vely = 0
             jogador.y = self.corpo.top - jogador.altura
-            return 1
+            return 1 * (mapa.escala_tempo >= 1)
         ##### COLISAO CIMA #####
         elif direcao == "cima":
             if jogador.vely < 0:
                 jogador.vely = 0
                 jogador.y = self.corpo.bottom
         return 0
+
 
 @instanciavel
 class Cano(Obstaculo):

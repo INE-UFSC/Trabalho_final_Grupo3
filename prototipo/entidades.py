@@ -312,9 +312,6 @@ class Movel(Estatico):
             self.renderizar(tela, mapa)
         return False
 
-    # def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-    #     pass
-
     def sofreu_colisao_outros(self, entidade, direcao):
         if direcao == "esquerda":
             if entidade.velx <= 0:
@@ -376,14 +373,14 @@ class Entidade(Movel):
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.right + 1
-                return self.__dano_contato
+                return self.__dano_contato * (mapa.escala_tempo >= 1)
             ##### COLISAO DIREITA #####
             elif direcao == "direita":
                 if jogador.velx >= 0:
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.left - jogador.largura
-                return self.__dano_contato
+                return self.__dano_contato * (mapa.escala_tempo >= 1)
             ##### COLISAO BAIXO #####
             elif direcao == "baixo":
                 jogador.vely = 0
@@ -395,7 +392,7 @@ class Entidade(Movel):
                 if jogador.vely < 0:
                     jogador.vely = 0
                     jogador.y = self.corpo.bottom
-                return self.__dano_contato
+                return self.__dano_contato * (mapa.escala_tempo >= 1)
         else:
             return 0
 
