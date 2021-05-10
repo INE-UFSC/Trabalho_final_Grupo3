@@ -2,35 +2,37 @@ from obstaculos import *
 from inimigos import *
 from poderes import *
 from jogador import Jogador
+from hud import *
 import json
 
 
 class Mapa:
     def __init__(self, superficie):
         self.__lista_de_entidades = []
-        self.__lista_de_display = []
+        self.__hud = Hud()
+
+        ##### ATRIBUTOS DE RENDERIZACAO #####
         self.__superficie = superficie
         tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
-        self.__conta = ""
-        self.__ciclo = 0
-        self.__vitoria = pygame.Rect(tamanho_campo[0] - 30, 550 - 30, 30, 100)
-        self.__ganhou = False
-        self.__vida_jogador = ""
-        self.escala_tempo = 1
         self.campo_menor = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
+
+        ##### ATRIBUTOS TEMPORAIS #####
+        self.__tempo_restante = ""
+        self.__ciclo = 0
+        self.escala_tempo = 1
+
+        ##### ATRIBUTOS COMPORTAMENTAIS #####
+        self.__vida_jogador = ""
+        self.__ganhou = False
 
     @property
     def lista_de_entidades(self):
         return self.__lista_de_entidades
 
-    @property
-    def lista_de_display(self):
-        return self.__lista_de_display
-
-    @lista_de_entidades.setter
-    def lista_de_entidades(self, lista_de_entidades):
-        self.__lista_de_entidades = lista_de_entidades
+    # @lista_de_entidades.setter
+    # def lista_de_entidades(self, lista_de_entidades):
+    #     self.__lista_de_entidades = lista_de_entidades
 
     @property
     def ganhou(self):
@@ -58,11 +60,11 @@ class Mapa:
 
     @property
     def conta(self):
-        return self.__conta
+        return self.__tempo_restante
 
     @conta.setter
     def conta(self, conta):
-        self.__conta = conta
+        self.__tempo_restante = conta
 
     @property
     def campo_visivel(self):
@@ -77,67 +79,43 @@ class Mapa:
         return self.__jogador
     
     @property
-    def proximo(self):
-        return self.__proximo
+    def proxima_fase(self):
+        return self.__proxima_fase
 
     def iniciar(self, fase):
-        # listatipos = {"Lapis": Lapis, "Bloco": Bloco, "Chao": Chao, "Borda": Borda, "Vitoria": Vitoria,
-        #               "BandanaDoNinja": BandanaDoNinja, "CartolaDoMago": CartolaDoMago,
-        #               "OculosDoNerd": OculosDoNerd, "VerdeBebe": VerdeBebe,
-        #               "BoneMarinheiro": BoneMarinheiro, "Rato": Rato, "Voador": Voador, "Atirador": Atirador,
-        #               "Vida": Vida, "Tempo": Tempo, "Biscoitos": Biscoitos, "Chakra": Chakra,
-        #               "PorcoEspinho": PorcoEspinho,
-        #               "BarraPoder": BarraPoder}
-        #print(classes_instanciaveis)
+        ##### LEITURA DAS FASES A PARTIR DO ARQUIVO JSON #####
         with open("mapas.json") as arquivo_mapa:
             dicionaro_mapa = json.load(arquivo_mapa)
         lista_todos = dicionaro_mapa[fase]
         objetos_no_mapa = lista_todos[0]
-        interface = lista_todos[1]
         for item in objetos_no_mapa:
             for classe in classes_instanciaveis:
                 if item[0] == classe.__name__:
                     objeto = classe(*item[1])
                     self.__lista_de_entidades.append(objeto)
-            # try:
-            #     item = listatipos[item[0]](*item[1])
-            # except:
-            #     item = listatipos[item[0]](item[1])
-        for item in interface:
-            for classe in classes_instanciaveis:
-                if item[0] == classe.__name__:
-                    objeto = classe(*item[1])
-                    self.__lista_de_display.append(objeto)
-            # try:
-            #     item = listatipos[item[0]](*item[1])
-            # except:
-            #     item = listatipos[item[0]](item[1])
-            # self.__lista_de_display.append(item)
-        self.__tamanho = lista_todos[2]
-        self.__proximo = lista_todos[3]
+        self.__tamanho = lista_todos[1]
+        self.__proxima_fase = lista_todos[2]
+
+        ##### INSTANCIACAO DO JOGADOR #####
         self.__jogador = Jogador("rabisco", 200, self.tamanho[1] - 50, 0, 100)
+
+        ##### CARREGAMENTO DAS IMAGENS DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
             if entidade.imagem != "0": entidade.sprite = Sprite(entidade.imagem)
         return self.__jogador
 
     def atualizar(self, tela, campo_visivel, dimensoes_tela, ciclo):
-        self.__ciclo = ciclo
-        # O CAMPO_VISIVEL FAZ COM QUE APENAS OBJETOS NA TELA SEJAM RENDERIZADOS
-        # PODE AJUDAR CASO OS MAPAS FIQUEM MUITO GRANDES
-        self.__campo_visivel = campo_visivel
+
+        self.__ciclo = ciclo #Frame atual
+        self.__campo_visivel = campo_visivel #Aquilo que o jogador ve
 
         ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
             if entidade.atualizar(tela, self, dimensoes_tela):
                 self.__lista_de_entidades.remove(entidade)
 
-        for elemento_hud in self.__lista_de_display:
-            if isinstance(elemento_hud, Tempo):
-                elemento_hud.tempo = self.conta
-            if isinstance(elemento_hud, Vida):
-                elemento_hud.vida = self.__vida_jogador
-
-            elemento_hud.atualizar(tela, self, dimensoes_tela)
+        ##### ATUALIZACAO DO HUD #####
+        self.__hud.atualizar(tela, self, dimensoes_tela, self.__tempo_restante, self.__vida_jogador)
 
 
 def carregar_mapa():
@@ -183,11 +161,6 @@ def carregar_mapa():
         # ["Atirador", ('atiro2', 1000, height - 205)]
 
     ],
-
-        [["Vida", (60, 30)],
-         ["Tempo", (220, 30)],
-         ["Biscoitos", ('moeda', 500, 50)],
-         ["BarraPoder", (700, 50)]],
 
         (width, height),
         
@@ -250,10 +223,7 @@ def carregar_mapa():
         ##### BORDA E VITORIA #####
         ["Vitoria", (6300, height - 200, 100, 190)]
 
-    ], [["Vida", (60, 30)],
-         ["Tempo", (300, 50)],
-         ["Biscoitos", ('moeda', 500, 50)],
-         ["BarraPoder", (700, 50)]],
+    ],
 
         (width, height),
         
@@ -280,10 +250,7 @@ def carregar_mapa():
         ##### BORDA E VITORIA #####
         ["Vitoria", (500, height - 690, 100, 190)]
 
-    ], [["Vida", (60, 30)],
-         ["Tempo", (300, 50)],
-         ["Biscoitos", ('moeda', 500, 50)],
-         ["BarraPoder", (700, 50)]],
+    ],
 
         (width, height),
         

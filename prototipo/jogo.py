@@ -261,7 +261,7 @@ class Tela_De_Jogo(Tela):
             self.superficie.blit(textin, (500, 300))
             if self.__atrasofim >= 150:
                 self.salvar_jogo
-                return [Tela_De_Jogo,[self.superficie, self.__mapa.proximo,self.__slot]] if self.__mapa.proximo else [Menu_Principal,[self.superficie]]
+                return [Tela_De_Jogo, [self.superficie, self.__mapa.proxima_fase, self.__slot]] if self.__mapa.proxima_fase else [Menu_Principal, [self.superficie]]
 
         ##### RENDERIZACAO DA TELA #####
         try:
