@@ -243,7 +243,7 @@ class Saltante(Inimigo):
         #self.velx = 0
         self.xinicial = x
         self.escala_tempo = 1
-        self.__descanso_pulo_max = 150
+        self.__descanso_pulo_max = 145
         self.__descanso_pulo = self.__descanso_pulo_max
         self.__pulo_lado = True
         self.face = -1
