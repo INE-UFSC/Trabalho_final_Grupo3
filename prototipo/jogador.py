@@ -20,6 +20,7 @@ class Jogador(Movel):
                          "marrom": Sprite("rabisco_marrom")}
         self.__posicao_comeco = (x, y)
         self.__tipos_transparentes = [BolaFogo, Vitoria]
+        self.__descanso_troca_poder = 0
 
         ##### ATRIBUTOS POSICIONAIS #####
         altura = 46
@@ -140,9 +141,14 @@ class Jogador(Movel):
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
         pega_poder_armazenado = entradas[3]
         tamanho_tela = screen.get_size()
-        if self.__paleta == 5 and pega_poder_armazenado and not isinstance(self.__poder_armazenado, Cinza):
-            self.__poder = self.__poder_armazenado
-            self.__poder_armazenado = Cinza()
+        if self.__descanso_troca_poder == 0:
+            if self.__paleta == 5 and pega_poder_armazenado and not isinstance(self.__poder_armazenado, Cinza):
+                poder_a_ser_armazenado = self.__poder
+                self.__poder = self.__poder_armazenado
+                self.__poder_armazenado = poder_a_ser_armazenado
+                self.__descanso_troca_poder = 30
+        else:
+            self.__descanso_troca_poder -= 1
         self.mover(entradas[0], entradas[1], entradas[2], tamanho_tela, mapa, atrito)
 
         self.renderizar(screen, campo_visivel, ciclo)
