@@ -163,7 +163,7 @@ def carregar_mapa():
         # ["Rato",('rato3', 900, height - 50)],
         ["Saltante", (700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
-        ["Temporal", ('temporal', 2000, height - 200)],
+        ["Temporal", (2000, height - 200)],
         # ["PorcoEspinho", ('porco1', 900, height - 50)]
         #["Atirador",(1150, height - 50)],
         ["Atirador",(1000, height - 205, False)]

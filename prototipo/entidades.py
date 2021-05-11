@@ -369,6 +369,10 @@ class Entidade(Movel):
     def a_prova_de_fogo(self):
         return self.__a_prova_de_fogo
 
+    @property
+    def frames(self):
+        return self.__frames
+
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         ##### COLISAO ESQUERDA #####
         if not jogador.invisivel:

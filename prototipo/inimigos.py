@@ -319,13 +319,13 @@ class Gelatina(Inimigo):
 
 @instanciavel
 class Temporal(Inimigo):
-    def __init__(self, nome: str, x: int, y: int):
+    def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
-        largura = 46
-        altura = 46
+        largura = 59
+        altura = 59
         limiteVel = 4
-        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "0", (80, 10, 120), 0)
+        super().__init__("temporal", x, y, altura, largura, limiteVel, vida, danoContato, "temporal", (80, 10, 120), 15)
         self.vely = 0
         self.xinicial = x
         self.escala_tempo = 0
@@ -378,13 +378,15 @@ class Temporal(Inimigo):
         else:
             self.vely += gravidade * max(0,(-self.escala_tempo+1))
 
-        if mapa.jogador.x > self.x:
-            self.face = 1
-        else:
-            self.face = -1
+        if not self.escala_tempo:
+            if mapa.jogador.x > self.x:
+                self.face = 1
+            else:
+                self.face = -1
 
         ##### ACELERACAO #####
         self.velx += self.aceleracao * self.face
+        if self.escala_tempo: self.velx = 0
         if self.velx > self.limite_vel:
             self.velx = self.limite_vel
         elif self.velx < - self.limite_vel:
@@ -393,3 +395,13 @@ class Temporal(Inimigo):
         ##### REPOSICIONALMENTO #####
         self.y += self.vely * max(0,(-self.escala_tempo+1))
         self.x += self.velx * max(0,(-self.escala_tempo+1))
+
+    def renderizar(self, tela, mapa):
+
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
+                                              self.corpo.w, self.corpo.h])
+        if renderizar_sprite and type(self.sprite) != list:
+            self.sprite.imprimir(tela, self.nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                 self.face, self.velx, self.vely,
+                                 int(mapa.ciclo / 6) % self.frames)
