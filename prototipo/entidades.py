@@ -168,9 +168,9 @@ class Estatico():
 
 class Movel(Estatico):
 
-    def __init__(self, nome: str, x: int, y: int, largura: int, altura: int, limite_vel: int, imagem: str,
+    def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limite_vel: int, imagem: str,
                  cor=(0, 0, 0)):
-        super().__init__(nome, x, y, largura, altura, imagem, cor)
+        super().__init__(nome, x, y, altura, largura, imagem, cor)
         self.escala_tempo = 1.0
         self.__velx = 0
         self.__vely = 0
@@ -334,9 +334,9 @@ class Movel(Estatico):
 
 
 class Entidade(Movel):
-    def __init__(self, nome: str, x: int, y: int, largura: int, altura: int, limiteVel: int, vida: int,
+    def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int,
                  dano_contato: int, imagem: str, cor, frames: int, fogo = False):
-        super().__init__(nome, x, y, largura, altura, limiteVel, imagem, cor)
+        super().__init__(nome, x, y, altura, largura, limiteVel, imagem, cor)
         self.__vida = vida
         self.__dano_contato = dano_contato
         self.__a_prova_de_fogo = fogo

@@ -38,7 +38,7 @@ class Jogador(Movel):
         self.escala_tempo = 1
         self.__paleta = 5
 
-        super().__init__(nome, x, y, largura, altura, limite_vel, "0")
+        super().__init__(nome, x, y, altura, largura, limite_vel, "0")
 
     @property
     def invisivel(self):

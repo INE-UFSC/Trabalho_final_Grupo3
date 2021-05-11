@@ -5,8 +5,8 @@ from poderes import *
 
 
 class Inimigo(Entidade):
-    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, danoContato, imagem, cor, frames, fogo = False):
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, imagem, cor, frames, fogo)
+    def __init__(self, nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem, cor, frames, fogo = False):
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem, cor, frames, fogo)
 
 
 @instanciavel
@@ -17,7 +17,7 @@ class Rato(Inimigo):
         largura = 46
         altura = 46
         limiteVel = 1
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (88, 51, 0), 0)
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "0", (88, 51, 0), 0)
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -113,7 +113,7 @@ class Voador(Inimigo):
         largura = 26
         altura = 26
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (88, 51, 0), 0)
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "0", (88, 51, 0), 0)
         self.altitude = pygame.Rect(x, y + largura + 2, largura,
                                     altura + altitude)  # CAMPO UTILIZADO PARA CHECAR ALTURA DE VOO
         self.vely = 0
@@ -152,7 +152,7 @@ class Voador(Inimigo):
 
 @instanciavel
 class Atirador(Inimigo):
-    def __init__(self, x: int, y: int):
+    def __init__(self, x: int, y: int, anda = True):
         vida = 1
         danoContato = 1
         largura = 90
@@ -162,10 +162,11 @@ class Atirador(Inimigo):
         self.vely = 0
         self.velx = 2
         self.__vel_projetil = 3
+        self.__anda = anda
         self.xinicial = x
         self.escala_tempo = 1
         self.__poder = Projetil()
-        self.__descanso_poder = 300
+        self.__descanso_poder = 150
         self.__gravidade = 1
 
 
@@ -216,7 +217,7 @@ class Atirador(Inimigo):
             elif dist_x_jogador < 0:
                 self.face = 1
         else:
-            self.x += 2 * self.escala_tempo * self.face
+            self.x += 2 * self.escala_tempo * self.face * self.__anda
         self.y += self.vely * self.escala_tempo
 
 
@@ -283,7 +284,7 @@ class Gelatina(Inimigo):
         largura = 150
         altura = 150
         limiteVel = 1
-        super().__init__("gelatina", x, y, largura, altura, limiteVel, vida, danoContato, "gelatina", (50, 50, 255), 9, True)
+        super().__init__("gelatina", x, y, altura, largura, limiteVel, vida, danoContato, "gelatina", (50, 50, 255), 9, True)
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -324,7 +325,7 @@ class Temporal(Inimigo):
         largura = 46
         altura = 46
         limiteVel = 4
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (80, 10, 120), 0)
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "0", (80, 10, 120), 0)
         self.vely = 0
         self.xinicial = x
         self.escala_tempo = 0

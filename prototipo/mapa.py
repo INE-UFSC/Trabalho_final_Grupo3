@@ -136,9 +136,9 @@ def carregar_mapa():
     width = 4200
     height = 700
     fase1 = [[
-        ["Lapis", ('lapis', 550, height - 125, height)],
-        ["Lapis", ('lapis', 800, height - 125, height)],
-        ["Lapis", ('lapis', 1500, height - 125, height)],
+        ["Lapis", (550, height - 125, height)],
+        ["Lapis", (800, height - 125, height)],
+        ["Lapis", (1500, height - 125, height)],
 
         ["Bloco", ('bloco1', 200, height - 350)],
         ["Bloco", ('bloco2', 250, height - 300)],
@@ -150,7 +150,6 @@ def carregar_mapa():
         ["Chao", ('chao1', height - 10, -200, 350)],
         ["Chao", ('chao2', height - 10, 450, 2205)],
         ["Chao", ('chao3', height - 10, 2500, 4205)],
-        ["PlataformaMovel", (100, 2000, 500)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (4000, height - 200, 100, 190)],
@@ -173,7 +172,7 @@ def carregar_mapa():
         ["Temporal", ('temporal', 2000, height - 200)],
         # ["PorcoEspinho", ('porco1', 900, height - 50)]
         #["Atirador",(1150, height - 50)],
-        ["Atirador",(1000, height - 205)]
+        ["Atirador",(1000, height - 205, False)]
 
     ],
 
@@ -186,9 +185,9 @@ def carregar_mapa():
     fase2 = [[
         ["Voador", ('voador2', 300, height - 450, 400)],
         ["Chao", ('chao', height - 10, 0, 1200)],
-        ["Lapis", ('lapis', 600, height - 125, height)],
+        ["Lapis", (600, height - 125, height)],
         ["Rato", ('rato',700, height - 50)],
-        ["Lapis", ('lapis', 900, height - 125, height)],
+        ["Lapis", (900, height - 125, height)],
 
 
         ["Chao", ('chao', height - 10, 1375, 1700)],
@@ -198,9 +197,9 @@ def carregar_mapa():
 
         ["Chao", ('chao', height - 10, 1875, 2775)],
         ["Saltante", (1900, height - 100)],
-        ["Lapis", ('lapis', 2150, height - 125, height)],
+        ["Lapis", (2150, height - 125, height)],
         ["Rato", ('rato', 2200, height - 50)],
-        ["Lapis", ('lapis', 2450, height - 125, height)],
+        ["Lapis", (2450, height - 125, height)],
 
         ["Chao", ('chao', height - 10, 3050, 3425)],
         ["BandanaDoNinja", ('vermelho', 3225, height - 200)],
@@ -208,32 +207,24 @@ def carregar_mapa():
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 
-        ["Ponta", ('ponta', 4400, height - 125, height)],
-        ["Ponta", ('ponta', 4445, height - 125, height)],
-        ["Ponta", ('ponta', 4490, height - 125, height)],
-        ["Ponta", ('ponta', 4535, height - 125, height)],
-        ["Ponta", ('ponta', 4580, height - 125, height)],
-        ["Ponta", ('ponta', 4625, height - 125, height)],
-        ["Ponta", ('ponta', 4670, height - 125, height)],
-        ["Ponta", ('ponta', 4715, height - 125, height)],
-        ["Ponta", ('ponta', 4760, height - 125, height)],
-        ["Ponta", ('ponta', 4805, height - 125, height)],
-        ["Ponta", ('ponta', 4850, height - 125, height)],
-        ["Ponta", ('ponta', 4895, height - 125, height)],
+        ["Ponta", (4400, height - 125, height)],
+        ["Ponta", (4445, height - 125, height)],
+        ["Ponta", (4490, height - 125, height)],
+        ["Ponta", (4535, height - 125, height)],
+        ["Ponta", (4580, height - 125, height)],
+        ["Ponta", (4625, height - 125, height)],
+        ["Ponta", (4670, height - 125, height)],
+        ["Ponta", (4715, height - 125, height)],
+        ["Ponta", (4760, height - 125, height)],
+        ["Ponta", (4805, height - 125, height)],
+        ["Ponta", (4850, height - 125, height)],
+        ["Ponta", (4895, height - 125, height)],
 
         ["Saltante", (5575, height - 100)],
         ["Saltante", (5875, height - 100)],
 
         ["Chao", ('chao', 275, 5400, 5800)],
         ["Saltante", (5725, 175)],
-
-        ##### PODERES #####
-        #["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
-
-        ##### INIMIGOS #####
-        #["Rato", ('rato1', 100, height - 50)],
-        #["Saltante", (975, height-50)],
-        #["Voador", ('voador2', 600, height - 250, 200)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (6300, height - 200, 100, 190)]
@@ -244,26 +235,69 @@ def carregar_mapa():
         
         "fase3"]
 
-    width = 1000
-    height = 2000
+    width = 6800
+    height = 900
     fase3 = [[
-        ["Lapis", ('lapis', -9000, height - 125, height)],
-        ["Lapis", ('lapis', 825, height - 150, height)],
-        ["Lapis", ('lapis', 500, height - 75, height)],
-        ["Lapis", ('lapis', 225, height - 400, height - 250)],
+        ["Chao", ('chao', height-10, 0, 995)],
+        ["Lapis", (950, height - 125, height)],
+        ["Atirador", (750, height - 50)],
 
-        ["Chao", ('chao1', height - 10, 0, 1000)],
-        ["Chao", ('chao2', height - 250, 0, 700)],
-        ["Chao", ('chao3', height - 500, 400, 700)],
+        ["Chao", ('chao', height - 10, 1400, 3000)],
+        ["Ponta", (1900, height - 125, height)],
+        ["Saltante", (1750, height - 100)],
 
-        ##### INIMIGOS #####
-        ["Rato", ('rato1', 600, height - 50)],
+        ["Chao", ('chao', height - 400, 2100, 2250)],
+        ["Chao", ('chao', height - 400, 2400, 2550)],
+        ["Atirador", (2130, height - 450, False)],
+        ["Atirador", (2430, height - 450, False)],
+        ["Chao", ('chao', height - 300, 2300, 2350)],
+        ["Chao", ('chao', height - 150, 2450, 2550)],
 
-        ### PODERES #####
-        ["Chakra", ("Chakra", 200, height - 125)],
+        ["Chao", ('chao', height - 10, 3350, 4000)],
+        ["CartolaDoMago", ('orbe1', 3675, height - 200)],
+        ["Saltante", (3800, height - 100)],
+        ["Chao", ('chao', height - 400, 3700, 3850)],
+        ["Atirador", (3730, height - 450, False)],
+        ["Chao", ('chao', height - 400, 3900, 4050)],
+        ["Atirador", (3930, height - 450, False)],
+
+        ["PlataformaMovel", (150, 4300, 100, -2)],
+        ["PlataformaMovel", (450, 4300, 100, -2)],
+        ["PlataformaMovel", (750, 4300, 100, -2)],
+        ["PlataformaMovel", (300, 4400, 100, -2)],
+        ["PlataformaMovel", (600, 4400, 100, -2)],
+        ["PlataformaMovel", (900, 4400, 100, -2)],
+
+        ["Chao", ('chao', height - 10, 4600, 5500)],
+
+        ["Lapis", (4900, height - 500, height - 150)],
+        ["Chao", ('chao', height - 150, 4900, 5200)],
+        ["Lapis", (5156, height - 500, height - 150)],
+        ["Chao", ('chao', height - 500, 4900, 5200)],
+
+        ["Lapis", (4700, height - 125, height)],
+        ["PorcoEspinho", ('porco', 4800, height - 50)],
+        ["PorcoEspinho", ('porco', 4900, height - 50)],
+        ["PorcoEspinho", ('porco', 5000, height - 50)],
+        ["PorcoEspinho", ('porco', 5100, height - 50)],
+        ["PorcoEspinho", ('porco', 5200, height - 50)],
+        ["Lapis", (5300, height - 125, height)],
+
+        ["Chao", ('chao', height - 10, 5800, 6800)],
+        ["Saltante", (6300, height - 100)],
+
+        ["Chao", ('chao', height - 200, 6300, 6500)],
+        ["Atirador", (6350, height - 250, False)],
+        ["Atirador", (6350, height - 300, False)],
+        ["Atirador", (6350, height - 350, False)],
+        ["Atirador", (6350, height - 400, False)],
+        ["Atirador", (6350, height - 450, False)],
+        ["Atirador", (6350, height - 500, False)],
+        ["Atirador", (6350, height - 550, False)],
+
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (500, height - 690, 100, 190)]
+        ["Vitoria", (6600, height - 200, 100, 190)]
 
     ],
 

@@ -9,16 +9,18 @@ class Obstaculo(Estatico):
 
 @instanciavel
 class PlataformaMovel(Movel):
-    def __init__(self, x: int , y: int, largura: int):
+    def __init__(self, y: int , x: int, largura: int, vely):
         altura = 17
         super().__init__("plataforma_movel", x, y, altura, largura, 5, "0",  (184, 20, 20))
-        self.vely = 2
+        self.vely = vely
 
     def mover(self, dimensoesTela, mapa):
         ##### REPOSICIONAMENTO DA PLATAFORMA #####
         self.y += self.vely * mapa.escala_tempo
         if self.y >= mapa.tamanho[1]:
-            self.y = 0
+            self.y = 2
+        elif self.y <= 0:
+            self.y = mapa.tamanho[1] - 2
 
 
 @instanciavel
@@ -31,18 +33,18 @@ class Bloco(Obstaculo):
 
 @instanciavel
 class Lapis(Obstaculo):
-    def __init__(self, nome: str, x: int, topo: int, base: int):
+    def __init__(self, x: int, topo: int, base: int):
         largura = 44
         altura = base - topo
-        super().__init__(nome, x, topo, altura, largura, "sprites", (11, 137, 0))
+        super().__init__("lapis", x, topo, altura, largura, "sprites", (11, 137, 0))
 
 
 @instanciavel
 class Ponta(Obstaculo):
-    def __init__(self, nome: str, x: int, topo: int, base: int):
+    def __init__(self, x: int, topo: int, base: int):
         largura = 44
         altura = base - topo
-        super().__init__(nome, x, topo, altura, largura, "sprites", (11, 137, 0))
+        super().__init__("ponta", x, topo, altura, largura, "sprites", (11, 137, 0))
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         ##### COLISAO ESQUERDA #####
