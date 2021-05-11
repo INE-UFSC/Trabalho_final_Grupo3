@@ -13,6 +13,10 @@ class Sprite():
             # print(f)
             self.__dados = json.load(f)
 
+    @property
+    def imagem(self):
+        return self.__imagem
+
     def imprimir(self, tela, nome, posx, posy, orientacao, velx, vely, frame):
         if orientacao == 1: nome = nome + "_right"
         elif orientacao == -1: nome = nome + "_left"
@@ -23,5 +27,6 @@ class Sprite():
 
     def carregar_sprite(self, nome, posx, posy, tela):
         sprite = self.__dados[nome]
+        # print(sprite)
         x, y, w, h = sprite["x"], sprite["y"], sprite["w"], sprite["h"]
         tela.blit(self.__sprite_sheet, (posx, posy), (x, y, w, h))

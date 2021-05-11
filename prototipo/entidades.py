@@ -116,10 +116,9 @@ class Estatico():
             try:
                 self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
                                      0, 0, 0)
-                #self.sprite.imprimir(self.__imagem, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, tela,
-                #                    1, 0)
             except AttributeError:
-                pass  # nao possui sprite
+                #print(self.nome,"sprite nao encontrado")
+                pass
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if mapa.campo_visivel.colliderect(self.corpo):
