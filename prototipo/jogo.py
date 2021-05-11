@@ -29,9 +29,9 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
         botaosair = Botao(t[0]/2, t[1]*5/6+20, 250, 50, (220, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaonivel_1, botaonivel_2,
-                          botaonivel_3, botaoconfig,b4,b5]
+                          botaonivel_3,b4,b5,botaoconfig]
         listatelas = [True,False,[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1",'6']]
-                ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],[Configuracoes,[superficie]],True,True]
+                ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],[Tela_De_Jogo,[superficie,"fase4",'6']],[Tela_De_Jogo,[superficie,"fase5",'6']],[Configuracoes,[superficie]]]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         self.__contador_menu = 0
 
