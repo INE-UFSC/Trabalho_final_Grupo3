@@ -32,10 +32,6 @@ class Mapa:
     def lista_de_entidades(self):
         return self.__lista_de_entidades
 
-    # @lista_de_entidades.setter
-    # def lista_de_entidades(self, lista_de_entidades):
-    #     self.__lista_de_entidades = lista_de_entidades
-
     @property
     def ganhou(self):
         return self.__ganhou
