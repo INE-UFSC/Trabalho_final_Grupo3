@@ -146,7 +146,7 @@ def carregar_mapa():
         ["Chao", ('chao3', height - 10, 2500, 4205)],
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (4000, height - 200, 100, 190)],
+        ["Vitoria", (4000, height - 285)],
 
         ["Gelatina", (1000, height - 450)],
 
@@ -221,7 +221,7 @@ def carregar_mapa():
         ["Saltante", (5725, 175)],
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (6300, height - 200, 100, 190)]
+        ["Vitoria", (6300, height - 285)]
 
     ],
 
@@ -291,7 +291,7 @@ def carregar_mapa():
 
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (6600, height - 200, 100, 190)]
+        ["Vitoria", (6600, height - 285)]
 
     ],
 

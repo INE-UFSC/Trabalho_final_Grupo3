@@ -87,5 +87,5 @@ class Chao(Obstaculo):
 
 @instanciavel
 class Vitoria(Obstaculo):
-    def __init__(self, x: int, y: int, largura: int, altura: int):
-        super().__init__("vitoria", x, y, altura, largura, "0", (254, 254, 0))
+    def __init__(self, x: int, y: int):
+        super().__init__("tela", x, y, 275, 161, "sprites", (254, 254, 0))
