@@ -15,7 +15,6 @@ def instanciavel(classe):
 
 
 class Estatico():
-
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, imagem: str, cor=(0, 0, 0)):
         self.__nome = nome
         self.__x = x
@@ -24,11 +23,11 @@ class Estatico():
         self.__altura = altura
         self.__corpo = pygame.Rect(x, y, largura, altura)
         self.__imagem = imagem
+        self.__cor = cor
         try:
             self.__sprite = Sprite(imagem)
         except FileNotFoundError:
             self.__sprite = []  # nao possui sprite
-        self.__cor = cor
 
     @property
     def nome(self):
