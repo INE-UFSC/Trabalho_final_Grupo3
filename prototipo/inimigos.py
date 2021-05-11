@@ -287,7 +287,7 @@ class Saltante(Inimigo):
 
 @instanciavel
 class Gelatina(Inimigo):
-    def __init__(self, x: int, y: int):
+    def __init__(self, x: int, y: int, anda = True):
         vida = 1
         danoContato = 1
         largura = 150
@@ -298,6 +298,7 @@ class Gelatina(Inimigo):
         self.velx = 1
         self.xinicial = x
         self.escala_tempo = 1
+        self.__anda = anda
 
     def mover(self, dimensoesTela, mapa):
 
@@ -315,7 +316,7 @@ class Gelatina(Inimigo):
             self.vely += gravidade * self.escala_tempo
 
         self.y += self.vely * self.escala_tempo
-        self.x += self.velx * self.escala_tempo
+        self.x += self.velx * self.escala_tempo * self.__anda
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         if not jogador.invisivel:
