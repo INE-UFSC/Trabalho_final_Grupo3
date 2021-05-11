@@ -9,27 +9,28 @@ from efeitosrender import *
 
 class Tela_Pause(Sobreposicao):
     def __init__(self,tela):
-        continuar = Botao(400, 350, 200, 50, (220, 0, 0), "Continuar", 5)
-        sair = Botao(400, 410, 200, 50, (220, 0, 0), "Sair", 5)
+        continuar = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2, 200, 50, (220, 0, 0), "Continuar", 5)
+        sair = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2+60, 200, 50, (220, 0, 0), "Sair", 5)
         listabotoes = [continuar,sair]
         listatelas = [True,False,"Fechar"]
-        super().__init__(listabotoes,((50,50,50),(380,340,240,130)),tela,listatelas)
+        super().__init__(listabotoes,((50,50,50),(tela.superficie.get_size()[0]/2-120,tela.superficie.get_size()[1]/2-35,240,130)),tela,listatelas)
 
 
 class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
     def __init__(self, superficie):
-        botaonivel_1 = Botao(superficie.get_size()[0]/5, superficie.get_size()[1]/12, 100, 50, (220, 0, 0), "Fase 1", 5)
-        botaonivel_2 = Botao(superficie.get_size()[0]/2, superficie.get_size()[1]/12, 100, 50, (220, 110, 0), "Fase 2", 5)
-        botaonivel_3 = Botao(superficie.get_size()[0]*4/5, superficie.get_size()[1]/12, 100, 50, (220, 220, 0), "Fase 3", 5)
-        b4 = Botao(superficie.get_size()[0]/5, superficie.get_size()[1]/4-5, 100, 50, (220, 0, 110), "Fase 4", 5)
-        b5 = Botao(superficie.get_size()[0]/2, superficie.get_size()[1]/4-5, 100, 50, (220, 110, 110), "Fase 5", 5)
-        b6 = Botao(superficie.get_size()[0]*4/5, superficie.get_size()[1]/4-5, 100, 50, (220, 220, 110),  "Fase 6", 5)
-        b7 = Botao(superficie.get_size()[0]/5, superficie.get_size()[1]*5/12-10, 100, 50, (220, 0, 220),  "Fase 7", 5)
-        b8 = Botao(superficie.get_size()[0]/2, superficie.get_size()[1]*5/12-10, 100, 50, (220, 110, 220),  "Fase 8", 5)
-        b9 = Botao(superficie.get_size()[0]*4/5, superficie.get_size()[1]*5/12-10, 100, 50, (220, 220, 220),  "Fase 9", 5)
-        botaojogar = Botao(superficie.get_size()[0]/2, superficie.get_size()[1]*2/3-20, 250, 50, (30, 220, 30),  "Jogar", 5)
-        botaoconfig = Botao(superficie.get_size()[0]/2, superficie.get_size()[1]*3/4, 250, 50, (0, 220, 180), "Configurações", 5)
-        botaosair = Botao(superficie.get_size()[0]/2, superficie.get_size()[1]*5/6+20, 250, 50, (220, 30, 30), "Sair", 5)
+        t = superficie.get_size()
+        botaonivel_1 = Botao(t[0]/5, t[1]/12, 100, 50, (220, 0, 0), "Fase 1", 5)
+        botaonivel_2 = Botao(t[0]/2, t[1]/12, 100, 50, (220, 110, 0), "Fase 2", 5)
+        botaonivel_3 = Botao(t[0]*4/5, t[1]/12, 100, 50, (220, 220, 0), "Fase 3", 5)
+        b4 = Botao(t[0]/5, t[1]/4-5, 100, 50, (220, 0, 110), "Fase 4", 5)
+        b5 = Botao(t[0]/2, t[1]/4-5, 100, 50, (220, 110, 110), "Fase 5", 5)
+        b6 = Botao(t[0]*4/5, t[1]/4-5, 100, 50, (220, 220, 110),  "Fase 6", 5)
+        b7 = Botao(t[0]/5, t[1]*5/12-10, 100, 50, (220, 0, 220),  "Fase 7", 5)
+        b8 = Botao(t[0]/2, t[1]*5/12-10, 100, 50, (220, 110, 220),  "Fase 8", 5)
+        b9 = Botao(t[0]*4/5, t[1]*5/12-10, 100, 50, (220, 220, 220),  "Fase 9", 5)
+        botaojogar = Botao(t[0]/2, t[1]*2/3-20, 250, 50, (30, 220, 30),  "Jogar", 5)
+        botaoconfig = Botao(t[0]/2, t[1]*3/4, 250, 50, (0, 220, 180), "Configurações", 5)
+        botaosair = Botao(t[0]/2, t[1]*5/6+20, 250, 50, (220, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaonivel_1, botaonivel_2,
                           botaonivel_3, botaoconfig,b4,b5,b6,b7,b8,b9]
@@ -67,20 +68,20 @@ class Carregar_Jogo(Tela_Menu):
         encaixe = [slots[str(i)] for i in range(5)]
         deletar_encaixe = ["Deletar" if slots[str(i)][0] != "Novo Jogo" else False for i in range(5)]
 
-        botoes_encaixe = [Botao(superficie.get_size()[0]/3, superficie.get_size()[1]*i/10+200, max(superficie.get_size()[0]*2/3,400), 50, (60, 220, 20), encaixe[i][0], 5) if deletar_encaixe[i] == "Deletar"
-                        else Botao(superficie.get_size()[0]/3, superficie.get_size()[1]*i/10+200, max(superficie.get_size()[0]*2/3,400), 50, (160, 160, 160), encaixe[i][0], 5) for i in range(5)]
-        sair = Botao(superficie.get_size()[0]/6,superficie.get_size()[1]*11/12, 200, 50, (220, 20, 60), "Sair", 5)
-        botoes_deletar = [Botao(superficie.get_size()[0]*3/4, superficie.get_size()[1]*i/10+200, 100, 40, (220, 20, 60), "Deletar", 5) if deletar_encaixe[i] == "Deletar" 
+        t = superficie.get_size()
+        botoes_encaixe = [Botao(t[0]/3, max(75,t[1]/10)+i*max(60,t[1]/8), max(t[0]*2/3,400), 50, (60, 220, 20), encaixe[i][0], 5) if deletar_encaixe[i] == "Deletar"
+                        else Botao(t[0]/3,  max(75,t[1]/10)+i*max(60,t[1]/8), max(t[0]*2/3,400), 50, (160, 160, 160), encaixe[i][0], 5) for i in range(5)]
+        sair = Botao(90,t[1]-35, 160, 50, (220, 20, 60), "Sair", 5)
+        botoes_deletar = [Botao(t[0]*3/4,  max(75,t[1]/10)+i*max(60,t[1]/8), 100, 40, (220, 20, 60), "Deletar", 5) if deletar_encaixe[i] == "Deletar" 
                         else Botao(-1000, -1000, 50, 50, (0,0,0), "", 5) for i in range(5)]
-        texto = Botao(200, 50, 400, 100, (200, 200, 200), "Escolha de Jogo Salvo", 5,True)
+        texto = Botao(200, 20, 400, 40, (200, 200, 200), "Escolha de Jogo Salvo", 5,True)
         
         listabotoes = botoes_encaixe + botoes_deletar + [sair] + [texto]
 
-        listatelas = [True] + [[Tela_De_Jogo,
-                               [superficie,encaixe[i][1],str(i)]] 
-                               for i in range(5)] + [[Deletar_Save,
-                                                     [superficie,str(i)]] 
-                                                     for i in range(5)] + [[Menu_Principal,[superficie]]] + [True]
+        listatelas = [True]
+        listatelas += [[Tela_De_Jogo,[superficie,encaixe[i][1],str(i)]] for i in range(5)]
+        listatelas += [[Deletar_Save,[superficie,str(i)]] for i in range(5)]
+        listatelas += [[Menu_Principal,[superficie]]] + [True]
 
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
@@ -100,10 +101,11 @@ class Carregar_Jogo(Tela_Menu):
 
 class Deletar_Save(Tela_Menu):
     def __init__(self,superficie,save):
+        t = superficie.get_size()
         self.__save = save
-        texto = Botao(500, 170, 600, 150, (200, 200, 200), "Quer mesmo deletar esse jogo salvo?", 5,True)
-        deletar = Botao(310, 350, 320, 50, (220, 20, 60), "Deletar", 5)
-        cancelar = Botao(690, 350, 320, 50, (60, 220, 20), "Cancelar", 5)
+        texto = Botao(t[0]/2, t[1]/3, 550, 150, (200, 200, 200), "Quer mesmo deletar esse jogo salvo?", 5,True)
+        deletar = Botao(t[0]/2+150, t[1]/3+150, 260, 50, (220, 20, 60), "Deletar", 5)
+        cancelar = Botao(t[0]/2-150, t[1]/3+150, 260, 50, (60, 220, 20), "Cancelar", 5)
         listabotoes = [deletar,cancelar,texto]
         listatelas = [True,[Carregar_Jogo,[superficie]],[Carregar_Jogo,[superficie]],True]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
@@ -129,9 +131,10 @@ class Deletar_Save(Tela_Menu):
 
 class Fim_De_Jogo(Tela_Menu):
     def __init__(self,superficie,nivel,save):
-        texto = Botao(500, 170, 600, 150, (200, 200, 200), "Você perdeu...", 5,True)
-        continuar = Botao(690, 350, 320, 50, (160, 220, 60), "Tentar Novamente", 5)
-        voltar = Botao(310, 350, 320, 50, (220, 220, 60), "Menu Principal", 5)
+        t = superficie.get_size()
+        texto = Botao(t[0]/2, t[1]/3, 550, 150, (200, 200, 200), "Você perdeu...", 5,True)
+        continuar = Botao(t[0]/2+150, t[1]/3+150, 260, 50, (160, 220, 60), "Tentar Novamente", 5)
+        voltar = Botao(t[0]/2-150, t[1]/3+150, 260, 50, (220, 220, 60), "Menu Principal", 5)
         listabotoes = [voltar,continuar,texto]
         listatelas = [True,[Menu_Principal,[superficie]],[Tela_De_Jogo,[superficie,nivel,save]],True]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
@@ -153,28 +156,27 @@ class Configuracoes(Tela_Menu):
     def __init__(self,superficie):
         self.__mudanca_tamanho = False
         self.__tamanho = list(superficie.get_size())
+        t = self.__tamanho
     
-        sair = Botao(75, 520, 200, 50, (220, 60, 60), "Voltar", 5)
+        sair = Botao(120, t[1]-45, 200, 50, (220, 60, 60), "Voltar", 5)
 
-        musica = Botao(180, 150, 140, 50, (200, 200, 200), "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100)), 5,True)
-        musica_mais = Botao(230, 100, 40, 40, (160, 220, 60), "+", 5)
-        musica_menos = Botao(230, 210, 40, 40, (220, 160, 60), "-", 5)
+        musica = Botao(360, 120, 140, 50, (200, 200, 200), "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100)), 5,True)
+        musica_mais = Botao(360, 70, 40, 40, (160, 220, 60), "+", 5)
+        musica_menos = Botao(360, 170, 40, 40, (220, 160, 60), "-", 5)
 
-        efeitos = Botao(380, 150, 140, 50, (200, 200, 200), "Efeitos:100", 5,True)
-        efeitos_mais = Botao(430, 100, 40, 40, (160, 220, 60), "+", 5)
-        efeitos_menos = Botao(430, 210, 40, 40, (220, 160, 60), "-", 5)
+        efeitos = Botao(520, 120, 140, 50, (200, 200, 200), "Efeitos:100", 5,True)
+        efeitos_mais = Botao(520, 70, 40, 40, (160, 220, 60), "+", 5)
+        efeitos_menos = Botao(520, 170, 40, 40, (220, 160, 60), "-", 5)
 
-        hitbox = Botao(600, 150, 260, 50, (160, 220, 60) if renderizar_hitbox else (220, 160, 60), "Mostrar Caixa de Colisao", 5)
+        tela = Botao(140, 120, 120, 80, (200, 200, 200), "({}x{})".format(*self.__tamanho), 5,True)
+        tela_largura_menos = Botao(40, 120, 60, 40, (220, 160, 60), "-100", 5)
+        tela_largura_mais = Botao(240, 120, 60, 40, (160, 220, 60), "+100", 5)
+        tela_altura_menos = Botao(140, 190, 60, 40, (220, 160, 60), "-100", 5)
+        tela_altura_mais = Botao(140, 50, 60, 40, (160, 220, 60), "+100", 5)
 
-        tela = Botao(290, 330, 120, 80, (200, 200, 200), "({}x{})".format(*self.__tamanho), 5,True)
-        tela_largura_menos = Botao(220, 350, 60, 40, (220, 160, 60), "-100", 5)
-        tela_largura_mais = Botao(420, 350, 60, 40, (160, 220, 60), "+100", 5)
-        tela_altura_menos = Botao(320, 420, 60, 40, (220, 160, 60), "-100", 5)
-        tela_altura_mais = Botao(320, 280, 60, 40, (160, 220, 60), "+100", 5)
-
-        listabotoes = [sair,musica,musica_mais,musica_menos,efeitos,efeitos_mais,efeitos_menos,hitbox,
+        listabotoes = [sair,musica,musica_mais,musica_menos,efeitos,efeitos_mais,efeitos_menos,
                         tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais]
-        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(12)]
+        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(11)]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
         self.__contador_menu = 0
@@ -183,8 +185,6 @@ class Configuracoes(Tela_Menu):
         global renderizar_hitbox
         self.__contador_menu -= 0.3
         self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
-        print(self.__tamanho)
-        print(self.__mudanca_tamanho)
         for evento in pygame.event.get():
             if evento.type == pygame.QUIT: return False
             if evento.type == pygame.MOUSEBUTTONDOWN:
@@ -197,18 +197,15 @@ class Configuracoes(Tela_Menu):
                 elif acao == 4:
                     pygame.mixer.music.set_volume(max(round(pygame.mixer.music.get_volume(),1)-0.1,0))
                     self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
-                elif acao == 8:
-                    #renderizar_hitbox = not renderizar_hitbox   NAO FUNCIONA
-                    self.listabotoes[7].cor = (160, 220, 60) if renderizar_hitbox else (220, 160, 60)
-                elif acao == 10:
+                elif acao == 9:
                     self.__tamanho[0] = max(600,self.__tamanho[0]-100)
-                elif acao == 11:
+                elif acao == 10:
                     self.__tamanho[0] = min(1400,self.__tamanho[0]+100)
+                elif acao == 11:
+                    self.__tamanho[1] = max(400,self.__tamanho[1]-100)
                 elif acao == 12:
-                    self.__tamanho[1] = max(300,self.__tamanho[1]-100)
-                elif acao == 13:
                     self.__tamanho[1] = min(900,self.__tamanho[1]+100)
-                self.listabotoes[8].texto = "({}x{})".format(*self.__tamanho)
+                self.listabotoes[7].texto = "({}x{})".format(*self.__tamanho)
                 return self.listatelas[acao]
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE:
@@ -247,7 +244,7 @@ class Tela_De_Jogo(Tela):
         ##### MAPA #####
         self.__mapa = Mapa(superficie)
         # self.__jogador = Jogador('mario',200, 0, 0, 1)
-        self.__jogador = self.__mapa.iniciar(nivel)
+        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa)
         self.__comeco = pygame.time.get_ticks() / 1000
     
     def salvar_jogo(self):
@@ -264,10 +261,8 @@ class Tela_De_Jogo(Tela):
 
         @param ciclo: responsavel pelas frames de animacao do Rabisco
         
-        @returns: 0 se a janela for fechada
-                 1 se o Rabisco morrer ou o tempo acabar
-                 2 se o jogo continuar
-                 3 se o Guri ganhar
+        @returns: Instancia da proxima tela a ser executada apos o nivel
+                  Ou False se o jogo for fechado
         '''
         if isinstance(self.__sobreposicao,Sobreposicao): pausado = True
         else: pausado = False
@@ -346,7 +341,7 @@ class Tela_De_Jogo(Tela):
                 pygame.mixer.music.fadeout(2400)
             else:
                 self.__jogador.tipos_transparentes = classes_instanciaveis
-            self.superficie.blit(self.__textin, (500 - self.__textin.get_size()[0] / 2, 300 - self.__textin.get_size()[1] / 2))
+            self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 self.salvar_jogo()
                 return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
@@ -420,5 +415,7 @@ pygame.init()
 pygame.mixer.music.load('musica_fundo.ogg')
 pygame.mixer.music.set_volume(1)
 carregar_mapa()
+with open("mapas.json","r") as objeto_mapas:
+    dicionaro_mapa = json.load(objeto_mapas)
 jogo = Jogo()
 jogo.menu_inicial()

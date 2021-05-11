@@ -9,7 +9,7 @@ import json
 class Mapa:
     def __init__(self, superficie):
         self.__lista_de_entidades = []
-        self.__hud = Hud()
+        self.__hud = Hud(superficie.get_size())
 
         ##### ATRIBUTOS DE RENDERIZACAO #####
         self.__superficie = superficie
@@ -92,10 +92,8 @@ class Mapa:
     def moedas_pegas(self):
         return self.__moedas_pegas
 
-    def iniciar(self, fase):
+    def iniciar(self, fase,dicionaro_mapa):
         ##### LEITURA DAS FASES A PARTIR DO ARQUIVO JSON #####
-        with open("mapas.json") as arquivo_mapa:
-            dicionaro_mapa = json.load(arquivo_mapa)
         lista_todos = dicionaro_mapa[fase]
         objetos_no_mapa = lista_todos[0]
         for item in objetos_no_mapa:
