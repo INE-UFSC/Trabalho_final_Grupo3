@@ -232,12 +232,79 @@ def carregar_mapa():
     width = 6800
     height = 900
     fase3 = [[
+        ["Chao", ('chao', height - 10, 0, 995)],
+        ["Lapis", (950, height - 125, height)],
+        ["Atirador", (750, height - 50)],
+
+        ["Chao", ('chao', height - 10, 1400, 3000)],
+        ["Ponta", (1900, height - 125, height)],
+        ["Saltante", (1750, height - 100)],
+
+        ["Chao", ('chao', height - 400, 2100, 2250)],
+        ["Chao", ('chao', height - 400, 2400, 2550)],
+        ["Atirador", (2130, height - 450, False)],
+        ["Atirador", (2430, height - 450, False)],
+        ["Chao", ('chao', height - 300, 2300, 2350)],
+        ["Chao", ('chao', height - 150, 2450, 2550)],
+
+        ["Chao", ('chao', height - 10, 3350, 4000)],
+        ["CartolaDoMago", ('orbe1', 3675, height - 200)],
+        ["Saltante", (3800, height - 100)],
+        ["Chao", ('chao', height - 400, 3700, 3850)],
+        ["Atirador", (3730, height - 450, False)],
+        ["Chao", ('chao', height - 400, 3900, 4050)],
+        ["Atirador", (3930, height - 450, False)],
+
+        ["PlataformaMovel", (150, 4300, 100, -2)],
+        ["PlataformaMovel", (450, 4300, 100, -2)],
+        ["PlataformaMovel", (750, 4300, 100, -2)],
+        ["PlataformaMovel", (300, 4400, 100, -2)],
+        ["PlataformaMovel", (600, 4400, 100, -2)],
+        ["PlataformaMovel", (900, 4400, 100, -2)],
+
+        ["Chao", ('chao', height - 10, 4600, 5500)],
+
+        ["Lapis", (4900, height - 500, height - 150)],
+        ["Chao", ('chao', height - 150, 4900, 5200)],
+        ["Lapis", (5156, height - 500, height - 150)],
+        ["Chao", ('chao', height - 500, 4900, 5200)],
+
+        ["Lapis", (4700, height - 125, height)],
+        ["PorcoEspinho", ('porco', 4800, height - 50)],
+        ["PorcoEspinho", ('porco', 4900, height - 50)],
+        ["PorcoEspinho", ('porco', 5000, height - 50)],
+        ["PorcoEspinho", ('porco', 5100, height - 50)],
+        ["PorcoEspinho", ('porco', 5200, height - 50)],
+        ["Lapis", (5300, height - 125, height)],
+
+        ["Chao", ('chao', height - 10, 5800, 6800)],
+        ["Saltante", (6300, height - 100)],
+
+        ["Chao", ('chao', height - 200, 6300, 6500)],
+        ["Atirador", (6350, height - 250, False)],
+        ["Atirador", (6350, height - 300, False)],
+        ["Atirador", (6350, height - 350, False)],
+        ["Atirador", (6350, height - 400, False)],
+        ["Atirador", (6350, height - 450, False)],
+        ["Atirador", (6350, height - 500, False)],
+        ["Atirador", (6350, height - 550, False)],
+
+        ##### BORDA E VITORIA #####
+        ["Vitoria", (6600, height - 285)]
+
+    ],
+
+        (width, height),
+
+        "fase4"]
+
+    width = 6800
+    height = 900
+    fase4 = [[
         ["Chao", ('chao', height-10, 0, 2250)],
         ["Lapis", (950, height - 125, height)],
         ["Gelatina", (700, height - 160)],
-        #["Rato", ('rato', 900, height - 50)],
 
-        #["Ponta", (1900, height - 125, height)],
         ["Saltante", (1550, height - 100)],
 
         ["Chao", ('chao', height - 400, 1600, 1750)],
@@ -310,74 +377,5 @@ def carregar_mapa():
         
         False]
 
-    # width = 6800
-    # height = 900
-    # fase3 = [[
-    #     ["Chao", ('chao', height - 10, 0, 995)],
-    #     ["Lapis", (950, height - 125, height)],
-    #     ["Atirador", (750, height - 50)],
-    #
-    #     ["Chao", ('chao', height - 10, 1400, 3000)],
-    #     ["Ponta", (1900, height - 125, height)],
-    #     ["Saltante", (1750, height - 100)],
-    #
-    #     ["Chao", ('chao', height - 400, 2100, 2250)],
-    #     ["Chao", ('chao', height - 400, 2400, 2550)],
-    #     ["Atirador", (2130, height - 450, False)],
-    #     ["Atirador", (2430, height - 450, False)],
-    #     ["Chao", ('chao', height - 300, 2300, 2350)],
-    #     ["Chao", ('chao', height - 150, 2450, 2550)],
-    #
-    #     ["Chao", ('chao', height - 10, 3350, 4000)],
-    #     ["CartolaDoMago", ('orbe1', 3675, height - 200)],
-    #     ["Saltante", (3800, height - 100)],
-    #     ["Chao", ('chao', height - 400, 3700, 3850)],
-    #     ["Atirador", (3730, height - 450, False)],
-    #     ["Chao", ('chao', height - 400, 3900, 4050)],
-    #     ["Atirador", (3930, height - 450, False)],
-    #
-    #     ["PlataformaMovel", (150, 4300, 100, -2)],
-    #     ["PlataformaMovel", (450, 4300, 100, -2)],
-    #     ["PlataformaMovel", (750, 4300, 100, -2)],
-    #     ["PlataformaMovel", (300, 4400, 100, -2)],
-    #     ["PlataformaMovel", (600, 4400, 100, -2)],
-    #     ["PlataformaMovel", (900, 4400, 100, -2)],
-    #
-    #     ["Chao", ('chao', height - 10, 4600, 5500)],
-    #
-    #     ["Lapis", (4900, height - 500, height - 150)],
-    #     ["Chao", ('chao', height - 150, 4900, 5200)],
-    #     ["Lapis", (5156, height - 500, height - 150)],
-    #     ["Chao", ('chao', height - 500, 4900, 5200)],
-    #
-    #     ["Lapis", (4700, height - 125, height)],
-    #     ["PorcoEspinho", ('porco', 4800, height - 50)],
-    #     ["PorcoEspinho", ('porco', 4900, height - 50)],
-    #     ["PorcoEspinho", ('porco', 5000, height - 50)],
-    #     ["PorcoEspinho", ('porco', 5100, height - 50)],
-    #     ["PorcoEspinho", ('porco', 5200, height - 50)],
-    #     ["Lapis", (5300, height - 125, height)],
-    #
-    #     ["Chao", ('chao', height - 10, 5800, 6800)],
-    #     ["Saltante", (6300, height - 100)],
-    #
-    #     ["Chao", ('chao', height - 200, 6300, 6500)],
-    #     ["Atirador", (6350, height - 250, False)],
-    #     ["Atirador", (6350, height - 300, False)],
-    #     ["Atirador", (6350, height - 350, False)],
-    #     ["Atirador", (6350, height - 400, False)],
-    #     ["Atirador", (6350, height - 450, False)],
-    #     ["Atirador", (6350, height - 500, False)],
-    #     ["Atirador", (6350, height - 550, False)],
-    #
-    #     ##### BORDA E VITORIA #####
-    #     ["Vitoria", (6600, height - 285)]
-    #
-    # ],
-    #
-    #     (width, height),
-    #
-    #     False]
-
     with open("mapas.json", 'w') as imagem:
-        json.dump({"fase1": fase1, "fase2": fase2, "fase3": fase3}, imagem)
+        json.dump({"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4}, imagem)
