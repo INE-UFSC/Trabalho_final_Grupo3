@@ -139,10 +139,11 @@ class Jogador(Movel):
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
         pega_poder_armazenado = entradas[3]
+        tamanho_tela = screen.get_size()
         if self.__paleta == 5 and pega_poder_armazenado and not isinstance(self.__poder_armazenado, Cinza):
             self.__poder = self.__poder_armazenado
             self.__poder_armazenado = Cinza()
-        self.mover(entradas[0], entradas[1], entradas[2], screen.get_size(), mapa, atrito)
+        self.mover(entradas[0], entradas[1], entradas[2], tamanho_tela, mapa, atrito)
 
         self.renderizar(screen, campo_visivel, ciclo)
 
@@ -155,24 +156,24 @@ class Jogador(Movel):
         x_max = max(mapa.tamanho[0] - campo_visivel.w, campo_visivel.x)
         y_min = min(0, campo_visivel.y)
         y_max = max(mapa.tamanho[1] - campo_visivel.h, campo_visivel.y)
-        if self.x > campo_visivel.x + 600:
-            campo_x = max(0, min((mapa.tamanho[0] - campo_visivel.w, self.x - 600)))
+        if self.x > campo_visivel.x + tamanho_tela[0]*3/5:
+            campo_x = max(0, min((mapa.tamanho[0] - campo_visivel.w, self.x - tamanho_tela[0]*3/5)))
             # if campo_visivel.x < mapa.tamanho[0] - campo_visivel.w:
             #    return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
             # else:
             #    return pygame.Rect(mapa.tamanho[0]-campo_visivel.w,0,campo_visivel.w,campo_visivel.h)
-        elif self.x < campo_visivel.x + 400:
-            campo_x = max(0, min((mapa.tamanho[0] - campo_visivel.w, self.x - 400)))
+        elif self.x < campo_visivel.x + tamanho_tela[0]*2/5:
+            campo_x = max(0, min((mapa.tamanho[0] - campo_visivel.w, self.x - tamanho_tela[0]*2/5)))
             # if campo_visivel.x > 0:
             #    return pygame.Rect(self.x-400,0,campo_visivel.w,campo_visivel.h)
             # else:
             #    return pygame.Rect(0,0,campo_visivel.w,campo_visivel.h)
         else:
             campo_x = campo_visivel.x
-        if self.y > campo_visivel.y + 300:
-            campo_y = max(0, min((mapa.tamanho[1] - campo_visivel.h, self.y - 300)))
-        elif self.y < campo_visivel.y + 200:
-            campo_y = max(0, min((mapa.tamanho[1] - campo_visivel.h, self.y - 200)))
+        if self.y < campo_visivel.y + tamanho_tela[1]/3:
+            campo_y = max(0, min((mapa.tamanho[1] - campo_visivel.h, self.y - tamanho_tela[1]/3)))
+        elif self.y > campo_visivel.y + tamanho_tela[1]/2:
+            campo_y = max(0, min((mapa.tamanho[1] - campo_visivel.h, self.y - tamanho_tela[1]/2)))
         else:
             campo_y = campo_visivel.y
         return pygame.Rect(campo_x, campo_y, campo_visivel.w, campo_visivel.h)
