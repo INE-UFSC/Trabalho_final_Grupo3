@@ -19,23 +19,19 @@ class Tela_Pause(Sobreposicao):
 class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
     def __init__(self, superficie):
         t = superficie.get_size()
-        botaonivel_1 = Botao(t[0]/5, t[1]/12, 100, 50, (220, 0, 0), "Fase 1", 5)
-        botaonivel_2 = Botao(t[0]/2, t[1]/12, 100, 50, (220, 110, 0), "Fase 2", 5)
-        botaonivel_3 = Botao(t[0]*4/5, t[1]/12, 100, 50, (220, 220, 0), "Fase 3", 5)
-        b4 = Botao(t[0]/5, t[1]/4-5, 100, 50, (220, 0, 110), "Fase 4", 5)
-        b5 = Botao(t[0]/2, t[1]/4-5, 100, 50, (220, 110, 110), "Fase 5", 5)
-        b6 = Botao(t[0]*4/5, t[1]/4-5, 100, 50, (220, 220, 110),  "Fase 6", 5)
-        b7 = Botao(t[0]/5, t[1]*5/12-10, 100, 50, (220, 0, 220),  "Fase 7", 5)
-        b8 = Botao(t[0]/2, t[1]*5/12-10, 100, 50, (220, 110, 220),  "Fase 8", 5)
-        b9 = Botao(t[0]*4/5, t[1]*5/12-10, 100, 50, (220, 220, 220),  "Fase 9", 5)
+        botaonivel_1 = Botao(t[0]/5, t[1]/6, 100, 50, (220, 0, 0), "Fase 1", 5)
+        botaonivel_2 = Botao(t[0]*7/20, t[1]/6, 100, 50, (220, 110, 0), "Fase 2", 5)
+        botaonivel_3 = Botao(t[0]/2, t[1]/6, 100, 50, (220, 220, 0), "Fase 3", 5)
+        b4 = Botao(t[0]*13/20, t[1]/6, 100, 50, (220, 0, 110), "Fase 4", 5)
+        b5 = Botao(t[0]*4/5, t[1]/6, 100, 50, (220, 110, 110), "Fase 5", 5)
         botaojogar = Botao(t[0]/2, t[1]*2/3-20, 250, 50, (30, 220, 30),  "Jogar", 5)
         botaoconfig = Botao(t[0]/2, t[1]*3/4, 250, 50, (0, 220, 180), "Configurações", 5)
         botaosair = Botao(t[0]/2, t[1]*5/6+20, 250, 50, (220, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaonivel_1, botaonivel_2,
-                          botaonivel_3, botaoconfig,b4,b5,b6,b7,b8,b9]
+                          botaonivel_3, botaoconfig,b4,b5]
         listatelas = [True,False,[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1",'6']]
-                ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],[Configuracoes,[superficie]],True,True,True,True,True,True]
+                ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],[Configuracoes,[superficie]],True,True]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         self.__contador_menu = 0
 
@@ -156,6 +152,8 @@ class Configuracoes(Tela_Menu):
     def __init__(self,superficie):
         self.__mudanca_tamanho = False
         self.__tamanho = list(superficie.get_size())
+        self.__volume_musica = pygame.mixer.music.get_volume()
+        self.__volume_efeitos = 1 ### IMPLEMENTAR VOLUME DE EFEITOS SONOROS!!! ###
         t = self.__tamanho
     
         sair = Botao(120, t[1]-45, 200, 50, (220, 60, 60), "Voltar", 5)
@@ -174,9 +172,11 @@ class Configuracoes(Tela_Menu):
         tela_altura_menos = Botao(140, 190, 60, 40, (220, 160, 60), "-100", 5)
         tela_altura_mais = Botao(140, 50, 60, 40, (160, 220, 60), "+100", 5)
 
+        creditos = Botao(295, 240, 150, 40, (160, 220, 60), "Créditos", 5)
+
         listabotoes = [sair,musica,musica_mais,musica_menos,efeitos,efeitos_mais,efeitos_menos,
-                        tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais]
-        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(11)]
+                        tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais,creditos]
+        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(11)] + [[Creditos,[superficie]]]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
         self.__contador_menu = 0
@@ -191,11 +191,14 @@ class Configuracoes(Tela_Menu):
                 acao = self.clicar()
                 if acao == 1:
                     pygame.display.set_mode(self.__tamanho)
+                    self.salvar_config()
                 elif acao == 3:
                     pygame.mixer.music.set_volume(min(round(pygame.mixer.music.get_volume(),1)+0.1,1))
+                    self.__volume_musica = round(pygame.mixer.music.get_volume(),1)
                     self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
                 elif acao == 4:
                     pygame.mixer.music.set_volume(max(round(pygame.mixer.music.get_volume(),1)-0.1,0))
+                    self.__volume_musica = round(pygame.mixer.music.get_volume(),1)
                     self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
                 elif acao == 9:
                     self.__tamanho[0] = max(600,self.__tamanho[0]-100)
@@ -205,16 +208,55 @@ class Configuracoes(Tela_Menu):
                     self.__tamanho[1] = max(400,self.__tamanho[1]-100)
                 elif acao == 12:
                     self.__tamanho[1] = min(900,self.__tamanho[1]+100)
+                elif acao == 13:
+                    pygame.display.set_mode(self.__tamanho)
+                    self.salvar_config()
                 self.listabotoes[7].texto = "({}x{})".format(*self.__tamanho)
                 return self.listatelas[acao]
             if evento.type == pygame.KEYDOWN:
                 if evento.key == pygame.K_SPACE:
                     pygame.display.set_mode(self.__tamanho)
+                    self.salvar_config()
                     return self.listatelas[1]
         return super().atualizar()
 
     def salvar_config(self):
-        pass
+        with open("configs.json","w") as c:
+            json.dump({"resolucao":self.__tamanho,
+                "musica":self.__volume_musica,
+                "efeitos":self.__volume_efeitos},c)
+
+
+class Creditos(Tela_Menu):
+    def __init__(self,superficie):
+        self.__tamanho = superficie.get_size()
+        pygame.display.set_mode((600,700))
+        listabotoes = [Botao(120, 655, 200, 50, (220, 60, 60), "Voltar", 5)]
+        listabotoes.append(Botao(300, 90, 100, 50, (220, 220, 220), "Créditos", 5,True))
+        listapessoas = [   ### COLOCAR AQUI NOMES E CREDITOS
+            ["funcao1","nome1",(220,0,0)],
+            ["funcao2","nome2",(220,220,0)],
+            ["funcao3","nome3",(0,220,0)]]
+        for pessoa in listapessoas:
+            listabotoes.append(Botao(125, 150 + listapessoas.index(pessoa)*60, 225, 50, pessoa[2], pessoa[0], 5,True))
+            listabotoes.append(Botao(425, 150 + listapessoas.index(pessoa)*60, 325, 50, pessoa[2], pessoa[1], 5,True))
+        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(2*len(listapessoas)+1)]
+        cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
+        super().__init__(listabotoes,cormenu,superficie,listatelas)
+        self.__contador_menu = 0
+    
+    def atualizar(self,ciclo):
+        self.__contador_menu -= 0.3
+        self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT: return False
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                acao = self.clicar()
+                if acao == 1:
+                    pygame.display.set_mode(self.__tamanho)
+                return self.listatelas[acao]
+        return super().atualizar()
+
 
 class Tela_De_Jogo(Tela):
     def __init__(self, superficie, nivel,slot):
@@ -382,7 +424,15 @@ class Tela_De_Jogo(Tela):
 class Jogo:
     def __init__(self):
         ###### INFORMACOES TA TELA ######
-        (width, height) = (1000, 600)  # Tamanho da tela
+        try:
+            configs = json.load(open("configs.json","r"))
+        except FileNotFoundError:
+            configs = {"resolucao":[1000,600],
+                "musica":1,
+                "efeitos":1}
+        
+        (width, height) = configs["resolucao"]  # Tamanho da tela
+        pygame.mixer.music.set_volume(configs["musica"])
         self.__screen = pygame.display.set_mode((width, height))  # Cria o objeto da tela
         caption = ["As Aventuras do Guri",
                    "A Aventura Bizarra de Guri",
@@ -413,7 +463,6 @@ class Jogo:
 
 pygame.init()
 pygame.mixer.music.load('musica_fundo.ogg')
-pygame.mixer.music.set_volume(1)
 carregar_mapa()
 with open("mapas.json","r") as objeto_mapas:
     dicionaro_mapa = json.load(objeto_mapas)
