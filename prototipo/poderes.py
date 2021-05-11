@@ -5,6 +5,7 @@ from obstaculos import *
 from inimigos import *
 from time import sleep
 from sprites import *
+from random import randrange
 
 
 ##### PODERES NO JOGADOR #####
@@ -195,13 +196,14 @@ class Marrom(PoderGenerico):
 class Projetil(PoderGenerico):
     def __init__(self):
         super().__init__("Projetil", False, 0, 5, 9, 40, (0, 0, 0))
+        self.__altura = 26
 
-    def acao(self, jogador, screen, mapa, velx, vely):
+    def acao(self, jogador, screen, mapa, velx, vely, altura_random):
         if jogador.face == 1:
             mapa.lista_de_entidades.append(
-                Bala([jogador.corpo.right, jogador.y], screen, mapa, jogador.face, velx, vely))
+                Bala([jogador.corpo.right, jogador.y + altura_random], screen, mapa, jogador.face, velx, vely))
         elif jogador.face == -1:
-            mapa.lista_de_entidades.append(Bala([jogador.x, jogador.y], screen, mapa, jogador.face, velx, vely))
+            mapa.lista_de_entidades.append(Bala([jogador.x, jogador.y + altura_random], screen, mapa, jogador.face, velx, vely))
         self.descanso = self.recarga
 
     def atualizar(self, tela, mapa):
@@ -210,7 +212,6 @@ class Projetil(PoderGenerico):
 
 
 ##### ITENS DOS PODERES NO MAPA #####
-@instanciavel
 class Coletavel(Movel):
     def __init__(self, nome, x, y, imagem, cor=(0, 0, 0), largura = 20, altura = 20):
         limite_vel = 4

@@ -179,14 +179,20 @@ class Atirador(Inimigo):
             self.renderizar(tela, mapa)
 
         #### DETERMINA A VELOCIDADE DO PROJETIL PRA SEGUIR O JOGADOR ####
-        dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
-                mapa.jogador.x - self.x) ** 2) ** (1 / 2)
-        divisor = max(dstancia / self.__vel_projetil,0.001)
-        vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) / divisor
-        velx = (mapa.jogador.x - self.x) / divisor
         if self.corpo.colliderect(mapa.campo_visivel):
+            altura_random = randrange(0, self.altura - 26)
+            if mapa.jogador.x <= self.x:
+                dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + altura_random)) ** 2 + (
+                        mapa.jogador.x - self.x) ** 2) ** (1 / 2)
+            else:
+                dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + altura_random)) ** 2 + (
+                        mapa.jogador.x - self.corpo.bottomright[0]) ** 2) ** (1 / 2)
+            divisor = max(dstancia / self.__vel_projetil,0.001)
+            vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) / divisor
+            velx = (mapa.jogador.x - self.x) / divisor
+
             if self.__descanso_poder <= 0:
-                self.__poder.acao(self, tela, mapa, velx, vely)
+                self.__poder.acao(self, tela, mapa, velx, vely, altura_random)
                 self.__descanso_poder = 300
             else:
                 self.__descanso_poder -= 1 * self.escala_tempo
