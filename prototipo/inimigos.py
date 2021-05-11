@@ -180,16 +180,19 @@ class Atirador(Inimigo):
 
         #### DETERMINA A VELOCIDADE DO PROJETIL PRA SEGUIR O JOGADOR ####
         if self.corpo.colliderect(mapa.campo_visivel):
-            altura_random = randrange(0, self.altura - 26)
+            altura_random = 0 #randrange(0, self.altura - 26)
+            
             if mapa.jogador.x <= self.x:
-                dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + altura_random)) ** 2 + (
-                        mapa.jogador.x - self.x) ** 2) ** (1 / 2)
+                dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
+                        mapa.jogador.x - self.x -15*self.face) ** 2) ** (1 / 2)
+                divisor = max(dstancia / self.__vel_projetil,0.001)
+                velx = (mapa.jogador.x - self.x -15*self.face) / divisor
             else:
-                dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + altura_random)) ** 2 + (
-                        mapa.jogador.x - self.corpo.bottomright[0]) ** 2) ** (1 / 2)
-            divisor = max(dstancia / self.__vel_projetil,0.001)
-            vely = ((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) / divisor
-            velx = (mapa.jogador.x - self.x) / divisor
+                dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
+                        mapa.jogador.x - self.corpo.bottomright[0] -15*self.face) ** 2) ** (1 / 2)
+                divisor = max(dstancia / self.__vel_projetil,0.001)
+                velx = (mapa.jogador.x - self.corpo.bottomright[0] -15*self.face) / divisor
+            vely = ((mapa.jogador.y) - (self.y )) / divisor
 
             if self.__descanso_poder <= 0:
                 self.__poder.acao(self, tela, mapa, velx, vely, altura_random)

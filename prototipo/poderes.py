@@ -379,7 +379,7 @@ class BolaFogo(PoderManifestado):
 @instanciavel
 class Bala(PoderManifestadoInimigo):
     def __init__(self, pos_inicial, screen, mapa, lado, velx, vely):
-        x = pos_inicial[0] + 26 * lado
+        x = pos_inicial[0] + 15 * lado
         largura = 26
         altura = 26
         y = pos_inicial[1]
