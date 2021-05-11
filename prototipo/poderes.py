@@ -18,7 +18,6 @@ class PoderGenerico:
         self.pulo = pulo
         self.recarga = recarga
         self.descanso = 0
-        'self.__nome_funcionalidade = nome_funcionalidade'
 
     @property
     def tem_tempo(self):
@@ -51,14 +50,6 @@ class PoderGenerico:
     @nome.setter
     def nome(self, nome):
         self.__nome = nome
-
-    '''@property
-    def nome_funcionalidade (self):
-        return self.__nome_funcionalidade
-    
-    @nome_funcionalidade.setter
-    def nome_funcionalidade (self, nome_funcionalidade):
-        self.__nome_funcionalidade = nome_funcionalidade'''
 
     def acao(self, jogador, screen, mapa):  ### ERA PRA SER ABSTRATO MAS FDS
         pass

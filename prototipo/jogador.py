@@ -10,7 +10,6 @@ class Jogador(Movel):
     def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
         ##### ATRIBUTOS GERAIS #####
         self.__vida = 5
-        self.__nome = nome
         self.__sprite = {"cinza": Sprite("rabisco_cinza"),
                          "laranja": Sprite("rabisco_laranja"),
                          "vermelho": Sprite("rabisco_vermelho"),
@@ -19,13 +18,12 @@ class Jogador(Movel):
                          "verde": Sprite("rabisco_verde"),
                          "marrom": Sprite("rabisco_marrom")}
         self.__posicao_comeco = (x, y)
-        self.__tipos_transparentes = [BolaFogo, Vitoria]
 
         ##### ATRIBUTOS POSICIONAIS #####
         altura = 46
         largura = 46
         limite_vel = 5
-        self.__tamanho_jogador = (altura, largura)
+        #self.__tamanho_jogador = (altura, largura)
         self.__aceleracao = 0
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
@@ -48,13 +46,13 @@ class Jogador(Movel):
     def paleta(self):
         return self.__paleta
 
-    @property
-    def tamanho_jogador(self):
-        return self.__tamanho_jogador
-
-    @tamanho_jogador.setter
-    def tamanho_jogador(self, tamanho_jogador):
-        self.__tamanho_jogador = tamanho_jogador
+    # @property
+    # def tamanho_jogador(self):
+    #     return self.__tamanho_jogador
+    #
+    # @tamanho_jogador.setter
+    # def tamanho_jogador(self, tamanho_jogador):
+    #     self.__tamanho_jogador = tamanho_jogador
 
     @property
     def poder(self):
@@ -193,7 +191,7 @@ class Jogador(Movel):
 
         ##### COLISOES #####
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, self.__tipos_transparentes)
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
         obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
         dano_total = 0
 
