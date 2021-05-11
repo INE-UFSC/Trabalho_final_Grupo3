@@ -148,7 +148,7 @@ class Estatico():
                 jogador.y = self.corpo.bottom
         return 0
 
-    def sofreu_colisao_outros(self, entidade, direcao):
+    def sofreu_colisao_outros(self, entidade, direcao, mapa):
         ##### COLISAO ESQUERDA #####
         if direcao == "esquerda":
             if entidade.velx <= 0:
@@ -312,7 +312,7 @@ class Movel(Estatico):
             self.renderizar(tela, mapa)
         return False
 
-    def sofreu_colisao_outros(self, entidade, direcao):
+    def sofreu_colisao_outros(self, entidade, direcao, mapa):
         if direcao == "esquerda":
             if entidade.velx <= 0:
                 entidade.velx = - entidade.velx
@@ -335,10 +335,11 @@ class Movel(Estatico):
 
 class Entidade(Movel):
     def __init__(self, nome: str, x: int, y: int, largura: int, altura: int, limiteVel: int, vida: int,
-                 dano_contato: int, imagem: str, cor, frames):
+                 dano_contato: int, imagem: str, cor, frames: int, fogo = False):
         super().__init__(nome, x, y, largura, altura, limiteVel, imagem, cor)
         self.__vida = vida
         self.__dano_contato = dano_contato
+        self.__a_prova_de_fogo = fogo
         self.__frames = frames
 
     @property
@@ -364,6 +365,10 @@ class Entidade(Movel):
     @contato.setter
     def contato(self, contato):
         self.__contato = contato
+
+    @property
+    def a_prova_de_fogo(self):
+        return self.__a_prova_de_fogo
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         ##### COLISAO ESQUERDA #####

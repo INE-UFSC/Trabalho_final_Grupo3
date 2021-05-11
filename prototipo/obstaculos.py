@@ -17,7 +17,6 @@ class PlataformaMovel(Movel):
     def mover(self, dimensoesTela, mapa):
         ##### REPOSICIONAMENTO DA PLATAFORMA #####
         self.y += self.vely * mapa.escala_tempo
-        print(self.y)
         if self.y >= mapa.tamanho[1]:
             self.y = 0
 

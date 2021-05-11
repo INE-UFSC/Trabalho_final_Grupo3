@@ -4,8 +4,13 @@ from entidades import *
 from poderes import *
 
 
+class Inimigo(Entidade):
+    def __init__(self, nome, x, y, largura, altura, limiteVel, vida, danoContato, imagem, cor, frames, fogo = False):
+        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, imagem, cor, frames, fogo)
+
+
 @instanciavel
-class Rato(Entidade):
+class Rato(Inimigo):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
         danoContato = 1
@@ -23,11 +28,11 @@ class Rato(Entidade):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo")
+            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -38,7 +43,7 @@ class Rato(Entidade):
 
 
 @instanciavel
-class PorcoEspinho(Entidade):
+class PorcoEspinho(Inimigo):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
         danoContato = 2
@@ -86,11 +91,11 @@ class PorcoEspinho(Entidade):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo")
+            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -101,7 +106,7 @@ class PorcoEspinho(Entidade):
 
 
 @instanciavel
-class Voador(Entidade):
+class Voador(Inimigo):
     def __init__(self, nome: str, x: int, y: int, altitude: int):
         vida = 1
         danoContato = 1
@@ -146,14 +151,14 @@ class Voador(Entidade):
 
 
 @instanciavel
-class Atirador(Entidade):
+class Atirador(Inimigo):
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
         largura = 90
         altura = 44
         limiteVel = 4
-        super().__init__("atirador", x, y, altura, largura, limiteVel, vida, danoContato, "atirador", (255, 25, 25), 8)
+        super().__init__("atirador", x, y, altura, largura, limiteVel, vida, danoContato, "atirador", (255, 25, 25), 8, True)
         self.vely = 0
         self.velx = 2
         self.__vel_projetil = 3
@@ -190,11 +195,11 @@ class Atirador(Entidade):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo")
+            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -216,7 +221,7 @@ class Atirador(Entidade):
 
 
 @instanciavel
-class Saltante(Entidade):
+class Saltante(Inimigo):
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
@@ -241,11 +246,11 @@ class Saltante(Entidade):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo")
+            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
 
 
         ##### GRAVIDADE ######
@@ -271,14 +276,14 @@ class Saltante(Entidade):
 
 
 @instanciavel
-class Gelatina(Entidade):
+class Gelatina(Inimigo):
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
         largura = 150
         altura = 150
         limiteVel = 1
-        super().__init__("gelatina", x, y, largura, altura, limiteVel, vida, danoContato, "gelatina", (50, 50, 255), 9)
+        super().__init__("gelatina", x, y, largura, altura, limiteVel, vida, danoContato, "gelatina", (50, 50, 255), 9, True)
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -287,13 +292,13 @@ class Gelatina(Entidade):
     def mover(self, dimensoesTela, mapa):
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa, Entidade])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa, Inimigo])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo")
+            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -307,12 +312,12 @@ class Gelatina(Entidade):
             jogador.escala_tempo = 0.25
         return 0
 
-    def sofreu_colisao_outros(self, entidade, direcao):
+    def sofreu_colisao_outros(self, entidade, direcao, mapa):
         pass
 
 
 @instanciavel
-class Temporal(Entidade):
+class Temporal(Inimigo):
     def __init__(self, nome: str, x: int, y: int):
         vida = 1
         danoContato = 1
@@ -360,11 +365,11 @@ class Temporal(Entidade):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda")
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita")
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima")
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo")
+            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
             if mapa.jogador.vely < 0:
                 self.vely = -10
 

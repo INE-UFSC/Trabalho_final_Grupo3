@@ -221,7 +221,7 @@ class Coletavel(Movel):
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
 
-    def sofreu_colisao_outros(self, entidade, direcao):
+    def sofreu_colisao_outros(self, entidade, direcao, mapa):
         return 0
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
@@ -343,23 +343,16 @@ class BolaFogo(PoderManifestado):
         ##### COLISOES #####
 
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, PoderNoMapa])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Entidade])
+        obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
-        for i in range(len(obstaculos)):
-            if isinstance(obstaculos[i], Entidade):
-                obstaculos[i].auto_destruir(mapa)
-                self.auto_destruir(mapa)
+        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
 
-        ##### HORIZONTAIS #####
-        if obstaculos[3] or obstaculos[2]:
-            # self.duracao = 0
-            self.velx = -self.velx
-
-        ##### VERTICAIS #####
-        if obstaculos[1] or obstaculos[0]:
+        if obsCima or obsBaixo:
             self.vely = -max(self.vely * 4 / 5, 8)
             # self.y = obsBaixo.corpo.top - self.altura'''
-        if not obstaculos[1]: self.vely += gravidade * 7 * self.escala_tempo
+        if not obsBaixo: self.vely += gravidade * 7 * self.escala_tempo
 
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
@@ -380,6 +373,13 @@ class BolaFogo(PoderManifestado):
             self.duracao -= 1 * self.escala_tempo
             return False
         return True
+
+    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+        if not entidade.a_prova_de_fogo:
+            print(entidade.nome)
+            entidade.auto_destruir(mapa)
+        self.auto_destruir(mapa)
+
 
 @instanciavel
 class Bala(PoderManifestadoInimigo):
