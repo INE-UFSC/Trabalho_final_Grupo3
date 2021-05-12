@@ -222,7 +222,7 @@ class Atirador(Inimigo):
         if self.corpo.colliderect(mapa.campo_visivel):
             self.velx = 0
             dist_x_jogador = self.x - mapa.jogador.x
-            if self.escala_tempo > 0:
+            if self.escala_tempo:
                 if dist_x_jogador > 0:
                     self.face = -1
                 elif dist_x_jogador < 0:
