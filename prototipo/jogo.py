@@ -20,13 +20,14 @@ class Jogo:
         (width, height) = configs["resolucao"]  # Tamanho da tela
         pygame.mixer.music.set_volume(configs["musica"])
         self.__screen = pygame.display.set_mode((width, height),pygame.FULLSCREEN if configs["telacheia"] else 0)  # Cria o objeto da tela
-        caption = ["As Aventuras do Guri",
-                   "A Aventura Bizarra de Guri",
-                   "Super Guri Bros",
-                   "Arte-lharia",
-                   "Uma Pincelada de Vigor",
-                   "Entre Riscos e Rabiscos"]
-        pygame.display.set_caption(random.choices(caption,[6,1,1,4,4,4])[0])
+        caption = ["O Risco do Rabisco: A Jornada das Cores"]
+                   #  "As Aventuras do Guri",
+                   # "A Aventura Bizarra de Guri",
+                   # "Super Guri Bros",
+                   # "Arte-lharia",
+                   # "Uma Pincelada de Vigor",
+                   # "Entre Riscos e Rabiscos"]
+        pygame.display.set_caption(random.choices(caption,[1])[0])
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))
         self.__relogio = pygame.time.Clock()

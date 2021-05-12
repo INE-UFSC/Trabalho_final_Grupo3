@@ -7,7 +7,7 @@ from sprites import Sprite
 
 
 class Jogador(Movel):
-    def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
+    def __init__(self, nome: str, x: int, y: int, poder_atual: PoderGenerico, poder_armazenado: PoderGenerico, paletas_coletadas: int):
         ##### ATRIBUTOS GERAIS #####
         self.__vida = 5
         self.__sprite = {"cinza": Sprite("rabisco_cinza"),
@@ -28,14 +28,14 @@ class Jogador(Movel):
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
         self.__tipos_transparentes = [BolaFogo, Vitoria]
-        self.__poder = Cinza()
-        self.__poder_armazenado = Cinza()
+        self.__poder = poder_atual
+        self.__poder_armazenado = poder_armazenado
         self.__recuperacao = 0
         self.__recarga = 0
         self.__invisivel = 0
         self.__moedas = 0
         self.escala_tempo = 1
-        self.__paleta = 4
+        self.__paleta = paletas_coletadas
 
         super().__init__(nome, x, y, altura, largura, limite_vel, "0")
 

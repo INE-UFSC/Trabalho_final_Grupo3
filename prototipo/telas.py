@@ -220,7 +220,6 @@ class Tela_De_Jogo(Tela):
 
         ##### MAPA #####
         self.__mapa = Mapa(superficie)
-        # self.__jogador = Jogador('mario',200, 0, 0, 1)
         self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa)
         self.__comeco = pygame.time.get_ticks() / 1000
     
