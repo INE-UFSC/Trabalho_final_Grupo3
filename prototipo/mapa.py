@@ -164,9 +164,16 @@ def carregar_mapa():
         ["Bolota", (2200, height - 50)],
         ["Lapis", (2450, height - 125, height)],
 
-        ["Chao", ('chao', height - 10, 3050, 3425)],
-        ["BandanaDoNinja", ('vermelho', 3225, height - 200)],
+        ["Chao", ('chao', height - 10, 3050, 4000)],
+        ["Chao", ('chao', height - 450, 3050, 4000)],
+        ["BandanaDoNinja", ('vermelho', 3325, height - 260)],
         ["Saltante", (3350, height - 100)],
+        ["Chao", ('chao', height - 160, 3975, 4100)],
+        ["Lapis", (3950, height - 125, height)],
+        ["Lapis", (3950, height - 235, height)],
+        ["Lapis", (3950, height - 320, height)],
+        ["Chao", ('chao', height - 320, 3450, 3650)],
+        ["Chao", ('chao', height - 160, 3250, 3450)],
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 
@@ -433,7 +440,7 @@ def carregar_mapa():
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
         ["CartolaDoMago", ('orbe1', 250, height - 500)],
         ["OculosDoNerd", ('oculos1', 1525, height - 300)],
-        # ["VerdeBebe", ('orbe', 1600, height - 50)],
+        ["VerdeBebe", ('orbe', 1600, height - 50)],
         ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
         ["BiscoitoNoMapa", ('bisc', 550, 550)],
         # ["Chakra",('chakra', 1600, height-50)],

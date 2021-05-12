@@ -25,7 +25,7 @@ class Jogo:
                    "Super Guri Bros",
                    "Arte-lharia",
                    "Uma Pincelada de Vigor",
-                   "Entre Riscos e Riscos"]
+                   "Entre Riscos e Rabiscos"]
         pygame.display.set_caption(random.choices(caption,[6,1,1,4,4,4])[0])
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))

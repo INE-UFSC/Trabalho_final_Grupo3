@@ -204,7 +204,7 @@ class Tela_De_Jogo(Tela):
         self.__campo_visivel = pygame.Rect(0, 0, width, height)
         self.__comeco = 0
         self.__tempo_maximo = 350
-        self.__fonte = pygame.font.SysFont('Arial', 20)
+        self.__fonte = pygame.font.SysFont('miriam', 48)
         self.__atrasofim = 0
         self.__nivel = nivel
         self.__slot = slot
@@ -313,7 +313,9 @@ class Tela_De_Jogo(Tela):
             self.__jogador.vida_pra_zero()
             self.__atrasofim += 1
             if self.__atrasofim <= 1:
-                self.__textin = self.__fonte.render("PERDEU", False, (0, 0, 0))
+                self.__textin = self.__fonte.render("FIM DE JOGO", False, (0, 0, 0))
+                if self.__mapa.escala_tempo > 1:
+                    self.__textin = pygame.font.SysFont('msminchomspmincho', 48).render("神の御名（みめい）においてしりそける", False, (0, 0, 0))
                 pygame.mixer.music.fadeout(2400)
             else:
                 self.__jogador.tipos_transparentes = classes_instanciaveis
@@ -327,8 +329,8 @@ class Tela_De_Jogo(Tela):
             self.__atrasofim += 1
             if self.__atrasofim <= 1:
                 pygame.mixer.music.fadeout(2400)
-            textin = self.__fonte.render("VENCEU", False, (0, 0, 0))
-            self.superficie.blit(textin, (500, 300))
+            self.__textin = self.__fonte.render("VITÓRIA", False, (0, 0, 0))
+            self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 self.salvar_jogo
                 return [Tela_De_Jogo, [self.superficie, self.__mapa.proxima_fase, self.__slot]] if self.__mapa.proxima_fase else [Menu_Principal, [self.superficie]]

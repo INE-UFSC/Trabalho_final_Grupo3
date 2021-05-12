@@ -135,6 +135,7 @@ class Roxo(PoderGenerico):
     def acao(self, jogador, screen, mapa):
         if not self.descanso:
             mapa.escala_tempo = 0
+            mapa.render_escala_tempo = -1
             self.ativo = True
         elif self.ativo and self.descanso > 30:
             mapa.escala_tempo = 1

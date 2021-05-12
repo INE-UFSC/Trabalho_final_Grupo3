@@ -84,7 +84,7 @@ class Botao:
         self.__centro = [x,y,w,h]
         self.__cor = cor
         self.__corhover = [cor[0]*3/4,cor[1]*3/4,cor[2]*3/4] if not estatico else cor
-        self.__textsf = pygame.font.SysFont(None,28).render(texto,True,(0,0,0))
+        self.__textsf = pygame.font.SysFont('miriam',28).render(texto,True,(0,0,0))
         self.__texttamanho = self.__textsf.get_size()
         self.__borda = borda
         self.__estatico = estatico
