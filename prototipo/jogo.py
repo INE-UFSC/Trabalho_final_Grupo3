@@ -38,10 +38,13 @@ class Jogo:
             ### se acao == 0, nao fazer nada
             ### caso contrario, fazer a acao correspondente ao botao descrito
 
-            if acao == False:
+            if acao[0] == False:
                 break
             elif isinstance(acao,list):
-                self.__janela.tela = acao[0](*acao[1])
+                try:
+                    self.__janela.tela = acao[0](*acao[1])
+                except TypeError:
+                    "nada muda"
             self.__relogio.tick(60)
 
 

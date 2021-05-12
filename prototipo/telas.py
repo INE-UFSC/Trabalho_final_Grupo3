@@ -142,30 +142,30 @@ class Configuracoes(Tela_Menu):
 
     def atualizar(self,ciclo):
         resultado = super().atualizar(ciclo)
-        with resultado[2] as acao:
-            if acao == 1:
-                pygame.display.set_mode(self.__tamanho)
-                self.salvar_config()
-            elif acao == 3:
-                pygame.mixer.music.set_volume(min(round(pygame.mixer.music.get_volume(),1)+0.1,1))
-                self.__volume_musica = round(pygame.mixer.music.get_volume(),1)
-                self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
-            elif acao == 4:
-                pygame.mixer.music.set_volume(max(round(pygame.mixer.music.get_volume(),1)-0.1,0))
-                self.__volume_musica = round(pygame.mixer.music.get_volume(),1)
-                self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
-            elif acao == 9:
-                self.__tamanho[0] = max(600,self.__tamanho[0]-100)
-            elif acao == 10:
-                self.__tamanho[0] = min(1400,self.__tamanho[0]+100)
-            elif acao == 11:
-                self.__tamanho[1] = max(400,self.__tamanho[1]-100)
-            elif acao == 12:
-                self.__tamanho[1] = min(800,self.__tamanho[1]+100)
-            elif acao == 13:
-                pygame.display.set_mode(self.__tamanho)
-                self.salvar_config()
-            self.listabotoes[7].texto = "({}x{})".format(*self.__tamanho)
+        acao = resultado[2]
+        if acao == 1:
+            pygame.display.set_mode(self.__tamanho)
+            self.salvar_config()
+        elif acao == 3:
+            pygame.mixer.music.set_volume(min(round(pygame.mixer.music.get_volume(),1)+0.1,1))
+            self.__volume_musica = round(pygame.mixer.music.get_volume(),1)
+            self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
+        elif acao == 4:
+            pygame.mixer.music.set_volume(max(round(pygame.mixer.music.get_volume(),1)-0.1,0))
+            self.__volume_musica = round(pygame.mixer.music.get_volume(),1)
+            self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
+        elif acao == 9:
+            self.__tamanho[0] = max(600,self.__tamanho[0]-100)
+        elif acao == 10:
+            self.__tamanho[0] = min(1400,self.__tamanho[0]+100)
+        elif acao == 11:
+            self.__tamanho[1] = max(400,self.__tamanho[1]-100)
+        elif acao == 12:
+            self.__tamanho[1] = min(800,self.__tamanho[1]+100)
+        elif acao == 13:
+            pygame.display.set_mode(self.__tamanho)
+            self.salvar_config()
+        self.listabotoes[7].texto = "({}x{})".format(*self.__tamanho)
         return resultado
 
     def salvar_config(self):
