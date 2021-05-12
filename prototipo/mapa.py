@@ -133,7 +133,7 @@ def carregar_mapa():
         ["Voador", ('voador2', 300, height - 450, 400)],
         ["Chao", ('chao', height - 10, 0, 1200)],
         ["Lapis", (600, height - 125, height)],
-        ["Rato", ('rato',700, height - 50)],
+        ["Bolota", (700, height - 50)],
         ["Lapis", (900, height - 125, height)],
 
 
@@ -145,7 +145,7 @@ def carregar_mapa():
         ["Chao", ('chao', height - 10, 1875, 2775)],
         ["Saltante", (1900, height - 100)],
         ["Lapis", (2150, height - 125, height)],
-        ["Rato", ('rato', 2200, height - 50)],
+        ["Bolota", (2200, height - 50)],
         ["Lapis", (2450, height - 125, height)],
 
         ["Chao", ('chao', height - 10, 3050, 3425)],
@@ -339,7 +339,7 @@ def carregar_mapa():
         ["Atirador", (600, height - 150, False)],
         ["Saltante", (750, height - 100)],
         ["Lapis", (850, height - 125, height)],
-        ["Rato", ('rato1', 900, height - 50)],
+        ["Bolota", (900, height - 50)],
         ["Lapis", (1250, height - 125, height)],
 
         ["Temporal", (1600, height - 200)],
@@ -422,8 +422,8 @@ def carregar_mapa():
         ["BiscoitoNoMapa", ('bisc', 550, 550)],
         # ["Chakra",('chakra', 1600, height-50)],
         ##### INIMIGOS #####
-        # ["Rato", ('rato1', 610, height - 50)],
-        # ["Rato",('rato3', 900, height - 50)],
+        # ["Bolota", (610, height - 50)],
+        # ["Bolota",(900, height - 50)],
         ["Saltante", (700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
         ["Temporal", (2000, height - 200)],

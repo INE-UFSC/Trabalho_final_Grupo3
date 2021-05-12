@@ -11,14 +11,14 @@ class Inimigo(Entidade):
 
 
 @instanciavel
-class Rato(Inimigo):
-    def __init__(self, nome: str, x: int, y: int):
+class Bolota(Inimigo):
+    def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
         largura = 46
         altura = 46
         limiteVel = 1
-        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "0", (88, 51, 0), 0)
+        super().__init__("bolota", x, y, altura, largura, limiteVel, vida, danoContato, "bolota", (88, 51, 0), 25)
         self.vely = 0
         self.velx = 1
         self.xinicial = x

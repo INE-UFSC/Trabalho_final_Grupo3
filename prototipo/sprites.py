@@ -27,6 +27,5 @@ class Sprite():
 
     def carregar_sprite(self, nome, posx, posy, tela):
         sprite = self.__dados[nome]
-        # print(sprite)
         x, y, w, h = sprite["x"], sprite["y"], sprite["w"], sprite["h"]
         tela.blit(self.__sprite_sheet, (posx, posy), (x, y, w, h))

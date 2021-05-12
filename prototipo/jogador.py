@@ -1,7 +1,7 @@
 import pygame
 from obstaculos import *
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
-from inimigos import Rato
+from inimigos import Bolota
 from poderes import *
 from sprites import Sprite
 
