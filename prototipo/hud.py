@@ -4,12 +4,12 @@ import pygame
 class Hud:
     def __init__(self,tamanho_tela):
         tt = tamanho_tela
-        self.__vida = Vida(tt[0]*3/50,tt[1]/20)
-        self.__tempo = Tempo(tt[0]*11/50,tt[1]/20)
+        self.__vida = Vida(tt[0]*3/50, tt[1]/20)
+        self.__tempo = Tempo(tt[0]*11/50, tt[1]/20)
         self.__biscoitos = Biscoitos('biscoito tela', tt[0]*7/20, tt[1]/20)
-        self.__barra_poder = BarraPoder(tt[0]*7/10,tt[1]/12)
+        self.__barra_poder = BarraPoder(tt[0]*7/9, tt[1]/12)
         self.__paleta = Paleta(tt[0]/2, tt[1]/20)
-        self.__poder_armazenado = ArmazenadoPoder(tt[0]*7/10, tt[1]*9/40)
+        self.__poder_armazenado = ArmazenadoPoder(tt[0]*7/11, tt[1]/12)
 
     def atualizar(self, tela, mapa, dimensoes_tela, tempo, vida, moedas_pegas, paletas_pegas):
         self.__vida.atualizar(tela, mapa, dimensoes_tela, vida)

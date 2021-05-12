@@ -1,3 +1,4 @@
+import pygame
 from entidades import *
 from sprites import *
 
@@ -13,6 +14,10 @@ class PlataformaMovel(Movel):
         altura = 17
         super().__init__("plataforma_movel", x, y, altura, largura, 5, "0",  (184, 20, 20))
         self.vely = vely
+
+    def renderizar(self, tela, mapa):
+        pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
+                                      self.corpo.w, self.corpo.h])
 
     def mover(self, dimensoesTela, mapa):
         ##### REPOSICIONAMENTO DA PLATAFORMA #####
@@ -83,6 +88,10 @@ class Chao(Obstaculo):
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
         altura = 17
         super().__init__(nome, esquerda, y, altura, direita - esquerda, "0", (184, 20, 20))
+
+    def renderizar(self, tela, mapa):
+        pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
+                                      self.corpo.w, self.corpo.h])
 
 
 @instanciavel

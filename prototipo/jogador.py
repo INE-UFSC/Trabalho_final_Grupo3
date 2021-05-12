@@ -20,8 +20,8 @@ class Jogador(Movel):
         self.__posicao_comeco = (x, y)
         self.__descanso_troca_poder = 0
         ##### ATRIBUTOS POSICIONAIS #####
-        altura = 46
-        largura = 46
+        altura = 45
+        largura = 45
         limite_vel = 5
         #self.__tamanho_jogador = (altura, largura)
         self.__aceleracao = 0
