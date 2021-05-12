@@ -383,7 +383,7 @@ class Temporal(Inimigo):
         if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
         if obsBaixo:
             obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
-            if mapa.jogador.vely < 0:
+            if mapa.jogador.vely < 0 or obsDireita or obsEsquerda:
                 self.vely = -10
 
         ##### GRAVIDADE ######

@@ -49,17 +49,17 @@ class Tela_Menu(Tela):
         self.__contador_menu -= 0.3
         self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
         for evento in pygame.event.get():
-            if evento.type == pygame.QUIT: return False
+            if evento.type == pygame.QUIT: return [False,"BORN TO DIE",0]
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 acao = self.clicar()
                 if type(self.listatelas[acao]) == bool:
-                    return [self.listatelas[acao],"amogus",acao]
+                    return [self.listatelas[acao],"WORLD IS A FUCK",acao]
                 return self.listatelas[acao] + [acao]
         self.superficie.fill(self.__fundo)           #preenche o fundo
         for i in self.__listabotoes:            #renderiza cada botao
             i.renderizar(self.superficie)
         pygame.display.flip()
-        return [True,"sus",0]
+        return [True,"Kill Em All 1989",0]
     
     def clicar(self):
         for i in self.__listabotoes:
@@ -84,7 +84,7 @@ class Botao:
         self.__centro = [x,y,w,h]
         self.__cor = cor
         self.__corhover = [cor[0]*3/4,cor[1]*3/4,cor[2]*3/4] if not estatico else cor
-        self.__textsf = pygame.font.SysFont(None,28).render(texto,True,(0,0,0))
+        self.__textsf = pygame.font.SysFont('miriam',28).render(texto,True,(0,0,0))
         self.__texttamanho = self.__textsf.get_size()
         self.__borda = borda
         self.__estatico = estatico

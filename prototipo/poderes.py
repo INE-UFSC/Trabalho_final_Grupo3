@@ -135,6 +135,7 @@ class Roxo(PoderGenerico):
     def acao(self, jogador, screen, mapa):
         if not self.descanso:
             mapa.escala_tempo = 0
+            mapa.render_escala_tempo = -1
             self.ativo = True
         elif self.ativo and self.descanso > 30:
             mapa.escala_tempo = 1
@@ -247,12 +248,10 @@ class BiscoitoNoMapa(Coletavel):
 @instanciavel
 class Paleta(Coletavel):
     def __init__(self, nome, x, y, cor=(0, 0, 0)):
-
-        self.poder_atribuido = poder_atribuido
         super().__init__(nome, x, y, "0", cor)
 
     def coleta(self, jogador, mapa):
-        jogador.coletar_moeda()
+        jogador.coletar_paleta()
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
 

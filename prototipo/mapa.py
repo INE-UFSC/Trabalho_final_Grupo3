@@ -12,15 +12,18 @@ class Mapa:
         self.__hud = Hud(superficie.get_size())
 
         ##### ATRIBUTOS DE RENDERIZACAO #####
+        
         self.__superficie = superficie
         tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
         self.campo_menor = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
+        self.__background_colour = (150, 220, 255)  # Cor do fundo
 
         ##### ATRIBUTOS TEMPORAIS #####
         self.__tempo_restante = ""
         self.__ciclo = 0
         self.escala_tempo = 1
+        self.render_escala_tempo = 1
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
         self.__vida_jogador = ""
@@ -87,6 +90,14 @@ class Mapa:
     @property
     def moedas_pegas(self):
         return self.__moedas_pegas
+    
+    @property
+    def cor_fundo(self):
+        return self.__background_colour
+    
+    @cor_fundo.setter
+    def cor_fundo(self,cor):
+        self.__background_colour = cor
 
     def iniciar(self, fase,dicionaro_mapa):
         ##### LEITURA DAS FASES A PARTIR DO ARQUIVO JSON #####
@@ -115,6 +126,11 @@ class Mapa:
         self.__vida_jogador = self.__jogador.vida #Pega a vida do jogador pra passar pro hud
         self.__moedas_pegas = self.__jogador.moedas#Pega as moedas que o jogador tem para passar pro hud
         self.__paletas_pegas = self.__jogador.paleta
+        self.render_escala_tempo += max(min(self.escala_tempo - self.render_escala_tempo, 0.05), -0.05)
+        self.cor_fundo = [180-min(self.render_escala_tempo,1)*30,
+            200+min(self.render_escala_tempo,1)*20,
+            210+min(self.render_escala_tempo,1)*45]
+        self.__superficie.fill(self.__background_colour)  # Preenche a cor de fundo
 
         ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
@@ -127,7 +143,7 @@ class Mapa:
 
 
 def carregar_mapa():
-    width = 6500
+    width = 6600
     height = 600
     fase1 = [[
         ["Voador", ('voador2', 300, height - 450, 400)],
@@ -148,33 +164,41 @@ def carregar_mapa():
         ["Bolota", (2200, height - 50)],
         ["Lapis", (2450, height - 125, height)],
 
-        ["Chao", ('chao', height - 10, 3050, 3425)],
-        ["BandanaDoNinja", ('vermelho', 3225, height - 200)],
+        ["Chao", ('chao', height - 10, 3050, 4000)],
+        ["Chao", ('chao', height - 450, 3050, 4000)],
+        ["BandanaDoNinja", ('vermelho', 3325, height - 260)],
         ["Saltante", (3350, height - 100)],
+        ["Chao", ('chao', height - 160, 3975, 4100)],
+        ["Lapis", (3950, height - 125, height)],
+        ["Lapis", (3950, height - 235, height)],
+        ["Lapis", (3950, height - 320, height)],
+        ["Chao", ('chao', height - 320, 3450, 3650)],
+        ["Chao", ('chao', height - 160, 3250, 3450)],
+        ["Paleta", ('paleta1', 3520, 90)],
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 
-        ["Ponta", (4400, height - 125, height)],
-        ["Ponta", (4445, height - 125, height)],
-        ["Ponta", (4490, height - 125, height)],
-        ["Ponta", (4535, height - 125, height)],
-        ["Ponta", (4580, height - 125, height)],
-        ["Ponta", (4625, height - 125, height)],
-        ["Ponta", (4670, height - 125, height)],
-        ["Ponta", (4715, height - 125, height)],
-        ["Ponta", (4760, height - 125, height)],
-        ["Ponta", (4805, height - 125, height)],
-        ["Ponta", (4850, height - 125, height)],
-        ["Ponta", (4895, height - 125, height)],
+        ["Ponta", (4500, height - 125, height)],
+        ["Ponta", (4545, height - 125, height)],
+        ["Ponta", (4590, height - 125, height)],
+        ["Ponta", (4635, height - 125, height)],
+        ["Ponta", (4680, height - 125, height)],
+        ["Ponta", (4725, height - 125, height)],
+        ["Ponta", (4770, height - 125, height)],
+        ["Ponta", (4815, height - 125, height)],
+        ["Ponta", (4860, height - 125, height)],
+        ["Ponta", (4905, height - 125, height)],
+        ["Ponta", (4950, height - 125, height)],
+        ["Ponta", (4995, height - 125, height)],
 
-        ["Saltante", (5575, height - 100)],
-        ["Saltante", (5875, height - 100)],
+        ["Saltante", (5675, height - 100)],
+        ["Saltante", (5775, height - 100)],
 
-        ["Chao", ('chao', 275, 5400, 5800)],
-        ["Saltante", (5725, 175)],
+        ["Chao", ('chao', 275, 5500, 5900)],
+        ["Saltante", (5825, 175)],
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (6300, height - 285)]
+        ["Vitoria", (6400, height - 285)]
 
     ],
 
@@ -186,7 +210,13 @@ def carregar_mapa():
     height = 900
     fase2 = [[
         ["Chao", ('chao', height - 10, 0, 995)],
+        ["Chao", ('chao', height - 200, 200, 400)],
+        ["Bolota", (275, height- 250)],
+        ["BiscoitoNoMapa", ('bisc', 240, height - 300)],
+        ["BiscoitoNoMapa", ('bisc', 290, height - 300)],
+        ["BiscoitoNoMapa", ('bisc', 340, height - 300)],
         ["Lapis", (950, height - 125, height)],
+        ["Atirador", (750, height - 100)],
         ["Atirador", (750, height - 50)],
 
         ["Chao", ('chao', height - 10, 1400, 3000)],
@@ -363,9 +393,9 @@ def carregar_mapa():
 
         ["Ponta", (3500, height - 125, height)],
 
-        ["PlataformaMovel", (100, 3900, 1000, 0.75)],
-        ["PlataformaMovel", (400, 3900, 1000, 0.75)],
-        ["PlataformaMovel", (700, 3900, 1000, 0.75)],
+        ["PlataformaMovel", (100, 3900, 1000, 3)],
+        ["PlataformaMovel", (400, 3900, 1000, 3)],
+        ["PlataformaMovel", (700, 3900, 1000, 3)],
 
         ["Chao", ('chao', height - 10, 5200, 6800)],
         ["Lapis", (5250, height - 125, height)],
@@ -417,7 +447,7 @@ def carregar_mapa():
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
         ["CartolaDoMago", ('orbe1', 250, height - 500)],
         ["OculosDoNerd", ('oculos1', 1525, height - 300)],
-        # ["VerdeBebe", ('orbe', 1600, height - 50)],
+        ["VerdeBebe", ('orbe', 1600, height - 50)],
         ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
         ["BiscoitoNoMapa", ('bisc', 550, 550)],
         # ["Chakra",('chakra', 1600, height-50)],
@@ -439,3 +469,4 @@ def carregar_mapa():
 
     with open("mapas.json", 'w') as imagem:
         json.dump({"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5}, imagem)
+    return json.load(open("mapas.json", 'r'))
