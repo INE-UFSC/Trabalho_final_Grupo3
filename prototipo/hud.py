@@ -30,7 +30,7 @@ class Vida(Estatico):
 
     def renderizar(self, tela, mapa):
         nome = self.nome+"_"+str(self.__vida)
-        self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0)
+        self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0, 0, 0)
 
     def atualizar(self, tela, mapa, dimensoes_tela, vida):
         self.__vida = vida
@@ -58,7 +58,7 @@ class Tempo(Estatico):
             nome = "tempo_"
         self.__contador = self.__fonte.render(str(self.__tempo), False, (0, 0, 0))
         tela.blit(self.__contador, (self.x+70, self.y+35))
-        self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0)
+        self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0, 0, 0)
 
     def atualizar(self, tela, mapa, dimensoes_tela, tempo):
         self.__tempo = tempo
@@ -106,7 +106,7 @@ class BarraPoder(Estatico):
         pygame.draw.rect(tela, self.cor, self.corpo)
         pygame.draw.rect(tela, self.__cor_poder, self.__corpo_poder)
         nome = self.nome+"_"+mapa.jogador.poder.nome
-        self.sprite.imprimir(tela, nome, self.x-70, self.y-18, 0, 0, 0, 0)
+        self.sprite.imprimir(tela, nome, self.x-70, self.y-18, 0, 0, 0, 0, 0, 0)
 
 
 class Paleta(Estatico):

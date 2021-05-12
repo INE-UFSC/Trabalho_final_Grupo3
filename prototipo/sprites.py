@@ -17,15 +17,16 @@ class Sprite():
     def imagem(self):
         return self.__imagem
 
-    def imprimir(self, tela, nome, posx, posy, orientacao, velx, vely, frame):
+    def imprimir(self, tela, nome, posx, posy, orientacao, velx, vely, frame=0, largura=0, altura=0):
         if orientacao == 1: nome = nome + "_right"
         elif orientacao == -1: nome = nome + "_left"
-        #if vely != 0 and nome != "rabisco": nome = nome + "_jump"
         if velx != 0: nome = nome + "_walk"
         if self.__imagem != "sprites/sprites.png": nome = nome + "_" + str(frame)
-        self.carregar_sprite(nome, posx, posy, tela)
+        self.carregar_sprite(nome, posx, posy, largura, altura, tela)
 
-    def carregar_sprite(self, nome, posx, posy, tela):
+    def carregar_sprite(self, nome, posx, posy, width, height, tela):
         sprite = self.__dados[nome]
         x, y, w, h = sprite["x"], sprite["y"], sprite["w"], sprite["h"]
+        if width: w = width
+        if height: h = height
         tela.blit(self.__sprite_sheet, (posx, posy), (x, y, w, h))

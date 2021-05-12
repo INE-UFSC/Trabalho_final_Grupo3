@@ -114,7 +114,7 @@ class Estatico():
         if renderizar_sprite:
             try:
                 self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
-                                     0, 0, 0)
+                                     0, 0, 0, self.__largura, self.__altura)
             except AttributeError:
                 #print(self.nome,"sprite nao encontrado")
                 pass
@@ -410,4 +410,4 @@ class Entidade(Movel):
                                               self.corpo.w, self.corpo.h])
         if renderizar_sprite and type(self.sprite) != list:
             self.sprite.imprimir(tela, self.nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                                    self.face, self.velx, self.vely, int((self.escala_tempo != 0)*mapa.ciclo/6) % self.__frames)
+                        self.face, self.velx, self.vely, int((self.escala_tempo != 0)*mapa.ciclo/6) % self.__frames, 0,0)

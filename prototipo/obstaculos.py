@@ -11,7 +11,7 @@ class Obstaculo(Estatico):
 @instanciavel
 class PlataformaMovel(Movel):
     def __init__(self, y: int , x: int, largura: int, vely):
-        altura = 17
+        altura = 19
         super().__init__("plataforma_movel", x, y, altura, largura, 5, "0",  (184, 20, 20))
         self.vely = vely
 
