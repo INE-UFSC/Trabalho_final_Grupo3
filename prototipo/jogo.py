@@ -43,8 +43,10 @@ class Jogo:
             elif isinstance(acao,list):
                 try:
                     self.__janela.tela = acao[0](*acao[1])
-                except TypeError:
+                except IndexError:
                     "nada muda"
+                except TypeError:
+                    "onaji desu"
             self.__relogio.tick(60)
 
 

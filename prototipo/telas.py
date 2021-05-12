@@ -252,7 +252,7 @@ class Tela_De_Jogo(Tela):
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
                     self.salvar_jogo()
-                    return False
+                    return [False]
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_w: self.__cima = 5
                     if evento.key == pygame.K_s: self.__baixo = 5
@@ -355,4 +355,4 @@ class Tela_De_Jogo(Tela):
         ### PERDENDO POR TEMPO
         if self.__mapa.tempo_restante == 0:
             self.__jogador.vida_pra_zero()
-        return True
+        return [True]
