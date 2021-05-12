@@ -186,6 +186,39 @@ class Jogador(Movel):
         ##### EMPURRA O JOGADOR #####
         self.x = self.posicao_comeco[0]
         self.y = self.posicao_comeco[1]
+    
+    def vai_pro_chao(self, obs_baixo):
+        if not obs_baixo:
+            self.vely = -5
+            return False
+        else:
+            return True
+    
+    def animacao_ganhar(self, obs_baixo, entidade_vitoria):
+        pronto = self.vai_pro_chão(obs_baixo)
+        if pronto:
+            dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.right
+            if dist_meio_vitoria < 0:
+                self.velx = -1
+                meio = False
+            elif dist_meio_vitoria > 0:
+                self.velx = 1
+                meio = False
+            else:
+                self.velx = 0
+                meio = True
+            dist_metade_vitoria = entidade_vitoria.corpo.centery - self.corpo.y -25
+            if dist_metade_vitoria == 0:
+                self.vely = 0
+                metade = True
+            else:
+                metade = False
+        
+            return meio and metade
+        else:
+            return False
+        
+
 
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
 
@@ -287,7 +320,6 @@ class Jogador(Movel):
             else:
                 self.velx = 0
             dist_metade_vitoria = entidade_vitoria.corpo.centery - self.corpo.y -25
-            print(dist_metade_vitoria)
             if dist_metade_vitoria > 0:
                 self.vely = 1
             elif dist_metade_vitoria < 0:
