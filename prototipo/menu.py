@@ -1,4 +1,5 @@
 import pygame
+from efeitosrender import *
 
 class Janela:
     def __init__(self, tela):
@@ -33,7 +34,8 @@ class Tela_Menu(Tela):
         super().__init__(superficie)
         self.__listatelas = listatelas
         self.__listabotoes = listabotoes        #lista de objetos Botao
-        self.__fundo = fundo                    #[red,green,blue] do fundo   
+        self.__fundo = fundo                    #[red,green,blue] do fundo 
+        self.__contador_menu = 0  
     
     @property
     def fundo(self):
@@ -43,21 +45,24 @@ class Tela_Menu(Tela):
     def fundo(self,fundo):
         self.__fundo = fundo
     
-    def atualizar(self):
-        result = self.logica_menu()
+    def atualizar(self,ciclo):
+        self.__contador_menu -= 0.3
+        self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT: return False
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                acao = self.clicar()
+                return self.listatelas[acao] + [acao]
         self.superficie.fill(self.__fundo)           #preenche o fundo
         for i in self.__listabotoes:            #renderiza cada botao
             i.renderizar(self.superficie)
         pygame.display.flip()
-        return result
+        return True
     
     def clicar(self):
         for i in self.__listabotoes:
             if i.clicar():  return self.__listabotoes.index(i)+1
         else: return 0
-    
-    def logica_menu(self):
-        pass
 
     @property
     def listatelas(self):
