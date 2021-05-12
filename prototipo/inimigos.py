@@ -44,14 +44,14 @@ class Rato(Inimigo):
 
 
 @instanciavel
-class PorcoEspinho(Inimigo):
-    def __init__(self, nome: str, x: int, y: int):
+class Espinhento(Inimigo):
+    def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 2
-        largura = 46
-        altura = 46
+        largura = 48
+        altura = 45
         limiteVel = 1
-        super().__init__(nome, x, y, largura, altura, limiteVel, vida, danoContato, "0", (50, 50, 50), 0)
+        super().__init__("espinhento", x, y, altura, largura, limiteVel, vida, danoContato, "espinhento", (50, 50, 50), 8)
         self.vely = 0
         self.velx = 0.5
         self.xinicial = x
@@ -77,7 +77,6 @@ class PorcoEspinho(Inimigo):
             elif direcao == "baixo":
                 jogador.vely = 0
                 jogador.y = self.corpo.top - jogador.altura
-                self.auto_destruir(mapa)
                 return self.dano_contato
             ##### COLISAO CIMA #####
             elif direcao == "cima":

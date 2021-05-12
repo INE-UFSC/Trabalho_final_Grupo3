@@ -223,11 +223,11 @@ def carregar_mapa():
         ["Chao", ('chao', height - 500, 4900, 5200)],
 
         ["Lapis", (4700, height - 125, height)],
-        ["PorcoEspinho", ('porco', 4800, height - 50)],
-        ["PorcoEspinho", ('porco', 4900, height - 50)],
-        ["PorcoEspinho", ('porco', 5000, height - 50)],
-        ["PorcoEspinho", ('porco', 5100, height - 50)],
-        ["PorcoEspinho", ('porco', 5200, height - 50)],
+        ["Espinhento", (4800, height - 50)],
+        ["Espinhento", (4900, height - 50)],
+        ["Espinhento", (5000, height - 50)],
+        ["Espinhento", (5100, height - 50)],
+        ["Espinhento", (5200, height - 50)],
         ["Lapis", (5300, height - 125, height)],
 
         ["Chao", ('chao', height - 10, 5800, 6800)],
@@ -427,7 +427,7 @@ def carregar_mapa():
         ["Saltante", (700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
         ["Temporal", (2000, height - 200)],
-        # ["PorcoEspinho", ('porco1', 900, height - 50)]
+        # ["Espinhento", ('porco1', 900, height - 50)]
         # ["Atirador",(1150, height - 50)],
         ["Atirador", (1000, height - 205, False)]
 
