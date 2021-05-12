@@ -143,7 +143,7 @@ class Mapa:
 
 
 def carregar_mapa():
-    width = 6500
+    width = 6600
     height = 600
     fase1 = [[
         ["Voador", ('voador2', 300, height - 450, 400)],
@@ -178,27 +178,27 @@ def carregar_mapa():
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 
-        ["Ponta", (4400, height - 125, height)],
-        ["Ponta", (4445, height - 125, height)],
-        ["Ponta", (4490, height - 125, height)],
-        ["Ponta", (4535, height - 125, height)],
-        ["Ponta", (4580, height - 125, height)],
-        ["Ponta", (4625, height - 125, height)],
-        ["Ponta", (4670, height - 125, height)],
-        ["Ponta", (4715, height - 125, height)],
-        ["Ponta", (4760, height - 125, height)],
-        ["Ponta", (4805, height - 125, height)],
-        ["Ponta", (4850, height - 125, height)],
-        ["Ponta", (4895, height - 125, height)],
+        ["Ponta", (4500, height - 125, height)],
+        ["Ponta", (4545, height - 125, height)],
+        ["Ponta", (4590, height - 125, height)],
+        ["Ponta", (4635, height - 125, height)],
+        ["Ponta", (4680, height - 125, height)],
+        ["Ponta", (4725, height - 125, height)],
+        ["Ponta", (4770, height - 125, height)],
+        ["Ponta", (4815, height - 125, height)],
+        ["Ponta", (4860, height - 125, height)],
+        ["Ponta", (4905, height - 125, height)],
+        ["Ponta", (4950, height - 125, height)],
+        ["Ponta", (4995, height - 125, height)],
 
-        ["Saltante", (5575, height - 100)],
-        ["Saltante", (5875, height - 100)],
+        ["Saltante", (5675, height - 100)],
+        ["Saltante", (5775, height - 100)],
 
-        ["Chao", ('chao', 275, 5400, 5800)],
-        ["Saltante", (5725, 175)],
+        ["Chao", ('chao', 275, 5500, 5900)],
+        ["Saltante", (5825, 175)],
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (6300, height - 285)]
+        ["Vitoria", (6400, height - 285)]
 
     ],
 
@@ -210,7 +210,13 @@ def carregar_mapa():
     height = 900
     fase2 = [[
         ["Chao", ('chao', height - 10, 0, 995)],
+        ["Chao", ('chao', height - 200, 200, 400)],
+        ["Bolota", (275, height- 250)],
+        ["BiscoitoNoMapa", ('bisc', 240, height - 300)],
+        ["BiscoitoNoMapa", ('bisc', 290, height - 300)],
+        ["BiscoitoNoMapa", ('bisc', 340, height - 300)],
         ["Lapis", (950, height - 125, height)],
+        ["Atirador", (750, height - 100)],
         ["Atirador", (750, height - 50)],
 
         ["Chao", ('chao', height - 10, 1400, 3000)],

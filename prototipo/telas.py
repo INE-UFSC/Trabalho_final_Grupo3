@@ -218,9 +218,6 @@ class Tela_De_Jogo(Tela):
         self.__bola_fogo = False
         self.__troca_poder = False
 
-        ###### INSTANCIAS DE OBJETOS ######
-        self.__jogador = Jogador('mario', 200, -1000, 0, 1)
-
         ##### MAPA #####
         self.__mapa = Mapa(superficie)
         # self.__jogador = Jogador('mario',200, 0, 0, 1)
@@ -332,7 +329,7 @@ class Tela_De_Jogo(Tela):
             self.__textin = self.__fonte.render("VITÓRIA", False, (0, 0, 0))
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
-                self.salvar_jogo
+                self.salvar_jogo()
                 return [Tela_De_Jogo, [self.superficie, self.__mapa.proxima_fase, self.__slot]] if self.__mapa.proxima_fase else [Menu_Principal, [self.superficie]]
 
         ##### RENDERIZACAO DA TELA #####
@@ -346,7 +343,7 @@ class Tela_De_Jogo(Tela):
         except AttributeError:
             pass
         pygame.display.flip()
-        self.__tempo_maximo += 1 / 60 - self.__mapa.escala_tempo / 60
+        self.__tempo_maximo += (1 - self.__mapa.escala_tempo) / 60
         tempo_decorrido = pygame.time.get_ticks() / 1000 - self.__comeco
         if not self.__mapa.ganhou:
             self.__mapa.tempo_restante = int(max(self.__tempo_maximo - tempo_decorrido, 0))
