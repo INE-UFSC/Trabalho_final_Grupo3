@@ -174,6 +174,7 @@ def carregar_mapa():
         ["Lapis", (3950, height - 320, height)],
         ["Chao", ('chao', height - 320, 3450, 3650)],
         ["Chao", ('chao', height - 160, 3250, 3450)],
+        ["Paleta", ('paleta1', 3520, 90)],
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 

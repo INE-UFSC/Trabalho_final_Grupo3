@@ -35,7 +35,7 @@ class Jogador(Movel):
         self.__invisivel = 0
         self.__moedas = 0
         self.escala_tempo = 1
-        self.__paleta = 5
+        self.__paleta = 4
 
         super().__init__(nome, x, y, altura, largura, limite_vel, "0")
 
@@ -286,6 +286,14 @@ class Jogador(Movel):
                 self.velx = 1
             else:
                 self.velx = 0
+            dist_metade_vitoria = entidade_vitoria.corpo.centery - self.corpo.y -25
+            print(dist_metade_vitoria)
+            if dist_metade_vitoria > 0:
+                self.vely = 1
+            elif dist_metade_vitoria < 0:
+                self.vely = -1
+            else:
+                self.vely = 0
 
         if self.velx > self.poder.limite_vel:
             if self.velx > self.poder.limite_vel + 1:
