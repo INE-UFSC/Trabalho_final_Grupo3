@@ -2,6 +2,7 @@
 import pygame
 from entidades import *
 from poderes import *
+from random import randrange
 
 
 class Inimigo(Entidade):
@@ -166,7 +167,8 @@ class Atirador(Inimigo):
         self.xinicial = x
         self.escala_tempo = 1
         self.__poder = Projetil()
-        self.__descanso_poder = 150
+        self.__descanso_poder_max = 150
+        self.__descanso_poder = self.__descanso_poder_max + randrange(0,50)
         self.__gravidade = 1
 
 
@@ -196,7 +198,7 @@ class Atirador(Inimigo):
 
             if self.__descanso_poder <= 0:
                 self.__poder.acao(self, tela, mapa, velx, vely, altura_random)
-                self.__descanso_poder = 300
+                self.__descanso_poder = self.__descanso_poder_max + randrange(0, 50)
             else:
                 self.__descanso_poder -= 1 * self.escala_tempo
         return False

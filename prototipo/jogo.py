@@ -226,7 +226,6 @@ class Configuracoes(Tela_Menu):
                 "musica":self.__volume_musica,
                 "efeitos":self.__volume_efeitos},c)
 
-
 class Creditos(Tela_Menu):
     def __init__(self,superficie):
         self.__tamanho = superficie.get_size()

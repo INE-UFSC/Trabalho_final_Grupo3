@@ -127,56 +127,9 @@ class Mapa:
 
 
 def carregar_mapa():
-    width = 4200
-    height = 700
-    fase1 = [[
-        ["Lapis", (550, height - 125, height)],
-        ["Lapis", (800, height - 125, height)],
-        ["Lapis", (1500, height - 125, height)],
-
-        ["Bloco", ('bloco1', 200, height - 350)],
-        ["Bloco", ('bloco2', 250, height - 300)],
-        ["Bloco", ('bloco3', 300, height - 250)],
-        ["Bloco", ('bloco4', 350, height - 200)],
-        ["Bloco", ('bloco5', 1000, height - 200)],
-        ["Bloco", ('bloco6', 1020, height - 200)],
-
-        ["Chao", ('chao1', height - 10, -200, 350)],
-        ["Chao", ('chao2', height - 10, 450, 2205)],
-        ["Chao", ('chao3', height - 10, 2500, 4205)],
-
-        ##### BORDA E VITORIA #####
-        ["Vitoria", (4000, height - 285)],
-
-        ["Gelatina", (1000, height - 450)],
-
-        ##### PODERES #####
-        ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
-        ["CartolaDoMago", ('orbe1', 250, height - 500)],
-        ["OculosDoNerd", ('oculos1', 1525, height - 300)],
-        #["VerdeBebe", ('orbe', 1600, height - 50)],
-        ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
-        ["BiscoitoNoMapa", ('bisc', 550, 550)],
-        #["Chakra",('chakra', 1600, height-50)],
-        ##### INIMIGOS #####
-        #["Rato", ('rato1', 610, height - 50)],
-        # ["Rato",('rato3', 900, height - 50)],
-        ["Saltante", (700, height - 250)],
-        ["Voador", ('voador1', 100, height - 500, 200)],
-        ["Temporal", (2000, height - 200)],
-        # ["PorcoEspinho", ('porco1', 900, height - 50)]
-        #["Atirador",(1150, height - 50)],
-        ["Atirador",(1000, height - 205, False)]
-
-    ],
-
-        (width, height),
-        
-        "fase2"]
-
     width = 6500
     height = 600
-    fase2 = [[
+    fase1 = [[
         ["Voador", ('voador2', 300, height - 450, 400)],
         ["Chao", ('chao', height - 10, 0, 1200)],
         ["Lapis", (600, height - 125, height)],
@@ -227,11 +180,11 @@ def carregar_mapa():
 
         (width, height),
         
-        "fase3"]
+        "fase2"]
 
     width = 6800
     height = 900
-    fase3 = [[
+    fase2 = [[
         ["Chao", ('chao', height - 10, 0, 995)],
         ["Lapis", (950, height - 125, height)],
         ["Atirador", (750, height - 50)],
@@ -296,11 +249,11 @@ def carregar_mapa():
 
         (width, height),
 
-        "fase4"]
+        "fase3"]
 
     width = 6800
     height = 900
-    fase4 = [[
+    fase3 = [[
         ["Chao", ('chao', height-10, 0, 2250)],
         ["Lapis", (950, height - 125, height)],
         ["Gelatina", (700, height - 160)],
@@ -375,7 +328,114 @@ def carregar_mapa():
 
         (width, height),
         
+        "fase4"]
+
+    width = 6800
+    height = 900
+    fase4 = [[
+        ["Temporal", (300, height - 200)],
+        ["Chao", ('chao', height - 10, 0, 1400)],
+        ["Atirador", (600, height - 100, False)],
+        ["Atirador", (600, height - 150, False)],
+        ["Saltante", (750, height - 100)],
+        ["Lapis", (850, height - 125, height)],
+        ["Rato", ('rato1', 900, height - 50)],
+        ["Lapis", (1250, height - 125, height)],
+
+        ["Temporal", (1600, height - 200)],
+        ["Temporal", (1900, height - 200)],
+        ["Temporal", (2200, height - 200)],
+
+        ["Chao", ('chao', height - 10, 2400, 3700)],
+        ["Ponta", (2500, height - 125, height)],
+
+        ["Chao", ('chao', height - 400, 2700, 2850)],
+        ["Atirador", (2730, height - 450, False)],
+        ["Atirador", (2730, height - 500, False)],
+
+        ["Gelatina", (2800, height - 200)],
+        ["BoneMarinheiro", ('cabelo', 2975, height - 200)],
+        ["Saltante", (3100, height - 100)],
+
+        ["Chao", ('chao', height - 400, 3250, 3400)],
+        ["Atirador", (3280, height - 450, False)],
+        ["Atirador", (3280, height - 500, False)],
+
+        ["Ponta", (3500, height - 125, height)],
+
+        ["PlataformaMovel", (100, 3900, 1000, 0.75)],
+        ["PlataformaMovel", (400, 3900, 1000, 0.75)],
+        ["PlataformaMovel", (700, 3900, 1000, 0.75)],
+
+        ["Chao", ('chao', height - 10, 5200, 6800)],
+        ["Lapis", (5250, height - 125, height)],
+
+        ["Atirador", (5600, height - 100, False)],
+        ["Atirador", (5600, height - 150, False)],
+        ["Saltante", (5750, height - 100)],
+
+        ["Atirador", (6200, height - 100, False)],
+        ["Atirador", (6200, height - 150, False)],
+        ["Saltante", (6350, height - 100)],
+
+        ["Chao", ('chao', height - 350, 6250, 6500)],
+        ["Temporal", (6375, height - 450)],
+
+        ##### BORDA E VITORIA #####
+        ["Vitoria", (6600, height - 285)]
+
+    ],
+
+        (width, height),
+
+        False]
+
+    width = 4200
+    height = 700
+    fase5 = [[
+        ["Lapis", (550, height - 125, height)],
+        ["Lapis", (800, height - 125, height)],
+        ["Lapis", (1500, height - 125, height)],
+
+        ["Bloco", ('bloco1', 200, height - 350)],
+        ["Bloco", ('bloco2', 250, height - 300)],
+        ["Bloco", ('bloco3', 300, height - 250)],
+        ["Bloco", ('bloco4', 350, height - 200)],
+        ["Bloco", ('bloco5', 1000, height - 200)],
+        ["Bloco", ('bloco6', 1020, height - 200)],
+
+        ["Chao", ('chao1', height - 10, -200, 350)],
+        ["Chao", ('chao2', height - 10, 450, 2205)],
+        ["Chao", ('chao3', height - 10, 2500, 4205)],
+
+        ##### BORDA E VITORIA #####
+        ["Vitoria", (4000, height - 285)],
+
+        ["Gelatina", (1000, height - 450)],
+
+        ##### PODERES #####
+        ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
+        ["CartolaDoMago", ('orbe1', 250, height - 500)],
+        ["OculosDoNerd", ('oculos1', 1525, height - 300)],
+        # ["VerdeBebe", ('orbe', 1600, height - 50)],
+        ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
+        ["BiscoitoNoMapa", ('bisc', 550, 550)],
+        # ["Chakra",('chakra', 1600, height-50)],
+        ##### INIMIGOS #####
+        # ["Rato", ('rato1', 610, height - 50)],
+        # ["Rato",('rato3', 900, height - 50)],
+        ["Saltante", (700, height - 250)],
+        ["Voador", ('voador1', 100, height - 500, 200)],
+        ["Temporal", (2000, height - 200)],
+        # ["PorcoEspinho", ('porco1', 900, height - 50)]
+        # ["Atirador",(1150, height - 50)],
+        ["Atirador", (1000, height - 205, False)]
+
+    ],
+
+        (width, height),
+
         False]
 
     with open("mapas.json", 'w') as imagem:
-        json.dump({"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4}, imagem)
+        json.dump({"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5}, imagem)
