@@ -222,10 +222,11 @@ class Atirador(Inimigo):
         if self.corpo.colliderect(mapa.campo_visivel):
             self.velx = 0
             dist_x_jogador = self.x - mapa.jogador.x
-            if dist_x_jogador > 0:
-                self.face = -1
-            elif dist_x_jogador < 0:
-                self.face = 1
+            if self.escala_tempo > 0:
+                if dist_x_jogador > 0:
+                    self.face = -1
+                elif dist_x_jogador < 0:
+                    self.face = 1
         else:
             self.x += 2 * self.escala_tempo * self.face * self.__anda
         self.y += self.vely * self.escala_tempo
