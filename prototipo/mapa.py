@@ -12,15 +12,18 @@ class Mapa:
         self.__hud = Hud(superficie.get_size())
 
         ##### ATRIBUTOS DE RENDERIZACAO #####
+        
         self.__superficie = superficie
         tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
         self.campo_menor = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
+        self.__background_colour = (150, 220, 255)  # Cor do fundo
 
         ##### ATRIBUTOS TEMPORAIS #####
         self.__tempo_restante = ""
         self.__ciclo = 0
         self.escala_tempo = 1
+        self.render_escala_tempo = 1
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
         self.__vida_jogador = ""
@@ -87,6 +90,14 @@ class Mapa:
     @property
     def moedas_pegas(self):
         return self.__moedas_pegas
+    
+    @property
+    def cor_fundo(self):
+        return self.__background_colour
+    
+    @cor_fundo.setter
+    def cor_fundo(self,cor):
+        self.__background_colour = cor
 
     def iniciar(self, fase,dicionaro_mapa):
         ##### LEITURA DAS FASES A PARTIR DO ARQUIVO JSON #####
@@ -115,6 +126,11 @@ class Mapa:
         self.__vida_jogador = self.__jogador.vida #Pega a vida do jogador pra passar pro hud
         self.__moedas_pegas = self.__jogador.moedas#Pega as moedas que o jogador tem para passar pro hud
         self.__paletas_pegas = self.__jogador.paleta
+        self.render_escala_tempo += max(min(self.escala_tempo - self.render_escala_tempo, 0.05), -0.05)
+        self.cor_fundo = [180-min(self.render_escala_tempo,1)*30,
+            200+min(self.render_escala_tempo,1)*20,
+            210+min(self.render_escala_tempo,1)*45]
+        self.__superficie.fill(self.__background_colour)  # Preenche a cor de fundo
 
         ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
@@ -363,9 +379,9 @@ def carregar_mapa():
 
         ["Ponta", (3500, height - 125, height)],
 
-        ["PlataformaMovel", (100, 3900, 1000, 0.75)],
-        ["PlataformaMovel", (400, 3900, 1000, 0.75)],
-        ["PlataformaMovel", (700, 3900, 1000, 0.75)],
+        ["PlataformaMovel", (100, 3900, 1000, 3)],
+        ["PlataformaMovel", (400, 3900, 1000, 3)],
+        ["PlataformaMovel", (700, 3900, 1000, 3)],
 
         ["Chao", ('chao', height - 10, 5200, 6800)],
         ["Lapis", (5250, height - 125, height)],
@@ -439,3 +455,4 @@ def carregar_mapa():
 
     with open("mapas.json", 'w') as imagem:
         json.dump({"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5}, imagem)
+    return json.load(open("mapas.json", 'r'))

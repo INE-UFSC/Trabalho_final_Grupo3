@@ -1,17 +1,16 @@
 import pygame, json
 from jogador import Jogador
-from mapa import Mapa
+from mapa import Mapa,carregar_mapa
 from menu import *
 from entidades import classes_instanciaveis, renderizar_hitbox
 from efeitosrender import *
 
-with open("mapas.json","r") as objeto_mapas:
-    dicionaro_mapa = json.load(objeto_mapas)
+dicionaro_mapa = carregar_mapa()
 
 class Tela_Pause(Sobreposicao):
     def __init__(self,tela):
         continuar = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2, 200, 50, (220, 0, 0), "Continuar", 5)
-        sair = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2+60, 200, 50, (220, 0, 0), "Sair", 5)
+        sair = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2+60, 200, 50, (220, 0, 0), "Desistir", 5)
         listabotoes = [continuar,sair]
         listatelas = [True,False,"Fechar"]
         super().__init__(listabotoes,((50,50,50),(tela.superficie.get_size()[0]/2-120,tela.superficie.get_size()[1]/2-35,240,130)),tela,listatelas)
@@ -199,8 +198,8 @@ class Creditos(Tela_Menu):
 
 class Tela_De_Jogo(Tela):
     def __init__(self, superficie, nivel,slot):
+        global dicionaro_mapa
         super().__init__(superficie)
-        self.__background_colour = (150, 220, 255)  # Cor do fundo
         (width, height) = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, width, height)
         self.__comeco = 0
@@ -295,7 +294,6 @@ class Tela_De_Jogo(Tela):
             self.__troca_poder = False
 
         ##### FILA DE RENDERIZACAO E ATUALIZACAO #####
-        self.superficie.fill(self.__background_colour)  # Preenche a cor de fundo
 
         self.__mapa.atualizar(self.superficie, self.__campo_visivel, self.superficie.get_size(),ciclo)
 

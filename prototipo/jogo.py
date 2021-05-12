@@ -54,6 +54,5 @@ class Jogo:
 
 pygame.init()
 pygame.mixer.music.load('musica_fundo.ogg')
-carregar_mapa()
 jogo = Jogo()
 jogo.menu_inicial()
