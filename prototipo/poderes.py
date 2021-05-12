@@ -57,6 +57,7 @@ class PoderGenerico:
 
 
 ##### FORMA PADRAO DO JOGADOR #####
+@poder_no_jogador
 class Cinza(PoderGenerico):
     def __init__(self):
         super().__init__("Cinza", False, 0, 5, 9, 1, (150,150,150))
@@ -69,6 +70,7 @@ class Cinza(PoderGenerico):
 
 
 ##### PODER DO DASH #####
+@poder_no_jogador
 class Vermelho(PoderGenerico):
     def __init__(self):
         super().__init__("Vermelho", False, 0, 7, 10, 80, (50, 50, 50))
@@ -85,6 +87,7 @@ class Vermelho(PoderGenerico):
 
 
 ##### PODER DA BOLA DE FOGO #####
+@poder_no_jogador
 class Laranja(PoderGenerico):
     def __init__(self):
         super().__init__("Laranja", False, 0, 5, 9, 40, (255, 50, 50))
@@ -104,6 +107,7 @@ class Laranja(PoderGenerico):
 
 
 ##### PODER DA INTANGIBILIDADE #####
+@poder_no_jogador
 class Azul(PoderGenerico):
     def __init__(self):
         super().__init__("Azul", False, 0, 5, 9, 600, (50, 50, 255))
@@ -127,6 +131,7 @@ class Azul(PoderGenerico):
 
 
 ##### PODER DE PARAR O TEMPO #####
+@poder_no_jogador
 class Roxo(PoderGenerico):
     def __init__(self):
         super().__init__("Roxo", False, 300, 5, 9, 600, (80, 10, 120))
@@ -153,6 +158,7 @@ class Roxo(PoderGenerico):
 
 
 ##### PODER DE ACELERAR O TEMPO #####
+@poder_no_jogador
 class Verde(PoderGenerico):
     def __init__(self):
         super().__init__("Verde", False, 300, 5, 9, 600, (5, 200, 40))
@@ -168,6 +174,7 @@ class Verde(PoderGenerico):
 
 
 ###### ataque ninja #####
+@poder_no_jogador
 class Marrom(PoderGenerico):
     def __init__(self):
         super().__init__("Marrom", False, 0, 5, 9, 40, (255, 255, 0))

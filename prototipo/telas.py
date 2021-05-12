@@ -2,6 +2,7 @@ import pygame, json
 from jogador import Jogador
 from mapa import Mapa,carregar_mapa
 from menu import *
+from poderes import *
 from entidades import classes_instanciaveis, renderizar_hitbox
 from efeitosrender import *
 
@@ -42,8 +43,9 @@ class Carregar_Jogo(Tela_Menu):
                 slots = json.load(saves)
         except:
             with open("saves.json","w") as saves:
-                slots = {'0':["Novo Jogo","fase1"],'1':["Novo Jogo","fase1"],'2':["Novo Jogo","fase1"]
-                          ,'3':["Novo Jogo","fase1"],'4':["Novo Jogo","fase1"]}
+                slots = {'0':["Novo Jogo","fase1","Cinza","Cinza",0],'1':["Novo Jogo","fase1","Cinza","Cinza",0],
+                         '2':["Novo Jogo","fase1","Cinza","Cinza",0],'3':["Novo Jogo","fase1","Cinza","Cinza",0],
+                         '4':["Novo Jogo","fase1","Cinza","Cinza",0]}
                 json.dump(slots,saves)
         
         encaixe = [slots[str(i)] for i in range(5)]
@@ -86,7 +88,7 @@ class Deletar_Save(Tela_Menu):
         if resultado[2] == 1:
             with open("saves.json","r") as saves:
                 slots = json.load(saves)
-            slots[self.__save] = ["Novo Jogo","fase1"]
+            slots[self.__save] = ["Novo Jogo","fase1","Cinza","Cinza",0]
             with open("saves.json","w") as saves:
                 json.dump(slots,saves)
         return resultado
@@ -177,6 +179,7 @@ class Configuracoes(Tela_Menu):
                 "efeitos":self.__volume_efeitos,
                 "telacheia":self.__tela_cheia},c)
 
+
 class Creditos(Tela_Menu):
     def __init__(self,superficie):
         w,h = superficie.get_size()
@@ -195,9 +198,8 @@ class Creditos(Tela_Menu):
         super().__init__(listabotoes,cormenu,superficie,listatelas)
     
 
-
 class Tela_De_Jogo(Tela):
-    def __init__(self, superficie, nivel,slot):
+    def __init__(self, superficie, nivel, slot):
         global dicionaro_mapa
         super().__init__(superficie)
         (width, height) = superficie.get_size()
@@ -220,7 +222,15 @@ class Tela_De_Jogo(Tela):
 
         ##### MAPA #####
         self.__mapa = Mapa(superficie)
-        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa)
+        poder_atual = Cinza()
+        poder_armazenado = Cinza()
+        # for item in poderes_no_jogador:
+        #     if item.__name__ == self.__slot[2]:
+        #         poder_atual = item
+        #     if item.__name__ == self.__slot[3]:
+        #         poder_armazenado = item
+        print(self.__slot)
+        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, 4)
         self.__comeco = pygame.time.get_ticks() / 1000
     
     def salvar_jogo(self):
