@@ -27,6 +27,7 @@ class Jogador(Movel):
         self.__aceleracao = 0
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
+        self.__tipos_transparentes = [BolaFogo, Vitoria]
         self.__poder = Cinza()
         self.__poder_armazenado = Cinza()
         self.__recuperacao = 0
@@ -174,9 +175,9 @@ class Jogador(Movel):
         else:
             campo_x = campo_visivel.x
         if self.y < campo_visivel.y + tamanho_tela[1]/3:
-            campo_y = max(0, min((mapa.tamanho[1] - campo_visivel.h, self.y - tamanho_tela[1]/3)))
+            campo_y = min((mapa.tamanho[1] - campo_visivel.h, self.y - tamanho_tela[1]/3))
         elif self.y > campo_visivel.y + tamanho_tela[1]/2:
-            campo_y = max(0, min((mapa.tamanho[1] - campo_visivel.h, self.y - tamanho_tela[1]/2)))
+            campo_y = min((mapa.tamanho[1] - campo_visivel.h, self.y - tamanho_tela[1]/2))
         else:
             campo_y = campo_visivel.y
         return pygame.Rect(campo_x, campo_y, campo_visivel.w, campo_visivel.h)
@@ -196,7 +197,7 @@ class Jogador(Movel):
 
         ##### COLISOES #####
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo, Vitoria])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, self.tipos_transparentes)
         obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
         dano_total = 0
 
