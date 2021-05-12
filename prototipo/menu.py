@@ -49,17 +49,17 @@ class Tela_Menu(Tela):
         self.__contador_menu -= 0.3
         self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
         for evento in pygame.event.get():
-            if evento.type == pygame.QUIT: return False
+            if evento.type == pygame.QUIT: return [False,"BORN TO DIE",0]
             if evento.type == pygame.MOUSEBUTTONDOWN:
                 acao = self.clicar()
                 if type(self.listatelas[acao]) == bool:
-                    return [self.listatelas[acao],"amogus",acao]
+                    return [self.listatelas[acao],"WORLD IS A FUCK",acao]
                 return self.listatelas[acao] + [acao]
         self.superficie.fill(self.__fundo)           #preenche o fundo
         for i in self.__listabotoes:            #renderiza cada botao
             i.renderizar(self.superficie)
         pygame.display.flip()
-        return [True,"sus",0]
+        return [True,"Kill Em All 1989",0]
     
     def clicar(self):
         for i in self.__listabotoes:

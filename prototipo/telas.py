@@ -35,9 +35,6 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
                 ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],[Tela_De_Jogo,[superficie,"fase4",'6']],[Tela_De_Jogo,[superficie,"fase5",'6']],[Configuracoes,[superficie]]]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
 
-    def menu_inicial(self):
-        pass
-
 
 class Carregar_Jogo(Tela_Menu):
     def __init__(self,superficie):
@@ -110,15 +107,17 @@ class Fim_De_Jogo(Tela_Menu):
 
 class Configuracoes(Tela_Menu):
     def __init__(self,superficie):
-        self.__mudanca_tamanho = False
-        self.__tamanho = list(superficie.get_size())
-        self.__volume_musica = pygame.mixer.music.get_volume()
-        self.__volume_efeitos = 1 ### IMPLEMENTAR VOLUME DE EFEITOS SONOROS!!! ###
+        with open("configs.json","r") as c:
+            configs = json.load(c)
+            self.__tamanho = configs["resolucao"]
+            self.__volume_musica = configs["musica"]
+            self.__volume_efeitos = configs["efeitos"] ### IMPLEMENTAR VOLUME DE EFEITOS SONOROS!!! ###
+            self.__tela_cheia = configs["telacheia"]
         t = self.__tamanho
     
-        sair = Botao(120, t[1]-45, 200, 50, (220, 60, 60), "Voltar", 5)
+        sair = Botao(120, superficie.get_size()[1]-45, 200, 50, (220, 60, 60), "Salvar e Sair", 5)
 
-        musica = Botao(360, 120, 140, 50, (200, 200, 200), "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100)), 5,True)
+        musica = Botao(360, 120, 140, 50, (200, 200, 200), "Musica: "+ str(int(round(self.__volume_musica,1)*100)), 5,True)
         musica_mais = Botao(360, 70, 40, 40, (160, 220, 60), "+", 5)
         musica_menos = Botao(360, 170, 40, 40, (220, 160, 60), "-", 5)
 
@@ -132,11 +131,13 @@ class Configuracoes(Tela_Menu):
         tela_altura_menos = Botao(140, 190, 60, 40, (220, 160, 60), "-100", 5)
         tela_altura_mais = Botao(140, 50, 60, 40, (160, 220, 60), "+100", 5)
 
-        creditos = Botao(295, 240, 150, 40, (160, 220, 60), "Créditos", 5)
+        tela_cheia = Botao(295, 240, 150, 40, (160, 220, 60) if self.__tela_cheia else (220,160,60), "Tela Cheia", 5)
+
+        creditos = Botao(295, 300, 150, 40, (160, 220, 60), "Créditos", 5)
 
         listabotoes = [sair,musica,musica_mais,musica_menos,efeitos,efeitos_mais,efeitos_menos,
-                        tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais,creditos]
-        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(11)] + [[Creditos,[superficie]]]
+                        tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais,tela_cheia,creditos]
+        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(12)] + [[Creditos,[superficie]]]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
@@ -144,7 +145,7 @@ class Configuracoes(Tela_Menu):
         resultado = super().atualizar(ciclo)
         acao = resultado[2]
         if acao == 1:
-            pygame.display.set_mode(self.__tamanho)
+            pygame.display.set_mode(self.__tamanho,pygame.FULLSCREEN if self.__tela_cheia else 0)
             self.salvar_config()
         elif acao == 3:
             pygame.mixer.music.set_volume(min(round(pygame.mixer.music.get_volume(),1)+0.1,1))
@@ -163,7 +164,9 @@ class Configuracoes(Tela_Menu):
         elif acao == 12:
             self.__tamanho[1] = min(800,self.__tamanho[1]+100)
         elif acao == 13:
-            pygame.display.set_mode(self.__tamanho)
+            self.__tela_cheia = not self.__tela_cheia
+            self.listabotoes[12].cor = (160, 220, 60) if self.__tela_cheia else (220,160,60)
+        elif acao == 14:
             self.salvar_config()
         self.listabotoes[7].texto = "({}x{})".format(*self.__tamanho)
         return resultado
@@ -172,30 +175,26 @@ class Configuracoes(Tela_Menu):
         with open("configs.json","w") as c:
             json.dump({"resolucao":self.__tamanho,
                 "musica":self.__volume_musica,
-                "efeitos":self.__volume_efeitos},c)
+                "efeitos":self.__volume_efeitos,
+                "telacheia":self.__tela_cheia},c)
 
 class Creditos(Tela_Menu):
     def __init__(self,superficie):
-        self.__tamanho = superficie.get_size()
-        pygame.display.set_mode((600,700))
-        listabotoes = [Botao(120, 655, 200, 50, (220, 60, 60), "Voltar", 5)]
-        listabotoes.append(Botao(300, 90, 100, 50, (220, 220, 220), "Créditos", 5,True))
+        w,h = superficie.get_size()
+
+        listabotoes = [Botao(120, h-45, 200, 50, (220, 60, 60), "Voltar", 5)]
+        listabotoes.append(Botao(w/2, 90, 100, 50, (220, 220, 220), "Créditos", 5,True))
         listapessoas = [   ### COLOCAR AQUI NOMES E CREDITOS
             ["funcao1","nome1",(220,0,0)],
             ["funcao2","nome2",(220,220,0)],
             ["funcao3","nome3",(0,220,0)]]
         for pessoa in listapessoas:
-            listabotoes.append(Botao(125, 150 + listapessoas.index(pessoa)*60, 225, 50, pessoa[2], pessoa[0], 5,True))
-            listabotoes.append(Botao(425, 150 + listapessoas.index(pessoa)*60, 325, 50, pessoa[2], pessoa[1], 5,True))
-        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(2*len(listapessoas)+1)]
+            listabotoes.append(Botao(w/2-175, 150 + listapessoas.index(pessoa)*60, 225, 50, pessoa[2], pessoa[0], 5,True))
+            listabotoes.append(Botao(w/2+125, 150 + listapessoas.index(pessoa)*60, 325, 50, pessoa[2], pessoa[1], 5,True))
+        listatelas = [True,[Configuracoes,[superficie]]] + [True for i in range(2*len(listapessoas)+1)]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
     
-    def atualizar(self,ciclo):
-        resultado = super().atualizar(ciclo)
-        if resultado[2] == 1:
-            pygame.display.set_mode(self.__tamanho)
-        return resultado
 
 
 class Tela_De_Jogo(Tela):

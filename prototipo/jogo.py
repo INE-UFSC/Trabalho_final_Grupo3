@@ -13,11 +13,13 @@ class Jogo:
         except FileNotFoundError:
             configs = {"resolucao":[1000,600],
                 "musica":1,
-                "efeitos":1}
+                "efeitos":1,
+                "telacheia":False}
+            json.dump(configs,open("configs.json","w"))
         
         (width, height) = configs["resolucao"]  # Tamanho da tela
         pygame.mixer.music.set_volume(configs["musica"])
-        self.__screen = pygame.display.set_mode((width, height))  # Cria o objeto da tela
+        self.__screen = pygame.display.set_mode((width, height),pygame.FULLSCREEN if configs["telacheia"] else 0)  # Cria o objeto da tela
         caption = ["As Aventuras do Guri",
                    "A Aventura Bizarra de Guri",
                    "Super Guri Bros",
