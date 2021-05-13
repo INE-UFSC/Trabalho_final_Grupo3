@@ -166,8 +166,8 @@ class Atirador(Inimigo):
         self.xinicial = x
         self.escala_tempo = 1
         self.__poder = Projetil()
-        self.__descanso_poder_max = 150
-        self.__descanso_poder = self.__descanso_poder_max + randrange(0,50)
+        self.__descanso_poder_max = 125
+        self.__descanso_poder = randrange(0,25)
         self.__gravidade = 1
 
 
