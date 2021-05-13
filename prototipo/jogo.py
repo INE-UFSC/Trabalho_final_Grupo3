@@ -1,5 +1,5 @@
 import pygame, random, json
-from mapa import carregar_mapa
+from mapa import *
 from menu import *
 from efeitosrender import *
 from telas import *
