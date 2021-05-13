@@ -8,8 +8,8 @@ class Hud:
         self.__tempo = Tempo(tt[0]*11/50, tt[1]/20)
         self.__biscoitos = Biscoitos('biscoito tela', tt[0]*7/20, tt[1]/20)
         self.__barra_poder = BarraPoder(tt[0]*7/9, tt[1]/12)
-        self.__paleta = Paleta(tt[0]/2, tt[1]/20)
-        self.__poder_armazenado = ArmazenadoPoder(tt[0]*7/11, tt[1]/12)
+        self.__paleta = Paleta(tt[0]*11/20, tt[1]/20)
+        self.__poder_armazenado = ArmazenadoPoder(tt[0]*11/20+92, tt[1]/20+35)
 
     def atualizar(self, tela, mapa, dimensoes_tela, tempo, vida, moedas_pegas, paletas_pegas):
         self.__vida.atualizar(tela, mapa, dimensoes_tela, vida)
@@ -142,5 +142,5 @@ class ArmazenadoPoder(Estatico):
         return False
 
     def renderizar(self, tela, mapa):
-        nome = self.nome+"_"+mapa.jogador.poder_armazenado.nome
+        nome = "poder_"+mapa.jogador.poder_armazenado.nome
         self.sprite.imprimir(tela, nome, self.x-70, self.y-18, 0, 0, 0, 0)
