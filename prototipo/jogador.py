@@ -36,6 +36,7 @@ class Jogador(Movel):
         self.__moedas = 0
         self.escala_tempo = 1
         self.__paleta = 4
+        self.__auxiliar = 0
 
         super().__init__(nome, x, y, altura, largura, limite_vel, "0")
 
@@ -189,34 +190,38 @@ class Jogador(Movel):
     
     def vai_pro_chao(self, obs_baixo):
         if not obs_baixo:
-            self.vely = -5
+            self.vely -= 1
+            self.y += self.vely
+            self.renderizar(screen, campo_visivel, ciclo)
             return False
         else:
+            
             return True
     
     def animacao_ganhar(self, obs_baixo, entidade_vitoria):
-        pronto = self.vai_pro_chão(obs_baixo)
-        if pronto:
-            dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.right
-            if dist_meio_vitoria < 0:
-                self.velx = -1
-                meio = False
-            elif dist_meio_vitoria > 0:
-                self.velx = 1
-                meio = False
-            else:
-                self.velx = 0
-                meio = True
-            dist_metade_vitoria = entidade_vitoria.corpo.centery - self.corpo.y -25
-            if dist_metade_vitoria == 0:
-                self.vely = 0
-                metade = True
-            else:
-                metade = False
-        
-            return meio and metade
+        dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.right
+        if dist_meio_vitoria < 0:
+            self.velx = -1
+            meio = False
+        elif dist_meio_vitoria > 0:
+            self.velx = 1
+            meio = False
         else:
-            return False
+            self.velx = 0
+            meio = True
+        dist_metade_vitoria = entidade_vitoria.corpo.centery - self.corpo.y -25
+        if dist_metade_vitoria == 0:
+            self.vely = 0
+            metade = True
+        else:
+            metade = False
+        if self.vely != 0:
+            self.vely -= 1
+        self.y += self.vely
+        self.x += self.velx
+        self.renderizar(screen, campo_visivel, ciclo)
+    
+        return meio and metade
         
 
 
@@ -310,8 +315,13 @@ class Jogador(Movel):
             self.vely = -self.poder.pulo
 
         ##### AJUSTE DE VELOCIDADE MAXIMA #####
-        # entrando no castelo #
+        # entrando na trla de pintura #
         if mapa.ganhou:
+            if self.__auxiliar == 0:
+                self.vely = -10
+                self.__auxiliar += 1
+            if self.y == entidade_vitoria.y + self.altura:
+                self.vely = +1
             dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.right
             if dist_meio_vitoria < 0:
                 self.velx = -1
@@ -320,11 +330,8 @@ class Jogador(Movel):
             else:
                 self.velx = 0
             dist_metade_vitoria = entidade_vitoria.corpo.centery - self.corpo.y -25
-            if dist_metade_vitoria > 0:
-                self.vely = 1
-            elif dist_metade_vitoria < 0:
-                self.vely = -1
-            else:
+            print(dist_metade_vitoria, dist_meio_vitoria)
+            if dist_metade_vitoria <= 0 and dist_meio_vitoria == 0:
                 self.vely = 0
 
         if self.velx > self.poder.limite_vel:
