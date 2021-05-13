@@ -5,13 +5,19 @@ from sprites import *
 colisao_analisada = "cano3"
 renderizar_hitbox = True
 renderizar_sprite = True
+modo_dev = True
 gravidade = 0.2
 classes_instanciaveis = []
+imagens_instanciaveis = {}
 poderes_no_jogador = []
 
 #Decorator que indica o que a classe pode ser instanciada no mapa
 def instanciavel(classe):
     classes_instanciaveis.append(classe)
+    return classe
+
+def visivel(classe):
+    imagens_instanciaveis[classe.__name__] = classe.nome_imagem
     return classe
 
 def poder_no_jogador(classe):
