@@ -1,12 +1,13 @@
-import pygame, json
+import pygame
 from jogador import Jogador
-from mapa import Mapa,carregar_mapa
+from mapa import Mapa
 from menu import *
 from poderes import *
 from entidades import classes_instanciaveis, renderizar_hitbox
+from DAOjogo import DAOJogo
 from efeitosrender import *
 
-dicionaro_mapa = carregar_mapa()
+dicionaro_mapa = DAOJogo.mapas
 
 class Tela_Pause(Sobreposicao):
     """Menu utilizado ao pausar jogo
@@ -60,15 +61,7 @@ class Carregar_Jogo(Tela_Menu):
     ou deletar um dos jogos ativos.
     """
     def __init__(self,superficie):
-        try:
-            with open("saves.json","r") as saves:
-                slots = json.load(saves)
-        except:
-            with open("saves.json","w") as saves:
-                slots = {'0':["Novo Jogo","fase1","Cinza","Cinza",0],'1':["Novo Jogo","fase1","Cinza","Cinza",0],
-                         '2':["Novo Jogo","fase1","Cinza","Cinza",0],'3':["Novo Jogo","fase1","Cinza","Cinza",0],
-                         '4':["Novo Jogo","fase1","Cinza","Cinza",0]}
-                json.dump(slots,saves)
+        slots = DAOJogo.saves
         
         encaixe = [slots[str(i)] for i in range(5)]
         deletar_encaixe = ["Deletar" if slots[str(i)][0] != "Novo Jogo" else False for i in range(5)]
@@ -121,11 +114,9 @@ class Deletar_Save(Tela_Menu):
         """
         resultado = super().atualizar(ciclo)
         if resultado[2] == 1: # CONFIRMAR DELECAO
-            with open("saves.json","r") as saves:
-                slots = json.load(saves)
+            slots = DAOJogo.saves
             slots[self.__save] = ["Novo Jogo","fase1","Cinza","Cinza",0]
-            with open("saves.json","w") as saves:
-                json.dump(slots,saves)
+            DAOJogo.saves = slots
         return resultado
 
 
@@ -158,12 +149,11 @@ class Configuracoes(Tela_Menu):
     acaba sendo lidada pelo Jogo.
     """
     def __init__(self,superficie):
-        with open("configs.json","r") as c:
-            configs = json.load(c)
-            self.__tamanho = configs["resolucao"]
-            self.__volume_musica = configs["musica"]
-            self.__volume_efeitos = configs["efeitos"] ### IMPLEMENTAR VOLUME DE EFEITOS SONOROS!!! ###
-            self.__tela_cheia = configs["telacheia"]
+        configs = DAOJogo.configs
+        self.__tamanho = configs["resolucao"]
+        self.__volume_musica = configs["musica"]
+        self.__volume_efeitos = configs["efeitos"] ### IMPLEMENTAR VOLUME DE EFEITOS SONOROS!!! ###
+        self.__tela_cheia = configs["telacheia"]
         t = self.__tamanho
     
         sair = Botao(120, superficie.get_size()[1]-45, 200, 50, (220, 60, 60), "Salvar e Sair", 5)
@@ -234,11 +224,10 @@ class Configuracoes(Tela_Menu):
 
     def salvar_config(self):
         "Salva as configuracoes definidas para o arquivo json"
-        with open("configs.json","w") as c:
-            json.dump({"resolucao":self.__tamanho,
+        DAOJogo.configs = {"resolucao":self.__tamanho,
                 "musica":self.__volume_musica,
                 "efeitos":self.__volume_efeitos,
-                "telacheia":self.__tela_cheia},c)
+                "telacheia":self.__tela_cheia}
 
 
 class Creditos(Tela_Menu):
@@ -299,9 +288,8 @@ class Tela_De_Jogo(Tela):
         self.__mapa = Mapa(superficie)
         poder_atual = Cinza()
         poder_armazenado = Cinza()
-        with open("saves.json","r") as saves:
-            slots = json.load(saves)
-            slot_atual = slots[self.__slot]
+        slots = DAOJogo.saves
+        slot_atual = slots[self.__slot]
         for item in poderes_no_jogador:
             if item.__name__ == slot_atual[2]:
                 poder_atual = item()
@@ -312,12 +300,10 @@ class Tela_De_Jogo(Tela):
     
     def salvar_jogo(self):
         "Salva o jogo ao ganhar ou perder"
-        with open("saves.json","r") as saves:
-            slots = json.load(saves)
-            slots[self.__slot] = [self.__nivel,self.__nivel, type(self.__jogador.poder).__name__,
-                                  type(self.__jogador.poder_armazenado).__name__, self.__jogador.paleta]
-        with open("saves.json","w") as saves:
-            json.dump(slots,saves)
+        slots = DAOJogo.saves
+        slots[self.__slot] = [self.__nivel,self.__nivel, type(self.__jogador.poder).__name__,
+                                type(self.__jogador.poder_armazenado).__name__, self.__jogador.paleta]
+        DAOJogo.saves = slots
 
     def atualizar(self, ciclo):
         '''Logica de jogo, envolvendo controles, colisao e renderizacao

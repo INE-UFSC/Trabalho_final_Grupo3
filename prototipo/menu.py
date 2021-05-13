@@ -163,7 +163,7 @@ class Botao:
     
     @texto.setter
     def texto(self,texto):
-        self.__textsf = pygame.font.SysFont(None,28).render(texto,True,(0,0,0))
+        self.__textsf = pygame.font.SysFont('miriam',28).render(texto,True,(0,0,0))
         self.__texttamanho = self.__textsf.get_size()
 
     def renderizar(self,superficie):
