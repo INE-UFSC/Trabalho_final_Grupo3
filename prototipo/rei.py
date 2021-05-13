@@ -1,6 +1,7 @@
 from entidades import *
 from inimigos import *
 from poderes import *
+from obstaculos import *
 
 class ParteDoRei(Entidade):
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str, cor, frames: int):
@@ -254,14 +255,15 @@ class ReiDasCores(Entidade):
         self.__coracao = coracao
 
 
-    def fase_0(self):
+    def fase_0(self, mapa):
         self.__cabeca.descanso_poder_max = 100
         self.__cabeca.numero_de_projeteis = 5
+        mapa.lista_de_entidades.append(PlataformaMovel(100, 200, 400))
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.__descanso_ate_prox_fase: self.__descanso_ate_prox_fase -= 1
         else:
-            self.fase_0()
+            self.fase_0(mapa)
         self.mover(dimensoes_tela, mapa)
         self.renderizar(tela, mapa)
 
