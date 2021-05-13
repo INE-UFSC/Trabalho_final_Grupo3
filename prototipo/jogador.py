@@ -25,7 +25,6 @@ class Jogador(Movel):
         altura = 45
         largura = 45
         limite_vel = 5
-        #self.__tamanho_jogador = (altura, largura)
         self.__aceleracao = 0
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
@@ -38,7 +37,7 @@ class Jogador(Movel):
         self.__moedas = 0
         self.escala_tempo = 1
         self.__paleta = paletas_coletadas
-        self.__auxiliar = 0
+        self.__auxiliar = 0 #usado para fazer o jogador pular no instane que toca no castelo
         self.__congelado = False
 
         super().__init__(nome, x, y, altura, largura, limite_vel, "0")
@@ -50,14 +49,6 @@ class Jogador(Movel):
     @property
     def paleta(self):
         return self.__paleta
-
-    # @property
-    # def tamanho_jogador(self):
-    #     return self.__tamanho_jogador
-    #
-    # @tamanho_jogador.setter
-    # def tamanho_jogador(self, tamanho_jogador):
-    #     self.__tamanho_jogador = tamanho_jogador
 
     @property
     def poder(self):
@@ -125,10 +116,10 @@ class Jogador(Movel):
     def coletar_paleta(self):
         if self.__paleta < 3:
             self.__paleta += 1
-        elif self.__vida < 5:
-            self.__vida += 1
         else:
             self.coletar_moeda()
+        if self.__vida < 5:
+            self.__vida += 1
 
     def congelar(self):
         self.__congelado = True
@@ -170,7 +161,7 @@ class Jogador(Movel):
         self.renderizar(screen, campo_visivel, ciclo)
 
         ##### ATUALIZACAO DOS PODERES #####
-        if self.__recarga > 0: self.__recarga -= 1
+        #if self.__recarga > 0: self.__recarga -= 1
         self.__invisivel = self.__poder.atualizar(screen, mapa)
 
         ##### SIDESCROLL #####

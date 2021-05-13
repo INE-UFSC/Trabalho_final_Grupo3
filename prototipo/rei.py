@@ -98,8 +98,8 @@ class PunhoVermelho(ParteDoRei):
 
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        atira = 0
-        if not self.__atirando:
+        atira = 0 #define se o boss vai laçar a mão
+        if not self.__atirando: #se não esta lançando a posição é colada ao boss e conta para poder atirar
             self.__descanso_tiro -= 1
             if self.__descanso_tiro == 0:
                 self.__atirou = False
@@ -110,7 +110,7 @@ class PunhoVermelho(ParteDoRei):
             self.vely = 0
             self.velx = 0
         
-        self.lancar(mapa.jogador, mapa, atira)
+        self.lancar(mapa.jogador, mapa, atira) # lançar é o mover da mão
         if not self.montado: self.montar(mapa)
         ##### ATUALIZACAO DO CORACAO #####
         if self.__lado == "direito":
@@ -132,11 +132,11 @@ class PunhoVermelho(ParteDoRei):
         if obsBaixo:
             obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
             self.velx = 0
-        if velx_buff and not self.velx and self.__atirando:
+        if velx_buff and not self.velx and self.__atirando: # se acabou de de tocar no chão começa o tempo de espera paravoltar ao corpo
             self.vely = 0
             self.__espera = 120
-            self.__atirou = True
-        if self.__espera == 0 and self.__atirou:
+            self.__atirou = True # variavel para deixar a função de voltar
+        if self.__espera == 0: #and self.__atirou:
             dstancia = (((self.__centro_y) - (self.y)) ** 2 + (
                 self.__centro_x - self.x) ** 2) ** (1 / 2)
             divisor = max(dstancia / self.__vel_projetil,0.001)
@@ -148,7 +148,7 @@ class PunhoVermelho(ParteDoRei):
         else:
             self.__espera -= 1
         
-        if abs(self.__centro_x - self.corpo.centerx) >= 700:
+        if abs(self.__centro_x - self.corpo.centerx) >= 700 or abs((self.__centro_y) - (self.y)) >= 700:
             self.__espera = 0
             self.__atirou = True
 
@@ -256,9 +256,9 @@ class CabecaLaranja(ParteDoRei):
 
         ##### FALA PRA ELE QUANDO ATIRAR FOGO #####
         if self.fase == 2:
-            numero_de_projeteis = 7
+            numero_de_projeteis = 0
         else:
-            numero_de_projeteis = 1
+            numero_de_projeteis = 0
         if self.__descanso_poder <= 0:
             for i in range(numero_de_projeteis):
                 self.__poder.acao(self, tela, mapa, velx, vely, 0+10*i)
@@ -272,19 +272,19 @@ class CabecaLaranja(ParteDoRei):
         if not jogador.invisivel:
             if direcao == "esquerda":
                 if jogador.velx <= 0:
+                    if jogador.velx >= 8: #cabeça toma dano se for batida via dash
+                        self.__quebrado = True
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.right + 1
-                    if type(jogador.poder) == Vermelho:
-                        self.__quebrado = True
             ##### COLISAO DIREITA #####
             elif direcao == "direita":
                 if jogador.velx >= 0:
+                    if jogador.velx >= 8: #cabeça toma dano se for batida via dash
+                        self.__quebrado = True
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.left - jogador.largura
-                    if type(jogador.poder) == Vermelho:
-                        self.__quebrado = True
             ##### COLISAO BAIXO #####
             elif direcao == "baixo":
                 jogador.vely = 0
