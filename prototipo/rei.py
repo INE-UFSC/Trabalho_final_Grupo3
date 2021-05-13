@@ -116,7 +116,6 @@ class PunhoVermelho(ParteDoRei):
         if self.__lado == "direito":
             self.__centro_x = self.rei.x + 200
             self.__centro_y = self.rei.y + 100
-            print(self.__quebrado)
         else:
             self.__centro_x = self.rei.x - 100
             self.__centro_y = self.rei.y + 100
@@ -144,16 +143,6 @@ class PunhoVermelho(ParteDoRei):
 
             self.velx = ((self.__centro_x - self.x)) / divisor
             self.vely = ((self.__centro_y) - (self.y)) / divisor
-            #if abs(self.__centro_x - self.corpo.centerx) <= 20:
-                #print("oi")
-                #self.velx = 0
-            #if abs((self.__centro_y) - (self.y)) <= 20:
-                #self.vely = 0
-                #print("cheguei")
-            #if not self.velx and not self.vely:
-                #print("eu") #voce?
-            #if self.__lado == 'esquerdo':
-                #print(dstancia)
             if dstancia <= 8:
                 self.__atirando = False
         else:
@@ -216,7 +205,7 @@ class CabecaLaranja(ParteDoRei):
         self.__descanso_poder_max = 125
         self.__descanso_poder = randrange(0, 25)
         self.__poder = Projetil()
-        self.__montado = False
+        self.__quebrado = False
         altura = 50
         largura = 50
         dano_contato = 1
@@ -241,6 +230,7 @@ class CabecaLaranja(ParteDoRei):
         self.__numero_de_projeteis = numero_de_projeteis
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        print(self.__quebrado)
 
         if not self.montado: self.montar(mapa)
 
@@ -285,12 +275,16 @@ class CabecaLaranja(ParteDoRei):
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.right + 1
+                    if type(jogador.poder) == Vermelho:
+                        self.__quebrado = True
             ##### COLISAO DIREITA #####
             elif direcao == "direita":
                 if jogador.velx >= 0:
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.left - jogador.largura
+                    if type(jogador.poder) == Vermelho:
+                        self.__quebrado = True
             ##### COLISAO BAIXO #####
             elif direcao == "baixo":
                 jogador.vely = 0

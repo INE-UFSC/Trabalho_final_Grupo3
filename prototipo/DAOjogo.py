@@ -1,6 +1,6 @@
 import json, pygame, os
 from mapa import montar_mapas
-from entidades import classes_instanciaveis
+from entidades import *
 
 class DAO:
     def __init__(self):
@@ -31,6 +31,8 @@ class DAO:
     
     def carregar_mapas(self):
         try:
+            if modo_dev:
+                raise FileNotFoundError
             self.__mapas = json.load(open("mapas.json","r"))
         except FileNotFoundError:
             with open("mapas.json","w") as mapa_arquivo:
