@@ -9,6 +9,14 @@ from efeitosrender import *
 dicionaro_mapa = carregar_mapa()
 
 class Tela_Pause(Sobreposicao):
+    """Menu utilizado ao pausar jogo
+
+    Funciona igual a uma tela, mas nao substitui a tela do jogo,
+    apenas eh renderizada apos ela, com logica de botoes
+
+    Possui botoes para continuar o jogo,
+    ou desistir e perder automaticamente
+    """
     def __init__(self,tela):
         continuar = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2, 200, 50, (220, 0, 0), "Continuar", 5)
         sair = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2+60, 200, 50, (220, 0, 0), "Desistir", 5)
@@ -17,7 +25,15 @@ class Tela_Pause(Sobreposicao):
         super().__init__(listabotoes,((50,50,50),(tela.superficie.get_size()[0]/2-120,tela.superficie.get_size()[1]/2-35,240,130)),tela,listatelas)
 
 
-class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
+class Menu_Principal(Tela_Menu):
+    """Menu principal do jogo
+    
+    Temporariamente possui botoes para testar cada fase
+
+    Tambem possui botoes para ir a tela de selecao de arquivo de save,
+    para a tela de configuracoes,
+    e para sair do jogo.
+    """
     def __init__(self, superficie):
         t = superficie.get_size()
         botaonivel_1 = Botao(t[0]/5, t[1]/6, 100, 50, (220, 0, 0), "Fase 1", 5)
@@ -37,6 +53,12 @@ class Menu_Principal(Tela_Menu):  # QUASE QUE UMA INSTANCIA DA CLASSE TELA_MENU
 
 
 class Carregar_Jogo(Tela_Menu):
+    """ Menu de selecionar save game
+
+    O jogador pode selecionar um espaco vazio para iniciar um novo jogo,
+    selecionar um ja ocupado para iniciar o jogo gravado nele,
+    ou deletar um dos jogos ativos.
+    """
     def __init__(self,superficie):
         try:
             with open("saves.json","r") as saves:
@@ -72,6 +94,14 @@ class Carregar_Jogo(Tela_Menu):
 
 
 class Deletar_Save(Tela_Menu):
+    """Tela que apaga um jogo salvo
+
+    Apos apertar um dos botoes de deletar na tela de escolha,
+    o jogador devera confirmar se quer mesmo deletar seu jogo salvo
+
+    Ambos botoes levam o jogador de volta para a tela de selecao,
+    mas confirmar tambem apaga o slot selecionado
+    """
     def __init__(self,superficie,save):
         t = superficie.get_size()
         self.__save = save
@@ -84,8 +114,13 @@ class Deletar_Save(Tela_Menu):
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
     def atualizar(self,ciclo):
+        """Como outras telas, checa cada botao e responde de acordo
+
+        Se o botao apertado for o de deletar,
+        ele salva no arquivo de saves que o slot esta vazio
+        """
         resultado = super().atualizar(ciclo)
-        if resultado[2] == 1:
+        if resultado[2] == 1: # CONFIRMAR DELECAO
             with open("saves.json","r") as saves:
                 slots = json.load(saves)
             slots[self.__save] = ["Novo Jogo","fase1","Cinza","Cinza",0]
@@ -95,6 +130,12 @@ class Deletar_Save(Tela_Menu):
 
 
 class Fim_De_Jogo(Tela_Menu):
+    """Tela apresentada ao jogador apos perder
+
+    Caso o jogador perca toda a vida ou acabe o tempo, 
+    lhe eh dada a opcao de reiniciar a fase do comeco,
+    ou voltar ao menu principal
+    """
     def __init__(self,superficie,nivel,save):
         t = superficie.get_size()
         texto = Botao(t[0]/2, t[1]/3, 550, 150, (200, 200, 200), "Você perdeu...", 5,True)
@@ -107,6 +148,15 @@ class Fim_De_Jogo(Tela_Menu):
 
 
 class Configuracoes(Tela_Menu):
+    """ Tela de configuracoes de jogo
+
+    Altera configuracoes referentes ao jogo,
+    salvando-as em um arquivo json para serem iniciadas
+    quando o jogo for iniciado pela proxima vez.
+
+    Configuracoes padroes, quando se joga pela primeira vez
+    acaba sendo lidada pelo Jogo.
+    """
     def __init__(self,superficie):
         with open("configs.json","r") as c:
             configs = json.load(c)
@@ -143,36 +193,47 @@ class Configuracoes(Tela_Menu):
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
     def atualizar(self,ciclo):
+        """Como outras telas, checa cada botao e responde de acordo
+
+        Possui botoes para alterar a altura e largura da tela,
+        alterar entre tela cheia e janela,
+        o volume da musica e dos efeitos,
+        acessar a tela de creditos do jogo,
+        e voltar ao menu principal
+
+        return proxima tela como definido no atualizar da superclasse
+        """
         resultado = super().atualizar(ciclo)
         acao = resultado[2]
-        if acao == 1:
+        if acao == 1: # SAIR, SALVAR E APLICAR CONFIGS
             pygame.display.set_mode(self.__tamanho,pygame.FULLSCREEN if self.__tela_cheia else 0)
             self.salvar_config()
-        elif acao == 3:
+        elif acao == 3: # AUMENTAR VOLUME - MAX: 100
             pygame.mixer.music.set_volume(min(round(pygame.mixer.music.get_volume(),1)+0.1,1))
             self.__volume_musica = round(pygame.mixer.music.get_volume(),1)
             self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
-        elif acao == 4:
+        elif acao == 4: # DIMINUIR VOLUME - MIN: 0
             pygame.mixer.music.set_volume(max(round(pygame.mixer.music.get_volume(),1)-0.1,0))
             self.__volume_musica = round(pygame.mixer.music.get_volume(),1)
             self.listabotoes[1].texto = "Musica: "+ str(int(round(pygame.mixer.music.get_volume(),1)*100))
-        elif acao == 9:
+        elif acao == 9: # DIMINUIR LARGURA DA TELA - MIN: 600
             self.__tamanho[0] = max(600,self.__tamanho[0]-100)
-        elif acao == 10:
+        elif acao == 10: # AUMENTAR LARGURA - MAX: 1400
             self.__tamanho[0] = min(1400,self.__tamanho[0]+100)
-        elif acao == 11:
+        elif acao == 11: # DIMINUIR ALTURA - MIN: 400
             self.__tamanho[1] = max(400,self.__tamanho[1]-100)
-        elif acao == 12:
+        elif acao == 12: # AUMENTAR ALTURA - MAX: 800
             self.__tamanho[1] = min(800,self.__tamanho[1]+100)
-        elif acao == 13:
+        elif acao == 13: # ALTERNAR TELA CHEIA
             self.__tela_cheia = not self.__tela_cheia
             self.listabotoes[12].cor = (160, 220, 60) if self.__tela_cheia else (220,160,60)
-        elif acao == 14:
+        elif acao == 14: # SALVAR CONFIGS PARA ENTRAR NOS CREDITOS
             self.salvar_config()
         self.listabotoes[7].texto = "({}x{})".format(*self.__tamanho)
         return resultado
 
     def salvar_config(self):
+        "Salva as configuracoes definidas para o arquivo json"
         with open("configs.json","w") as c:
             json.dump({"resolucao":self.__tamanho,
                 "musica":self.__volume_musica,
@@ -181,6 +242,11 @@ class Configuracoes(Tela_Menu):
 
 
 class Creditos(Tela_Menu):
+    """ Tela de Creditos, todos que criaram algo neste jogo
+
+    Botoes simplesmente mostram a funcao e nome de cada um,
+    seja artista ou programador, exceto o que retorna as configuracoes
+    """
     def __init__(self,superficie):
         w,h = superficie.get_size()
 
@@ -199,6 +265,15 @@ class Creditos(Tela_Menu):
     
 
 class Tela_De_Jogo(Tela):
+    """ Tela responsavel pelo nivel em si
+
+    Guarda algumas das variaveis utilizadas no jogo,
+    enquanto outras pertencem ao mapa sendo utilizado
+
+    @param superficie: superficie pygame
+    @param nivel: nome do nivel a ser carregado
+    @param slot: slot de jogo salvo selecionado
+    """
     def __init__(self, superficie, nivel, slot):
         global dicionaro_mapa
         super().__init__(superficie)
@@ -234,6 +309,7 @@ class Tela_De_Jogo(Tela):
         self.__comeco = pygame.time.get_ticks() / 1000
     
     def salvar_jogo(self):
+        "Salva o jogo ao ganhar ou perder"
         with open("saves.json","r") as saves:
             slots = json.load(saves)
             slots[self.__slot] = [self.__nivel,self.__nivel]
@@ -248,7 +324,8 @@ class Tela_De_Jogo(Tela):
         @param ciclo: responsavel pelas frames de animacao do Rabisco
         
         @returns: Instancia da proxima tela a ser executada apos o nivel
-                  Ou False se o jogo for fechado
+                  [False] se o jogo for fechado,
+                  [True] se o jogo continuar na frame seguinte
         '''
         if isinstance(self.__sobreposicao,Sobreposicao): pausado = True
         else: pausado = False
@@ -341,16 +418,19 @@ class Tela_De_Jogo(Tela):
                 self.salvar_jogo()
                 return [Tela_De_Jogo, [self.superficie, self.__mapa.proxima_fase, self.__slot]] if self.__mapa.proxima_fase else [Menu_Principal, [self.superficie]]
 
-        ##### RENDERIZACAO DA TELA #####
+        ##### TELA DE PAUSE NO JOGO #####
         try:
             resultado = self.__sobreposicao.atualizar(ciclo)
             if not resultado:
                 self.__sobreposicao = None
             elif resultado == "Fechar":
                 self.salvar_jogo()
+                pygame.mixer.music.fadeout(2400)
                 return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
         except AttributeError:
             pass
+
+        ### FLIP PARA PASSAR PARA A TELA, LOGICA DE TEMPO
         pygame.display.flip()
         self.__tempo_maximo += (1 - self.__mapa.escala_tempo) / 60
         tempo_decorrido = pygame.time.get_ticks() / 1000 - self.__comeco

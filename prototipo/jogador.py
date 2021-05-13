@@ -7,6 +7,8 @@ from sprites import Sprite
 
 
 class Jogador(Movel):
+    """ Entidade controlada pela pessoa que joga, o jogador
+    """
     def __init__(self, nome: str, x: int, y: int, poder_atual: PoderGenerico, poder_armazenado: PoderGenerico, paletas_coletadas: int):
         ##### ATRIBUTOS GERAIS #####
         self.__vida = 5
@@ -128,6 +130,7 @@ class Jogador(Movel):
             self.coletar_moeda()
 
     def renderizar(self, tela, campo_visivel, ciclo):
+        "renderiza na tela na posicao correta"
     
         if renderizar_hitbox:
             pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
@@ -137,7 +140,12 @@ class Jogador(Movel):
                 self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
                                 self.face, self.velx, self.vely, ciclo % 12)
 
-    def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito):  ### REQUER AREA VISIVEL PARA RENDERIZAR
+    def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): 
+        """define logica de interacao com objetos especificos
+        
+        return o campo que determina a renderizacao do mapa
+        para permitir sidescrolling
+        """
         pega_poder_armazenado = entradas[3]
         tamanho_tela = screen.get_size()
         if self.__descanso_troca_poder == 0:
@@ -191,7 +199,7 @@ class Jogador(Movel):
 
 
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
-
+        "Atualiza posicao e velocidade"
         self.escala_tempo = 1
 
         ##### MOVIMENTO HORIZONTAL #####
@@ -325,6 +333,7 @@ class Jogador(Movel):
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
     def poderes(self, screen, mapa, acao=False, outros_poderes=False):
+        "Faz com que o jogador ative seu poder quando disponivel"
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
         if acao:
             self.__poder.acao(self, screen, mapa)

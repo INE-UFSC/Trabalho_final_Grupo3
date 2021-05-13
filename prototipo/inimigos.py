@@ -12,6 +12,7 @@ class Inimigo(Entidade):
 
 @instanciavel
 class Bolota(Inimigo):
+    "Inimigo comum, anda em uma direcao e muda quando bate"
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
@@ -25,6 +26,7 @@ class Bolota(Inimigo):
         self.escala_tempo = 1
 
     def mover(self, dimensoesTela, mapa):
+        "Atualiza posicao e velocidade"
 
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
@@ -45,6 +47,7 @@ class Bolota(Inimigo):
 
 @instanciavel
 class Espinhento(Inimigo):
+    "Inimigo que da dano quando esmagado"
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 2
@@ -58,6 +61,7 @@ class Espinhento(Inimigo):
         self.escala_tempo = 1
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        "Detecta colisao com jogador, return dano caso valido"
         ##### COLISAO ESQUERDA #####
         if not jogador.invisivel:
             if direcao == "esquerda":
@@ -88,6 +92,7 @@ class Espinhento(Inimigo):
             return 0
 
     def mover(self, dimensoesTela, mapa):
+        "Atualiza posicao e velocidade"
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
@@ -107,6 +112,7 @@ class Espinhento(Inimigo):
 
 @instanciavel
 class Voador(Inimigo):
+    "Inimigo que voa, ignora o jogador por maior parte"
     def __init__(self, nome: str, x: int, y: int, altitude: int):
         vida = 1
         danoContato = 1
@@ -122,7 +128,7 @@ class Voador(Inimigo):
         self.escala_tempo = 1
 
     def mover(self, dimensoesTela, mapa):
-
+        "Atualiza posicao e velocidade"
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades,
                                                                          [Bala, PoderNoMapa, Estatico])
@@ -152,6 +158,7 @@ class Voador(Inimigo):
 
 @instanciavel
 class Atirador(Inimigo):
+    "Inimigo que atira bolas de fogo periodicamente"
     def __init__(self, x: int, y: int, anda = True):
         vida = 1
         danoContato = 1
@@ -172,6 +179,7 @@ class Atirador(Inimigo):
 
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        "Determina se atira ou nao"
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         self.mover(dimensoes_tela, mapa)
@@ -203,6 +211,7 @@ class Atirador(Inimigo):
         return False
 
     def mover(self, dimensoesTela, mapa):
+        "Atualiza posicao e velocidade"
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala])
 
@@ -234,6 +243,7 @@ class Atirador(Inimigo):
 
 @instanciavel
 class Saltante(Inimigo):
+    "Inimigo que pula de um lado pro outro"
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
@@ -251,7 +261,7 @@ class Saltante(Inimigo):
         self.face = -1
 
     def mover(self, dimensoesTela, mapa):
-
+        "Atualiza posicao e velocidade"
         ##### COISA PRO PULO MAIS PRA FRENTE #####
         vely_buff = self.vely
 
@@ -289,6 +299,7 @@ class Saltante(Inimigo):
 
 @instanciavel
 class Gelatina(Inimigo):
+    "Inimigo que nem eh solido, mas deixa lento ao atravessar"
     def __init__(self, x: int, y: int, anda = True):
         vida = 1
         danoContato = 1
@@ -303,7 +314,7 @@ class Gelatina(Inimigo):
         self.__anda = anda
 
     def mover(self, dimensoesTela, mapa):
-
+        "Atualiza posicao e velocidade"
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa, Inimigo])
 
@@ -321,6 +332,7 @@ class Gelatina(Inimigo):
         self.x += self.velx * self.escala_tempo * self.__anda
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        "Determina que o jogador fique mais lento ao passar"
         if not jogador.invisivel:
             jogador.escala_tempo = 0.25
         return 0
@@ -331,6 +343,12 @@ class Gelatina(Inimigo):
 
 @instanciavel
 class Temporal(Inimigo):
+    """Inimigo com o mesmo tipo de stand
+
+    Permanece estatico maior parte do tempo, mas eh muito agressivo
+    e rapido quando o tempo esta parado, para fazer com que o
+    jogador use o poder apenas quando necessario
+    """
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
@@ -374,7 +392,7 @@ class Temporal(Inimigo):
             return 0
 
     def mover(self, dimensoesTela, mapa):
-
+        "Atualiza posicao e velocidade,mas no tempo parado"
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 

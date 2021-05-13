@@ -3,7 +3,7 @@ import pygame
 from sprites import *
 
 colisao_analisada = "cano3"
-renderizar_hitbox = True
+renderizar_hitbox = False
 renderizar_sprite = True
 gravidade = 0.2
 classes_instanciaveis = []
@@ -20,6 +20,10 @@ def poder_no_jogador(classe):
 
 
 class Estatico():
+    """Base para qualquer objeto fisico no mapa
+
+    Possui posicao e tamanho
+    """
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, imagem: str, cor=(0, 0, 0)):
         self.__nome = nome
         self.__x = x
@@ -107,10 +111,12 @@ class Estatico():
         self.__cor = cor
 
     def auto_destruir(self, mapa):
+        "Remove-te a ti mesmo"
         if self in mapa.lista_de_entidades:  # RESOLVE PROVISORIAMENTE
             mapa.lista_de_entidades.remove(self)
 
     def renderizar(self, tela, mapa):
+        "Coloca a imagem correspondente na tela"
         if renderizar_hitbox:
             pygame.draw.rect(tela, self.__cor, [self.corpo.x - mapa.campo_visivel.x,
                                                 self.corpo.y - mapa.campo_visivel.y,
@@ -125,11 +131,13 @@ class Estatico():
                 pass
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        "Basicamente, renderiza se estiver na tela, senao, nao"
         if mapa.campo_visivel.colliderect(self.corpo):
             self.renderizar(tela, mapa)
         return False
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        "Detecta colisao com o jogador"
         ##### COLISAO ESQUERDA #####
         if direcao == "esquerda":
             if jogador.velx <= 0:
@@ -152,6 +160,7 @@ class Estatico():
         return 0
 
     def sofreu_colisao_outros(self, entidade, direcao, mapa):
+        "Idem Ibdem so que com outros objetos nao jogador"
         ##### COLISAO ESQUERDA #####
         if direcao == "esquerda":
             if entidade.velx <= 0:
@@ -170,7 +179,10 @@ class Estatico():
 
 
 class Movel(Estatico):
-
+    """Expande no estatico e adiciona a acapacidade de mexer
+    
+    possui tambem velocidade e direcao horizontal
+    """
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limite_vel: int, imagem: str,
                  cor=(0, 0, 0)):
         super().__init__(nome, x, y, altura, largura, imagem, cor)
@@ -216,6 +228,7 @@ class Movel(Estatico):
         pass
 
     def checar_colisao(self, lista_de_entidades, tipos_transparentes):
+        "Detecta colisao com outros objetos no mapa"
         ##### COLISOES #####
         obsBaixo, obsCima, obsEsquerda, obsDireita = 0, 0, 0, 0
 
@@ -263,6 +276,7 @@ class Movel(Estatico):
         return [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        "Governa movimento, assim como seu movimento em tempo distorcido"
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         self.mover(dimensoes_tela, mapa)
@@ -272,6 +286,7 @@ class Movel(Estatico):
         return False
 
     def sofreu_colisao_outros(self, entidade, direcao, mapa):
+        "Determina resultado da colisao"
         if direcao == "esquerda":
             if entidade.velx <= 0:
                 entidade.velx = - entidade.velx
@@ -293,6 +308,7 @@ class Movel(Estatico):
 
 
 class Entidade(Movel):
+    "Expande no movel, adicionando dano de contato e animacoes"
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int,
                  dano_contato: int, imagem: str, cor, frames: int, fogo = False):
         super().__init__(nome, x, y, altura, largura, limiteVel, imagem, cor)

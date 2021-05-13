@@ -7,6 +7,7 @@ import json
 
 
 class Mapa:
+    "Classe que segura todas as entidades de um jogo"
     def __init__(self, superficie):
         self.__lista_de_entidades = []
         self.__hud = Hud(superficie.get_size())
@@ -100,6 +101,9 @@ class Mapa:
         self.__background_colour = cor
 
     def iniciar(self, fase, dicionaro_mapa, poder_atual, poder_armazenado, paletas):
+        """define outras propriedades do mapa fora do __init__()
+        
+        return o objeto jogador a ser utilizado"""
         ##### LEITURA DAS FASES A PARTIR DO ARQUIVO JSON #####
         lista_todos = dicionaro_mapa[fase]
         objetos_no_mapa = lista_todos[0]
@@ -121,6 +125,7 @@ class Mapa:
         return self.__jogador
 
     def atualizar(self, tela, campo_visivel, dimensoes_tela, ciclo):
+        "Atualiza, principalmente renderiza cada objeto componente"
 
         self.__ciclo = ciclo #Frame atual
         self.__campo_visivel = campo_visivel #Aquilo que o jogador ve
@@ -144,6 +149,11 @@ class Mapa:
 
 
 def carregar_mapa():
+    """Funcao que gera os mapas para serem utilizados no jogo
+
+    Facilita adicionar conteudo ao modificar esta funcao
+    em vez de diretamente modificar o arquivo json
+    """
     width = 6600
     height = 600
     fase1 = [[

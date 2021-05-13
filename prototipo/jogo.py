@@ -6,6 +6,13 @@ from telas import *
 
 
 class Jogo:
+    """Classe deus do jogo
+
+    Primeiramente cria a tela de jogo,
+    carregando parametros salvos
+    depois gerencia a janela aberta
+
+    """
     def __init__(self):
         ###### INFORMACOES TA TELA ######
         try:
@@ -19,7 +26,8 @@ class Jogo:
         
         (width, height) = configs["resolucao"]  # Tamanho da tela
         pygame.mixer.music.set_volume(configs["musica"])
-        self.__screen = pygame.display.set_mode((width, height),pygame.FULLSCREEN if configs["telacheia"] else 0)  # Cria o objeto da tela
+        self.__screen = pygame.display.set_mode((width, height),
+        pygame.FULLSCREEN if configs["telacheia"] else 0)
         caption = ["O Risco do Rabisco: A Jornada das Cores"]
                    #  "As Aventuras do Guri",
                    # "A Aventura Bizarra de Guri",
@@ -32,7 +40,19 @@ class Jogo:
         self.__janela = Janela(Menu_Principal(self.__screen))
         self.__relogio = pygame.time.Clock()
 
-    def menu_inicial(self):  # Menu inicial do jogo
+    def rodar(self):
+        """Cria tela do jogo e o roda
+
+        Manda a Tela Atual realizar sua atualizacao
+        e retornar qual sera a tela que a sucede
+        Entao pega a lista retornada e muda para esta
+        caso este seja o caso.
+        Ver Tela_Menu e suas classes filhas para
+        mais detalhe sobre essa instanciacao
+
+        Realiza isso 60x por segundo ate que alguma
+        tela informe que o jogo foi fechado
+        """
         self.__janela.tela = Menu_Principal(self.__screen)
         while True:
             self.__ciclo += 1
@@ -56,4 +76,4 @@ class Jogo:
 pygame.init()
 pygame.mixer.music.load('musica_fundo.ogg')
 jogo = Jogo()
-jogo.menu_inicial()
+jogo.rodar()
