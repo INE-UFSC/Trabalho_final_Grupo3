@@ -5,7 +5,7 @@ from obstaculos import *
 
 class ParteDoRei(Entidade):
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str, cor, frames: int):
-        super().__init__(nome, x, y, altura, largura, limiteVel, vida, dano_contato, imagem, cor, frames)
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, dano_contato, imagem, cor, frames, True)
         self.__montado = False
         self.__fase = 0
         self.__rei = 0
@@ -220,16 +220,20 @@ class CoracaoRoxo(ParteDoRei):
         cor = (255,0,255)
         limiteVel = 4
         self.__montado = False
-        self.__tempo_parado = 40 #contador de tempo parado
+        self.__tempo_parado = 500 #contador de tempo parado
         super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "0", cor, 0)
 
     def parar_o_tempo(self, jogador):
-        
-        jogador.escala_tempo = 0
-
+        if self.__tempo_parado < 0: self.__tempo_parado -= 1
+        if self.__tempo_parado:
+            jogador.congelar()
+        else:
+            jogador.descongelar()
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if not self.montado: self.montar(mapa)
+        if self.fase == 4:
+            self.parar_o_tempo(mapa.jogador)
         self.renderizar(tela, mapa)
         ##### ATUALIZACAO DO CORACAO #####
         self.x = self.rei.x + 63
@@ -249,15 +253,24 @@ class CoracaoRoxo(ParteDoRei):
 @instanciavel
 class ReiDasCores(Entidade):
     def __init__(self, x, y):
-        self.__cabeca = 0 #CabecaLaranja(x+50,y-50, self)
-        self.__punho_esquerdo = 0 #PunhoVermelho(x-100,y+100, self, "esquerdo")
-        self.__punho_direito = 0 #PunhoVermelho(x+200,y+100, self, "direito")
-        self.__coracao = 0 #CoracaoRoxo(x+63,y+100, self)
+        ##### PARTES DO CORPO #####
+        self.__cabeca = 0
+        self.__punho_esquerdo = 0
+        self.__punho_direito = 0
+        self.__coracao = 0
         super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "0", (0,0,255), 0, True)
         self.velx = 0.1
+
+        ##### ATRIBUTOS REFERENTES A FASE DA LUTA #####
         self.__descanso_ate_prox_fase = 500
         self.__fase = 0 #0, 1-Vermelho, 2-Laranja, 3-Azul, 4-Roxo
         self.__entidades_da_fase = []
+        self.__vida_gelatinosa = 20
+        self.__cristais = 3
+
+    @property
+    def fase(self):
+        return self.__fase
 
     @property
     def punho_esquerdo(self):
@@ -291,6 +304,9 @@ class ReiDasCores(Entidade):
     def coracao(self, coracao):
         self.__coracao = coracao
 
+    def toma_dano_de_fogo(self):
+        self.__vida_gelatinosa -= 1
+
 
     def fase_1(self):
         self.__entidades_da_fase = [Chao("chao", 200, 200, 400), Chao("chao", 300, 200, 400), Chao("chao", 400, 200, 400)]
@@ -304,7 +320,7 @@ class ReiDasCores(Entidade):
         self.__entidades_da_fase = [Atirador(200,200)]
 
     def fase_4(self):
-        pass
+        self.__entidades_da_fase = []
 
     def passar_fase(self, mapa):
         ##### INCREMENTA A FASE #####
@@ -328,6 +344,7 @@ class ReiDasCores(Entidade):
             mapa.lista_de_entidades.append(entidade)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        ##### PASSA A FASE APOS CERTO TEMPO (PROVISORIO) #####
         if self.__descanso_ate_prox_fase:
             self.__descanso_ate_prox_fase = self.__descanso_ate_prox_fase-1
         else:
@@ -335,6 +352,9 @@ class ReiDasCores(Entidade):
             self.passar_fase(mapa)
             self.__descanso_ate_prox_fase = 500
 
+        print(self.__vida_gelatinosa)
+
+        ##### COISA BASICA #####
         self.mover(dimensoes_tela, mapa)
         self.renderizar(tela, mapa)
 

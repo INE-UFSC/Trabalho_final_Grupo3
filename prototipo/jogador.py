@@ -39,6 +39,7 @@ class Jogador(Movel):
         self.escala_tempo = 1
         self.__paleta = paletas_coletadas
         self.__auxiliar = 0
+        self.__congelado = False
 
         super().__init__(nome, x, y, altura, largura, limite_vel, "0")
 
@@ -129,6 +130,14 @@ class Jogador(Movel):
         else:
             self.coletar_moeda()
 
+    def congelar(self):
+        self.__congelado = True
+        self.escala_tempo = 0
+
+    def descongelar(self):
+        self.__congelado = False
+        self.escala_tempo = 1
+
     def renderizar(self, tela, campo_visivel, ciclo):
         "renderiza na tela na posicao correta"
     
@@ -138,7 +147,7 @@ class Jogador(Movel):
         if renderizar_sprite:
             if self.recuperacao % 15 < 10:
                 self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
-                                self.face, self.velx, self.vely, ciclo % 12)
+                                self.face, self.velx*(self.escala_tempo>0), self.vely, ciclo % 12*(self.escala_tempo>0))
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): 
         """define logica de interacao com objetos especificos
@@ -187,12 +196,10 @@ class Jogador(Movel):
         ##### EMPURRA O JOGADOR #####
         self.x = self.posicao_comeco[0]
         self.y = self.posicao_comeco[1]
-        
-
 
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
         "Atualiza posicao e velocidade"
-        self.escala_tempo = 1
+        if not self.__congelado: self.escala_tempo = 1
 
         ##### MOVIMENTO HORIZONTAL #####
         self.__aceleracao = (direita - esquerda)

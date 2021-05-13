@@ -4,7 +4,6 @@ from efeitosrender import *
 from DAOjogo import DAOJogo
 from telas import *
 
-
 class Jogo:
     """Classe deus do jogo
 
