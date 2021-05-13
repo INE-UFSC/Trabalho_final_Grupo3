@@ -106,7 +106,8 @@ class Mapa:
         for item in objetos_no_mapa:
             for classe in classes_instanciaveis:
                 if item[0] == classe.__name__:
-                    objeto = classe(*item[1])
+                    parametros = item[1] #Sim eh so pra ser maneiro
+                    objeto = classe(*parametros)
                     self.__lista_de_entidades.append(objeto)
         self.__tamanho = lista_todos[1]
         self.__proxima_fase = lista_todos[2]
@@ -166,7 +167,7 @@ def carregar_mapa():
 
         ["Chao", ('chao', height - 10, 3050, 4000)],
         ["Chao", ('chao', height - 450, 3050, 4000)],
-        ["BandanaDoNinja", ('vermelho', 3325, height - 260)],
+        ["TintaVermelha", (3325, height - 260)],
         ["Saltante", (3350, height - 100)],
         ["Chao", ('chao', height - 160, 3975, 4100)],
         ["Lapis", (3950, height - 125, height)],
@@ -174,7 +175,7 @@ def carregar_mapa():
         ["Lapis", (3950, height - 320, height)],
         ["Chao", ('chao', height - 320, 3450, 3650)],
         ["Chao", ('chao', height - 160, 3250, 3450)],
-        ["Paleta", ('paleta1', 3520, 90)],
+        ["Paleta", (3520, 90)],
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 
@@ -231,7 +232,7 @@ def carregar_mapa():
         ["Chao", ('chao', height - 150, 2450, 2550)],
 
         ["Chao", ('chao', height - 10, 3350, 4000)],
-        ["CartolaDoMago", ('orbe1', 3675, height - 200)],
+        ["TintaLaranja", (3675, height - 200)],
         ["Saltante", (3800, height - 100)],
         ["Chao", ('chao', height - 400, 3700, 3850)],
         ["Atirador", (3730, height - 450, False)],
@@ -314,7 +315,7 @@ def carregar_mapa():
         ["Chao", ('chao', height - 10, 3900, 5000)],
         ["Ponta", (4000, height - 125, height)],
         ["Gelatina", (4100, height - 200)],
-        ["OculosDoNerd", ('oculos1', 4175, height - 75)],
+        ["TintaAzul", (4175, height - 75)],
         ["Ponta", (4300, height - 125, height)],
 
         ["Atirador", (4600, height - 100, False)],
@@ -384,7 +385,7 @@ def carregar_mapa():
         ["Atirador", (2730, height - 500, False)],
 
         ["Gelatina", (2800, height - 200)],
-        ["BoneMarinheiro", ('cabelo', 2975, height - 200)],
+        ["TintaRoxa", (2975, height - 200)],
         ["Saltante", (3100, height - 100)],
 
         ["Chao", ('chao', height - 400, 3250, 3400)],
@@ -442,14 +443,17 @@ def carregar_mapa():
         ["Vitoria", (4000, height - 285)],
 
         ["Gelatina", (1000, height - 450)],
-        ["Paleta", ('paleta1', 990, 420)],
+        ["Paleta", (1000, 300)],
+        ["Paleta", (1200, 300)],
+        ["Paleta", (1400, 300)],
+        ["Paleta", (1600, 300)],
 
         ##### PODERES #####
-        ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
-        ["CartolaDoMago", ('orbe1', 250, height - 500)],
-        ["OculosDoNerd", ('oculos1', 1525, height - 300)],
-        ["VerdeBebe", ('orbe', 1600, height - 50)],
-        ["BoneMarinheiro", ('cabelo', 1400, height - 100)],
+        ["TintaVermelha", (1200, height - 100)],
+        ["TintaLaranja", (250, height - 500)],
+        ["TintaAzul", (1525, height - 300)],
+        ["VerdeBebe", (1600, height - 50)],
+        ["TintaRoxa", (1400, height - 100)],
         ["BiscoitoNoMapa", ('bisc', 550, 550)],
         # ["Chakra",('chakra', 1600, height-50)],
         ##### INIMIGOS #####

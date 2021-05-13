@@ -112,7 +112,7 @@ class Jogador(Movel):
         self.__vida = 0
 
     def coletar_poder(self, item):
-        if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 5):
+        if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 3):
             self.__poder_armazenado = self.__poder
         self.poder = item.poder_atribuido
 
@@ -120,7 +120,7 @@ class Jogador(Movel):
         self.__moedas += 1
     
     def coletar_paleta(self):
-        if self.__paleta < 5:
+        if self.__paleta < 3:
             self.__paleta += 1
         elif self.__vida < 5:
             self.__vida += 1
@@ -141,7 +141,7 @@ class Jogador(Movel):
         pega_poder_armazenado = entradas[3]
         tamanho_tela = screen.get_size()
         if self.__descanso_troca_poder == 0:
-            if self.__paleta == 5 and pega_poder_armazenado and not isinstance(self.__poder_armazenado, Cinza):
+            if self.__paleta == 3 and pega_poder_armazenado and not isinstance(self.__poder_armazenado, Cinza):
                 poder_a_ser_armazenado = self.__poder
                 self.__poder = self.__poder_armazenado
                 self.__poder_armazenado = poder_a_ser_armazenado

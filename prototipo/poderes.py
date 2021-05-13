@@ -212,9 +212,9 @@ class Projetil(PoderGenerico):
 
 ##### ITENS DOS PODERES NO MAPA #####
 class Coletavel(Movel):
-    def __init__(self, nome, x, y, imagem, cor=(0, 0, 0), largura = 20, altura = 20):
+    def __init__(self, nome, x, y, imagem, cor=(0, 0, 0), largura = 32, altura = 32):
         limite_vel = 4
-        super().__init__(nome, x, y, largura, altura, limite_vel, imagem, cor)
+        super().__init__(nome, x, y, altura, largura, limite_vel, imagem, cor)
 
     def coleta(self, jogador, mapa):
         jogador.coletar_poder(self)
@@ -254,8 +254,8 @@ class BiscoitoNoMapa(Coletavel):
 
 @instanciavel
 class Paleta(Coletavel):
-    def __init__(self, nome, x, y, cor=(0, 0, 0)):
-        super().__init__(nome, x, y, "0", cor)
+    def __init__(self, x, y, cor=(0, 0, 0)):
+        super().__init__("paleta_mapa", x, y, "sprites", cor, 50, 35)
 
     def coleta(self, jogador, mapa):
         jogador.coletar_paleta()
@@ -269,34 +269,34 @@ class PoderNoMapa(Coletavel):
         super().__init__(nome, x, y, imagem, cor)
 
 @instanciavel
-class BandanaDoNinja(PoderNoMapa):
-    def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, Vermelho(), "0", (50, 50, 50))
+class TintaVermelha(PoderNoMapa):
+    def __init__(self, x, y):
+        super().__init__("poder_Vermelho", x, y, Vermelho(), "sprites", (50, 50, 50))
 
 @instanciavel
-class CartolaDoMago(PoderNoMapa):
-    def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, Laranja(), "0", (255, 50, 50))
+class TintaLaranja(PoderNoMapa):
+    def __init__(self, x, y):
+        super().__init__("poder_Laranja", x, y, Laranja(), "sprites", (255, 50, 50))
 
 @instanciavel
-class OculosDoNerd(PoderNoMapa):
-    def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, Azul(), "0", (50, 50, 255))
+class TintaAzul(PoderNoMapa):
+    def __init__(self, x, y):
+        super().__init__("poder_Azul", x, y, Azul(), "sprites", (50, 50, 255))
 
 @instanciavel
-class BoneMarinheiro(PoderNoMapa):
-    def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, Roxo(), "0", (80, 10, 120))
+class TintaRoxa(PoderNoMapa):
+    def __init__(self, x, y):
+        super().__init__("poder_Roxo", x, y, Roxo(), "sprites", (80, 10, 120))
 
 @instanciavel
-class VerdeBebe(PoderNoMapa):
-    def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, Verde(), "0", (5, 200, 40))
+class TintaVerde(PoderNoMapa):
+    def __init__(self, x, y):
+        super().__init__("poder_Verde", x, y, Verde(), "sprites", (5, 200, 40))
 
 @instanciavel
-class Chakra(PoderNoMapa):
-    def __init__(self, nome, x, y):
-        super().__init__(nome, x, y, Marrom(), "0", (255, 255, 0))
+class TintaMarrom(PoderNoMapa):
+    def __init__(self, x, y):
+        super().__init__("poder_Marrom", x, y, Marrom(), "sprites", (255, 255, 0))
 
 
 ##### OBJETOS CRIADOS POR PODERES #####
