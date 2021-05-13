@@ -431,29 +431,48 @@ def carregar_mapa():
 
         False]
 
-    width = 4200
+    width = 5040
     height = 700
     fase5 = [[
-        ["Lapis", (550, height - 125, height)],
-        ["Lapis", (800, height - 125, height)],
-        ["Lapis", (1500, height - 125, height)],
+        ["Chao", ('chao1', height - 10, -200, 300)],
 
-        ["Bloco", ('bloco1', 200, height - 350)],
-        ["Bloco", ('bloco2', 250, height - 300)],
-        ["Bloco", ('bloco3', 300, height - 250)],
-        ["Bloco", ('bloco4', 350, height - 200)],
-        ["Bloco", ('bloco5', 1000, height - 200)],
-        ["Bloco", ('bloco6', 1020, height - 200)],
+        ["Bloco", ('bloco1', 300, height - 200)],
+        ["Bloco", ('bloco2', 450, height - 350)],
+        ["Bloco", ('bloco3', 600, height - 500)],
 
-        ["Chao", ('chao1', height - 10, -200, 350)],
-        ["Chao", ('chao2', height - 10, 450, 2205)],
-        ["Chao", ('chao3', height - 10, 2500, 4205)],
+
+        ["Chao", ('chao2', height - 500, 750, 1100)],
+        ["Chao", ('chao3', 450, 870, 1010)],
+        ["Atirador", (870, 406, False)],
+        ["Chao", ('chao4', 350, 1200, 1250)],
+        ["Chao", ('chao4', height - 500, 1514, 1734)],
+        ["Lapis", (1470, height - 544, height - 483)],
+        ["Gelatina", (1600, 100)],
+        ["Lapis", (1734, height - 544, height - 483)],
+        ["Chao", ('chao4', -100, 1900, 2500)],
+        ["Saltante", (2400, -154)],
+        ["Chao", ('chao4', -300, 1970, 2060)],
+        ["Atirador", (1970, -344, False)],
+        ["Chao", ('chao4', 144, 2400, 2490)],
+        ["Atirador", (2400, 100, False)],
+        ["Temporal", (1970, -390)],
+        ["TintaLaranja", (2470, -160)],
+        ["Bloco", ('bloco4', 2860, -100)],
+        ["Bloco", ('bloco6', 3170, -100)],
+        ["Chao", ('chao4', 144, 3200, 3290)],
+        ["Atirador", (3200, 100, False)],
+        ["Atirador", (3200, 54, False)],
+        ["Bloco", ('bloco7', 3480, -100)],
+        ["Lapis", (3880, 40, 140)],
+        ["Chao", ('chao4', 123, 3924, 4500)],
+        ["Lapis", (4501, 40, 140)],
 
         ##### BORDA E VITORIA #####
-        ["Vitoria", (4000, height - 285)],
+        ["Chao", ('chao4', 335, 4770, 5031)],
+        ["Vitoria", (4870, 60)],
 
         ["Gelatina", (1000, height - 450)],
-        ["Paleta", (1000, 300)],
+        ["Paleta", (995, 405)],
         ["Paleta", (1200, 300)],
         ["Paleta", (1400, 300)],
         ["Paleta", (1600, 300)],

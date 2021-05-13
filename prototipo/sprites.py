@@ -27,6 +27,15 @@ class Sprite():
     def carregar_sprite(self, nome, posx, posy, width, height, tela):
         sprite = self.__dados[nome]
         x, y, w, h = sprite["x"], sprite["y"], sprite["w"], sprite["h"]
-        if width: w = width
-        if height: h = height
-        tela.blit(self.__sprite_sheet, (posx, posy), (x, y, w, h))
+        if nome == "chao":
+            ciclos_completos = int(width/w)
+            print(ciclos_completos)
+            extra = width - ciclos_completos * w
+            for i in range(ciclos_completos):
+                tela.blit(self.__sprite_sheet, (posx+i*w, posy), (x, y, w, h))
+            tela.blit(self.__sprite_sheet, (posx+ciclos_completos*w, posy), (x, y, extra, h))
+            #tela.blit(self.__sprite_sheet, (posx, posy), (x, y, w, h))
+        else:
+            if width: w = width
+            if height: h = height
+            tela.blit(self.__sprite_sheet, (posx, posy), (x, y, w, h))
