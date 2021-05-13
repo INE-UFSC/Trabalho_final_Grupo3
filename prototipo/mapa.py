@@ -421,7 +421,7 @@ def carregar_mapa():
 
         False]
 
-    width = 5500
+    width = 5040
     height = 700
     fase5 = [[
         ["Chao", ('chao1', height - 10, -200, 300)],
