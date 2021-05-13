@@ -229,23 +229,10 @@ class Coletavel(Movel):
         return 0
 
 @instanciavel
-class BiscoitoNoMapa(Coletavel):
-    def __init__(self, nome, x, y, cor=(245, 245, 220)):
-        super().__init__(nome, x, y, "0", cor, 20, 20)
+class Borracha(Coletavel):
+    def __init__(self, x, y, cor=(245, 245, 220)):
+        super().__init__("borracha", x, y, "sprites", cor, 41, 29)
         self.__raio = 10
-    
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox:
-            pygame.draw.circle(tela, self.cor, [self.corpo.centerx - mapa.campo_visivel.x,
-                                                self.corpo.centery - mapa.campo_visivel.y], self.__raio)
-        if renderizar_sprite:
-            try:
-                self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
-                                     0, 0, 0)
-                #self.sprite.imprimir(self.__imagem, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, tela,
-                #                    1, 0)
-            except AttributeError:
-                pass  # nao possui sprite
 
     def coleta(self, jogador, mapa):
         jogador.coletar_moeda()

@@ -6,7 +6,7 @@ class Hud:
         tt = tamanho_tela
         self.__vida = Vida(tt[0]*3/50, tt[1]/20)
         self.__tempo = Tempo(tt[0]*11/50, tt[1]/20)
-        self.__biscoitos = Biscoitos('biscoito tela', tt[0]*7/20, tt[1]/20)
+        self.__borrachona = Borrachona(tt[0] * 8 / 20, tt[1] / 20)
         self.__barra_poder = BarraPoder(tt[0]*7/9, tt[1]/12)
         self.__paleta = Paleta(tt[0]*11/20, tt[1]/20)
         self.__poder_armazenado = ArmazenadoPoder(tt[0]*11/20+92, tt[1]/20+35)
@@ -15,7 +15,7 @@ class Hud:
         self.__vida.atualizar(tela, mapa, dimensoes_tela, vida)
         self.__tempo.atualizar(tela, mapa, dimensoes_tela, tempo)
         self.__barra_poder.atualizar(tela, mapa, dimensoes_tela)
-        self.__biscoitos.atualizar(tela, mapa, dimensoes_tela, moedas_pegas)
+        self.__borrachona.atualizar(tela, mapa, dimensoes_tela, moedas_pegas)
         self.__paleta.atualizar(tela, mapa, dimensoes_tela, paletas_pegas)
         self.__poder_armazenado.atualizar(tela, mapa, dimensoes_tela)
 
@@ -66,18 +66,19 @@ class Tempo(Estatico):
         return False
 
 
-class Biscoitos(Estatico):
-    def __init__(self, nome: str, x: int, y: int):
+class Borrachona(Estatico):
+    def __init__(self, x: int, y: int):
         altura = 30
         largura = 60
-        super().__init__(nome, x, y, altura, largura, "0", (254, 254, 0))
+        super().__init__("borrachona", x, y, altura, largura, "sprites", (254, 254, 0))
         self.__numero_biscoitos = 0
         self.__fonte = pygame.font.SysFont('Arial', 40)
         self.__escreve_na_tela = ""
 
     def renderizar(self, tela, mapa):
         self.__escreve_na_tela = self.__fonte.render("x" + str(self.__numero_biscoitos), False, (0, 0, 0))
-        tela.blit(self.__escreve_na_tela, (self.x+70, self.y+35))
+        self.sprite.imprimir(tela, "borrachona", self.x, self.y, 0, 0, 0, 0, 0, 0)
+        tela.blit(self.__escreve_na_tela, (self.x+90, self.y+35))
         
     def atualizar(self, tela, mapa, dimensoes_tela, moedas_pegas):
         self.__numero_biscoitos = moedas_pegas
