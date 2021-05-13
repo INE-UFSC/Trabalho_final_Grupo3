@@ -4,7 +4,6 @@ from poderes import *
 from rei import *
 from jogador import Jogador
 from hud import *
-import json
 
 
 class Mapa:
@@ -149,7 +148,7 @@ class Mapa:
                                         , self.__moedas_pegas, self.__paletas_pegas)
 
 
-def carregar_mapa():
+def montar_mapas():
     """Funcao que gera os mapas para serem utilizados no jogo
 
     Facilita adicionar conteudo ao modificar esta funcao
@@ -506,6 +505,4 @@ def carregar_mapa():
 
         False]
 
-    with open("mapas.json", 'w') as imagem:
-        json.dump({"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5}, imagem)
-    return json.load(open("mapas.json", 'r'))
+    return {"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5}
