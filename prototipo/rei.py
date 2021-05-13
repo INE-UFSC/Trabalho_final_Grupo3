@@ -219,8 +219,10 @@ class ReiDasCores(Entidade):
         self.__punho_direito = 0 #PunhoVermelho(x+200,y+100, self, "direito")
         self.__coracao = 0 #CoracaoRoxo(x+63,y+100, self)
         super().__init__("corpo", x, y, 300, 150, 0, 0, 0, "0", (0,0,255), 0, True)
-        self.velx = 1
+        self.velx = 0.1
         self.__descanso_ate_prox_fase = 500
+        self.__fase = 0 #0, 1-Vermelho, 2-Laranja, 3-Azul, 4-Roxo
+        self.__entidades_da_fase = []
 
     @property
     def punho_esquerdo(self):
@@ -255,15 +257,33 @@ class ReiDasCores(Entidade):
         self.__coracao = coracao
 
 
-    def fase_0(self, mapa):
+    def fase_1(self):
+        self.__entidades_da_fase = [Chao("chao", 200, 200, 400), Chao("chao", 300, 200, 400), Chao("chao", 400, 200, 400)]
+
+    def fase_2(self):
         self.__cabeca.descanso_poder_max = 100
         self.__cabeca.numero_de_projeteis = 5
-        mapa.lista_de_entidades.append(PlataformaMovel(100, 200, 400))
+        self.__entidades_da_fase = []
+
+    def passar_fase(self, mapa):
+        self.__fase += 1
+        print("Passar fase")
+        for entidade in self.__entidades_da_fase:
+            mapa.lista_de_entidades.remove(entidade)
+        if self.__fase == 1: self.fase_1()
+        if self.__fase == 2: self.fase_2()
+        for entidade in self.__entidades_da_fase:
+            mapa.lista_de_entidades.append(entidade)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        if self.__descanso_ate_prox_fase: self.__descanso_ate_prox_fase -= 1
+        if self.__descanso_ate_prox_fase:
+            self.__descanso_ate_prox_fase = self.__descanso_ate_prox_fase-1
         else:
-            self.fase_0(mapa)
+            print(self.__fase)
+            self.passar_fase(mapa)
+            self.__descanso_ate_prox_fase = 500
+
+
         self.mover(dimensoes_tela, mapa)
         self.renderizar(tela, mapa)
 
