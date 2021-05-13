@@ -6,15 +6,49 @@ from obstaculos import *
 class ParteDoRei(Entidade):
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str, cor, frames: int):
         super().__init__(nome, x, y, altura, largura, limiteVel, vida, dano_contato, imagem, cor, frames)
+        self.__montado = False
+        self.__fase = 0
+        self.__rei = 0
+
+    @property
+    def montado(self):
+        return self.__montado
+
+    @property
+    def fase(self):
+        return self.__fase
+
+    @property
+    def rei(self):
+        return self.__rei
+
+    @rei.setter
+    def rei(self, rei):
+        self.__rei = rei
+
+    @montado.setter
+    def montado(self, montado):
+        self.__montado = montado
+
+    def passar_fase(self):
+        self.__fase += 1
+
+    def montar(self, mapa):
+        for entidade in mapa.lista_de_entidades:
+            if type(entidade) == ReiDasCores:
+                self.__montado = True
+                self.__rei = entidade
+                if type(self) == CabecaLaranja:
+                    entidade.cabeca = self
+                elif type(self) == CoracaoRoxo:
+                    entidade.coracao = self
 
 @instanciavel
 class PunhoVermelho(ParteDoRei):
     def __init__(self, x, y, lado):
         self.__centro_x = x
         self.__centro_y = y
-        self.__rei = []
         self.__lado = lado
-        self.__montado = False
         altura = 50
         largura = 50
         dano_contato = 1
@@ -25,23 +59,25 @@ class PunhoVermelho(ParteDoRei):
     def montar(self, mapa):
         for entidade in mapa.lista_de_entidades:
             if type(entidade) == ReiDasCores:
-                self.__montado = True
-                self.__rei = entidade
+                self.montado = True
+                self.rei = entidade
                 if self.__lado == "esquerdo":
                     entidade.punho_esquerdo = self
                 else:
                     entidade.punho_direito = self
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        if not self.__montado: self.montar(mapa)
+        if not self.montado:
+            self.montar(mapa)
+            print("MONTANDO")
         self.renderizar(tela, mapa)
         ##### ATUALIZACAO DO CORACAO #####
         if self.__lado == "direito":
-            self.x = self.__rei.x + 200
-            self.y = self.__rei.y + 100
+            self.x = self.rei.x + 200
+            self.y = self.rei.y + 100
         else:
-            self.x = self.__rei.x - 100
-            self.y = self.__rei.y + 100
+            self.x = self.rei.x - 100
+            self.y = self.rei.y + 100
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
     def lancar(self, mapa, jogador):
@@ -81,11 +117,10 @@ class PunhoVermelho(ParteDoRei):
 @instanciavel
 class CabecaLaranja(ParteDoRei):
     def __init__(self, x, y):
-        self.__rei = 0
+        #self.__rei = 0
         self.__vel_projetil = 3
         self.__descanso_poder_max = 125
         self.__descanso_poder = randrange(0, 25)
-        self.__numero_de_projeteis = 1
         self.__poder = Projetil()
         self.__montado = False
         altura = 50
@@ -111,22 +146,18 @@ class CabecaLaranja(ParteDoRei):
     def numero_de_projeteis(self, numero_de_projeteis):
         self.__numero_de_projeteis = numero_de_projeteis
 
-    def montar(self, mapa):
-        for entidade in mapa.lista_de_entidades:
-            if type(entidade) == ReiDasCores:
-                print()
-                self.__montado = True
-                self.__rei = entidade
-                entidade.cabeca = self
-
     def atualizar(self, tela, mapa, dimensoes_tela):
-        if not self.__montado: self.montar(mapa)
+
+        if not self.montado: self.montar(mapa)
+
         self.renderizar(tela, mapa)
-        ##### ATUALIZACAO DO CORACAO #####
-        self.x = self.__rei.x + 50
-        self.y = self.__rei.y -50
+
+        ##### ATUALIZACAO DA CABECA #####
+        self.x = self.rei.x + 50
+        self.y = self.rei.y -50
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
+        ##### FAZ ELE ATIRAR FOGO #####
         if mapa.jogador.x <= self.x:
             dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
                     mapa.jogador.x - self.x - 15 * self.face) ** 2) ** (1 / 2)
@@ -139,8 +170,13 @@ class CabecaLaranja(ParteDoRei):
             velx = (mapa.jogador.x - self.corpo.bottomright[0] - 15 * self.face) / divisor
         vely = ((mapa.jogador.y) - (self.y)) / divisor
 
+        ##### FALA PRA ELE QUANDO ATIRAR FOGO #####
+        if self.fase == 2:
+            numero_de_projeteis = 7
+        else:
+            numero_de_projeteis = 1
         if self.__descanso_poder <= 0:
-            for i in range(self.__numero_de_projeteis):
+            for i in range(numero_de_projeteis):
                 self.__poder.acao(self, tela, mapa, velx, vely, 0+10*i)
             self.__descanso_poder = self.__descanso_poder_max# + randrange(0, 50)
         else:
@@ -177,28 +213,27 @@ class CabecaLaranja(ParteDoRei):
 @instanciavel
 class CoracaoRoxo(ParteDoRei):
     def __init__(self, x, y):
-        self.__rei = 0
+        #self.__rei = 0
         altura = 25
         largura = 25
         dano_contato = 0
         cor = (255,0,255)
         limiteVel = 4
         self.__montado = False
+        self.__tempo_parado = 40 #contador de tempo parado
         super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "0", cor, 0)
 
-    def montar(self, mapa):
-        self.__montado = True
-        for entidade in mapa.lista_de_entidades:
-            if type(entidade) == ReiDasCores:
-                self.__rei = entidade
-                entidade.coracao = self
+    def parar_o_tempo(self, jogador):
+        
+        jogador.escala_tempo = 0
+
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        if not self.__montado: self.montar(mapa)
+        if not self.montado: self.montar(mapa)
         self.renderizar(tela, mapa)
         ##### ATUALIZACAO DO CORACAO #####
-        self.x = self.__rei.x + 63
-        self.y = self.__rei.y + 100
+        self.x = self.rei.x + 63
+        self.y = self.rei.y + 100
         self.corpo = pygame.Rect(self.x, self.y, self.largura,self.altura)
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
@@ -218,7 +253,7 @@ class ReiDasCores(Entidade):
         self.__punho_esquerdo = 0 #PunhoVermelho(x-100,y+100, self, "esquerdo")
         self.__punho_direito = 0 #PunhoVermelho(x+200,y+100, self, "direito")
         self.__coracao = 0 #CoracaoRoxo(x+63,y+100, self)
-        super().__init__("corpo", x, y, 300, 150, 0, 0, 0, "0", (0,0,255), 0, True)
+        super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "0", (0,0,255), 0, True)
         self.velx = 0.1
         self.__descanso_ate_prox_fase = 500
         self.__fase = 0 #0, 1-Vermelho, 2-Laranja, 3-Azul, 4-Roxo
@@ -265,14 +300,31 @@ class ReiDasCores(Entidade):
         self.__cabeca.numero_de_projeteis = 5
         self.__entidades_da_fase = []
 
+    def fase_3(self):
+        self.__entidades_da_fase = [Atirador(200,200)]
+
+    def fase_4(self):
+        pass
+
     def passar_fase(self, mapa):
+        ##### INCREMENTA A FASE #####
         self.__fase += 1
-        print("Passar fase")
+        self.__cabeca.passar_fase()
+        self.__coracao.passar_fase()
+        self.__punho_esquerdo.passar_fase()
+        self.__punho_direito.passar_fase()
+
+        ##### LIMPA ENTIDADES DA FASE ANTERIOR #####
         for entidade in self.__entidades_da_fase:
             mapa.lista_de_entidades.remove(entidade)
+
         if self.__fase == 1: self.fase_1()
         if self.__fase == 2: self.fase_2()
+        if self.__fase == 3: self.fase_3()
+        if self.__fase == 4: self.fase_4()
         for entidade in self.__entidades_da_fase:
+
+        ##### CRIA INIMIGOS DA NOVA FASE #####
             mapa.lista_de_entidades.append(entidade)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
@@ -282,7 +334,6 @@ class ReiDasCores(Entidade):
             print(self.__fase)
             self.passar_fase(mapa)
             self.__descanso_ate_prox_fase = 500
-
 
         self.mover(dimensoes_tela, mapa)
         self.renderizar(tela, mapa)
