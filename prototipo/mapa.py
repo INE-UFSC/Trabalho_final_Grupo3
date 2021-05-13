@@ -175,7 +175,7 @@ def carregar_mapa():
         ["Lapis", (3950, height - 320, height)],
         ["Chao", ('chao', height - 320, 3450, 3650)],
         ["Chao", ('chao', height - 160, 3250, 3450)],
-        ["Paleta", ('paleta1', 3520, 90)],
+        ["Paleta", (3520, 90)],
 
         ["Chao", ('chao', height - 10, 4000, 7000)],
 
@@ -443,10 +443,10 @@ def carregar_mapa():
         ["Vitoria", (4000, height - 285)],
 
         ["Gelatina", (1000, height - 450)],
-        ["Paleta", ('paleta1', 1000, 300)],
-        ["Paleta", ('paleta1', 1200, 300)],
-        ["Paleta", ('paleta1', 1400, 300)],
-        ["Paleta", ('paleta1', 1600, 300)],
+        ["Paleta", (1000, 300)],
+        ["Paleta", (1200, 300)],
+        ["Paleta", (1400, 300)],
+        ["Paleta", (1600, 300)],
 
         ##### PODERES #####
         ["TintaVermelha", (1200, height - 100)],

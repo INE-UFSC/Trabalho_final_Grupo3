@@ -214,7 +214,7 @@ class Projetil(PoderGenerico):
 class Coletavel(Movel):
     def __init__(self, nome, x, y, imagem, cor=(0, 0, 0), largura = 32, altura = 32):
         limite_vel = 4
-        super().__init__(nome, x, y, largura, altura, limite_vel, imagem, cor)
+        super().__init__(nome, x, y, altura, largura, limite_vel, imagem, cor)
 
     def coleta(self, jogador, mapa):
         jogador.coletar_poder(self)
@@ -254,8 +254,8 @@ class BiscoitoNoMapa(Coletavel):
 
 @instanciavel
 class Paleta(Coletavel):
-    def __init__(self, nome, x, y, cor=(0, 0, 0)):
-        super().__init__(nome, x, y, "0", cor)
+    def __init__(self, x, y, cor=(0, 0, 0)):
+        super().__init__("paleta_mapa", x, y, "sprites", cor, 50, 35)
 
     def coleta(self, jogador, mapa):
         jogador.coletar_paleta()

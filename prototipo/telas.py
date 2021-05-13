@@ -223,14 +223,14 @@ class Tela_De_Jogo(Tela):
         ##### MAPA #####
         self.__mapa = Mapa(superficie)
         poder_atual = Cinza()
-        poder_armazenado = Vermelho()
+        poder_armazenado = Cinza()
         # for item in poderes_no_jogador:
         #     if item.__name__ == self.__slot[2]:
         #         poder_atual = item
         #     if item.__name__ == self.__slot[3]:
         #         poder_armazenado = item
         print(self.__slot)
-        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, 3)
+        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, 0)
         self.__comeco = pygame.time.get_ticks() / 1000
     
     def salvar_jogo(self):
