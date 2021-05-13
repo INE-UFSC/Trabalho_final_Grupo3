@@ -158,8 +158,8 @@ def montar_mapas():
     height = 600
     fase1 = [[
         ["ReiDasCores", (200, 100)],
-        ["PunhoVermelho", (0, 0, "esquerdo")],
-        ["PunhoVermelho", (0, 0, "direito")],
+        ["PunhoVermelho", (0, 0, "esquerdo", 280)],
+        ["PunhoVermelho", (0, 0, "direito", 340)],
         ["CabecaLaranja", (0, 0)],
         ["CoracaoRoxo", (0, 0)],
         ["Chao", ('chao', height - 10, 0, 6200)],#1200)],
