@@ -299,20 +299,23 @@ class Tela_De_Jogo(Tela):
         self.__mapa = Mapa(superficie)
         poder_atual = Cinza()
         poder_armazenado = Cinza()
-        # for item in poderes_no_jogador:
-        #     if item.__name__ == self.__slot[2]:
-        #         poder_atual = item
-        #     if item.__name__ == self.__slot[3]:
-        #         poder_armazenado = item
-        print(self.__slot)
-        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, 0)
+        with open("saves.json","r") as saves:
+            slots = json.load(saves)
+            slot_atual = slots[self.__slot]
+        for item in poderes_no_jogador:
+            if item.__name__ == slot_atual[2]:
+                poder_atual = item()
+            if item.__name__ == slot_atual[3]:
+                poder_armazenado = item()
+        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, slot_atual[4])
         self.__comeco = pygame.time.get_ticks() / 1000
     
     def salvar_jogo(self):
         "Salva o jogo ao ganhar ou perder"
         with open("saves.json","r") as saves:
             slots = json.load(saves)
-            slots[self.__slot] = [self.__nivel,self.__nivel]
+            slots[self.__slot] = [self.__nivel,self.__nivel, type(self.__jogador.poder).__name__,
+                                  type(self.__jogador.poder_armazenado).__name__, self.__jogador.paleta]
         with open("saves.json","w") as saves:
             json.dump(slots,saves)
 
