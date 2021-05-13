@@ -114,14 +114,14 @@ class Paleta(Estatico):
         altura = 40
         largura = 40
         self.__largura_atual = largura
-        super().__init__("paletas", x, y, altura, largura, "0", (205, 133, 63))
+        super().__init__("paleta", x, y, altura, largura, "sprites", (205, 133, 63))
         self.__paletas_coletadas = 0
         self.__fonte = pygame.font.SysFont('Arial', 40)
         self.__escreve_na_tela= ""
-    
+
     def renderizar(self, tela, mapa):
-        self.__escreve_na_tela = self.__fonte.render("x" + str(self.__paletas_coletadas), False, (0, 0, 0))
-        tela.blit(self.__escreve_na_tela, (self.x+70, self.y+35))
+        nome = self.nome + "_" + str(self.__paletas_coletadas)
+        self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0, 0, 0)
 
     def atualizar(self, tela, mapa, dimensoes_tela, paletas_pegas):
         self.__paletas_coletadas = paletas_pegas

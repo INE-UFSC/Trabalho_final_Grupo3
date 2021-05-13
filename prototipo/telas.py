@@ -230,7 +230,7 @@ class Tela_De_Jogo(Tela):
         #     if item.__name__ == self.__slot[3]:
         #         poder_armazenado = item
         print(self.__slot)
-        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, 4)
+        self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, 0)
         self.__comeco = pygame.time.get_ticks() / 1000
     
     def salvar_jogo(self):

@@ -106,7 +106,8 @@ class Mapa:
         for item in objetos_no_mapa:
             for classe in classes_instanciaveis:
                 if item[0] == classe.__name__:
-                    objeto = classe(*item[1])
+                    parametros = item[1] #Sim eh so pra ser maneiro
+                    objeto = classe(*parametros)
                     self.__lista_de_entidades.append(objeto)
         self.__tamanho = lista_todos[1]
         self.__proxima_fase = lista_todos[2]
@@ -443,6 +444,9 @@ def carregar_mapa():
 
         ["Gelatina", (1000, height - 450)],
         ["Paleta", ('paleta1', 1000, 300)],
+        ["Paleta", ('paleta1', 1200, 300)],
+        ["Paleta", ('paleta1', 1400, 300)],
+        ["Paleta", ('paleta1', 1600, 300)],
 
         ##### PODERES #####
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
