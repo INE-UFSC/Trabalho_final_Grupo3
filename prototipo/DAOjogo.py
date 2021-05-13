@@ -33,9 +33,10 @@ class DAO:
         try:
             self.__mapas = json.load(open("mapas.json","r"))
         except FileNotFoundError:
-            mapas = montar_mapas()
-            json.dump(mapas, "mapas.json","w")
-            self.__mapas = mapas
+            with open("mapas.json","w") as mapa_arquivo:
+                mapas = montar_mapas()
+                json.dump(mapas, mapa_arquivo)
+                self.__mapas = mapas
     
     def carregar_sprites(self):
         pass
