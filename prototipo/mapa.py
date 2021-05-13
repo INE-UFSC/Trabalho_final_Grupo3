@@ -423,26 +423,26 @@ def carregar_mapa():
     width = 4200
     height = 700
     fase5 = [[
-        ["Lapis", (550, height - 125, height)],
-        ["Lapis", (800, height - 125, height)],
-        ["Lapis", (1500, height - 125, height)],
+        ["Chao", ('chao1', height - 10, -200, 300)],
 
-        ["Bloco", ('bloco1', 200, height - 350)],
-        ["Bloco", ('bloco2', 250, height - 300)],
-        ["Bloco", ('bloco3', 300, height - 250)],
-        ["Bloco", ('bloco4', 350, height - 200)],
-        ["Bloco", ('bloco5', 1000, height - 200)],
-        ["Bloco", ('bloco6', 1020, height - 200)],
+        ["Bloco", ('bloco1', 300, height - 200)],
+        ["Bloco", ('bloco2', 450, height - 350)],
+        ["Bloco", ('bloco3', 600, height - 500)],
 
-        ["Chao", ('chao1', height - 10, -200, 350)],
-        ["Chao", ('chao2', height - 10, 450, 2205)],
-        ["Chao", ('chao3', height - 10, 2500, 4205)],
+
+        ["Chao", ('chao2', height - 500, 750, 1100)],
+        ["Chao", ('chao3', 450, 890, 1010)],
+        ["Atirador", (890, 406, False)],
+        ["Chao", ('chao4', 350, 1200, 1250)],
+        ["Chao", ('chao4', height - 500, 1514, 1734)],
+        ["Lapis", (1470, height - 544, height - 483)],
+        ["Lapis", (1734, height - 544, height - 483)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (4000, height - 285)],
 
         ["Gelatina", (1000, height - 450)],
-        ["Paleta", ('paleta1', 1000, 300)],
+        ["Paleta", ('paleta1', 990, 420)],
 
         ##### PODERES #####
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],
