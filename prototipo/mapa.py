@@ -99,7 +99,7 @@ class Mapa:
     def cor_fundo(self,cor):
         self.__background_colour = cor
 
-    def iniciar(self, fase,dicionaro_mapa):
+    def iniciar(self, fase, dicionaro_mapa, poder_atual, poder_armazenado, paletas):
         ##### LEITURA DAS FASES A PARTIR DO ARQUIVO JSON #####
         lista_todos = dicionaro_mapa[fase]
         objetos_no_mapa = lista_todos[0]
@@ -112,7 +112,7 @@ class Mapa:
         self.__proxima_fase = lista_todos[2]
 
         ##### INSTANCIACAO DO JOGADOR #####
-        self.__jogador = Jogador("rabisco", 200, self.tamanho[1] - 50, 0, 100)
+        self.__jogador = Jogador("rabisco", 200, self.tamanho[1] - 50, poder_atual, poder_armazenado, paletas)
 
         ##### CARREGAMENTO DAS IMAGENS DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
@@ -442,6 +442,7 @@ def carregar_mapa():
         ["Vitoria", (4000, height - 285)],
 
         ["Gelatina", (1000, height - 450)],
+        ["Paleta", ('paleta1', 1000, 300)],
 
         ##### PODERES #####
         ["BandanaDoNinja", ('shuriken1', 1200, height - 100)],

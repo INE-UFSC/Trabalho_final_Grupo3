@@ -7,10 +7,15 @@ renderizar_hitbox = True
 renderizar_sprite = True
 gravidade = 0.2
 classes_instanciaveis = []
+poderes_no_jogador = []
 
 #Decorator que indica o que a classe pode ser instanciada no mapa
 def instanciavel(classe):
     classes_instanciaveis.append(classe)
+    return classe
+
+def poder_no_jogador(classe):
+    poderes_no_jogador.append(classe)
     return classe
 
 
