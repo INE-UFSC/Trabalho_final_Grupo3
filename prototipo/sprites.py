@@ -9,8 +9,6 @@ class Sprite():
         self.__arquivo_dados = arquivo+".json"
         self.__dados = {}
         with open(self.__arquivo_dados) as f:
-            # print(self.__arquivo_dados)
-            # print(f)
             self.__dados = json.load(f)
 
     @property
@@ -29,7 +27,6 @@ class Sprite():
         x, y, w, h = sprite["x"], sprite["y"], sprite["w"], sprite["h"]
         if nome == "chao":
             ciclos_completos = int(width/w)
-            print(ciclos_completos)
             extra = width - ciclos_completos * w
             for i in range(ciclos_completos):
                 tela.blit(self.__sprite_sheet, (posx+i*w, posy), (x, y, w, h))

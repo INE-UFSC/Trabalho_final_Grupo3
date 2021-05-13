@@ -1,6 +1,7 @@
 from obstaculos import *
 from inimigos import *
 from poderes import *
+from rei import *
 from jogador import Jogador
 from hud import *
 import json
@@ -157,56 +158,60 @@ def carregar_mapa():
     width = 6600
     height = 600
     fase1 = [[
-        ["Voador", ('voador2', 300, height - 450, 400)],
-        ["Chao", ('chao', height - 10, 0, 1200)],
-        ["Lapis", (600, height - 125, height)],
-        ["Bolota", (700, height - 50)],
-        ["Lapis", (900, height - 125, height)],
-
-
-        ["Chao", ('chao', height - 10, 1375, 1700)],
-        ["Saltante", (1400, height - 100)],
-
-        #["Chao", ('chao', 250, 1475, 1600)],
-
-        ["Chao", ('chao', height - 10, 1875, 2775)],
-        ["Saltante", (1900, height - 100)],
-        ["Lapis", (2150, height - 125, height)],
-        ["Bolota", (2200, height - 50)],
-        ["Lapis", (2450, height - 125, height)],
-
-        ["Chao", ('chao', height - 10, 3050, 4000)],
-        ["Chao", ('chao', height - 450, 3050, 4000)],
-        ["TintaVermelha", (3325, height - 260)],
-        ["Saltante", (3350, height - 100)],
-        ["Chao", ('chao', height - 160, 3975, 4100)],
-        ["Lapis", (3950, height - 125, height)],
-        ["Lapis", (3950, height - 235, height)],
-        ["Lapis", (3950, height - 320, height)],
-        ["Chao", ('chao', height - 320, 3450, 3650)],
-        ["Chao", ('chao', height - 160, 3250, 3450)],
-        ["Paleta", (3520, 90)],
-
-        ["Chao", ('chao', height - 10, 4000, 7000)],
-
-        ["Ponta", (4500, height - 125, height)],
-        ["Ponta", (4545, height - 125, height)],
-        ["Ponta", (4590, height - 125, height)],
-        ["Ponta", (4635, height - 125, height)],
-        ["Ponta", (4680, height - 125, height)],
-        ["Ponta", (4725, height - 125, height)],
-        ["Ponta", (4770, height - 125, height)],
-        ["Ponta", (4815, height - 125, height)],
-        ["Ponta", (4860, height - 125, height)],
-        ["Ponta", (4905, height - 125, height)],
-        ["Ponta", (4950, height - 125, height)],
-        ["Ponta", (4995, height - 125, height)],
-
-        ["Saltante", (5675, height - 100)],
-        ["Saltante", (5775, height - 100)],
-
-        ["Chao", ('chao', 275, 5500, 5900)],
-        ["Saltante", (5825, 175)],
+        ["ReiDasCores", (200, 100)],
+        ["PunhoVermelho", (0, 0, "esquerdo")],
+        ["PunhoVermelho", (0, 0, "direito")],
+        ["CabecaLaranja", (0, 0)],
+        ["CoracaoRoxo", (0, 0)],
+        ["Chao", ('chao', height - 10, 0, 6200)],#1200)],
+        # ["Lapis", (600, height - 125, height)],
+        # ["Bolota", (700, height - 50)],
+        # ["Lapis", (900, height - 125, height)],
+        #
+        #
+        # ["Chao", ('chao', height - 10, 1375, 1700)],
+        # ["Saltante", (1400, height - 100)],
+        #
+        # #["Chao", ('chao', 250, 1475, 1600)],
+        #
+        # ["Chao", ('chao', height - 10, 1875, 2775)],
+        # ["Saltante", (1900, height - 100)],
+        # ["Lapis", (2150, height - 125, height)],
+        # ["Bolota", (2200, height - 50)],
+        # ["Lapis", (2450, height - 125, height)],
+        #
+        # ["Chao", ('chao', height - 10, 3050, 4000)],
+        # ["Chao", ('chao', height - 450, 3050, 4000)],
+        # ["TintaVermelha", (3325, height - 260)],
+        # ["Saltante", (3350, height - 100)],
+        # ["Chao", ('chao', height - 160, 3975, 4100)],
+        # ["Lapis", (3950, height - 125, height)],
+        # ["Lapis", (3950, height - 235, height)],
+        # ["Lapis", (3950, height - 320, height)],
+        # ["Chao", ('chao', height - 320, 3450, 3650)],
+        # ["Chao", ('chao', height - 160, 3250, 3450)],
+        # ["Paleta", (3520, 90)],
+        #
+        # ["Chao", ('chao', height - 10, 4000, 7000)],
+        #
+        # ["Ponta", (4500, height - 125, height)],
+        # ["Ponta", (4545, height - 125, height)],
+        # ["Ponta", (4590, height - 125, height)],
+        # ["Ponta", (4635, height - 125, height)],
+        # ["Ponta", (4680, height - 125, height)],
+        # ["Ponta", (4725, height - 125, height)],
+        # ["Ponta", (4770, height - 125, height)],
+        # ["Ponta", (4815, height - 125, height)],
+        # ["Ponta", (4860, height - 125, height)],
+        # ["Ponta", (4905, height - 125, height)],
+        # ["Ponta", (4950, height - 125, height)],
+        # ["Ponta", (4995, height - 125, height)],
+        #
+        # ["Saltante", (5675, height - 100)],
+        # ["Saltante", (5775, height - 100)],
+        #
+        # ["Chao", ('chao', 275, 5500, 5900)],
+        # ["Saltante", (5825, 175)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (6400, height - 285)]

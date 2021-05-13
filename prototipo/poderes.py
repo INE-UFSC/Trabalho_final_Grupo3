@@ -355,7 +355,6 @@ class BolaFogo(PoderManifestado):
 
     def sofreu_colisao_outros(self, entidade, direcao, mapa):
         if not entidade.a_prova_de_fogo:
-            print(entidade.nome)
             entidade.auto_destruir(mapa)
         self.auto_destruir(mapa)
 
@@ -466,7 +465,6 @@ class Clones(PoderManifestado):
 
         
         if self.x < 2*self.pos_inicial[0]:
-        #print(self.x)
             self.y += self.vely * self.escala_tempo
             self.x += self.velx * self.escala_tempo
         

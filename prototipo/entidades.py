@@ -3,7 +3,7 @@ import pygame
 from sprites import *
 
 colisao_analisada = "cano3"
-renderizar_hitbox = False
+renderizar_hitbox = True
 renderizar_sprite = True
 gravidade = 0.2
 classes_instanciaveis = []
