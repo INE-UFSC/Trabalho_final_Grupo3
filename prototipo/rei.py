@@ -71,11 +71,11 @@ class PunhoVermelho(ParteDoRei):
     def recarga(self, recarga):
         self.__recarga = recarga
 
-    def renderizar(self, tela, campo_visivel):
+    def renderizar(self, tela, mapa):
         "renderiza na tela na posicao correta"
 
         if renderizar_hitbox:
-            pygame.draw.rect(tela, (255, 0, 0), [self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
+            pygame.draw.rect(tela, (255, 0, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                                    self.corpo.w, self.corpo.h])
         if renderizar_sprite:
             if self.velx > 0: face = 1
@@ -83,7 +83,7 @@ class PunhoVermelho(ParteDoRei):
             else:
                 if self.__lado == "esquerdo": face = -1
                 else: face = 1
-            self.sprite.imprimir(tela, "punho", self.x - campo_visivel.x, self.y - campo_visivel.y, face, 0, 0,
+            self.sprite.imprimir(tela, "punho", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, face, 0, 0,
                                         1 * (self.__quebrado))
 
     def montar(self, mapa):
@@ -121,7 +121,7 @@ class PunhoVermelho(ParteDoRei):
             self.__centro_y = self.rei.y + 100
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
-        self.renderizar(tela, mapa.campo_visivel)
+        self.renderizar(tela, mapa)
 
     def lancar(self, jogador, mapa, atira):
         velx_buff = self.velx
@@ -206,12 +206,12 @@ class CabecaLaranja(ParteDoRei):
         self.__descanso_poder = randrange(0, 25)
         self.__poder = Projetil()
         self.__quebrado = False
-        altura = 50
-        largura = 50
+        altura = 59
+        largura = 56
         dano_contato = 1
         cor = (255,128,0)
         limiteVel = 10
-        super().__init__("cabeca", x, y, altura, largura, limiteVel, 0, dano_contato, "0", cor, 0)
+        super().__init__("cabeca", x, y, altura, largura, limiteVel, 0, dano_contato, "cabeca", cor, 0)
 
     @property
     def descanso_poder_max(self):
@@ -229,16 +229,26 @@ class CabecaLaranja(ParteDoRei):
     def numero_de_projeteis(self, numero_de_projeteis):
         self.__numero_de_projeteis = numero_de_projeteis
 
+    def renderizar(self, tela, mapa):
+        "renderiza na tela na posicao correta"
+
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, (255, 128, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
+                                                   self.corpo.w, self.corpo.h])
+        if renderizar_sprite:
+            face = 1
+            self.sprite.imprimir(tela, "cabeca", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, self.face, 1 * (self.__quebrado), 0,
+                                        int((self.escala_tempo != 0)*mapa.ciclo/6) % 8)
+
     def atualizar(self, tela, mapa, dimensoes_tela):
-        print(self.__quebrado)
 
         if not self.montado: self.montar(mapa)
 
         self.renderizar(tela, mapa)
 
         ##### ATUALIZACAO DA CABECA #####
-        self.x = self.rei.x + 50
-        self.y = self.rei.y -50
+        self.x = self.rei.x + 45
+        self.y = self.rei.y - 59
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
         ##### FAZ ELE ATIRAR FOGO #####
@@ -347,7 +357,7 @@ class ReiDasCores(Entidade):
         self.__punho_direito = 0
         self.__coracao = 0
         super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "0", (0,0,255), 0, True)
-        self.velx = 0.1
+        self.velx = 0.2
 
         ##### ATRIBUTOS REFERENTES A FASE DA LUTA #####
         self.__descanso_ate_prox_fase = 500
@@ -436,11 +446,11 @@ class ReiDasCores(Entidade):
         if self.__descanso_ate_prox_fase:
             self.__descanso_ate_prox_fase = self.__descanso_ate_prox_fase-1
         else:
-            print(self.__fase)
+            #print(self.__fase)
             self.passar_fase(mapa)
             self.__descanso_ate_prox_fase = 500
 
-        print(self.__vida_gelatinosa)
+        #print(self.__vida_gelatinosa)
 
         ##### COISA BASICA #####
         self.mover(dimensoes_tela, mapa)
