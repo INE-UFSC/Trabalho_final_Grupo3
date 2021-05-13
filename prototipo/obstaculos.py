@@ -12,12 +12,15 @@ class Obstaculo(Estatico):
 class PlataformaMovel(Movel):
     def __init__(self, y: int , x: int, largura: int, vely):
         altura = 19
-        super().__init__("plataforma_movel", x, y, altura, largura, 5, "0",  (184, 20, 20))
+        super().__init__("chao", x, y, altura, largura, 5, "0",  (184, 20, 20))
         self.vely = vely
 
     def renderizar(self, tela, mapa):
         pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                       self.corpo.w, self.corpo.h])
+
+        # self.sprite.imprimir(tela, "chao", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0, 0, 0, 0,
+        #                      self.largura, self.altura)
 
     def mover(self, dimensoesTela, mapa):
         ##### REPOSICIONAMENTO DA PLATAFORMA #####
@@ -92,6 +95,8 @@ class Chao(Obstaculo):
     def renderizar(self, tela, mapa):
         pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                       self.corpo.w, self.corpo.h])
+
+        #self.sprite.imprimir(tela, "chao", self.x  - mapa.campo_visivel.x, self.y  - mapa.campo_visivel.y, 0, 0, 0, 0, self.largura, self.altura)
 
 
 @instanciavel
