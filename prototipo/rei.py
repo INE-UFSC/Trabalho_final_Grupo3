@@ -49,8 +49,8 @@ class PunhoVermelho(ParteDoRei):
         self.__centro_x = x
         self.__centro_y = y
         self.__lado = lado
-        altura = 50
-        largura = 50
+        altura = 60
+        largura = 60
         dano_contato = 1
         cor = (255,0,0)
         limiteVel = 10
@@ -61,7 +61,7 @@ class PunhoVermelho(ParteDoRei):
         self.__atirou = False
         self.__vel_projetil = 10
         self.__quebrado = False
-        super().__init__("punho", x, y, altura, largura, limiteVel, 0, dano_contato, "0", cor, 0)
+        super().__init__("punho", x, y, altura, largura, limiteVel, 0, dano_contato, "punho", cor, 0)
     
     @property
     def recarga(self):
@@ -70,6 +70,21 @@ class PunhoVermelho(ParteDoRei):
     @recarga.setter
     def recarga(self, recarga):
         self.__recarga = recarga
+
+    def renderizar(self, tela, campo_visivel):
+        "renderiza na tela na posicao correta"
+
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, (255, 0, 0), [self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
+                                                   self.corpo.w, self.corpo.h])
+        if renderizar_sprite:
+            if self.velx > 0: face = 1
+            elif self.velx < 0: face = -1
+            else:
+                if self.__lado == "esquerdo": face = -1
+                else: face = 1
+            self.sprite.imprimir(tela, "punho", self.x - campo_visivel.x, self.y - campo_visivel.y, face, 0, 0,
+                                        1 * (self.__quebrado))
 
     def montar(self, mapa):
         for entidade in mapa.lista_de_entidades:
@@ -80,6 +95,7 @@ class PunhoVermelho(ParteDoRei):
                     entidade.punho_esquerdo = self
                 else:
                     entidade.punho_direito = self
+
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         atira = 0
@@ -96,7 +112,6 @@ class PunhoVermelho(ParteDoRei):
         
         self.lancar(mapa.jogador, mapa, atira)
         if not self.montado: self.montar(mapa)
-        self.renderizar(tela, mapa)
         ##### ATUALIZACAO DO CORACAO #####
         if self.__lado == "direito":
             self.__centro_x = self.rei.x + 200
@@ -106,6 +121,8 @@ class PunhoVermelho(ParteDoRei):
             self.__centro_x = self.rei.x - 100
             self.__centro_y = self.rei.y + 100
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+
+        self.renderizar(tela, mapa.campo_visivel)
 
     def lancar(self, jogador, mapa, atira):
         velx_buff = self.velx
@@ -134,7 +151,7 @@ class PunhoVermelho(ParteDoRei):
                 #self.vely = 0
                 #print("cheguei")
             #if not self.velx and not self.vely:
-                #print("eu")
+                #print("eu") #voce?
             #if self.__lado == 'esquerdo':
                 #print(dstancia)
             if dstancia <= 8:
