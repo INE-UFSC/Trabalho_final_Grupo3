@@ -396,6 +396,7 @@ class Tela_De_Jogo(Tela):
             self.__atrasofim += 1
             if self.__atrasofim <= 1:
                 self.__textin = self.__fonte.render("FIM DE JOGO", False, (0, 0, 0))
+                pygame.mixer.music.fadeout(2400)
                 if self.__mapa.escala_tempo > 1:
                     self.__textin = pygame.font.SysFont('msminchomspmincho', 48).render("神の御名（みめい）においてしりそける", False, (0, 0, 0))
             else:
@@ -423,7 +424,7 @@ class Tela_De_Jogo(Tela):
                 self.__sobreposicao = None
             elif resultado == "Fechar":
                 self.salvar_jogo()
-                #pygame.mixer.music.fadeout(2400)
+                pygame.mixer.music.fadeout(500)
                 return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
         except AttributeError:
             pass

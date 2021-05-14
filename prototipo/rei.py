@@ -549,9 +549,10 @@ class ReiDasCores(Entidade):
         self.__entidades_da_fase = []
         for ganhar in mapa.lista_de_entidades:
             if isinstance(ganhar, Vitoria):
-                entidade_vitoria = ganhar
-        entidade_vitoria.x = 400
-        print(entidade_vitoria.x)
+                ganhar.x = self.x+12
+                ganhar.corpo.x = self.x+12
+                break
+        print(ganhar.x)
         
 
     def jogador_pega_gota(self):
@@ -577,6 +578,7 @@ class ReiDasCores(Entidade):
         if self.__fase == 2: self.fase_2(mapa)
         if self.__fase == 3: self.fase_3(mapa)
         if self.__fase == 4: self.fase_4(mapa)
+        if self.__fase == 5: self.fase_5(mapa)
         for entidade in self.__entidades_da_fase:
 
         ##### CRIA INIMIGOS DA NOVA FASE #####
@@ -606,6 +608,7 @@ class ReiDasCores(Entidade):
                     self.passar_fase(mapa)
             if self.__fase == 4:
                 if self.__cabeca.fim_de_jogo:
+                    self.passar_fase(mapa)
                     mapa.lista_de_entidades.remove(self.cabeca)
                     mapa.lista_de_entidades.remove(self.punho_esquerdo)
                     mapa.lista_de_entidades.remove(self.punho_direito)
