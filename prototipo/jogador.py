@@ -45,10 +45,6 @@ class Jogador(Movel):
     @property
     def invisivel(self):
         return self.__invisivel
-
-    @invisivel.setter
-    def invisivel(self,invisivel):
-        self.__invisivel = invisivel
     
     @property
     def paleta(self):
@@ -62,33 +58,33 @@ class Jogador(Movel):
     def poder_armazenado(self):
         return self.__poder_armazenado
 
-    @poder.setter
-    def poder(self, poder):
-        self.__poder = poder
+    #@poder.setter
+    #def poder(self, poder):
+    #    self.__poder = poder
 
     @property
     def moedas(self):
         return self.__moedas
 
-    @moedas.setter
-    def moedas(self, moedas):
-        self.__moedas = moedas
+    #@moedas.setter
+    #def moedas(self, moedas):
+     #   self.__moedas = moedas
 
     @property
     def aceleracao(self):
         return self.__aceleracao
 
-    @aceleracao.setter
-    def aceleracao(self, aceleracao):
-        self.__aceleracao = aceleracao
+    #@aceleracao.setter
+    #def aceleracao(self, aceleracao):
+    #    self.__aceleracao = aceleracao
 
-    @property
-    def posicao_comeco(self):
-        return self.__posicao_comeco
+    #@property
+    #def posicao_comeco(self):
+    #    return self.__posicao_comeco
 
-    @posicao_comeco.setter
-    def posicao_comeco(self, posicao_comeco):
-        self.__posicao_comeco = posicao_comeco
+    #@posicao_comeco.setter
+    #def posicao_comeco(self, posicao_comeco):
+     #   self.__posicao_comeco = posicao_comeco
 
     @property
     def vida(self):
@@ -102,9 +98,9 @@ class Jogador(Movel):
     def tipos_transparentes(self,tipos):
         self.__tipos_transparentes = tipos
     
-    @property
-    def recuperacao(self):
-        return self.__recuperacao
+    #@property
+    #def recuperacao(self):
+    #    return self.__recuperacao
 
     def vida_pra_zero(self):
         self.__vida = 0
@@ -117,7 +113,7 @@ class Jogador(Movel):
     def coletar_poder(self, item):
         if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 3):
             self.__poder_armazenado = self.__poder
-        self.poder = item.poder_atribuido
+        self.__poder = item.poder_atribuido
         self.ganha_vida()
 
     def coletar_moeda(self):
@@ -146,7 +142,7 @@ class Jogador(Movel):
             pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                                 self.corpo.w, self.corpo.h])
         if renderizar_sprite:
-            if self.recuperacao % 15 < 10:
+            if self.__recuperacao % 15 < 10:
                 self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
                                 self.face*(self.escala_tempo!=0)+1*(self.escala_tempo==0), self.velx*(self.escala_tempo>0), self.vely, int(mapa.ciclo/6) % 12*(self.escala_tempo>0))
 
@@ -167,18 +163,14 @@ class Jogador(Movel):
         else:
             self.__descanso_troca_poder -= 1
         self.mover(entradas[0], entradas[1], entradas[2], tamanho_tela, mapa, 0.5)
+        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
         self.renderizar(screen, mapa)
 
         ##### ATUALIZACAO DOS PODERES #####
-        #if self.__recarga > 0: self.__recarga -= 1
-        self.invisivel = self.__poder.atualizar(screen, mapa)
+        self.__invisivel = self.__poder.atualizar(screen, mapa)
 
         ##### SIDESCROLL #####
-        #x_min = min(0, mapa.campo_visivel.x)
-        #x_max = max(mapa.tamanho[0] - mapa.campo_visivel.w, mapa.campo_visivel.x)
-        #y_min = min(0, mapa.campo_visivel.y)
-        #y_max = max(mapa.tamanho[1] - mapa.campo_visivel.h, mapa.campo_visivel.y)
         if self.x > mapa.campo_visivel.x + tamanho_tela[0]*3/5:
             campo_x = max(0, min((mapa.tamanho[0] - mapa.campo_visivel.w, self.x - tamanho_tela[0]*3/5)))
         elif self.x < mapa.campo_visivel.x + tamanho_tela[0]*2/5:
@@ -208,7 +200,7 @@ class Jogador(Movel):
 
         ##### COLISOES #####
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, self.tipos_transparentes)
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, self.__tipos_transparentes)
         obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
         dano_total = 0
 
@@ -225,7 +217,7 @@ class Jogador(Movel):
             dano_sofrido = obsEsquerda.sofreu_colisao_jogador(self, "esquerda", mapa)
             dano_total += dano_sofrido
 
-        if not self.invisivel:
+        if not self.__invisivel:
             if dano_total and not self.__recuperacao > 0 and not mapa.ganhou:
                 self.__vida -= dano_total
                 self.__recuperacao = 90
@@ -247,14 +239,12 @@ class Jogador(Movel):
         if self.x <= 0:
             if self.velx <= 0:
                 self.velx = 0
-                aceleracao = 0
                 self.x = 0
 
         ##### IMPEDE QUE O JOGADOR PASSE DA BORDA DIREITA #####
         if self.x >= mapa.tamanho[0] - self.largura:
             if self.velx >= 0:
                 self.velx = 0
-                aceleracao = 0
                 self.x = mapa.tamanho[0] - self.largura
 
         ### CHECANDO VITÓRIA ###
@@ -323,7 +313,7 @@ class Jogador(Movel):
             self.face = -1
 
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        #self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
     def poderes(self, screen, mapa, acao=False):
         "Faz com que o jogador ative seu poder quando disponivel"
