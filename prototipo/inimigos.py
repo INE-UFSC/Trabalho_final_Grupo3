@@ -228,10 +228,7 @@ class Atirador(Inimigo):
         else:
             self.vely += self.__gravidade * self.escala_tempo
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
-        #if self.corpo.colliderect(mapa.campo_visivel):
-        #    self.velx = 0
         dist_x_jogador = self.x - mapa.jogador.x
-        #    if self.escala_tempo:
         if dist_x_jogador > 0:
             self.face = -1
         elif dist_x_jogador < 0:
