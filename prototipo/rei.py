@@ -5,12 +5,11 @@ from obstaculos import *
 
 @instanciavel
 class Gota(Coletavel):
-    def __init__(self, x, y, rei):
+    def __init__(self, nome, x, y, rei):
         largura = 20
-        altura = 20
-        num = 1
+        altura = 29
         self.__rei = rei
-        super().__init__("gota"+str(num), x, y, "0", (0, 0, 0), largura, altura)
+        super().__init__(nome, x, y, "sprites", (0, 0, 0), largura, altura)
     
     def coleta(self, jogador, mapa):
         jogador.ganha_vida()
@@ -285,8 +284,13 @@ class CabecaLaranja(ParteDoRei):
             pygame.draw.rect(tela, (255, 128, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                                    self.corpo.w, self.corpo.h])
         if renderizar_sprite:
-            self.sprite.imprimir(tela, "cabeca", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, self.face, 1 * (self.__quebrado), 0,
-                                        int((self.escala_tempo != 0)*mapa.ciclo/6) % 8)
+            if self.fase < 4:
+                self.sprite.imprimir(tela, "cabeca", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                     self.face, 1 * (self.__quebrado), 0, int((self.escala_tempo != 0)*mapa.ciclo/6) % 8)
+            else:
+                self.sprite.imprimir(tela, "cabeca_final", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                     self.face, 0, 0,
+                                     int((self.escala_tempo != 0) * mapa.ciclo / 6) % 8)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
 
@@ -531,9 +535,9 @@ class ReiDasCores(Entidade):
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+550, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial+750, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial+550, 200, 0),
-                                    Gota(self.__posicao_inicial-500, mapa.tamanho[1]-350, self),
-                                    Gota(self.__posicao_inicial+850, mapa.tamanho[1]-350, self),
-                                    Gota(self.__posicao_inicial+200, mapa.tamanho[1]-600, self)
+                                    Gota("R", self.__posicao_inicial-500, mapa.tamanho[1]-350, self),
+                                    Gota("G", self.__posicao_inicial+850, mapa.tamanho[1]-350, self),
+                                    Gota("B", self.__posicao_inicial+200, mapa.tamanho[1]-600, self)
                                     ]
 
     def fase_4(self, mapa): #Fase do tempo
