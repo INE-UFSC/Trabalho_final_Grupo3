@@ -418,3 +418,7 @@ class Entidade(Movel):
         if renderizar_sprite and type(self.sprite) != list:
             self.sprite.imprimir(tela, self.nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
                         self.face, self.velx, self.vely, int((self.escala_tempo != 0)*mapa.ciclo/6) % self.__frames, 0,0)
+    
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        if self.corpo.colliderect([mapa.campo_visivel.x-50,mapa.campo_visivel.y-50,mapa.campo_visivel.w+100,mapa.campo_visivel.h+100]):
+            super().atualizar(tela, mapa, dimensoes_tela)

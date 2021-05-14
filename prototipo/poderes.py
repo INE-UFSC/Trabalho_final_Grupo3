@@ -280,7 +280,7 @@ class BolaFogo(PoderManifestado):
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        if (self.duracao > 0):
+        if self.duracao > 0 or not self.corpo.colliderect(mapa.campo_visivel):
             self.mover(dimensoes_tela, mapa)
             self.renderizar(tela, mapa)
             self.duracao -= 1 * self.escala_tempo
@@ -324,7 +324,7 @@ class Bala(PoderManifestadoInimigo):
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        if (self.duracao > 0):
+        if self.duracao > 0 or not self.corpo.colliderect(mapa.campo_visivel):
             self.mover(dimensoes_tela, mapa)
             self.renderizar(tela, mapa)
             self.duracao -= 1 * self.escala_tempo
