@@ -14,7 +14,8 @@ class Mapa:
 
 
         ##### ATRIBUTOS DE RENDERIZACAO #####
-        
+        self.__fundo = pygame.image.load("sprites/fundo.png").convert_alpha()
+        self.__trono = pygame.image.load("sprites/trono.png").convert_alpha()
         self.__superficie = superficie
         tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
@@ -32,6 +33,7 @@ class Mapa:
         self.__ganhou = False
         self.__moedas_pegas = ""
         self.__paletas_pegas = ""
+        self.__fase = "fase0"
 
     @property
     def lista_de_entidades(self):
@@ -116,6 +118,7 @@ class Mapa:
                     self.__lista_de_entidades.append(objeto)
         self.__tamanho = lista_todos[1]
         self.__proxima_fase = lista_todos[2]
+        self.__fase = fase
 
         ##### INSTANCIACAO DO JOGADOR #####
         self.__jogador = Jogador("rabisco", 200, self.tamanho[1] - 50, poder_atual, poder_armazenado, paletas)
@@ -137,7 +140,12 @@ class Mapa:
         self.cor_fundo = [180-min(self.render_escala_tempo,1)*30,
             200+min(self.render_escala_tempo,1)*20,
             210+min(self.render_escala_tempo,1)*45]
-        self.__superficie.fill(self.__background_colour)  # Preenche a cor de fundo
+        self.__superficie.fill((0,162,232))  # Preenche a cor de fundo
+        print(self.__campo_visivel.x, self.__campo_visivel.y)
+        if self.__fase == "fase6":
+            tela.blit(self.__trono,(0-self.__campo_visivel.x,0-self.__campo_visivel.y),(0,0,1800,900))
+        else:
+            tela.blit(self.__fundo, (0-self.__campo_visivel.x, 0 - self.__campo_visivel.y), (0, 0, 9000, 900))
 
         ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
@@ -156,7 +164,7 @@ def montar_mapas():
     em vez de diretamente modificar o arquivo json
     """
     width = 6600
-    height = 600
+    height = 900
     fase1 = [[
         ["Chao", ('chao', height - 10, 0, 1200)],
         ["Lapis", (600, height - 125, height)],
@@ -484,42 +492,54 @@ def montar_mapas():
         "fase5"]
 
     width = 5040
-    height = 700
+    height = 900
     fase5 = [[
         ["Chao", ('chao1', height - 10, -200, 300)],
 
         ["Bloco", ('bloco1', 300, height - 200)],
+        ["TintaVermelha", (300, height - 270)],
         ["Bloco", ('bloco2', 450, height - 350)],
         ["Bloco", ('bloco3', 600, height - 500)],
 
 
         ["Chao", ('chao2', height - 500, 750, 1100)],
+
         ["Chao", ('chao3', 450, 870, 1010)],
         ["Atirador", (870, 406)],
-        ["Chao", ('chao4', 350, 1200, 1250)],
+
+        ["Chao", ('chao4', 350, 1240, 1290)],
+
         ["Chao", ('chao4', height - 500, 1514, 1734)],
         ["Lapis", (1470, height - 544, height - 483)],
         ["Gelatina", (1600, 100)],
         ["Lapis", (1734, height - 544, height - 483)],
+
         ["Chao", ('chao4', -100, 1900, 2500)],
         ["Saltante", (2400, -154)],
+
         ["Chao", ('chao4', -300, 1970, 2060)],
         ["Atirador", (1970, -344)],
         ["Chao", ('chao4', 144, 2400, 2490)],
         ["Atirador", (2400, 100)],
         ["Temporal", (1970, -390)],
         ["TintaLaranja", (2470, -160)],
+
         ["Bloco", ('bloco4', 2800, -100)],
         ["Bloco", ('bloco6', 3170, -100)],
+
         ["Chao", ('chao4', 144, 3200, 3290)],
         ["Atirador", (3200, 100)],
         ["Atirador", (3200, 54)],
+
         ["Bloco", ('bloco7', 3480, -100)],
+
         ["Lapis", (3880, 40, 140)],
         ["Chao", ('chao4', 123, 3924, 4500)],
-        ["Espinhento", ( 3400, 80)],
-        ["Espinhento", ( 3460, 80)],
-        ["Espinhento", ( 3500, 80)],
+        ["Espinhento", ( 4000, 80)],
+        ["Espinhento", ( 4100, 80)],
+        ["Espinhento", ( 4200, 80)],
+        ["Espinhento", ( 4300, 80)],
+        ["Espinhento", ( 4400, 80)],
         ["Lapis", (4501, 40, 140)],
 
         ##### BORDA E VITORIA #####
@@ -528,7 +548,8 @@ def montar_mapas():
 
         ["Gelatina", (1000, height - 450)],
         ["Paleta", (995, 405)],
-        ["Paleta", (1200, 300)],
+        ["Borracha", (1240, 300)],
+        #["Paleta", (1200, 300)],
 
         ##### PODERES #####
         # ["Chakra",('chakra', 1600, height-50)],
@@ -543,12 +564,12 @@ def montar_mapas():
 
         "fase6"]
 
-    width = 2100
+    width = 1800
     height = 900
     fase6 = [[
 
-        ["Vitoria", (2090, height - 280)],
-        ["ReiDasCores", (800, 100, height)],
+        ["Vitoria", (2100, height - 280)],
+        ["ReiDasCores", (650, 100, height)],
         ["PunhoVermelho", (0, 0, "esquerdo", 280)],
         ["PunhoVermelho", (0, 0, "direito", 340)],
         ["CabecaLaranja", (0, 0)],
