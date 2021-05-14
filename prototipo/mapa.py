@@ -140,7 +140,7 @@ class Mapa:
         self.cor_fundo = [180-min(self.render_escala_tempo,1)*30,
             200+min(self.render_escala_tempo,1)*20,
             210+min(self.render_escala_tempo,1)*45]
-        self.__superficie.fill((0,162,232))  # Preenche a cor de fundo
+        self.__superficie.fill(self.cor_fundo)  # Preenche a cor de fundo
         print(self.__campo_visivel.x, self.__campo_visivel.y)
         if self.__fase == "fase6":
             tela.blit(self.__trono,(0-self.__campo_visivel.x,0-self.__campo_visivel.y),(0,0,1800,900))
