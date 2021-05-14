@@ -159,17 +159,17 @@ class Voador(Inimigo):
 @instanciavel
 class Atirador(Inimigo):
     "Inimigo que atira bolas de fogo periodicamente"
-    def __init__(self, x: int, y: int, anda = True):
+    def __init__(self, x: int, y: int):#, anda = True):
         vida = 1
         danoContato = 1
         largura = 90
         altura = 44
-        limiteVel = 4
+        limiteVel = 0
         super().__init__("atirador", x, y, altura, largura, limiteVel, vida, danoContato, "atirador", (255, 25, 25), 8, True)
         self.vely = 0
-        self.velx = 2
+        self.velx = 0
         self.__vel_projetil = 3
-        self.__anda = anda
+        #self.__anda = anda
         self.xinicial = x
         self.escala_tempo = 1
         self.__poder = Projetil()
@@ -190,18 +190,20 @@ class Atirador(Inimigo):
         #### DETERMINA A VELOCIDADE DO PROJETIL PRA SEGUIR O JOGADOR ####
         if self.corpo.colliderect(mapa.campo_visivel):
             altura_random = 0 #randrange(0, self.altura - 26)
-            
+            disty = (mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)
             if mapa.jogador.x <= self.x:
+                distx = mapa.jogador.x - self.x -15*self.face
                 dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
-                        mapa.jogador.x - self.x -15*self.face) ** 2) ** (1 / 2)
+                        distx) ** 2) ** (1 / 2)
                 divisor = max(dstancia / self.__vel_projetil,0.001)
-                velx = (mapa.jogador.x - self.x -15*self.face) / divisor
+                velx = distx / divisor
             else:
-                dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
-                        mapa.jogador.x - self.corpo.bottomright[0] -15*self.face) ** 2) ** (1 / 2)
+                distx = mapa.jogador.x - self.corpo.bottomright[0] -15*self.face
+                dstancia = ((disty) ** 2 + (
+                        distx) ** 2) ** (1 / 2)
                 divisor = max(dstancia / self.__vel_projetil,0.001)
-                velx = (mapa.jogador.x - self.corpo.bottomright[0] -15*self.face) / divisor
-            vely = ((mapa.jogador.y) - (self.y )) / divisor
+                velx = distx / divisor
+            vely = disty / divisor
 
             if self.__descanso_poder <= 0:
                 self.__poder.acao(self, tela, mapa, velx, vely, altura_random)
@@ -224,20 +226,17 @@ class Atirador(Inimigo):
         ##### GRAVIDADE ######
         else:
             self.vely += self.__gravidade * self.escala_tempo
-
-        
-
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
-        if self.corpo.colliderect(mapa.campo_visivel):
-            self.velx = 0
-            dist_x_jogador = self.x - mapa.jogador.x
-            if self.escala_tempo:
-                if dist_x_jogador > 0:
-                    self.face = -1
-                elif dist_x_jogador < 0:
-                    self.face = 1
-        else:
-            self.x += 2 * self.escala_tempo * self.face * self.__anda
+        #if self.corpo.colliderect(mapa.campo_visivel):
+        #    self.velx = 0
+        dist_x_jogador = self.x - mapa.jogador.x
+        #    if self.escala_tempo:
+        if dist_x_jogador > 0:
+            self.face = -1
+        elif dist_x_jogador < 0:
+            self.face = 1
+        #else:
+        self.x += self.velx * self.escala_tempo * self.face
         self.y += self.vely * self.escala_tempo
 
 

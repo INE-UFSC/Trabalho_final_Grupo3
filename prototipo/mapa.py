@@ -247,10 +247,10 @@ def montar_mapas():
 
         ["Chao", ('chao', height - 400, 2100, 2250)],
         ["Chao", ('chao', height - 400, 2400, 2550)],
-        ["Atirador", (2130, height - 450, False)],
-        ["Atirador", (2130, height - 500, False)],
-        ["Atirador", (2430, height - 450, False)],
-        ["Atirador", (2430, height - 500, False)],
+        ["Atirador", (2130, height - 450)],
+        ["Atirador", (2130, height - 500)],
+        ["Atirador", (2430, height - 450)],
+        ["Atirador", (2430, height - 500)],
         ["Chao", ('chao', height - 300, 2300, 2350)],
         ["Paleta", (2300, height - 350)],
         ["Chao", ('chao', height - 150, 2450, 2550)],
@@ -265,9 +265,9 @@ def montar_mapas():
         ["TintaLaranja", (3675, height - 200)],
         ["Saltante", (3800, height - 100)],
         ["Chao", ('chao', height - 400, 3700, 3850)],
-        ["Atirador", (3730, height - 450, False)],
+        ["Atirador", (3730, height - 450)],
         ["Chao", ('chao', height - 400, 3900, 4050)],
-        ["Atirador", (3930, height - 450, False)],
+        ["Atirador", (3930, height - 450)],
 
         ["PlataformaMovel", (150, 4300, 100, -2)],
         ["PlataformaMovel", (450, 4300, 100, -2)],
@@ -300,13 +300,13 @@ def montar_mapas():
         ["Saltante", (6300, height - 100)],
 
         ["Chao", ('chao', height - 200, 6300, 6500)],
-        ["Atirador", (6350, height - 250, False)],
-        ["Atirador", (6350, height - 300, False)],
-        ["Atirador", (6350, height - 350, False)],
-        ["Atirador", (6350, height - 400, False)],
-        ["Atirador", (6350, height - 450, False)],
-        ["Atirador", (6350, height - 500, False)],
-        ["Atirador", (6350, height - 550, False)],
+        ["Atirador", (6350, height - 250)],
+        ["Atirador", (6350, height - 300)],
+        ["Atirador", (6350, height - 350)],
+        ["Atirador", (6350, height - 400)],
+        ["Atirador", (6350, height - 450)],
+        ["Atirador", (6350, height - 500)],
+        ["Atirador", (6350, height - 550)],
 
         ["Borracha", (6250, height - 150)],
         ["Borracha", (6300, height - 150)],
@@ -340,8 +340,8 @@ def montar_mapas():
         ["Saltante", (1550, height - 100)],
 
         ["Chao", ('chao', height - 400, 1600, 1750)],
-        ["Atirador", (1630, height - 450, False)],
-        ["Atirador", (1630, height - 500, False)],
+        ["Atirador", (1630, height - 450)],
+        ["Atirador", (1630, height - 500)],
         ["Chao", ('chao', height - 150, 2400, 2550)],
 
         ["Chao", ('chao', height - 10, 2700, 3295)],
@@ -363,12 +363,12 @@ def montar_mapas():
         ["Chao", ('chao', height - 300, 2700, 3300)],
 
         ["Chao", ('chao', height - 600, 2550, 2700)],
-        ["Atirador", (2580, height - 650, False)],
-        ["Atirador", (2580, height - 700, False)],
+        ["Atirador", (2580, height - 650)],
+        ["Atirador", (2580, height - 700)],
 
         ["Chao", ('chao', height - 600, 3300, 3450)],
-        ["Atirador", (3330, height - 650, False)],
-        ["Atirador", (3330, height - 700, False)],
+        ["Atirador", (3330, height - 650)],
+        ["Atirador", (3330, height - 700)],
 
         ["PlataformaMovel", (100, 3600, 100, -2)],
         ["PlataformaMovel", (400, 3600, 100, -2)],
@@ -380,12 +380,12 @@ def montar_mapas():
         ["TintaAzul", (4150, height - 275)],
         ["Ponta", (4300, height - 125, height)],
 
-        ["Atirador", (4600, height - 100, False)],
-        ["Atirador", (4600, height - 150, False)],
+        ["Atirador", (4600, height - 100)],
+        ["Atirador", (4600, height - 150)],
         ["Saltante", (4750, height - 100)],
 
         ["Chao", ('chao', height - 400, 4850, 5000)],
-        ["Atirador", (4880, height - 450, False)],
+        ["Atirador", (4880, height - 450)],
 
         ["PlataformaMovel", (100, 5150, 100, -2)],
         ["PlataformaMovel", (400, 5150, 100, -2)],
@@ -400,19 +400,19 @@ def montar_mapas():
         ["Gelatina", (6300, height - 160)],
 
         ["Chao", ('chao', height - 400, 5400, 5550)],
-        ["Atirador", (5430, height - 450, False)],
+        ["Atirador", (5430, height - 450)],
 
         ["Chao", ('chao', height - 400, 5600, 5750)],
-        ["Atirador", (5630, height - 450, False)],
+        ["Atirador", (5630, height - 450)],
 
         ["Chao", ('chao', height - 400, 5800, 5950)],
-        ["Atirador", (5830, height - 450, False)],
+        ["Atirador", (5830, height - 450)],
 
         ["Chao", ('chao', height - 400, 6000, 6150)],
-        ["Atirador", (6030, height - 450, False)],
+        ["Atirador", (6030, height - 450)],
 
         ["Chao", ('chao', height - 400, 6200, 6350)],
-        ["Atirador", (6230, height - 450, False)],
+        ["Atirador", (6230, height - 450)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (6600, height - 285)]
@@ -428,8 +428,8 @@ def montar_mapas():
     fase4 = [[
         ["Temporal", (300, height - 200)],
         ["Chao", ('chao', height - 10, 0, 1400)],
-        ["Atirador", (600, height - 100, False)],
-        ["Atirador", (600, height - 150, False)],
+        ["Atirador", (600, height - 100)],
+        ["Atirador", (600, height - 150)],
         ["Saltante", (750, height - 100)],
         ["Lapis", (850, height - 125, height)],
         ["Bolota", (900, height - 50)],
@@ -443,16 +443,16 @@ def montar_mapas():
         ["Ponta", (2500, height - 125, height)],
 
         ["Chao", ('chao', height - 400, 2700, 2850)],
-        ["Atirador", (2730, height - 450, False)],
-        ["Atirador", (2730, height - 500, False)],
+        ["Atirador", (2730, height - 450)],
+        ["Atirador", (2730, height - 500)],
 
         ["Gelatina", (2800, height - 200)],
         ["TintaRoxa", (2975, height - 200)],
         ["Saltante", (3100, height - 100)],
 
         ["Chao", ('chao', height - 400, 3250, 3400)],
-        ["Atirador", (3280, height - 450, False)],
-        ["Atirador", (3280, height - 500, False)],
+        ["Atirador", (3280, height - 450)],
+        ["Atirador", (3280, height - 500)],
 
         ["Ponta", (3500, height - 125, height)],
 
@@ -463,12 +463,12 @@ def montar_mapas():
         ["Chao", ('chao', height - 10, 5200, 6800)],
         ["Lapis", (5250, height - 125, height)],
 
-        ["Atirador", (5600, height - 100, False)],
-        ["Atirador", (5600, height - 150, False)],
+        ["Atirador", (5600, height - 100)],
+        ["Atirador", (5600, height - 150)],
         ["Saltante", (5750, height - 100)],
 
-        ["Atirador", (6200, height - 100, False)],
-        ["Atirador", (6200, height - 150, False)],
+        ["Atirador", (6200, height - 100)],
+        ["Atirador", (6200, height - 150)],
         ["Saltante", (6350, height - 100)],
 
         ["Chao", ('chao', height - 350, 6250, 6500)],
@@ -495,7 +495,7 @@ def montar_mapas():
 
         ["Chao", ('chao2', height - 500, 750, 1100)],
         ["Chao", ('chao3', 450, 870, 1010)],
-        ["Atirador", (870, 406, False)],
+        ["Atirador", (870, 406)],
         ["Chao", ('chao4', 350, 1200, 1250)],
         ["Chao", ('chao4', height - 500, 1514, 1734)],
         ["Lapis", (1470, height - 544, height - 483)],
@@ -504,16 +504,16 @@ def montar_mapas():
         ["Chao", ('chao4', -100, 1900, 2500)],
         ["Saltante", (2400, -154)],
         ["Chao", ('chao4', -300, 1970, 2060)],
-        ["Atirador", (1970, -344, False)],
+        ["Atirador", (1970, -344)],
         ["Chao", ('chao4', 144, 2400, 2490)],
-        ["Atirador", (2400, 100, False)],
+        ["Atirador", (2400, 100)],
         ["Temporal", (1970, -390)],
         ["TintaLaranja", (2470, -160)],
         ["Bloco", ('bloco4', 2800, -100)],
         ["Bloco", ('bloco6', 3170, -100)],
         ["Chao", ('chao4', 144, 3200, 3290)],
-        ["Atirador", (3200, 100, False)],
-        ["Atirador", (3200, 54, False)],
+        ["Atirador", (3200, 100)],
+        ["Atirador", (3200, 54)],
         ["Bloco", ('bloco7', 3480, -100)],
         ["Lapis", (3880, 40, 140)],
         ["Chao", ('chao4', 123, 3924, 4500)],
