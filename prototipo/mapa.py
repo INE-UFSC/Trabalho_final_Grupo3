@@ -14,7 +14,8 @@ class Mapa:
 
 
         ##### ATRIBUTOS DE RENDERIZACAO #####
-        
+        self.__fundo = pygame.image.load("sprites/fundo.png").convert_alpha()
+        self.__trono = pygame.image.load("sprites/trono.png").convert_alpha()
         self.__superficie = superficie
         tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
@@ -32,6 +33,7 @@ class Mapa:
         self.__ganhou = False
         self.__moedas_pegas = ""
         self.__paletas_pegas = ""
+        self.__fase = "fase0"
 
     @property
     def lista_de_entidades(self):
@@ -116,6 +118,7 @@ class Mapa:
                     self.__lista_de_entidades.append(objeto)
         self.__tamanho = lista_todos[1]
         self.__proxima_fase = lista_todos[2]
+        self.__fase = fase
 
         ##### INSTANCIACAO DO JOGADOR #####
         self.__jogador = Jogador("rabisco", 200, self.tamanho[1] - 50, poder_atual, poder_armazenado, paletas)
@@ -138,6 +141,11 @@ class Mapa:
             200+min(self.render_escala_tempo,1)*20,
             210+min(self.render_escala_tempo,1)*45]
         self.__superficie.fill(self.__background_colour)  # Preenche a cor de fundo
+        print(self.__campo_visivel.x, self.__campo_visivel.y)
+        if self.__fase == "fase6":
+            tela.blit(self.__trono,(0-self.__campo_visivel.x,0-self.__campo_visivel.y),(0,0,1800,900))
+        else:
+            tela.blit(self.__fundo, (0-self.__campo_visivel.x, 0 - self.__campo_visivel.y), (0, 0, 9000, 900))
 
         ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
@@ -156,7 +164,7 @@ def montar_mapas():
     em vez de diretamente modificar o arquivo json
     """
     width = 6600
-    height = 600
+    height = 900
     fase1 = [[
         ["Chao", ('chao', height - 10, 0, 1200)],
         ["Lapis", (600, height - 125, height)],
@@ -484,7 +492,7 @@ def montar_mapas():
         "fase5"]
 
     width = 5040
-    height = 700
+    height = 900
     fase5 = [[
         ["Chao", ('chao1', height - 10, -200, 300)],
 
@@ -556,12 +564,12 @@ def montar_mapas():
 
         "fase6"]
 
-    width = 2100
+    width = 1800
     height = 900
     fase6 = [[
 
         ["Vitoria", (2100, height - 280)],
-        ["ReiDasCores", (800, 100, height)],
+        ["ReiDasCores", (650, 100, height)],
         ["PunhoVermelho", (0, 0, "esquerdo", 280)],
         ["PunhoVermelho", (0, 0, "direito", 340)],
         ["CabecaLaranja", (0, 0)],

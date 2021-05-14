@@ -31,7 +31,6 @@ class Sprite():
             for i in range(ciclos_completos):
                 tela.blit(self.__sprite_sheet, (posx+i*w, posy), (x, y, w, h))
             tela.blit(self.__sprite_sheet, (posx+ciclos_completos*w, posy), (x, y, extra, h))
-            #tela.blit(self.__sprite_sheet, (posx, posy), (x, y, w, h))
         else:
             if width: w = width
             if height: h = height
