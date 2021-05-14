@@ -162,7 +162,7 @@ class PunhoVermelho(ParteDoRei):
 
     def mover(self, jogador, mapa, atira):
         velx_buff = self.velx
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo ,Bala, Coletavel, ParteDoRei, ReiDasCores])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo ,Bala, Coletavel, ParteDoRei, ReiDasCores, PlataformaMovel])
         if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
         if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
         if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
@@ -429,7 +429,7 @@ class CoracaoRoxo(ParteDoRei):
 
 @instanciavel
 class ReiDasCores(Entidade):
-    def __init__(self, x, y):
+    def __init__(self, x, y, height):
         ##### PARTES DO CORPO #####
         self.__cabeca = 0
         self.__punho_esquerdo = 0
@@ -439,17 +439,22 @@ class ReiDasCores(Entidade):
         self.velx = 1
 
         ##### ATRIBUTOS REFERENTES A FASE DA LUTA #####
-        self.__descanso_ate_prox_fase = 500
         self.__fase = 0 #0, 1-Vermelho, 2-Laranja, 3-Azul, 4-Roxo
-        self.__entidades_da_fase = []
+        self.__entidades_da_fase = [PlataformaMovel(height-150, x-300, 200, 0),
+                                    PlataformaMovel(height-280, x-500, 200, 0),
+                                    PlataformaMovel(height-400, x-300, 200, 0),
+                                    PlataformaMovel(height-150, x+550, 200, 0),
+                                    PlataformaMovel(height-280, x+750, 200, 0),
+                                    PlataformaMovel(height-400, x+550, 200, 0),
+                                    ]
         self.__vida_gelatinosa = 15
         self.__gota = 3
-        self.__enjoo = 15
+        self.__enjoo = 5
         self.__tempo_parado = False
 
         ##### ATRIBUTOS DE POSICIONAMENTO #####
         self.__posicao_inicial = x
-        self.__posicao_final = x + 500
+        self.__posicao_final = x + 300
 
     @property
     def fase(self):
@@ -491,28 +496,49 @@ class ReiDasCores(Entidade):
         self.__vida_gelatinosa -= 1
 
 
-    def fase_1(self):
-        self.__entidades_da_fase = [TintaVermelha(400, 450),
-                                    Chao("chao", 200, 200, 400),
-                                    Chao("chao", 300, 200, 400),
-                                    Chao("chao", 400, 200, 400)]
-
-    def fase_2(self):
-        self.__entidades_da_fase = [TintaLaranja(400,450)
+    def fase_1(self, mapa):
+        self.__entidades_da_fase = [TintaVermelha(self.__posicao_inicial+209,500),
+                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial-500, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial-300, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+550, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial+750, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial+550, 200, 0),
+                                    Saltante(self.__posicao_inicial-300, mapa.tamanho[1] - 150),
+                                    Saltante(self.__posicao_inicial+950, mapa.tamanho[1] - 150)
                                     ]
 
-    def fase_3(self):
-        self.__entidades_da_fase = [TintaAzul(400,500),
-                                    Gota(600,450,self),
-                                    Gota(700,450,self),
-                                    Gota(800,450,self)
+    def fase_2(self, mapa):
+        self.__entidades_da_fase = [TintaLaranja(self.__posicao_inicial+209,500),
+                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial-500, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial-300, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+550, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial+750, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial+550, 200, 0),
+                                    Atirador(self.__posicao_inicial-250, mapa.tamanho[1]-500, False),
+                                    Atirador(self.__posicao_inicial+600, mapa.tamanho[1]-500, False),
                                     ]
 
-    def fase_4(self):
-        self.__entidades_da_fase = [TintaRoxa(400,500),
-                                    Chao("chao", 400, 200, 400),
-                                    Chao("chao", 300, 400, 600),
-                                    Chao("chao", 200, 600, 800)]
+    def fase_3(self, mapa):
+        self.__entidades_da_fase = [TintaAzul(self.__posicao_inicial+209,500),
+                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial-500, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial-300, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+550, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial+750, 200, 0),
+                                    PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial+550, 200, 0),
+                                    Gota(self.__posicao_inicial-500, mapa.tamanho[1]-350, self),
+                                    Gota(self.__posicao_inicial+850, mapa.tamanho[1]-350, self),
+                                    Gota(self.__posicao_inicial+200, mapa.tamanho[1]-600, self)
+                                    ]
+
+    def fase_4(self, mapa): #Fase do tempo
+        self.__entidades_da_fase = [TintaRoxa(self.__posicao_inicial+209,500),
+                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-250, 100, 4),
+                                    PlataformaMovel(mapa.tamanho[1]-300, self.__posicao_inicial-150, 100, 4),
+                                    PlataformaMovel(mapa.tamanho[1]-300, self.__posicao_inicial+500, 100, 4),
+                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+600, 100, 4),]
 
     def jogador_pega_gota(self):
         if self.__gota > 0:
@@ -530,12 +556,13 @@ class ReiDasCores(Entidade):
         ##### LIMPA ENTIDADES DA FASE ANTERIOR #####
         for entidade in self.__entidades_da_fase:
             if entidade in mapa.lista_de_entidades:
+                print("FAXINA", self.__fase)
                 mapa.lista_de_entidades.remove(entidade)
 
-        if self.__fase == 1: self.fase_1()
-        if self.__fase == 2: self.fase_2()
-        if self.__fase == 3: self.fase_3()
-        if self.__fase == 4: self.fase_4()
+        if self.__fase == 1: self.fase_1(mapa)
+        if self.__fase == 2: self.fase_2(mapa)
+        if self.__fase == 3: self.fase_3(mapa)
+        if self.__fase == 4: self.fase_4(mapa)
         for entidade in self.__entidades_da_fase:
 
         ##### CRIA INIMIGOS DA NOVA FASE #####
@@ -543,7 +570,9 @@ class ReiDasCores(Entidade):
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         ##### PASSA A FASE APOS CERTO TEMPO (PROVISORIO) #####
-
+        if self.__enjoo == 1:
+            for entidade in self.__entidades_da_fase: ##### CRIA INIMIGOS DA NOVA FASE #####
+                mapa.lista_de_entidades.append(entidade)
         if self.__enjoo: self.__enjoo -= 1 #Da 25 frames pro jogo carregar tudo
 
         ##### PASSA AS FASES DA LUTA #####

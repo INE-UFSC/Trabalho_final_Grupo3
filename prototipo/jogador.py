@@ -142,7 +142,7 @@ class Jogador(Movel):
         if renderizar_sprite:
             if self.recuperacao % 15 < 10:
                 self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
-                                self.face, self.velx*(self.escala_tempo>0), self.vely, ciclo % 12*(self.escala_tempo>0))
+                                self.face*(self.escala_tempo!=0)+1*(self.escala_tempo==0), self.velx*(self.escala_tempo>0), self.vely, ciclo % 12*(self.escala_tempo>0))
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): 
         """define logica de interacao com objetos especificos
@@ -234,12 +234,6 @@ class Jogador(Movel):
                 if isinstance(obstaculos[i], Entidade):
                     obstaculos[i] = 0
 
-        ##### COLETA ITENS #####
-        #for i in range(len(obstaculos)):
-        #    if isinstance(obstaculos[i], Coletavel):
-        #        obstaculos[i].coleta(self, mapa)
-        #        obstaculos[i] = 0
-
         ##### REPOSICIONAMENTO POS COLISAO #####
         if isinstance(obsDireita, Obstaculo) and isinstance(obsEsquerda, Obstaculo):  # ESMAGAMENTO
             self.__vida = 0
@@ -268,7 +262,7 @@ class Jogador(Movel):
             mapa.ganhou = True
 
         ##### GRAVIDADE ######
-        if not obsBaixo: self.vely += gravidade
+        if not obsBaixo: self.vely += gravidade * self.escala_tempo
 
         ##### ATRITO ######
         if self.__aceleracao == 0:
