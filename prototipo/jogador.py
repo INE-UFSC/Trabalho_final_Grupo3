@@ -202,8 +202,6 @@ class Jogador(Movel):
         "Atualiza posicao e velocidade"
         if not self.__congelado: self.escala_tempo = 1
 
-        vely_buff = self.vely
-
         ##### MOVIMENTO HORIZONTAL #####
         self.__aceleracao = (direita - esquerda)
         self.velx += self.__aceleracao
@@ -327,7 +325,7 @@ class Jogador(Movel):
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
-    def poderes(self, screen, mapa, acao=False, outros_poderes=False):
+    def poderes(self, screen, mapa, acao=False):
         "Faz com que o jogador ative seu poder quando disponivel"
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
         if acao:

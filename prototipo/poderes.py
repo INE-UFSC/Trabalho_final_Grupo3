@@ -11,9 +11,8 @@ from random import randrange
 ##### PODERES NO JOGADOR #####
 class PoderGenerico:
     "Classe base para todos os poderes do jogo"
-    def __init__(self, nome: str, tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int, cor: tuple):
+    def __init__(self, nome: str, duracao: int, velmax: int, pulo: int, recarga: int, cor: tuple):
         self.__nome = nome
-        self.__tem_tempo = tem_tempo
         self.__duracao = duracao
         self.__cor = cor
         self.limite_vel = velmax
@@ -62,7 +61,7 @@ class PoderGenerico:
 class Cinza(PoderGenerico):
     "Poder Padrao, nao faz nada quando ativado"
     def __init__(self):
-        super().__init__("Cinza", False, 0, 5, 9, 1, (150,150,150))
+        super().__init__("Cinza", 0, 5, 9, 1, (150,150,150))
 
     def acao(self, jogador, tela, mapa):
         pass
@@ -76,7 +75,7 @@ class Cinza(PoderGenerico):
 class Vermelho(PoderGenerico):
     "Poder de Dash, rapidamente faz o jogador se esquivar"
     def __init__(self):
-        super().__init__("Vermelho", False, 0, 7, 10, 80, (50, 50, 50))
+        super().__init__("Vermelho", 0, 7, 10, 80, (50, 50, 50))
 
     def acao(self, jogador, screen, mapa):
         if not self.descanso:
@@ -94,7 +93,7 @@ class Vermelho(PoderGenerico):
 class Laranja(PoderGenerico):
     "Poder de fogo, joga uma bola de fogo que quica"
     def __init__(self):
-        super().__init__("Laranja", False, 0, 5, 9, 40, (255, 50, 50))
+        super().__init__("Laranja", 0, 5, 9, 40, (255, 50, 50))
 
     def acao(self, jogador, screen, mapa):
         if not self.descanso:
@@ -105,9 +104,6 @@ class Laranja(PoderGenerico):
         if self.descanso > 0:
             self.descanso -= 1
         return 0
-        # for fogo in self.__bolas:
-        #     if fogo.atualizar(tela,campo_visivel):
-        #         self.__bolas.remove(fogo)
 
 
 ##### PODER DA INTANGIBILIDADE #####
@@ -115,7 +111,7 @@ class Laranja(PoderGenerico):
 class Azul(PoderGenerico):
     "Poder de intangibilidade, o jogador passa atraves dos inimigos"
     def __init__(self):
-        super().__init__("Azul", False, 0, 5, 9, 600, (50, 50, 255))
+        super().__init__("Azul", 0, 5, 9, 600, (50, 50, 255))
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -143,7 +139,7 @@ class Roxo(PoderGenerico):
     Para o tempo,afetando a maioria dos inimigos
     """
     def __init__(self):
-        super().__init__("Roxo", False, 300, 5, 9, 600, (80, 10, 120))
+        super().__init__("Roxo", 300, 5, 9, 600, (80, 10, 120))
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -171,7 +167,7 @@ class Roxo(PoderGenerico):
 class Verde(PoderGenerico):
     "Segunda referencia- Acelera o tempo ate o fim de jogo"
     def __init__(self):
-        super().__init__("Verde", False, 300, 5, 9, 600, (5, 200, 40))
+        super().__init__("Verde", 300, 5, 9, 600, (5, 200, 40))
         self.ativo = False
 
     def acao(self, jogador, screen, mapa):
@@ -188,7 +184,7 @@ class Verde(PoderGenerico):
 class Marrom(PoderGenerico):
     "Cria clones que matam o inimigo"
     def __init__(self):
-        super().__init__("Marrom", False, 0, 5, 9, 40, (255, 255, 0))
+        super().__init__("Marrom", 0, 5, 9, 40, (255, 255, 0))
 
     def acao(self, jogador, screen, mapa):
         if not self.descanso:
@@ -206,7 +202,7 @@ class Marrom(PoderGenerico):
 class Projetil(PoderGenerico):
     "Atira projeteis em linha reta"
     def __init__(self):
-        super().__init__("Projetil", False, 0, 5, 9, 40, (0, 0, 0))
+        super().__init__("Projetil", 0, 5, 9, 40, (0, 0, 0))
         self.__altura = 26
 
     def acao(self, jogador, screen, mapa, velx, vely, altura_random):
@@ -220,93 +216,6 @@ class Projetil(PoderGenerico):
     def atualizar(self, tela, mapa):
         if self.descanso > 0:
             self.descanso -= 1
-
-
-##### ITENS DOS PODERES NO MAPA #####
-class Coletavel(Movel):
-    "Itens que mudam alguma propriedade do jogador"
-    def __init__(self, nome, x, y, imagem, cor=(0, 0, 0), largura = 32, altura = 32):
-        limite_vel = 4
-        super().__init__(nome, x, y, altura, largura, limite_vel, imagem, cor)
-
-    def coleta(self, jogador, mapa):
-        jogador.coletar_poder(self)
-        mapa.escala_tempo = 1
-        self.auto_destruir(mapa)
-
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
-        return 0
-
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-        self.coleta(jogador, mapa)
-        return 0
-
-@instanciavel
-class Borracha(Coletavel):
-    "Adiciona borracha ao contador"
-    def __init__(self, x, y, cor=(245, 245, 220)):
-        super().__init__("borracha", x, y, "sprites", cor, 41, 29)
-        self.__raio = 10
-
-    def coleta(self, jogador, mapa):
-        jogador.coletar_moeda()
-        mapa.escala_tempo = 1
-        self.auto_destruir(mapa)
-
-@instanciavel
-class Paleta(Coletavel):
-    """Adiciona uma parte da paleta ao jogador
-    
-    Quando completa, permite que o jogador guarde um poder
-    """
-    def __init__(self, x, y, cor=(0, 0, 0)):
-        super().__init__("paleta_mapa", x, y, "sprites", cor, 50, 35)
-
-    def coleta(self, jogador, mapa):
-        jogador.coletar_paleta()
-        mapa.escala_tempo = 1
-        self.auto_destruir(mapa)
-
-@instanciavel
-class PoderNoMapa(Coletavel):
-    "Base para itens que dao poder ao jogador"
-    def __init__(self, nome, x, y, poder_atribuido, imagem, cor=(0, 0, 0)):
-        self.poder_atribuido = poder_atribuido
-        super().__init__(nome, x, y, imagem, cor)
-
-@instanciavel
-class TintaVermelha(PoderNoMapa):
-    "Da ao jogador o poder vermelho"
-    def __init__(self, x, y):
-        super().__init__("poder_Vermelho", x, y, Vermelho(), "sprites", (50, 50, 50))
-
-@instanciavel
-class TintaLaranja(PoderNoMapa):
-    "Da ao jogador o poder laranja"
-    def __init__(self, x, y):
-        super().__init__("poder_Laranja", x, y, Laranja(), "sprites", (255, 50, 50))
-
-@instanciavel
-class TintaAzul(PoderNoMapa):
-    "Da ao jogador o poder azul"
-    def __init__(self, x, y):
-        super().__init__("poder_Azul", x, y, Azul(), "sprites", (50, 50, 255))
-
-@instanciavel
-class TintaRoxa(PoderNoMapa):
-    def __init__(self, x, y):
-        super().__init__("poder_Roxo", x, y, Roxo(), "sprites", (80, 10, 120))
-
-@instanciavel
-class TintaVerde(PoderNoMapa):
-    def __init__(self, x, y):
-        super().__init__("poder_Verde", x, y, Verde(), "sprites", (5, 200, 40))
-
-@instanciavel
-class TintaMarrom(PoderNoMapa):
-    def __init__(self, x, y):
-        super().__init__("poder_Marrom", x, y, Marrom(), "sprites", (255, 255, 0))
-
 
 ##### OBJETOS CRIADOS POR PODERES #####
 
