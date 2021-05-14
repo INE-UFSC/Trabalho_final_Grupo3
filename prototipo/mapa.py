@@ -158,60 +158,65 @@ def montar_mapas():
     width = 6600
     height = 600
     fase1 = [[
-        ["ReiDasCores", (800, 100, height)],
-        ["PunhoVermelho", (0, 0, "esquerdo", 280)],
-        ["PunhoVermelho", (0, 0, "direito", 340)],
-        ["CabecaLaranja", (0, 0)],
-        ["CoracaoRoxo", (0, 0)],
-        ["Chao", ('chao', height - 10, 0, 6200)],
-        # ["Lapis", (600, height - 125, height)],
-        # ["Bolota", (700, height - 50)],
-        # ["Lapis", (900, height - 125, height)],
-        #
-        #
-        # ["Chao", ('chao', height - 10, 1375, 1700)],
-        # ["Saltante", (1400, height - 100)],
-        #
-        # #["Chao", ('chao', 250, 1475, 1600)],
-        #
-        # ["Chao", ('chao', height - 10, 1875, 2775)],
-        # ["Saltante", (1900, height - 100)],
-        # ["Lapis", (2150, height - 125, height)],
-        # ["Bolota", (2200, height - 50)],
-        # ["Lapis", (2450, height - 125, height)],
-        #
-        # ["Chao", ('chao', height - 10, 3050, 4000)],
-        # ["Chao", ('chao', height - 450, 3050, 4000)],
-        # ["TintaVermelha", (3325, height - 260)],
-        # ["Saltante", (3350, height - 100)],
-        # ["Chao", ('chao', height - 160, 3975, 4100)],
-        # ["Lapis", (3950, height - 125, height)],
-        # ["Lapis", (3950, height - 235, height)],
-        # ["Lapis", (3950, height - 320, height)],
-        # ["Chao", ('chao', height - 320, 3450, 3650)],
-        # ["Chao", ('chao', height - 160, 3250, 3450)],
-        # ["Paleta", (3520, 90)],
-        #
-        # ["Chao", ('chao', height - 10, 4000, 7000)],
-        #
-        # ["Ponta", (4500, height - 125, height)],
-        # ["Ponta", (4545, height - 125, height)],
-        # ["Ponta", (4590, height - 125, height)],
-        # ["Ponta", (4635, height - 125, height)],
-        # ["Ponta", (4680, height - 125, height)],
-        # ["Ponta", (4725, height - 125, height)],
-        # ["Ponta", (4770, height - 125, height)],
-        # ["Ponta", (4815, height - 125, height)],
-        # ["Ponta", (4860, height - 125, height)],
-        # ["Ponta", (4905, height - 125, height)],
-        # ["Ponta", (4950, height - 125, height)],
-        # ["Ponta", (4995, height - 125, height)],
-        #
-        # ["Saltante", (5675, height - 100)],
-        # ["Saltante", (5775, height - 100)],
-        #
-        # ["Chao", ('chao', 275, 5500, 5900)],
-        # ["Saltante", (5825, 175)],
+        ["Chao", ('chao', height - 10, 0, 1200)],
+        ["Lapis", (600, height - 125, height)],
+        ["Bolota", (700, height - 50)],
+        ["Lapis", (900, height - 125, height)],
+
+        ["Borracha", (250, height - 200)],
+        ["Borracha", (350, height - 200)],
+        ["Borracha", (450, height - 200)],
+
+
+        ["Chao", ('chao', height - 10, 1375, 1700)],
+        ["Saltante", (1400, height - 100)],
+
+        ["Borracha", (1450, height - 200)],
+        ["Borracha", (1500, height - 200)],
+        ["Borracha", (1550, height - 200)],
+
+        ["Chao", ('chao', height - 10, 1875, 2775)],
+        ["Saltante", (1900, height - 100)],
+        ["Lapis", (2150, height - 125, height)],
+        ["Bolota", (2200, height - 50)],
+        ["Lapis", (2450, height - 125, height)],
+
+        ["Chao", ('chao', height - 10, 3050, 4000)],
+        ["Chao", ('chao', height - 450, 3050, 4000)],
+        ["TintaVermelha", (3325, height - 260)],
+        ["Saltante", (3350, height - 100)],
+        ["Chao", ('chao', height - 160, 3975, 4100)],
+        ["Lapis", (3950, height - 125, height)],
+        ["Lapis", (3950, height - 235, height)],
+        ["Lapis", (3950, height - 320, height)],
+        ["Chao", ('chao', height - 320, 3450, 3650)],
+        ["Chao", ('chao', height - 160, 3250, 3450)],
+        ["Paleta", (3320, 50)],
+
+        ["Chao", ('chao', height - 10, 4000, 7000)],
+
+        ["Ponta", (4500, height - 125, height)],
+        ["Ponta", (4545, height - 125, height)],
+        ["Ponta", (4590, height - 125, height)],
+        ["Ponta", (4635, height - 125, height)],
+        ["Ponta", (4680, height - 125, height)],
+        ["Ponta", (4725, height - 125, height)],
+        ["Ponta", (4770, height - 125, height)],
+        ["Ponta", (4815, height - 125, height)],
+        ["Ponta", (4860, height - 125, height)],
+        ["Ponta", (4905, height - 125, height)],
+        ["Ponta", (4950, height - 125, height)],
+        ["Ponta", (4995, height - 125, height)],
+
+        ["Saltante", (5675, height - 100)],
+        ["Saltante", (5775, height - 100)],
+
+        ["Chao", ('chao', 275, 5500, 5900)],
+        ["Borracha", (5525, 225)],
+        ["Borracha", (5625, 225)],
+        ["Borracha", (5725, 225)],
+        ["Borracha", (5825, 225)],
+
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (6400, height - 285)]
@@ -236,15 +241,25 @@ def montar_mapas():
         ["Atirador", (750, height - 50)],
 
         ["Chao", ('chao', height - 10, 1400, 3000)],
+        ["Lapis", (2975, height - 50, height)],
         ["Ponta", (1900, height - 125, height)],
         ["Saltante", (1750, height - 100)],
 
         ["Chao", ('chao', height - 400, 2100, 2250)],
         ["Chao", ('chao', height - 400, 2400, 2550)],
         ["Atirador", (2130, height - 450, False)],
+        ["Atirador", (2130, height - 500, False)],
         ["Atirador", (2430, height - 450, False)],
+        ["Atirador", (2430, height - 500, False)],
         ["Chao", ('chao', height - 300, 2300, 2350)],
+        ["Paleta", (2300, height - 350)],
         ["Chao", ('chao', height - 150, 2450, 2550)],
+        ["Borracha", (2700, height - 150)],
+        ["Borracha", (2750, height - 150)],
+        ["Borracha", (2800, height - 150)],
+        ["Espinhento", (2500, height - 50)],
+        ["Espinhento", (2600, height - 50)],
+        ["Espinhento", (2700, height - 50)],
 
         ["Chao", ('chao', height - 10, 3350, 4000)],
         ["TintaLaranja", (3675, height - 200)],
@@ -268,6 +283,11 @@ def montar_mapas():
         ["Lapis", (5156, height - 500, height - 150)],
         ["Chao", ('chao', height - 500, 4900, 5200)],
 
+        ["Borracha", (4950, height - 650)],
+        ["Borracha", (5000, height - 650)],
+        ["Borracha", (5050, height - 650)],
+        ["Borracha", (5100, height - 650)],
+
         ["Lapis", (4700, height - 125, height)],
         ["Espinhento", (4800, height - 50)],
         ["Espinhento", (4900, height - 50)],
@@ -288,6 +308,12 @@ def montar_mapas():
         ["Atirador", (6350, height - 500, False)],
         ["Atirador", (6350, height - 550, False)],
 
+        ["Borracha", (6250, height - 300)],
+        ["Borracha", (6300, height - 300)],
+        ["Borracha", (6350, height - 300)],
+        ["Borracha", (6400, height - 300)],
+        ["Borracha", (6450, height - 300)],
+
         ##### BORDA E VITORIA #####
         ["Vitoria", (6600, height - 285)]
 
@@ -303,25 +329,45 @@ def montar_mapas():
         ["Chao", ('chao', height-10, 0, 2250)],
         ["Lapis", (950, height - 125, height)],
         ["Gelatina", (700, height - 160)],
+        ["Chao", ('chao', height - 150, 200, 500)],
+        ["Borracha", (225, height - 250)],
+        ["Borracha", (325, height - 250)],
+        ["Borracha", (425, height - 250)],
+        ["Espinhento", (300, height - 190)],
+
 
         ["Saltante", (1550, height - 100)],
 
         ["Chao", ('chao', height - 400, 1600, 1750)],
         ["Atirador", (1630, height - 450, False)],
+        ["Atirador", (1630, height - 500, False)],
         ["Chao", ('chao', height - 150, 2400, 2550)],
 
-        ["Chao", ('chao', height - 10, 2700, 3300)],
+        ["Chao", ('chao', height - 10, 2700, 3295)],
+        ["Lapis", (3250, height - 80, height - 10)],
+        ["Lapis", (2700, height - 80, height - 10)],
+        ["Bolota", (2800, height - 50)],
+        ["Bolota", (2900, height - 50)],
+        ["Bolota", (3000, height - 50)],
+        ["Borracha", (2800, height - 200)],
+        ["Borracha", (2900, height - 200)],
+        ["Borracha", (3000, height - 200)],
+        ["Borracha", (3100, height - 200)],
+        ["Borracha", (3200, height - 200)],
+
         ["Lapis", (2750, height - 450, height-300)],
         ["Gelatina", (2800, height - 600)],
+        ["Paleta", (2975, height - 400)],
         ["Lapis", (3200, height - 450, height-300)],
         ["Chao", ('chao', height - 300, 2700, 3300)],
 
         ["Chao", ('chao', height - 600, 2550, 2700)],
         ["Atirador", (2580, height - 650, False)],
+        ["Atirador", (2580, height - 700, False)],
 
         ["Chao", ('chao', height - 600, 3300, 3450)],
         ["Atirador", (3330, height - 650, False)],
-
+        ["Atirador", (3330, height - 700, False)],
 
         ["PlataformaMovel", (100, 3600, 100, -2)],
         ["PlataformaMovel", (400, 3600, 100, -2)],
@@ -330,7 +376,7 @@ def montar_mapas():
         ["Chao", ('chao', height - 10, 3900, 5000)],
         ["Ponta", (4000, height - 125, height)],
         ["Gelatina", (4100, height - 200)],
-        ["TintaAzul", (4175, height - 75)],
+        ["TintaAzul", (4150, height - 275)],
         ["Ponta", (4300, height - 125, height)],
 
         ["Atirador", (4600, height - 100, False)],
@@ -434,7 +480,7 @@ def montar_mapas():
 
         (width, height),
 
-        False]
+        "fase5"]
 
     width = 5040
     height = 700
@@ -488,13 +534,28 @@ def montar_mapas():
         ##### INIMIGOS #####
         # ["Bolota", (610, height - 50)],
         # ["Bolota",(900, height - 50)],
-        ["Voador", ('voador1', 100, height - 500, 200)],
         # ["Espinhento", ('porco1', 900, height - 50)]
         # ["Atirador",(1150, height - 50)],
     ],
 
         (width, height),
 
+        "fase6"]
+
+    width = 5040
+    height = 900
+    fase6 = [[
+
+        ["ReiDasCores", (800, 100, height)],
+        ["PunhoVermelho", (0, 0, "esquerdo", 280)],
+        ["PunhoVermelho", (0, 0, "direito", 340)],
+        ["CabecaLaranja", (0, 0)],
+        ["CoracaoRoxo", (0, 0)],
+        ["Chao", ('chao', height - 10, 0, 6200)],
+    ],
+
+        (width, height),
+
         False]
 
-    return {"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5}
+    return {"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5, "fase6": fase6}
