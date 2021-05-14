@@ -37,7 +37,7 @@ class Jogo:
 
 
     def menu_inicial(self):  # Menu inicial do jogo
-        self.__janela.tela = MenuPrincipal(self.__screen)
+        self.__janela.tela = InicioJogo(self.__screen)
         while True:
             self.__ciclo += 1
             acao = self.__janela.tela.atualizar(self.__ciclo)

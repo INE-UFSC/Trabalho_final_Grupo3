@@ -141,7 +141,7 @@ class Botao:
     Tambem pode ser usado cmo saida de dados caso seja estatico e mutavel
     @param posicao, tamanho, cor
     """
-    def __init__(self,x,y,w,h,cor,texto,borda,estatico=False):
+    def __init__(self,x,y,w,h,cor,texto,borda,estatico=False,invisivel=False,tamanho_fonte=28):
         ### tamanho,posicao,cor e texto do botao
         self.__x = x-w/2
         self.__y = y-h/2
@@ -150,10 +150,11 @@ class Botao:
         self.__centro = [x,y,w,h]
         self.__cor = cor
         self.__corhover = [cor[0]*3/4,cor[1]*3/4,cor[2]*3/4] if not estatico else cor
-        self.__textsf = pygame.font.SysFont('miriam',28).render(texto,True,(0,0,0))
+        self.__textsf = pygame.font.SysFont('miriam',tamanho_fonte).render(texto,True,(0,0,0))
         self.__texttamanho = self.__textsf.get_size()
         self.__borda = borda
         self.__estatico = estatico
+        self.__invisivel = invisivel
 
     @property
     def cor(self):
@@ -184,13 +185,14 @@ class Botao:
         o ativara
         
         """
-        pos = pygame.mouse.get_pos()
-        pygame.draw.rect(superficie,(0,0,0),[self.__x,self.__y,self.__w,self.__h])
+        if not self.__invisivel:
+            pos = pygame.mouse.get_pos()
+            pygame.draw.rect(superficie,(0,0,0),[self.__x,self.__y,self.__w,self.__h])
 
-        cor = self.__corhover if self.__x <= pos[0] <= self.__x + self.__w and self.__y <= pos[1] <= self.__y + self.__h else self.cor
-        pygame.draw.rect(superficie,cor,[self.__x+self.__borda,self.__y+self.__borda,self.__w-2*self.__borda,self.__h-2*self.__borda])
+            cor = self.__corhover if self.__x <= pos[0] <= self.__x + self.__w and self.__y <= pos[1] <= self.__y + self.__h else self.cor
+            pygame.draw.rect(superficie,cor,[self.__x+self.__borda,self.__y+self.__borda,self.__w-2*self.__borda,self.__h-2*self.__borda])
 
-        superficie.blit(self.__textsf,[self.__centro[0]-self.__texttamanho[0]/2,self.__centro[1]-self.__texttamanho[1]/2])
+            superficie.blit(self.__textsf,[self.__centro[0]-self.__texttamanho[0]/2,self.__centro[1]-self.__texttamanho[1]/2])
         
 
     def clicar(self):

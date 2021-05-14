@@ -27,6 +27,43 @@ class TelaPause(Sobreposicao):
         super().__init__(listabotoes,[(50,50,50),(tela.superficie.get_size()[0]/2-120,tela.superficie.get_size()[1]/2-35,240,130)],tela,listatelas)
 
 
+class InicioJogo(TelaMenu):
+    """Tela apresentada ao jogador apos perder
+
+    Caso o jogador perca toda a vida ou acabe o tempo, 
+    lhe eh dada a opcao de reiniciar a fase do comeco,
+    ou voltar ao menu principal
+    """
+    def __init__(self,superficie):
+        t = superficie.get_size()
+        self.__imagem = pygame.image.load("sprites/inicidojogo.png")
+        self.__imagem = pygame.transform.scale(self.__imagem,t)
+        iniciar = Botao(t[0]*7/8,t[1]*3/5, t[0]/5, t[0]/8, (220, 220, 60), "Menu Principal", 5,False,True)
+        listabotoes = [iniciar]
+        listatelas = [True, [MenuPrincipal, [superficie]]]
+        cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
+        super().__init__(listabotoes,cormenu,superficie,listatelas)
+
+    def atualizar(self,ciclo):
+        "Atualizar especifico a tela de inicio, por conter sprite"
+
+        self._TelaMenu__contador_menu -= 0.3
+        self.fundo = misturacor(psicodelico(self._TelaMenu__contador_menu), [200, 220, 230], 1, 5)
+        for evento in pygame.event.get():
+            if evento.type == pygame.QUIT: return [False,"BORN TO DIE",0]
+            if evento.type == pygame.MOUSEBUTTONDOWN:
+                acao = self.clicar()
+                if type(self.listatelas[acao]) == bool:
+                    return [self.listatelas[acao],"WORLD IS A FUCK",acao]
+                return self.listatelas[acao] + [acao]
+        self.superficie.fill(self.fundo)           #preenche o fundo
+        self.superficie.blit(self.__imagem,[0,0]) 
+        for i in self._TelaMenu__listabotoes:            #renderiza cada botao
+            i.renderizar(self.superficie)
+        pygame.display.flip()
+        return [True,"Kill Em All 1989",0]
+
+
 class MenuPrincipal(TelaMenu):
     """Menu principal do jogo
     
@@ -38,27 +75,14 @@ class MenuPrincipal(TelaMenu):
     """
     def __init__(self, superficie):
         t = superficie.get_size()
-        botaonivel_1 = Botao(t[0]/7, t[1]/6, 100, 50, (220, 0, 0), "Fase 1", 5)
-        botaonivel_2 = Botao(t[0]*2/7, t[1]/6, 100, 50, (220, 110, 0), "Fase 2", 5)
-        botaonivel_3 = Botao(t[0]*3/7, t[1]/6, 100, 50, (220, 220, 0), "Fase 3", 5)
-        b4 = Botao(t[0]*4/7, t[1]/6, 100, 50, (220, 0, 110), "Fase 4", 5)
-        b5 = Botao(t[0]*5/7, t[1]/6, 100, 50, (220, 110, 110), "Fase 5", 5)
-        b6 = Botao(t[0]*6/7, t[1]/6, 100, 50, (220, 110, 110), "Final", 5)
-        b7 = Botao(t[0]/7, t[1]/3, 100, 50, (220, 220, 220), "Fase Teste", 5)
-        botaojogar = Botao(t[0]/2, t[1]*2/3-20, 250, 50, (30, 220, 30),  "Jogar", 5)
-        botaoconfig = Botao(t[0]/2, t[1]*3/4, 250, 50, (0, 220, 180), "Configurações", 5)
-        botaosair = Botao(t[0]/2, t[1]*5/6+20, 250, 50, (220, 30, 30), "Sair", 5)
+        botaojogar = Botao(t[0]/2, t[1]/4, t[0]/3, t[1]/6, (30, 220, 30),  "Jogar", 10,tamanho_fonte=48)
+        botaoconfig = Botao(t[0]/2, t[1]/2, t[0]/3, t[1]/6, (0, 220, 180), "Configurações", 10,tamanho_fonte=48)
+        botaosair = Botao(t[0]/2, t[1]*3/4, t[0]/3, t[1]/6, (220, 30, 30), "Sair", 10,tamanho_fonte=48)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
-        listabotoes = [botaosair, botaojogar, botaonivel_1, botaonivel_2,
-                          botaonivel_3,b4,b5,b6,b7,botaoconfig]
-        listatelas = [True, False, [CarregarJogo, [superficie]], [TelaDeJogo, [superficie, "fase1", '6']]
-                , [TelaDeJogo, [superficie, "fase2", '6']], [TelaDeJogo, [superficie, "fase3", '6']],
-                      [TelaDeJogo, [superficie, "fase4", '6']], [TelaDeJogo, [superficie, "fase5", '6']],
-                      [TelaDeJogo, [superficie, "fase6", '6']], [TelaDeJogo, [superficie, "fase7", '6']],
-                      [Configuracoes,[superficie]]]
+        listabotoes = [botaosair, botaojogar, botaoconfig]
+        listatelas = [True, False, [CarregarJogo, [superficie]],[Configuracoes,[superficie]]]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         pygame.mixer.music.stop()
-
 
 
 class CarregarJogo(TelaMenu):
