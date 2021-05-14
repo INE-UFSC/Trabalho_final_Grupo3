@@ -3,6 +3,14 @@ from inimigos import *
 from poderes import *
 from obstaculos import *
 
+@instanciavel
+class Gota(Coletavel):
+    def __init__(self, x, y):
+        largura = 20
+        altura = 20
+        num = 1
+        super().__init__("gota"+str(num), x, y, "0", (0, 0, 0), largura, altura)
+
 class ParteDoRei(Entidade):
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str, cor, frames: int):
         super().__init__(nome, x, y, altura, largura, limiteVel, vida, dano_contato, imagem, cor, frames, True)
@@ -42,6 +50,7 @@ class ParteDoRei(Entidade):
                     entidade.cabeca = self
                 elif type(self) == CoracaoRoxo:
                     entidade.coracao = self
+
 
 @instanciavel
 class PunhoVermelho(ParteDoRei):
@@ -129,7 +138,7 @@ class PunhoVermelho(ParteDoRei):
 
     def lancar(self, jogador, mapa, atira):
         velx_buff = self.velx
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, Coletavel, ParteDoRei])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo ,Bala, Coletavel, ParteDoRei])
         if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
         if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
         if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
@@ -253,9 +262,13 @@ class CabecaLaranja(ParteDoRei):
                                         int((self.escala_tempo != 0)*mapa.ciclo/6) % 8)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        #print(self.__quebrado)
 
         if not self.montado: self.montar(mapa)
+
+        if mapa.jogador.x >= self.x:
+            self.face = 1
+        else:
+            self.face = -1
 
         self.renderizar(tela, mapa)
 
@@ -280,12 +293,13 @@ class CabecaLaranja(ParteDoRei):
         ##### FALA PRA ELE QUANDO ATIRAR FOGO #####
         if self.fase == 1:
             numero_de_projeteis = 0
+            self.descanso_poder_max = 150
         elif self.fase == 2:
             numero_de_projeteis = 5
-            self.descanso_poder_max = 50
+            self.descanso_poder_max = 150
         else:
             numero_de_projeteis = 2
-            self.descanso_poder_max = 100
+            self.descanso_poder_max = 150
         if self.__descanso_poder <= 0:
             for i in range(numero_de_projeteis):
                 self.__poder.acao(self, tela, mapa, velx, vely, 0+10*i)
@@ -388,7 +402,7 @@ class ReiDasCores(Entidade):
         self.__punho_direito = 0
         self.__coracao = 0
         super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "0", (0,0,255), 0, True)
-        self.velx = 0.2
+        self.velx = 1
 
         ##### ATRIBUTOS REFERENTES A FASE DA LUTA #####
         self.__descanso_ate_prox_fase = 500
@@ -397,6 +411,10 @@ class ReiDasCores(Entidade):
         self.__vida_gelatinosa = 15
         self.__cristais = 3
         self.__enjoo = 15
+
+        ##### ATRIBUTOS DE POSICIONAMENTO #####
+        self.__posicao_inicial = x
+        self.__posicao_final = x + 500
 
     @property
     def fase(self):
@@ -449,7 +467,7 @@ class ReiDasCores(Entidade):
                                     ]
 
     def fase_3(self):
-        self.__entidades_da_fase = [Atirador(200,200)]
+        self.__entidades_da_fase = [Gota(600,450)]
 
     def fase_4(self):
         self.__entidades_da_fase = []
@@ -521,6 +539,9 @@ class ReiDasCores(Entidade):
         ##### ATUALIZACAO DAS POSICOES #####
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
+
+        if self.x > self.__posicao_final  or self.x < self.__posicao_inicial:
+            self.velx = -self.velx
 
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
