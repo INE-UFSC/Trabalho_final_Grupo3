@@ -423,10 +423,7 @@ class CoracaoRoxo(ParteDoRei):
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         "Determina que o jogador fique mais lento ao passar"
         if not jogador.invisivel:
-            if self.__tempo_parado:
-                jogador.escala_tempo = 0
-            else:
-                jogador.escala_tempo = 0.25
+            jogador.escala_tempo = 0.25
         return 0
 
     def sofreu_colisao_outros(self, entidade, direcao, mapa):
