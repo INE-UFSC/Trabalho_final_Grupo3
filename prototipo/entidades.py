@@ -2,8 +2,8 @@
 import pygame
 from sprites import *
 
-colisao_analisada = "cano3"
-renderizar_hitbox = True
+colisao_analisada = "0"
+renderizar_hitbox = False
 renderizar_sprite = True
 modo_dev = True
 gravidade = 0.2
