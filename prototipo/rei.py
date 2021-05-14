@@ -136,7 +136,8 @@ class PunhoVermelho(ParteDoRei):
     def atualizar(self, tela, mapa, dimensoes_tela):
         atira = 0 #define se o boss vai laçar a mão
         if not self.__atirando: #se não esta lançando a posição é colada ao boss e conta para poder atirar
-            self.__descanso_tiro -= 1
+            if mapa.escala_tempo != 0:
+                self.__descanso_tiro -= 1
             if self.__descanso_tiro == 0:
                 self.__atirou = False
                 self.__atirando = True
@@ -203,8 +204,8 @@ class PunhoVermelho(ParteDoRei):
             self.vely = disty / divisor
         
         #### Atualiza a posição da mão ####
-        self.x += self.velx
-        self.y += self.vely
+        self.x += self.velx * mapa.escala_tempo
+        self.y += self.vely * mapa.escala_tempo
         
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
