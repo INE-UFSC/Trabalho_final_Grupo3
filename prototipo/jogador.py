@@ -58,13 +58,13 @@ class Jogador(Movel):
     def poder_armazenado(self):
         return self.__poder_armazenado
 
-    @poder.setter
-    def poder(self, poder):
-        self.__poder = poder
+    #@poder.setter
+    #def poder(self, poder):
+    #    self.__poder = poder
 
-    @property
-    def moedas(self):
-        return self.__moedas
+    #@property
+    #def moedas(self):
+    #    return self.__moedas
 
     @moedas.setter
     def moedas(self, moedas):
