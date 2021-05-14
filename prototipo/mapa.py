@@ -12,6 +12,7 @@ class Mapa:
         self.__lista_de_entidades = []
         self.__hud = Hud(superficie.get_size())
 
+
         ##### ATRIBUTOS DE RENDERIZACAO #####
         
         self.__superficie = superficie
@@ -469,6 +470,9 @@ def montar_mapas():
         ["Bloco", ('bloco7', 3480, -100)],
         ["Lapis", (3880, 40, 140)],
         ["Chao", ('chao4', 123, 3924, 4500)],
+        ["Espinhento", ( 3400, 80)],
+        ["Espinhento", ( 3460, 80)],
+        ["Espinhento", ( 3500, 80)],
         ["Lapis", (4501, 40, 140)],
 
         ##### BORDA E VITORIA #####

@@ -64,7 +64,10 @@ class Tela_Menu(Tela):
         self.__listatelas = listatelas
         self.__listabotoes = listabotoes        #lista de objetos Botao
         self.__fundo = fundo                    #[red,green,blue] do fundo 
-        self.__contador_menu = 0  
+        self.__contador_menu = 0
+        self.musica = False
+        
+
     
     @property
     def fundo(self):
@@ -93,6 +96,7 @@ class Tela_Menu(Tela):
                 [Tela,[*param],index(botao)+1]
         se algum botao for apertado
         """
+
         self.__contador_menu -= 0.3
         self.fundo = misturacor(psicodelico(self.__contador_menu), [200, 220, 230], 1, 5)
         for evento in pygame.event.get():
@@ -106,6 +110,9 @@ class Tela_Menu(Tela):
         for i in self.__listabotoes:            #renderiza cada botao
             i.renderizar(self.superficie)
         pygame.display.flip()
+    
+
+
         return [True,"Kill Em All 1989",0]
     
     def clicar(self):
@@ -219,4 +226,6 @@ class Sobreposicao(Tela_Menu):
             acao = self.clicar()
             return self.listatelas[acao]
         return True
+
+
 
