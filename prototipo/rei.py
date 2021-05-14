@@ -14,7 +14,7 @@ class Gota(Coletavel):
     
     def coleta(self, jogador, mapa):
         jogador.ganha_vida()
-        self.__rei.jogador_pega_gota(mapa)
+        self.__rei.jogador_pega_gota()
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
 
@@ -22,6 +22,7 @@ class ParteDoRei(Entidade):
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str, cor, frames: int):
         super().__init__(nome, x, y, altura, largura, limiteVel, vida, dano_contato, imagem, cor, frames, True)
         self.__montado = False
+        self.__fim_de_jogo = False
         self.__fase = 0
         self.__rei = 0
 
@@ -40,6 +41,13 @@ class ParteDoRei(Entidade):
     @rei.setter
     def rei(self, rei):
         self.__rei = rei
+
+    @property
+    def fim_de_jogo(self):
+        return self.__fim_de_jogo
+
+    def finalizar_jogo(self):
+        self.__fim_de_jogo = True
 
     @montado.setter
     def montado(self, montado):
@@ -333,6 +341,7 @@ class CabecaLaranja(ParteDoRei):
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.right + 1
+                return 0
             ##### COLISAO DIREITA #####
             elif direcao == "direita":
                 if jogador.velx >= 0:
@@ -341,16 +350,22 @@ class CabecaLaranja(ParteDoRei):
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.left - jogador.largura
+                return 0
             ##### COLISAO BAIXO #####
             elif direcao == "baixo":
                 jogador.vely = 0
                 jogador.y = self.corpo.top - jogador.altura
+                if self.fase != 4:
+                    return 1
+                else:
+                    self.finalizar_jogo()
+                    return 0
             ##### COLISAO CIMA #####
             elif direcao == "cima":
                 if jogador.vely < 0:
                     jogador.vely = 0
                     jogador.y = self.corpo.bottom
-            return 0
+                return 0
         else:
             return 0
 
@@ -368,9 +383,8 @@ class CoracaoRoxo(ParteDoRei):
         super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "coracao", cor, 0)
 
     def parar_o_tempo(self, jogador):
-        print(self.__tempo_parado)
-        if self.__tempo_parado > 0: self.__tempo_parado -= 1
-        if self.__tempo_parado:
+        if self.__tempo_parado > 0:
+            self.__tempo_parado -= 1
             jogador.congelar()
             return True
         else:
@@ -391,8 +405,6 @@ class CoracaoRoxo(ParteDoRei):
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if not self.montado: self.montar(mapa)
-        if self.fase == 4:
-            self.parar_o_tempo(mapa.jogador)
         self.renderizar(tela, mapa)
         ##### ATUALIZACAO DO CORACAO #####
         self.x = self.rei.x + 61
@@ -487,13 +499,22 @@ class ReiDasCores(Entidade):
                                     ]
 
     def fase_3(self):
-        self.__entidades_da_fase = [Gota(600,450,self),
+        self.__entidades_da_fase = [TintaAzul(400,500),
+                                    Gota(600,450,self),
                                     Gota(700,450,self),
                                     Gota(800,450,self)
                                     ]
 
     def fase_4(self):
-        self.__entidades_da_fase = []
+        self.__entidades_da_fase = [TintaRoxa(400,500),
+                                    Chao("chao", 400, 200, 400),
+                                    Chao("chao", 300, 400, 600),
+                                    Chao("chao", 200, 600, 800)]
+
+    def jogador_pega_gota(self):
+        if self.__gota > 0:
+            self.__gota -= 1
+            self.__tempo_parado = True
 
     def passar_fase(self, mapa):
         ##### INCREMENTA A FASE #####
@@ -516,13 +537,6 @@ class ReiDasCores(Entidade):
 
         ##### CRIA INIMIGOS DA NOVA FASE #####
             mapa.lista_de_entidades.append(entidade)
-    
-    def jogador_pega_gota(self, mapa):
-        if self.__gota > 0:
-            self.__gota -= 1
-            self.__tempo_parado = True
-        else:
-            pass # AQUI PASSA PRA FASE 4
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         ##### PASSA A FASE APOS CERTO TEMPO (PROVISORIO) #####
@@ -531,7 +545,7 @@ class ReiDasCores(Entidade):
 
         ##### PASSA AS FASES DA LUTA #####
         else:
-            print(self.__fase)
+            #print(self.__fase)
             if self.__fase == 0:
                 if self.punho_direito.quebrado and self.punho_esquerdo.quebrado:
                     self.passar_fase(mapa)
@@ -543,7 +557,14 @@ class ReiDasCores(Entidade):
                     self.passar_fase(mapa)
             if self.__fase == 3: #Jogador invisivel
                 if not self.__gota:
-                    print("MANDOU BEM")
+                    self.passar_fase(mapa)
+            if self.__fase == 4:
+                if self.__cabeca.fim_de_jogo:
+                    mapa.lista_de_entidades.remove(self.cabeca)
+                    mapa.lista_de_entidades.remove(self.punho_esquerdo)
+                    mapa.lista_de_entidades.remove(self.punho_direito)
+                    mapa.lista_de_entidades.remove(self.coracao)
+                    mapa.lista_de_entidades.remove(self)
 
         ##### ATUALIZACAO DO TEMPO PARADO #####
         if self.__tempo_parado:
