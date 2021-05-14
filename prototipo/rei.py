@@ -5,11 +5,18 @@ from obstaculos import *
 
 @instanciavel
 class Gota(Coletavel):
-    def __init__(self, x, y):
+    def __init__(self, x, y, rei):
         largura = 20
         altura = 20
         num = 1
+        self.__rei = rei
         super().__init__("gota"+str(num), x, y, "0", (0, 0, 0), largura, altura)
+    
+    def coleta(self, jogador, mapa):
+        jogador.ganha_vida()
+        self.__rei.jogador_pega_gota()
+        mapa.escala_tempo = 1
+        self.auto_destruir(mapa)
 
 class ParteDoRei(Entidade):
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str, cor, frames: int):
@@ -467,7 +474,7 @@ class ReiDasCores(Entidade):
                                     ]
 
     def fase_3(self):
-        self.__entidades_da_fase = [Gota(600,450)]
+        self.__entidades_da_fase = [Gota(600,450,self)]
 
     def fase_4(self):
         self.__entidades_da_fase = []
@@ -493,6 +500,12 @@ class ReiDasCores(Entidade):
 
         ##### CRIA INIMIGOS DA NOVA FASE #####
             mapa.lista_de_entidades.append(entidade)
+    
+    def jogador_pega_gota(self):
+        if self.__cristais > 0:
+            self.__cristais -= 1
+        else:
+            pass # AQUI PASSA PRA FASE 4
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         ##### PASSA A FASE APOS CERTO TEMPO (PROVISORIO) #####
