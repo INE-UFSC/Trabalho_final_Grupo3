@@ -75,7 +75,7 @@ class PunhoVermelho(ParteDoRei):
         self.__descanso_tiro = primeiro_tiro
         self.__atirando = False
         self.__atirou = False
-        self.__vel_projetil = 10
+        self.__vel_mao = 8
         self.__quebrado = False
         super().__init__("punho", x, y, altura, largura, limiteVel, 0, dano_contato, "punho", cor, 0)
     
@@ -86,6 +86,14 @@ class PunhoVermelho(ParteDoRei):
     @recarga.setter
     def recarga(self, recarga):
         self.__recarga = recarga
+    
+    @property
+    def vel_mao(self):
+        return self.__vel_mao
+    
+    @vel_mao.setter
+    def vel_mao(self, vel_mao):
+        self.__vel_mao = vel_mao
 
     @property
     def quebrado(self):
@@ -123,6 +131,7 @@ class PunhoVermelho(ParteDoRei):
             self.__descanso_tiro -= 1
             if self.__descanso_tiro == 0:
                 self.__atirou = False
+                self.__atirando = True
                 atira = 1
                 self.__descanso_tiro = self.__recarga
             self.x = self.__centro_x
@@ -130,7 +139,7 @@ class PunhoVermelho(ParteDoRei):
             self.vely = 0
             self.velx = 0
         
-        self.lancar(mapa.jogador, mapa, atira) # lançar é o mover da mão
+        self.mover(mapa.jogador, mapa, atira) # lançar é o mover da mão
         if not self.montado: self.montar(mapa)
         ##### ATUALIZACAO DO CORACAO #####
         if self.__lado == "direito":
@@ -143,9 +152,9 @@ class PunhoVermelho(ParteDoRei):
 
         self.renderizar(tela, mapa)
 
-    def lancar(self, jogador, mapa, atira):
+    def mover(self, jogador, mapa, atira):
         velx_buff = self.velx
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo ,Bala, Coletavel, ParteDoRei])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo ,Bala, Coletavel, ParteDoRei, ReiDasCores])
         if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
         if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
         if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
@@ -160,7 +169,7 @@ class PunhoVermelho(ParteDoRei):
         if self.__espera == 0 and self.__atirou:# função de voltar ao corpo
             dstancia = (((self.__centro_y) - (self.y)) ** 2 + (
                 self.__centro_x - self.x) ** 2) ** (1 / 2) # distancia entre a mão e sua posiçaõ no corpo
-            divisor = max(dstancia / self.__vel_projetil,0.001)
+            divisor = max(dstancia / self.__vel_mao,0.001)
 
             self.velx = ((self.__centro_x - self.x)) / divisor
             self.vely = ((self.__centro_y) - (self.y)) / divisor
@@ -175,10 +184,9 @@ class PunhoVermelho(ParteDoRei):
 
         #### FUNÇÂO PARA ATIRAR ####
         if atira == 1:
-            self.__atirando = True 
             dstancia = (((jogador.corpo.centery) - (self.corpo.centery)) ** 2 + (
                     jogador.corpo.centerx - self.corpo.centerx) ** 2) ** (1 / 2) #distancia entre a mão e o jogador
-            divisor = max(dstancia / self.__vel_projetil,0.001)
+            divisor = max(dstancia / self.__vel_mao,0.001)
 
             self.velx = ((jogador.corpo.centerx - self.corpo.centerx)) / divisor
             self.vely = ((jogador.corpo.centery) - (self.corpo.centery)) / divisor
