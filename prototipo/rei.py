@@ -239,7 +239,6 @@ class CabecaLaranja(ParteDoRei):
             pygame.draw.rect(tela, (255, 128, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                                    self.corpo.w, self.corpo.h])
         if renderizar_sprite:
-            face = 1
             self.sprite.imprimir(tela, "cabeca", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, self.face, 1 * (self.__quebrado), 0,
                                         int((self.escala_tempo != 0)*mapa.ciclo/6) % 8)
 
@@ -316,13 +315,13 @@ class CabecaLaranja(ParteDoRei):
 class CoracaoRoxo(ParteDoRei):
     def __init__(self, x, y):
         #self.__rei = 0
-        altura = 25
-        largura = 25
+        altura = 29
+        largura = 29
         dano_contato = 0
         cor = (255,0,255)
         limiteVel = 4
         self.__tempo_parado = 500 #contador de tempo parado
-        super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "0", cor, 0)
+        super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "coracao", cor, 0)
 
     def parar_o_tempo(self, jogador):
         if self.__tempo_parado < 0: self.__tempo_parado -= 1
@@ -331,13 +330,24 @@ class CoracaoRoxo(ParteDoRei):
         else:
             jogador.descongelar()
 
+    def renderizar(self, tela, mapa):
+        "renderiza na tela na posicao correta"
+
+        if renderizar_hitbox:
+            pygame.draw.rect(tela, self.cor,
+                             [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
+                              self.corpo.w, self.corpo.h])
+        if renderizar_sprite:
+            self.sprite.imprimir(tela, "coracao", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                 self.face, 0, 0, 0)
+
     def atualizar(self, tela, mapa, dimensoes_tela):
         if not self.montado: self.montar(mapa)
         if self.fase == 4:
             self.parar_o_tempo(mapa.jogador)
         self.renderizar(tela, mapa)
         ##### ATUALIZACAO DO CORACAO #####
-        self.x = self.rei.x + 63
+        self.x = self.rei.x + 61
         self.y = self.rei.y + 100
         self.corpo = pygame.Rect(self.x, self.y, self.largura,self.altura)
 
