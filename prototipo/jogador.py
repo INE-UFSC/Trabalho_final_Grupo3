@@ -104,6 +104,10 @@ class Jogador(Movel):
 
     def vida_pra_zero(self):
         self.__vida = 0
+    
+    def ganha_vida(self):
+        if self.__vida < 5:
+            self.__vida += 1
 
     def coletar_poder(self, item):
         if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 3):
