@@ -274,12 +274,12 @@ class Creditos(TelaMenu):
         listabotoes = [Botao(120, h-45, 200, 50, (220, 60, 60), "Voltar", 5)]
         listabotoes.append(Botao(w/2, 90, 100, 50, (220, 220, 220), "Créditos", 5,True))
         listapessoas = [   ### COLOCAR AQUI NOMES E CREDITOS
-            ["funcao1","Andre",(220,0,0)],
-            ["funcao2","Arthur João Lourenço",(220,110,0)],
-            ["funcao3","Bernardo Borges Sandoval",(220,220,0)],
-            ["funcao4","Otavio Wada",(0,220,0)],
-            ["funcao5","Vicente",(0,220,220)],
-            ["funcao6","Victor Cunha",(160,0,220)]]
+            ["Música","André Hanazaki Peroni",(220,0,0)],
+            ["Entidades e Movimento","Arthur João Lourenço",(220,110,0)],
+            ["Inimigos e Colisão","Bernardo Borges Sandoval",(220,220,0)],
+            ["Menus e Persistência","Otávio Wada",(0,220,0)],
+            ["Sprites","Vicente Tavares Alves Ferreira",(0,220,220)],
+            ["Classes Abstratas, Impl. Música","Victor Cunha",(160,0,220)]]
         for pessoa in listapessoas:
             listabotoes.append(Botao(w/2+200, 150 + listapessoas.index(pessoa)*60, 375, 50, pessoa[2], pessoa[0], 5,True))
             listabotoes.append(Botao(w/2-200, 150 + listapessoas.index(pessoa)*60, 375, 50, pessoa[2], pessoa[1], 5,True))
