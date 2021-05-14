@@ -361,6 +361,11 @@ class CabecaLaranja(ParteDoRei):
                 if self.fase != 4:
                     return 1
                 else:
+                    for ganhar in mapa.lista_de_entidades:
+                        if isinstance(ganhar, Vitoria):
+                            entidade_vitoria = ganhar
+                    entidade_vitoria.x = 400
+                    print(entidade_vitoria.y)
                     self.finalizar_jogo()
                     return 0
             ##### COLISAO CIMA #####
@@ -516,8 +521,8 @@ class ReiDasCores(Entidade):
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+550, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial+750, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial+550, 200, 0),
-                                    Atirador(self.__posicao_inicial-250, mapa.tamanho[1]-500, False),
-                                    Atirador(self.__posicao_inicial+600, mapa.tamanho[1]-500, False),
+                                    Atirador(self.__posicao_inicial-250, mapa.tamanho[1]-500),
+                                    Atirador(self.__posicao_inicial+600, mapa.tamanho[1]-500),
                                     ]
 
     def fase_3(self, mapa):
@@ -539,6 +544,15 @@ class ReiDasCores(Entidade):
                                     PlataformaMovel(mapa.tamanho[1]-300, self.__posicao_inicial-150, 100, 4),
                                     PlataformaMovel(mapa.tamanho[1]-300, self.__posicao_inicial+500, 100, 4),
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+600, 100, 4),]
+    
+    def fase_5(self, mapa):
+        self.__entidades_da_fase = []
+        for ganhar in mapa.lista_de_entidades:
+            if isinstance(ganhar, Vitoria):
+                entidade_vitoria = ganhar
+        entidade_vitoria.x = 400
+        print(entidade_vitoria.x)
+        
 
     def jogador_pega_gota(self):
         if self.__gota > 0:

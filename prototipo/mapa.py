@@ -543,10 +543,11 @@ def montar_mapas():
 
         "fase6"]
 
-    width = 5040
+    width = 6900
     height = 900
     fase6 = [[
 
+        ["Vitoria", (6700, height - 280)],
         ["ReiDasCores", (800, 100, height)],
         ["PunhoVermelho", (0, 0, "esquerdo", 280)],
         ["PunhoVermelho", (0, 0, "direito", 340)],
