@@ -193,7 +193,7 @@ class Atirador(Inimigo):
             disty = (mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)
             if mapa.jogador.x <= self.x:
                 distx = mapa.jogador.x - self.x -15*self.face
-                dstancia = (((mapa.jogador.y + mapa.jogador.altura) - (self.y + self.altura)) ** 2 + (
+                dstancia = ((disty) ** 2 + (
                         distx) ** 2) ** (1 / 2)
                 divisor = max(dstancia / self.__vel_projetil,0.001)
                 velx = distx / divisor
