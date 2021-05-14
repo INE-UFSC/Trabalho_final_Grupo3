@@ -14,7 +14,7 @@ class Gota(Coletavel):
     
     def coleta(self, jogador, mapa):
         jogador.ganha_vida()
-        self.__rei.jogador_pega_gota()
+        self.__rei.jogador_pega_gota(mapa)
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
 
@@ -300,13 +300,13 @@ class CabecaLaranja(ParteDoRei):
         ##### FALA PRA ELE QUANDO ATIRAR FOGO #####
         if self.fase == 1:
             numero_de_projeteis = 0
-            self.descanso_poder_max = 150
+            self.descanso_poder_max = 200
         elif self.fase == 2:
             numero_de_projeteis = 5
             self.descanso_poder_max = 150
         else:
-            numero_de_projeteis = 2
-            self.descanso_poder_max = 150
+            numero_de_projeteis = 1
+            self.descanso_poder_max = 250
         if self.__descanso_poder <= 0:
             for i in range(numero_de_projeteis):
                 self.__poder.acao(self, tela, mapa, velx, vely, 0+10*i)
@@ -356,15 +356,19 @@ class CoracaoRoxo(ParteDoRei):
         dano_contato = 0
         cor = (255,0,255)
         limiteVel = 4
-        self.__tempo_parado = 500 #contador de tempo parado
+        self.__tempo_parado = 100 #contador de tempo parado
         super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "coracao", cor, 0)
 
     def parar_o_tempo(self, jogador):
-        if self.__tempo_parado < 0: self.__tempo_parado -= 1
+        print(self.__tempo_parado)
+        if self.__tempo_parado > 0: self.__tempo_parado -= 1
         if self.__tempo_parado:
             jogador.congelar()
+            return True
         else:
+            self.__tempo_parado = 100
             jogador.descongelar()
+            return False
 
     def renderizar(self, tela, mapa):
         "renderiza na tela na posicao correta"
@@ -416,8 +420,9 @@ class ReiDasCores(Entidade):
         self.__fase = 0 #0, 1-Vermelho, 2-Laranja, 3-Azul, 4-Roxo
         self.__entidades_da_fase = []
         self.__vida_gelatinosa = 15
-        self.__cristais = 3
+        self.__gota = 3
         self.__enjoo = 15
+        self.__tempo_parado = False
 
         ##### ATRIBUTOS DE POSICIONAMENTO #####
         self.__posicao_inicial = x
@@ -474,7 +479,10 @@ class ReiDasCores(Entidade):
                                     ]
 
     def fase_3(self):
-        self.__entidades_da_fase = [Gota(600,450,self)]
+        self.__entidades_da_fase = [Gota(600,450,self),
+                                    Gota(700,450,self),
+                                    Gota(800,450,self)
+                                    ]
 
     def fase_4(self):
         self.__entidades_da_fase = []
@@ -501,31 +509,37 @@ class ReiDasCores(Entidade):
         ##### CRIA INIMIGOS DA NOVA FASE #####
             mapa.lista_de_entidades.append(entidade)
     
-    def jogador_pega_gota(self):
-        if self.__cristais > 0:
-            self.__cristais -= 1
+    def jogador_pega_gota(self, mapa):
+        if self.__gota > 0:
+            self.__gota -= 1
+            self.__tempo_parado = True
         else:
             pass # AQUI PASSA PRA FASE 4
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         ##### PASSA A FASE APOS CERTO TEMPO (PROVISORIO) #####
+
         if self.__enjoo: self.__enjoo -= 1 #Da 25 frames pro jogo carregar tudo
+
+        ##### PASSA AS FASES DA LUTA #####
         else:
             print(self.__fase)
             if self.__fase == 0:
                 if self.punho_direito.quebrado and self.punho_esquerdo.quebrado:
                     self.passar_fase(mapa)
-            if self.__fase == 1:
+            if self.__fase == 1: #Jogador com dash
                 if self.__cabeca.quebrado:
                     self.passar_fase(mapa)
-            if self.__fase == 2:
+            if self.__fase == 2: #Jogador com fogo
                 if self.__vida_gelatinosa <= 0:
                     self.passar_fase(mapa)
-        # if self.__descanso_ate_prox_fase:
-        #     self.__descanso_ate_prox_fase = self.__descanso_ate_prox_fase-1
-        # else:
-        #     self.passar_fase(mapa)
-        #     self.__descanso_ate_prox_fase = 500
+            if self.__fase == 3: #Jogador invisivel
+                if not self.__gota:
+                    print("MANDOU BEM")
+
+        ##### ATUALIZACAO DO TEMPO PARADO #####
+        if self.__tempo_parado:
+            self.__tempo_parado = self.__coracao.parar_o_tempo(mapa.jogador)
 
         ##### COISA BASICA #####
         self.mover(dimensoes_tela, mapa)
