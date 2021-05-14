@@ -175,12 +175,13 @@ class PunhoVermelho(ParteDoRei):
             self.__espera = 120
             self.__atirou = True # variavel para deixar a função de voltar ao corpo rodar só depois de ter atirado
         if self.__espera == 0 and self.__atirou:# função de voltar ao corpo
-            dstancia = (((self.__centro_y) - (self.y)) ** 2 + (
-                self.__centro_x - self.x) ** 2) ** (1 / 2) # distancia entre a mão e sua posiçaõ no corpo
+            distx = self.__centro_x - self.x
+            disty = self.__centro_y - self.y
+            dstancia = ((disty) ** 2 + (distx) ** 2) ** (1 / 2) # distancia entre a mão e sua posiçaõ no corpo
             divisor = max(dstancia / self.__vel_mao,0.001)
 
-            self.velx = ((self.__centro_x - self.x)) / divisor
-            self.vely = ((self.__centro_y) - (self.y)) / divisor
+            self.velx = distx / divisor
+            self.vely = disty / divisor
             if dstancia <= 8: #checagem para ver se chegou no corpo
                 self.__atirando = False
         else:
@@ -192,12 +193,14 @@ class PunhoVermelho(ParteDoRei):
 
         #### FUNÇÂO PARA ATIRAR ####
         if atira == 1:
-            dstancia = (((jogador.corpo.centery) - (self.corpo.centery)) ** 2 + (
-                    jogador.corpo.centerx - self.corpo.centerx) ** 2) ** (1 / 2) #distancia entre a mão e o jogador
+            distx = jogador.corpo.centerx - self.corpo.centerx
+            disty = jogador.corpo.centery - self.corpo.centery
+            dstancia = ((disty) ** 2 + (
+                    distx) ** 2) ** (1 / 2) #distancia entre a mão e o jogador
             divisor = max(dstancia / self.__vel_mao,0.001)
 
-            self.velx = ((jogador.corpo.centerx - self.corpo.centerx)) / divisor
-            self.vely = ((jogador.corpo.centery) - (self.corpo.centery)) / divisor
+            self.velx = distx / divisor
+            self.vely = disty / divisor
         
         #### Atualiza a posição da mão ####
         self.x += self.velx
