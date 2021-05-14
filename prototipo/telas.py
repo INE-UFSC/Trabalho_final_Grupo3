@@ -38,33 +38,24 @@ class Menu_Principal(Tela_Menu):
     """
     def __init__(self, superficie):
         t = superficie.get_size()
-        botaonivel_1 = Botao(t[0]/5, t[1]/6, 100, 50, (220, 0, 0), "Fase 1", 5)
-        botaonivel_2 = Botao(t[0]*7/20, t[1]/6, 100, 50, (220, 110, 0), "Fase 2", 5)
-        botaonivel_3 = Botao(t[0]/2, t[1]/6, 100, 50, (220, 220, 0), "Fase 3", 5)
-        b4 = Botao(t[0]*13/20, t[1]/6, 100, 50, (220, 0, 110), "Fase 4", 5)
-        b5 = Botao(t[0]*4/5, t[1]/6, 100, 50, (220, 110, 110), "Fase 5", 5)
+        botaonivel_1 = Botao(t[0]/7, t[1]/6, 100, 50, (220, 0, 0), "Fase 1", 5)
+        botaonivel_2 = Botao(t[0]*2/7, t[1]/6, 100, 50, (220, 110, 0), "Fase 2", 5)
+        botaonivel_3 = Botao(t[0]*3/7, t[1]/6, 100, 50, (220, 220, 0), "Fase 3", 5)
+        b4 = Botao(t[0]*4/7, t[1]/6, 100, 50, (220, 0, 110), "Fase 4", 5)
+        b5 = Botao(t[0]*5/7, t[1]/6, 100, 50, (220, 110, 110), "Fase 5", 5)
+        b6 = Botao(t[0]*6/7, t[1]/6, 100, 50, (220, 110, 110), "Final", 5)
         botaojogar = Botao(t[0]/2, t[1]*2/3-20, 250, 50, (30, 220, 30),  "Jogar", 5)
         botaoconfig = Botao(t[0]/2, t[1]*3/4, 250, 50, (0, 220, 180), "Configurações", 5)
         botaosair = Botao(t[0]/2, t[1]*5/6+20, 250, 50, (220, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaonivel_1, botaonivel_2,
-                          botaonivel_3,b4,b5,botaoconfig]
+                          botaonivel_3,b4,b5,b6,botaoconfig]
         listatelas = [True,False,[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1",'6']]
-                ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],[Tela_De_Jogo,[superficie,"fase4",'6']],[Tela_De_Jogo,[superficie,"fase5",'6']],[Configuracoes,[superficie]]]
+                ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],
+                [Tela_De_Jogo,[superficie,"fase4",'6']],[Tela_De_Jogo,[superficie,"fase5",'6']],
+                [Tela_De_Jogo,[superficie,"fase6",'6']],[Configuracoes,[superficie]]]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         pygame.mixer.music.stop()
-
-    def atualizar(self,ciclo):
-        """Como outras telas, checa cada botao e responde de acordo
-
-        Se o botao apertado for o de de algumas das fases,
-        ele liga a musica
-        """
-        resultado = super().atualizar(ciclo)
-        acao = resultado[2]
-        if acao in range(3,8):
-            pygame.mixer.music.play(-1)
-        return resultado
 
 
 
@@ -98,18 +89,7 @@ class Carregar_Jogo(Tela_Menu):
 
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
-    
-    def atualizar(self,ciclo):
-        """Como outras telas, checa cada botao e responde de acordo
 
-        Se o botao apertado for o de carregar alguma das fases,
-        ele liga a musica
-        """
-        resultado = super().atualizar(ciclo)
-        acao = resultado[2]
-        if acao in range(1,6):
-            pygame.mixer.music.play()
-        return resultado
 
 class Deletar_Save(Tela_Menu):
     """Tela que apaga um jogo salvo
@@ -161,20 +141,6 @@ class Fim_De_Jogo(Tela_Menu):
         listatelas = [True,[Menu_Principal,[superficie]],[Tela_De_Jogo,[superficie,nivel,save]],True]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
-    
-    def atualizar(self,ciclo):
-        """Como outras telas, checa cada botao e responde de acordo
-
-        Se o botao apertado for o de de algumas das fases,
-        ele liga a musica
-        """
-        resultado = super().atualizar(ciclo)
-        acao = resultado[2]
-        if acao == 2:
-            pygame.mixer.music.play(-1)
-        else:
-            pygame.mixer.music.fadeout(2400)
-        return resultado
 
 
 class Configuracoes(Tela_Menu):
@@ -338,6 +304,7 @@ class Tela_De_Jogo(Tela):
                 poder_armazenado = item()
         self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, slot_atual[4])
         self.__comeco = pygame.time.get_ticks() / 1000
+        if not pygame.mixer.music.get_busy(): pygame.mixer.music.play(-1)
 
 
 
