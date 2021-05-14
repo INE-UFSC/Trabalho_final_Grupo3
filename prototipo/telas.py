@@ -286,7 +286,6 @@ class Tela_De_Jogo(Tela):
 
         ##### ENTRADAS DO JOGADOR #####
         self.__cima, self.__baixo, self.__direita, self.__esquerda = 0, 0, 0, 0
-        self.__atrito = 0.5
         self.__espaco = False
         self.__bola_fogo = False
         self.__troca_poder = False
@@ -385,10 +384,9 @@ class Tela_De_Jogo(Tela):
             self.__esquerda = 0
             self.__espaco = not self.__mapa.ganhou
         else:
-            # self.__jogador.mover(self.__direita, self.__esquerda, self.__espaco,#self.__superficie.get_size(), self.__mapa, self.__atrito)
             self.__jogador.poderes(self.superficie, self.__mapa, self.__bola_fogo)
-        self.__campo_visivel = self.__jogador.atualizar(self.superficie,self.__mapa, self.__campo_visivel, int(ciclo / 6),
-                                                        [self.__direita, self.__esquerda, self.__espaco, self.__troca_poder], self.__atrito)
+        self.__campo_visivel = self.__jogador.atualizar(self.superficie,self.__mapa,
+                                                        [self.__direita, self.__esquerda, self.__espaco, self.__troca_poder])
 
         # PERDENDO POR MORRER
         if self.__jogador.vida <= 0 and not self.__mapa.ganhou:

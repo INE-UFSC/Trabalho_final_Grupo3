@@ -56,7 +56,6 @@ class Jogo:
                     "onaji desu"
             self.__relogio.tick(60)
 
-
 pygame.init()
 pygame.mixer.music.load('musica_fundo.ogg')
 jogo = Jogo()
