@@ -163,7 +163,6 @@ def montar_mapas():
         ["CabecaLaranja", (0, 0)],
         ["CoracaoRoxo", (0, 0)],
         ["Chao", ('chao', height - 10, 0, 6200)],
-        ["TintaVermelha", (100, height - 60)],#1200)],
         # ["Lapis", (600, height - 125, height)],
         # ["Bolota", (700, height - 50)],
         # ["Lapis", (900, height - 125, height)],

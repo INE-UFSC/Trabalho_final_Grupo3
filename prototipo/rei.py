@@ -71,6 +71,10 @@ class PunhoVermelho(ParteDoRei):
     def recarga(self, recarga):
         self.__recarga = recarga
 
+    @property
+    def quebrado(self):
+        return self.__quebrado
+
     def renderizar(self, tela, mapa):
         "renderiza na tela na posicao correta"
 
@@ -200,6 +204,7 @@ class PunhoVermelho(ParteDoRei):
         else:
             return 0
 
+
 @instanciavel
 class CabecaLaranja(ParteDoRei):
     def __init__(self, x, y):
@@ -215,6 +220,11 @@ class CabecaLaranja(ParteDoRei):
         cor = (255,128,0)
         limiteVel = 10
         super().__init__("cabeca", x, y, altura, largura, limiteVel, 0, dano_contato, "cabeca", cor, 0)
+
+
+    @property
+    def quebrado(self):
+        return self.__quebrado
 
     @property
     def descanso_poder_max(self):
@@ -243,7 +253,7 @@ class CabecaLaranja(ParteDoRei):
                                         int((self.escala_tempo != 0)*mapa.ciclo/6) % 8)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        print(self.__quebrado)
+        #print(self.__quebrado)
 
         if not self.montado: self.montar(mapa)
 
@@ -268,10 +278,14 @@ class CabecaLaranja(ParteDoRei):
         vely = ((mapa.jogador.y) - (self.y)) / divisor
 
         ##### FALA PRA ELE QUANDO ATIRAR FOGO #####
-        if self.fase == 2:
+        if self.fase == 1:
             numero_de_projeteis = 0
+        elif self.fase == 2:
+            numero_de_projeteis = 5
+            self.descanso_poder_max = 50
         else:
-            numero_de_projeteis = 0
+            numero_de_projeteis = 2
+            self.descanso_poder_max = 100
         if self.__descanso_poder <= 0:
             for i in range(numero_de_projeteis):
                 self.__poder.acao(self, tela, mapa, velx, vely, 0+10*i)
@@ -310,6 +324,7 @@ class CabecaLaranja(ParteDoRei):
             return 0
         else:
             return 0
+
 
 @instanciavel
 class CoracaoRoxo(ParteDoRei):
@@ -354,7 +369,10 @@ class CoracaoRoxo(ParteDoRei):
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         "Determina que o jogador fique mais lento ao passar"
         if not jogador.invisivel:
-            jogador.escala_tempo = 0.25
+            if self.__tempo_parado:
+                jogador.escala_tempo = 0
+            else:
+                jogador.escala_tempo = 0.25
         return 0
 
     def sofreu_colisao_outros(self, entidade, direcao, mapa):
@@ -376,8 +394,9 @@ class ReiDasCores(Entidade):
         self.__descanso_ate_prox_fase = 500
         self.__fase = 0 #0, 1-Vermelho, 2-Laranja, 3-Azul, 4-Roxo
         self.__entidades_da_fase = []
-        self.__vida_gelatinosa = 20
+        self.__vida_gelatinosa = 15
         self.__cristais = 3
+        self.__enjoo = 15
 
     @property
     def fase(self):
@@ -420,12 +439,14 @@ class ReiDasCores(Entidade):
 
 
     def fase_1(self):
-        self.__entidades_da_fase = [Chao("chao", 200, 200, 400), Chao("chao", 300, 200, 400), Chao("chao", 400, 200, 400)]
+        self.__entidades_da_fase = [TintaVermelha(400, 450),
+                                    Chao("chao", 200, 200, 400),
+                                    Chao("chao", 300, 200, 400),
+                                    Chao("chao", 400, 200, 400)]
 
     def fase_2(self):
-        self.__cabeca.descanso_poder_max = 100
-        self.__cabeca.numero_de_projeteis = 5
-        self.__entidades_da_fase = []
+        self.__entidades_da_fase = [TintaLaranja(400,450)
+                                    ]
 
     def fase_3(self):
         self.__entidades_da_fase = [Atirador(200,200)]
@@ -443,7 +464,8 @@ class ReiDasCores(Entidade):
 
         ##### LIMPA ENTIDADES DA FASE ANTERIOR #####
         for entidade in self.__entidades_da_fase:
-            mapa.lista_de_entidades.remove(entidade)
+            if entidade in mapa.lista_de_entidades:
+                mapa.lista_de_entidades.remove(entidade)
 
         if self.__fase == 1: self.fase_1()
         if self.__fase == 2: self.fase_2()
@@ -456,11 +478,23 @@ class ReiDasCores(Entidade):
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         ##### PASSA A FASE APOS CERTO TEMPO (PROVISORIO) #####
-        if self.__descanso_ate_prox_fase:
-            self.__descanso_ate_prox_fase = self.__descanso_ate_prox_fase-1
+        if self.__enjoo: self.__enjoo -= 1 #Da 25 frames pro jogo carregar tudo
         else:
-            self.passar_fase(mapa)
-            self.__descanso_ate_prox_fase = 500
+            print(self.__fase)
+            if self.__fase == 0:
+                if self.punho_direito.quebrado and self.punho_esquerdo.quebrado:
+                    self.passar_fase(mapa)
+            if self.__fase == 1:
+                if self.__cabeca.quebrado:
+                    self.passar_fase(mapa)
+            if self.__fase == 2:
+                if self.__vida_gelatinosa <= 0:
+                    self.passar_fase(mapa)
+        # if self.__descanso_ate_prox_fase:
+        #     self.__descanso_ate_prox_fase = self.__descanso_ate_prox_fase-1
+        # else:
+        #     self.passar_fase(mapa)
+        #     self.__descanso_ate_prox_fase = 500
 
         ##### COISA BASICA #####
         self.mover(dimensoes_tela, mapa)
