@@ -19,8 +19,8 @@ class Jogo:
         
         (width, height) = configs["resolucao"]  # Tamanho da tela
         pygame.mixer.music.set_volume(configs["musica"])
-        self.__screen = pygame.display.set_mode((width, height),
-        pygame.FULLSCREEN if configs["telacheia"] else 0)
+        if configs["telacheia"]: self.__screen = pygame.display.set_mode((0,0),pygame.FULLSCREEN)
+        else: self.__screen = pygame.display.set_mode((width, height)) 
 
         caption = ["O Risco do Rabisco: A Jornada das Cores"]
                    #  "As Aventuras do Guri",

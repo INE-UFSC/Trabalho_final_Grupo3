@@ -5,6 +5,11 @@ from obstaculos import *
 
 @instanciavel
 class Gota(Coletavel):
+    """Coletavel da Batalha
+    
+    Ao coletar, jogador recupera vida
+    e avisa ao rei que foi tomada
+    """
     def __init__(self, x, y, rei):
         largura = 20
         altura = 20
@@ -19,6 +24,7 @@ class Gota(Coletavel):
         self.auto_destruir(mapa)
 
 class ParteDoRei(Entidade):
+    "Partes do Rei das Cores"
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str, cor, frames: int):
         super().__init__(nome, x, y, altura, largura, limiteVel, vida, dano_contato, imagem, cor, frames, True)
         self.__montado = False
@@ -69,6 +75,10 @@ class ParteDoRei(Entidade):
 
 @instanciavel
 class PunhoVermelho(ParteDoRei):
+    """Punhos do Rei das Cores
+
+    Vao na direcao do jogador e voltam
+    """
     def __init__(self, x, y, lado, primeiro_tiro):
         self.__centro_x = x
         self.__centro_y = y
@@ -242,6 +252,11 @@ class PunhoVermelho(ParteDoRei):
 
 @instanciavel
 class CabecaLaranja(ParteDoRei):
+    """Cabeca do Rei das Cores
+    
+    Pode atirar bolas de fogo
+    Geralmente, fere quem a pisa
+    """
     def __init__(self, x, y):
         #self.__rei = 0
         self.__vel_projetil = 3
@@ -380,6 +395,10 @@ class CabecaLaranja(ParteDoRei):
 
 @instanciavel
 class CoracaoRoxo(ParteDoRei):
+    """Coracao do Rei das Cores
+    
+    Pode parar o tempo
+    """
     def __init__(self, x, y):
         #self.__rei = 0
         altura = 29
@@ -434,6 +453,9 @@ class CoracaoRoxo(ParteDoRei):
 
 @instanciavel
 class ReiDasCores(Entidade):
+    """O Monarca dos Pigmentos,
+    O Imperador das frequencias eletromagneticas
+    """
     def __init__(self, x, y, height):
         ##### PARTES DO CORPO #####
         self.__cabeca = 0
@@ -500,10 +522,14 @@ class ReiDasCores(Entidade):
     def toma_dano_de_fogo(self):
         self.__vida_gelatinosa -= 1
 
-
+    def spawn_poder(self,mapa,poder):
+        if self.corpo.x > mapa.jogador.corpo.x:
+            self.__entidades_da_fase.append(poder(self.__posicao_inicial-216,mapa.tamanho[1]-200))
+        else:
+            self.__entidades_da_fase.append(poder(self.__posicao_inicial+684,mapa.tamanho[1]-200))
     def fase_1(self, mapa):
-        self.__entidades_da_fase = [TintaVermelha(self.__posicao_inicial+209,500),
-                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
+        "Comeca fase 1 da batalha, com poder vermelho"
+        self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial-500, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial-300, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+550, 200, 0),
@@ -512,10 +538,12 @@ class ReiDasCores(Entidade):
                                     Saltante(self.__posicao_inicial-300, mapa.tamanho[1] - 150),
                                     Saltante(self.__posicao_inicial+950, mapa.tamanho[1] - 150)
                                     ]
+        self.spawn_poder(mapa, TintaVermelha)
+        
 
     def fase_2(self, mapa):
-        self.__entidades_da_fase = [TintaLaranja(self.__posicao_inicial+209,500),
-                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
+        "Comeca fase 2 da batalha, com poder laranja"
+        self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial-500, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial-300, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+550, 200, 0),
@@ -524,10 +552,11 @@ class ReiDasCores(Entidade):
                                     Atirador(self.__posicao_inicial-250, mapa.tamanho[1]-500),
                                     Atirador(self.__posicao_inicial+600, mapa.tamanho[1]-500),
                                     ]
-
+        self.spawn_poder(mapa, TintaLaranja)
+    
     def fase_3(self, mapa):
-        self.__entidades_da_fase = [TintaAzul(self.__posicao_inicial+209,500),
-                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
+        "Comeca fase 3 da batalha, com poder azul"
+        self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-280, self.__posicao_inicial-500, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-400, self.__posicao_inicial-300, 200, 0),
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+550, 200, 0),
@@ -537,15 +566,18 @@ class ReiDasCores(Entidade):
                                     Gota(self.__posicao_inicial+850, mapa.tamanho[1]-350, self),
                                     Gota(self.__posicao_inicial+200, mapa.tamanho[1]-600, self)
                                     ]
+        self.spawn_poder(mapa, TintaAzul)
 
-    def fase_4(self, mapa): #Fase do tempo
-        self.__entidades_da_fase = [TintaRoxa(self.__posicao_inicial+209,500),
-                                    PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-250, 100, 4),
+    def fase_4(self, mapa):
+        "Comeca fase 4 da batalha, com poder roxo"
+        self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-250, 100, 4),
                                     PlataformaMovel(mapa.tamanho[1]-300, self.__posicao_inicial-150, 100, 4),
                                     PlataformaMovel(mapa.tamanho[1]-300, self.__posicao_inicial+500, 100, 4),
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+600, 100, 4),]
-    
+        self.spawn_poder(mapa, TintaRoxa)
+
     def fase_5(self, mapa):
+        "Termina Batalha"
         self.__entidades_da_fase = []
         for ganhar in mapa.lista_de_entidades:
             if isinstance(ganhar, Vitoria):
@@ -556,11 +588,13 @@ class ReiDasCores(Entidade):
         
 
     def jogador_pega_gota(self):
+        "Remove uma das gotas do rei e cura o jogador"
         if self.__gota > 0:
             self.__gota -= 1
             self.__tempo_parado = True
 
     def passar_fase(self, mapa):
+        "Inicia a proxima fase"
         ##### INCREMENTA A FASE #####
         self.__fase += 1
         self.__cabeca.passar_fase()
@@ -617,6 +651,7 @@ class ReiDasCores(Entidade):
 
         ##### ATUALIZACAO DO TEMPO PARADO #####
         if self.__tempo_parado:
+            mapa.render_escala_tempo = 0
             self.__tempo_parado = self.__coracao.parar_o_tempo(mapa.jogador)
 
         ##### COISA BASICA #####

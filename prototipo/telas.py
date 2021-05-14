@@ -44,16 +44,18 @@ class Menu_Principal(Tela_Menu):
         b4 = Botao(t[0]*4/7, t[1]/6, 100, 50, (220, 0, 110), "Fase 4", 5)
         b5 = Botao(t[0]*5/7, t[1]/6, 100, 50, (220, 110, 110), "Fase 5", 5)
         b6 = Botao(t[0]*6/7, t[1]/6, 100, 50, (220, 110, 110), "Final", 5)
+        b7 = Botao(t[0]/7, t[1]/3, 100, 50, (220, 220, 220), "Fase Teste", 5)
         botaojogar = Botao(t[0]/2, t[1]*2/3-20, 250, 50, (30, 220, 30),  "Jogar", 5)
         botaoconfig = Botao(t[0]/2, t[1]*3/4, 250, 50, (0, 220, 180), "Configurações", 5)
         botaosair = Botao(t[0]/2, t[1]*5/6+20, 250, 50, (220, 30, 30), "Sair", 5)
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaonivel_1, botaonivel_2,
-                          botaonivel_3,b4,b5,b6,botaoconfig]
+                          botaonivel_3,b4,b5,b6,b7,botaoconfig]
         listatelas = [True,False,[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1",'6']]
                 ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],
                 [Tela_De_Jogo,[superficie,"fase4",'6']],[Tela_De_Jogo,[superficie,"fase5",'6']],
-                [Tela_De_Jogo,[superficie,"fase6",'6']],[Configuracoes,[superficie]]]
+                [Tela_De_Jogo,[superficie,"fase6",'6']],[Tela_De_Jogo,[superficie,"fase7",'6']],
+                [Configuracoes,[superficie]]]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         pygame.mixer.music.stop()
 
@@ -201,7 +203,8 @@ class Configuracoes(Tela_Menu):
         resultado = super().atualizar(ciclo)
         acao = resultado[2]
         if acao == 1: # SAIR, SALVAR E APLICAR CONFIGS
-            pygame.display.set_mode(self.__tamanho,pygame.FULLSCREEN if self.__tela_cheia else 0)
+            if self.__tela_cheia: pygame.display.set_mode((0,0), pygame.FULLSCREEN)
+            else: pygame.display.set_mode(self.__tamanho,0)
             self.salvar_config()
         elif acao == 3: # AUMENTAR VOLUME - MAX: 100
             pygame.mixer.music.set_volume(min(round(pygame.mixer.music.get_volume(),1)+0.1,1))
@@ -247,15 +250,15 @@ class Creditos(Tela_Menu):
         listabotoes = [Botao(120, h-45, 200, 50, (220, 60, 60), "Voltar", 5)]
         listabotoes.append(Botao(w/2, 90, 100, 50, (220, 220, 220), "Créditos", 5,True))
         listapessoas = [   ### COLOCAR AQUI NOMES E CREDITOS
-            ["funcao1","nome1",(220,0,0)],
-            ["funcao2","nome2",(220,110,0)],
-            ["funcao3","nome3",(220,220,0)],
-            ["funcao4","nome4",(0,220,0)],
-            ["funcao5","nome5",(0,0,220)],
-            ["funcao6","nome6",(110,0,220)]]
+            ["funcao1","Andre",(220,0,0)],
+            ["funcao2","Arthur João Lourenço",(220,110,0)],
+            ["funcao3","Bernardo Borges Sandoval",(220,220,0)],
+            ["funcao4","Otavio Wada",(0,220,0)],
+            ["funcao5","Vicente",(0,220,220)],
+            ["funcao6","Victor Cunha",(160,0,220)]]
         for pessoa in listapessoas:
-            listabotoes.append(Botao(w/2-175, 150 + listapessoas.index(pessoa)*60, 225, 50, pessoa[2], pessoa[0], 5,True))
-            listabotoes.append(Botao(w/2+125, 150 + listapessoas.index(pessoa)*60, 325, 50, pessoa[2], pessoa[1], 5,True))
+            listabotoes.append(Botao(w/2+200, 150 + listapessoas.index(pessoa)*60, 375, 50, pessoa[2], pessoa[0], 5,True))
+            listabotoes.append(Botao(w/2-200, 150 + listapessoas.index(pessoa)*60, 375, 50, pessoa[2], pessoa[1], 5,True))
         listatelas = [True,[Configuracoes,[superficie]]] + [True for i in range(2*len(listapessoas)+1)]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)

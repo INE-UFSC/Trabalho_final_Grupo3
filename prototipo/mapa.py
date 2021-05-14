@@ -559,5 +559,18 @@ def montar_mapas():
         (width, height),
 
         False]
+    
+    width = 2300
+    height = 800
+    fase7 = [[
 
-    return {"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5, "fase6": fase6}
+        ["Vitoria", (2090, height - 280)],
+        ["Bolota", (900, height - 50)],
+        ["Chao", ('chao', height - 10, 0, 6200)],
+    ],
+
+        (width, height),
+
+        False]
+
+    return {"fase1": fase1, "fase2": fase2, "fase3": fase3, "fase4": fase4, "fase5": fase5, "fase6": fase6,"fase7":fase7}
