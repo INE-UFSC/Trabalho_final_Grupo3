@@ -10,6 +10,7 @@ from random import randrange
 
 ##### PODERES NO JOGADOR #####
 class PoderGenerico:
+    "Classe base para todos os poderes do jogo"
     def __init__(self, nome: str, tem_tempo: bool, duracao: int, velmax: int, pulo: int, recarga: int, cor: tuple):
         self.__nome = nome
         self.__tem_tempo = tem_tempo
@@ -59,6 +60,7 @@ class PoderGenerico:
 ##### FORMA PADRAO DO JOGADOR #####
 @poder_no_jogador
 class Cinza(PoderGenerico):
+    "Poder Padrao, nao faz nada quando ativado"
     def __init__(self):
         super().__init__("Cinza", False, 0, 5, 9, 1, (150,150,150))
 
@@ -72,6 +74,7 @@ class Cinza(PoderGenerico):
 ##### PODER DO DASH #####
 @poder_no_jogador
 class Vermelho(PoderGenerico):
+    "Poder de Dash, rapidamente faz o jogador se esquivar"
     def __init__(self):
         super().__init__("Vermelho", False, 0, 7, 10, 80, (50, 50, 50))
 
@@ -89,6 +92,7 @@ class Vermelho(PoderGenerico):
 ##### PODER DA BOLA DE FOGO #####
 @poder_no_jogador
 class Laranja(PoderGenerico):
+    "Poder de fogo, joga uma bola de fogo que quica"
     def __init__(self):
         super().__init__("Laranja", False, 0, 5, 9, 40, (255, 50, 50))
 
@@ -109,6 +113,7 @@ class Laranja(PoderGenerico):
 ##### PODER DA INTANGIBILIDADE #####
 @poder_no_jogador
 class Azul(PoderGenerico):
+    "Poder de intangibilidade, o jogador passa atraves dos inimigos"
     def __init__(self):
         super().__init__("Azul", False, 0, 5, 9, 600, (50, 50, 255))
         self.ativo = False
@@ -133,6 +138,10 @@ class Azul(PoderGenerico):
 ##### PODER DE PARAR O TEMPO #####
 @poder_no_jogador
 class Roxo(PoderGenerico):
+    """てめえの付けは・・・金では払えねえぜ!
+    
+    Para o tempo,afetando a maioria dos inimigos
+    """
     def __init__(self):
         super().__init__("Roxo", False, 300, 5, 9, 600, (80, 10, 120))
         self.ativo = False
@@ -160,6 +169,7 @@ class Roxo(PoderGenerico):
 ##### PODER DE ACELERAR O TEMPO #####
 @poder_no_jogador
 class Verde(PoderGenerico):
+    "Segunda referencia- Acelera o tempo ate o fim de jogo"
     def __init__(self):
         super().__init__("Verde", False, 300, 5, 9, 600, (5, 200, 40))
         self.ativo = False
@@ -176,6 +186,7 @@ class Verde(PoderGenerico):
 ###### ataque ninja #####
 @poder_no_jogador
 class Marrom(PoderGenerico):
+    "Cria clones que matam o inimigo"
     def __init__(self):
         super().__init__("Marrom", False, 0, 5, 9, 40, (255, 255, 0))
 
@@ -193,6 +204,7 @@ class Marrom(PoderGenerico):
 
 #### PODER DO INIMIGO ####
 class Projetil(PoderGenerico):
+    "Atira projeteis em linha reta"
     def __init__(self):
         super().__init__("Projetil", False, 0, 5, 9, 40, (0, 0, 0))
         self.__altura = 26
@@ -212,6 +224,7 @@ class Projetil(PoderGenerico):
 
 ##### ITENS DOS PODERES NO MAPA #####
 class Coletavel(Movel):
+    "Itens que mudam alguma propriedade do jogador"
     def __init__(self, nome, x, y, imagem, cor=(0, 0, 0), largura = 32, altura = 32):
         limite_vel = 4
         super().__init__(nome, x, y, altura, largura, limite_vel, imagem, cor)
@@ -230,6 +243,7 @@ class Coletavel(Movel):
 
 @instanciavel
 class Borracha(Coletavel):
+    "Adiciona borracha ao contador"
     def __init__(self, x, y, cor=(245, 245, 220)):
         super().__init__("borracha", x, y, "sprites", cor, 41, 29)
         self.__raio = 10
@@ -241,6 +255,10 @@ class Borracha(Coletavel):
 
 @instanciavel
 class Paleta(Coletavel):
+    """Adiciona uma parte da paleta ao jogador
+    
+    Quando completa, permite que o jogador guarde um poder
+    """
     def __init__(self, x, y, cor=(0, 0, 0)):
         super().__init__("paleta_mapa", x, y, "sprites", cor, 50, 35)
 
@@ -251,22 +269,26 @@ class Paleta(Coletavel):
 
 @instanciavel
 class PoderNoMapa(Coletavel):
+    "Base para itens que dao poder ao jogador"
     def __init__(self, nome, x, y, poder_atribuido, imagem, cor=(0, 0, 0)):
         self.poder_atribuido = poder_atribuido
         super().__init__(nome, x, y, imagem, cor)
 
 @instanciavel
 class TintaVermelha(PoderNoMapa):
+    "Da ao jogador o poder vermelho"
     def __init__(self, x, y):
         super().__init__("poder_Vermelho", x, y, Vermelho(), "sprites", (50, 50, 50))
 
 @instanciavel
 class TintaLaranja(PoderNoMapa):
+    "Da ao jogador o poder laranja"
     def __init__(self, x, y):
         super().__init__("poder_Laranja", x, y, Laranja(), "sprites", (255, 50, 50))
 
 @instanciavel
 class TintaAzul(PoderNoMapa):
+    "Da ao jogador o poder azul"
     def __init__(self, x, y):
         super().__init__("poder_Azul", x, y, Azul(), "sprites", (50, 50, 255))
 
@@ -289,12 +311,14 @@ class TintaMarrom(PoderNoMapa):
 ##### OBJETOS CRIADOS POR PODERES #####
 
 class PoderManifestado(Entidade):
+    "Base para entidades criadas por poderes"
     def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, frame = 0, cor=(0, 0, 0)):
         self.duracao = duracao
         super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor, frame)
 
 
 class PoderManifestadoInimigo(Entidade):
+    "Entidades criadas por poderes dos inimigos"
     def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, frames, cor=(0, 0, 0)):
         self.duracao = duracao
         super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor, frames)
@@ -307,6 +331,7 @@ class PoderManifestadoInimigo(Entidade):
 
 @instanciavel
 class BolaFogo(PoderManifestado):
+    "Bola de Fogo do jogador"
     def __init__(self, pos_inicial, screen, mapa, vel):
         x = pos_inicial[0] + 25 * vel
         y = pos_inicial[1]
@@ -363,6 +388,7 @@ class BolaFogo(PoderManifestado):
 
 @instanciavel
 class Bala(PoderManifestadoInimigo):
+    "Bola de Fogo do inimigo"
     def __init__(self, pos_inicial, screen, mapa, lado, velx, vely):
         x = pos_inicial[0] + 15 * lado
         largura = 26
@@ -399,6 +425,7 @@ class Bala(PoderManifestadoInimigo):
 
 @instanciavel
 class Clones(PoderManifestado):
+    "Clones do poder 'jutsu'"
     def __init__(self, pos_inicial, screen, mapa, vel, tamanho_jogador):
         x = pos_inicial[0] + vel + 50
         y = pos_inicial[1] 

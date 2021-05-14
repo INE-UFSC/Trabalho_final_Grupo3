@@ -5,6 +5,7 @@ from sprites import *
 
 # FUNCOES DE ATUALIZAR NECESSITAM DA AREA VISIVEL PARA RENDERIZAR CORRETAMENTE
 class Obstaculo(Estatico):
+    "Base para objetos fisicos que nao sao inimigos"
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, arquivo: str, cor: tuple):
         super().__init__(nome, x, y, altura, largura, arquivo, cor)
 

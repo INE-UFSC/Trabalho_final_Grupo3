@@ -3,6 +3,16 @@ from mapa import montar_mapas
 from entidades import *
 
 class DAO:
+    """Classe responsavel por dados de mapa, jogos salvos, e configs
+    
+    Configuracoes incluem tamanho de tela, tela cheia,
+    volume de musica e efeitos
+
+    Jogos salvos incluem nome da fase, a fase em si, poderes guardados
+
+    Dados de mapa incluem inimigos, obstaculos e coletaveis,
+    definidos pela funcao montar_mapas
+    """
     def __init__(self):
         self.carregar_configs()
         self.carregar_saves()

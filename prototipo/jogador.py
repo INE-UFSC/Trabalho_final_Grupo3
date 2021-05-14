@@ -110,6 +110,7 @@ class Jogador(Movel):
         self.__vida = 0
     
     def ganha_vida(self):
+        "Recupera 1 vida"
         if self.__vida < 5:
             self.__vida += 1
 
@@ -139,7 +140,7 @@ class Jogador(Movel):
         self.escala_tempo = 1
 
     def renderizar(self, tela, mapa):
-        "renderiza na tela na posicao correta"
+        "renderiza na tela na posicao correta, relativo ao local no mapa"
     
         if renderizar_hitbox:
             pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
