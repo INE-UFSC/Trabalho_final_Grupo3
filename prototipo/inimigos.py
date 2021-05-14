@@ -363,33 +363,28 @@ class Temporal(Inimigo):
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         ##### COLISAO ESQUERDA #####
-        if not jogador.invisivel:
-            if direcao == "esquerda":
-                if jogador.velx <= 0:
-                    jogador.velx = 0
-                    jogador.aceleracao = 0
-                    jogador.x = self.corpo.right + 1
-                return self.dano_contato * (mapa.escala_tempo < 1)
-            ##### COLISAO DIREITA #####
-            elif direcao == "direita":
-                if jogador.velx >= 0:
-                    jogador.velx = 0
-                    jogador.aceleracao = 0
-                    jogador.x = self.corpo.left - jogador.largura
-                return self.dano_contato * (mapa.escala_tempo < 1)
-            ##### COLISAO BAIXO #####
-            elif direcao == "baixo":
+        if direcao == "esquerda":
+            if jogador.velx <= 0:
+                jogador.velx = 4
+                jogador.aceleracao = 0
+            return self.dano_contato * (mapa.escala_tempo < 1)
+        ##### COLISAO DIREITA #####
+        elif direcao == "direita":
+            if jogador.velx >= 0:
+                jogador.velx = -4
+                jogador.aceleracao = 0
+            return self.dano_contato * (mapa.escala_tempo < 1)
+        ##### COLISAO BAIXO #####
+        elif direcao == "baixo":
+            jogador.vely = 0
+            jogador.y = self.corpo.top - jogador.altura
+            return self.dano_contato * (mapa.escala_tempo < 1)
+        ##### COLISAO CIMA #####
+        elif direcao == "cima":
+            if jogador.vely < 0:
                 jogador.vely = 0
-                jogador.y = self.corpo.top - jogador.altura
-                return self.dano_contato * (mapa.escala_tempo < 1)
-            ##### COLISAO CIMA #####
-            elif direcao == "cima":
-                if jogador.vely < 0:
-                    jogador.vely = 0
-                    jogador.y = self.corpo.bottom
-                return self.dano_contato * (mapa.escala_tempo < 1)
-        else:
-            return 0
+                jogador.y = self.corpo.bottom
+            return self.dano_contato * (mapa.escala_tempo < 1)
 
     def mover(self, dimensoesTela, mapa):
         "Atualiza posicao e velocidade,mas no tempo parado"
@@ -425,6 +420,27 @@ class Temporal(Inimigo):
         ##### REPOSICIONALMENTO #####
         self.y += self.vely * max(0,(-self.escala_tempo+1))
         self.x += self.velx * max(0,(-self.escala_tempo+1))
+    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+        if direcao == "esquerda":
+            if entidade.velx <= 0:
+                if self.escala_tempo > 0:
+                    entidade.velx = - entidade.velx
+                    entidade.face = -(entidade.face)
+                    entidade.x = self.corpo.right + 1
+                self.velx = - self.velx
+                self.face = - self.face
+        ##### COLISAO DIREITA #####
+        elif direcao == "direita":
+            if entidade.velx >= 0:
+                if self.escala_tempo > 0:
+                    entidade.x = self.corpo.left - entidade.largura
+                    entidade.velx = - entidade.velx
+                    entidade.face = -(entidade.face)
+                self.velx = - self.velx
+                self.face = - self.face
+        elif direcao in ["baixo"]:
+            entidade.vely = 0
+            entidade.y = self.corpo.top - entidade.altura
 
     def renderizar(self, tela, mapa):
 

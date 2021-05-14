@@ -1,7 +1,7 @@
 import pygame
 from obstaculos import *
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
-from inimigos import Bolota
+from inimigos import Bolota,Gelatina,Temporal
 from poderes import *
 from sprites import Sprite
 
@@ -45,6 +45,10 @@ class Jogador(Movel):
     @property
     def invisivel(self):
         return self.__invisivel
+
+    @invisivel.setter
+    def invisivel(self,invisivel):
+        self.__invisivel = invisivel
     
     @property
     def paleta(self):
@@ -166,7 +170,7 @@ class Jogador(Movel):
 
         ##### ATUALIZACAO DOS PODERES #####
         #if self.__recarga > 0: self.__recarga -= 1
-        self.__invisivel = self.__poder.atualizar(screen, mapa)
+        self.invisivel = self.__poder.atualizar(screen, mapa)
 
         ##### SIDESCROLL #####
         x_min = min(0, campo_visivel.x)
@@ -221,7 +225,7 @@ class Jogador(Movel):
 
         # print(dano_total)
         if not self.invisivel:
-            if dano_total and not self.__recuperacao > 0:
+            if dano_total and not self.__recuperacao > 0 and not mapa.ganhou:
                 self.__vida -= dano_total
                 self.__recuperacao = 90
             elif self.__recuperacao > 0:
@@ -278,7 +282,7 @@ class Jogador(Movel):
                 self.velx -= atrito
 
         #### PULO ####
-        if obsBaixo and espaco:
+        if obsBaixo and type(obsBaixo) not in [Gelatina, Bala] and espaco:
             self.vely = -self.poder.pulo
 
         ##### AJUSTE DE VELOCIDADE MAXIMA #####

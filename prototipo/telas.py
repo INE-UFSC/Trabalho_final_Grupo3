@@ -243,8 +243,11 @@ class Creditos(Tela_Menu):
         listabotoes.append(Botao(w/2, 90, 100, 50, (220, 220, 220), "Créditos", 5,True))
         listapessoas = [   ### COLOCAR AQUI NOMES E CREDITOS
             ["funcao1","nome1",(220,0,0)],
-            ["funcao2","nome2",(220,220,0)],
-            ["funcao3","nome3",(0,220,0)]]
+            ["funcao2","nome2",(220,110,0)],
+            ["funcao3","nome3",(220,220,0)],
+            ["funcao4","nome4",(0,220,0)],
+            ["funcao5","nome5",(0,0,220)],
+            ["funcao6","nome6",(110,0,220)]]
         for pessoa in listapessoas:
             listabotoes.append(Botao(w/2-175, 150 + listapessoas.index(pessoa)*60, 225, 50, pessoa[2], pessoa[0], 5,True))
             listabotoes.append(Botao(w/2+125, 150 + listapessoas.index(pessoa)*60, 325, 50, pessoa[2], pessoa[1], 5,True))
@@ -275,7 +278,6 @@ class Tela_De_Jogo(Tela):
         self.__nivel = nivel
         self.__slot = slot
         self.__sobreposicao = None
-        pygame.mixer.music.play(-1)
 
         ##### ENTRADAS DO JOGADOR #####
         self.__cima, self.__baixo, self.__direita, self.__esquerda = 0, 0, 0, 0
@@ -388,7 +390,6 @@ class Tela_De_Jogo(Tela):
                 self.__textin = self.__fonte.render("FIM DE JOGO", False, (0, 0, 0))
                 if self.__mapa.escala_tempo > 1:
                     self.__textin = pygame.font.SysFont('msminchomspmincho', 48).render("神の御名（みめい）においてしりそける", False, (0, 0, 0))
-                pygame.mixer.music.fadeout(2400)
             else:
                 self.__jogador.tipos_transparentes = classes_instanciaveis
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
@@ -400,8 +401,7 @@ class Tela_De_Jogo(Tela):
         if self.__mapa.ganhou:
             self.__atrasofim += 1
             if self.__atrasofim <= 1:
-                pygame.mixer.music.fadeout(2400)
-            self.__textin = self.__fonte.render("VITÓRIA", False, (0, 0, 0))
+                self.__textin = self.__fonte.render("VITÓRIA", False, (0, 0, 0))
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 self.salvar_jogo()
@@ -414,7 +414,6 @@ class Tela_De_Jogo(Tela):
                 self.__sobreposicao = None
             elif resultado == "Fechar":
                 self.salvar_jogo()
-                pygame.mixer.music.fadeout(2400)
                 return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
         except AttributeError:
             pass

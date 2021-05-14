@@ -31,6 +31,7 @@ class Jogo:
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))
         self.__relogio = pygame.time.Clock()
+        pygame.mixer.music.play(-1)
 
     def menu_inicial(self):  # Menu inicial do jogo
         self.__janela.tela = Menu_Principal(self.__screen)
