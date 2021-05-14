@@ -25,7 +25,6 @@ class Jogador(Movel):
         altura = 45
         largura = 45
         limite_vel = 5
-        #self.__tamanho_jogador = (altura, largura)
         self.__aceleracao = 0
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
@@ -38,7 +37,8 @@ class Jogador(Movel):
         self.__moedas = 0
         self.escala_tempo = 1
         self.__paleta = paletas_coletadas
-        self.__auxiliar = 0
+        self.__auxiliar = 0 #usado para fazer o jogador pular no instane que toca no castelo
+        self.__congelado = False
 
         super().__init__(nome, x, y, altura, largura, limite_vel, "0")
 
@@ -49,14 +49,6 @@ class Jogador(Movel):
     @property
     def paleta(self):
         return self.__paleta
-
-    # @property
-    # def tamanho_jogador(self):
-    #     return self.__tamanho_jogador
-    #
-    # @tamanho_jogador.setter
-    # def tamanho_jogador(self, tamanho_jogador):
-    #     self.__tamanho_jogador = tamanho_jogador
 
     @property
     def poder(self):
@@ -112,6 +104,10 @@ class Jogador(Movel):
 
     def vida_pra_zero(self):
         self.__vida = 0
+    
+    def ganha_vida(self):
+        if self.__vida < 5:
+            self.__vida += 1
 
     def coletar_poder(self, item):
         if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 3):
@@ -124,10 +120,18 @@ class Jogador(Movel):
     def coletar_paleta(self):
         if self.__paleta < 3:
             self.__paleta += 1
-        elif self.__vida < 5:
-            self.__vida += 1
         else:
             self.coletar_moeda()
+        if self.__vida < 5:
+            self.__vida += 1
+
+    def congelar(self):
+        self.__congelado = True
+        self.escala_tempo = 0
+
+    def descongelar(self):
+        self.__congelado = False
+        self.escala_tempo = 1
 
     def renderizar(self, tela, campo_visivel, ciclo):
         "renderiza na tela na posicao correta"
@@ -138,7 +142,7 @@ class Jogador(Movel):
         if renderizar_sprite:
             if self.recuperacao % 15 < 10:
                 self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
-                                self.face, self.velx, self.vely, ciclo % 12)
+                                self.face, self.velx*(self.escala_tempo>0), self.vely, ciclo % 12*(self.escala_tempo>0))
 
     def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): 
         """define logica de interacao com objetos especificos
@@ -161,7 +165,7 @@ class Jogador(Movel):
         self.renderizar(screen, campo_visivel, ciclo)
 
         ##### ATUALIZACAO DOS PODERES #####
-        if self.__recarga > 0: self.__recarga -= 1
+        #if self.__recarga > 0: self.__recarga -= 1
         self.__invisivel = self.__poder.atualizar(screen, mapa)
 
         ##### SIDESCROLL #####
@@ -187,12 +191,10 @@ class Jogador(Movel):
         ##### EMPURRA O JOGADOR #####
         self.x = self.posicao_comeco[0]
         self.y = self.posicao_comeco[1]
-        
-
 
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
         "Atualiza posicao e velocidade"
-        self.escala_tempo = 1
+        if not self.__congelado: self.escala_tempo = 1
 
         ##### MOVIMENTO HORIZONTAL #####
         self.__aceleracao = (direita - esquerda)

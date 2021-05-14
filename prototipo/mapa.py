@@ -158,12 +158,12 @@ def montar_mapas():
     width = 6600
     height = 600
     fase1 = [[
-        ["ReiDasCores", (200, 100)],
-        ["PunhoVermelho", (0, 0, "esquerdo")],
-        ["PunhoVermelho", (0, 0, "direito")],
+        ["ReiDasCores", (800, 100)],
+        ["PunhoVermelho", (0, 0, "esquerdo", 280)],
+        ["PunhoVermelho", (0, 0, "direito", 340)],
         ["CabecaLaranja", (0, 0)],
         ["CoracaoRoxo", (0, 0)],
-        ["Chao", ('chao', height - 10, 0, 6200)],#1200)],
+        ["Chao", ('chao', height - 10, 0, 6200)],
         # ["Lapis", (600, height - 125, height)],
         # ["Bolota", (700, height - 50)],
         # ["Lapis", (900, height - 125, height)],
@@ -462,7 +462,7 @@ def montar_mapas():
         ["Atirador", (2400, 100, False)],
         ["Temporal", (1970, -390)],
         ["TintaLaranja", (2470, -160)],
-        ["Bloco", ('bloco4', 2860, -100)],
+        ["Bloco", ('bloco4', 2800, -100)],
         ["Bloco", ('bloco6', 3170, -100)],
         ["Chao", ('chao4', 144, 3200, 3290)],
         ["Atirador", (3200, 100, False)],
@@ -470,6 +470,9 @@ def montar_mapas():
         ["Bloco", ('bloco7', 3480, -100)],
         ["Lapis", (3880, 40, 140)],
         ["Chao", ('chao4', 123, 3924, 4500)],
+        ["Espinhento", ( 3400, 80)],
+        ["Espinhento", ( 3460, 80)],
+        ["Espinhento", ( 3500, 80)],
         ["Lapis", (4501, 40, 140)],
 
         ##### BORDA E VITORIA #####
@@ -479,27 +482,15 @@ def montar_mapas():
         ["Gelatina", (1000, height - 450)],
         ["Paleta", (995, 405)],
         ["Paleta", (1200, 300)],
-        ["Paleta", (1400, 300)],
-        ["Paleta", (1600, 300)],
 
         ##### PODERES #####
-        ["TintaVermelha", (1200, height - 100)],
-        ["TintaLaranja", (250, height - 500)],
-        ["TintaAzul", (1525, height - 300)],
-        ["VerdeBebe", (1600, height - 50)],
-        ["TintaRoxa", (1400, height - 100)],
-        ["Borracha", (550, 550)],
         # ["Chakra",('chakra', 1600, height-50)],
         ##### INIMIGOS #####
         # ["Bolota", (610, height - 50)],
         # ["Bolota",(900, height - 50)],
-        ["Saltante", (700, height - 250)],
         ["Voador", ('voador1', 100, height - 500, 200)],
-        ["Temporal", (2000, height - 200)],
         # ["Espinhento", ('porco1', 900, height - 50)]
         # ["Atirador",(1150, height - 50)],
-        ["Atirador", (1000, height - 205, False)]
-
     ],
 
         (width, height),
