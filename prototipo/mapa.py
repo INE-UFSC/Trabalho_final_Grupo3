@@ -12,6 +12,7 @@ class Mapa:
         self.__lista_de_entidades = []
         self.__hud = Hud(superficie.get_size())
 
+
         ##### ATRIBUTOS DE RENDERIZACAO #####
         
         self.__superficie = superficie

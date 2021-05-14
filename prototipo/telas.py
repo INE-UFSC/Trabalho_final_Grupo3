@@ -1,3 +1,4 @@
+#from prototipo.menu import Musica
 import pygame
 from jogador import Jogador
 from mapa import Mapa
@@ -51,6 +52,20 @@ class Menu_Principal(Tela_Menu):
         listatelas = [True,False,[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1",'6']]
                 ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],[Tela_De_Jogo,[superficie,"fase4",'6']],[Tela_De_Jogo,[superficie,"fase5",'6']],[Configuracoes,[superficie]]]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
+        pygame.mixer.music.stop()
+
+    def atualizar(self,ciclo):
+        """Como outras telas, checa cada botao e responde de acordo
+
+        Se o botao apertado for o de de algumas das fases,
+        ele liga a musica
+        """
+        resultado = super().atualizar(ciclo)
+        acao = resultado[2]
+        if acao in range(3,8):
+            pygame.mixer.music.play(-1)
+        return resultado
+
 
 
 class Carregar_Jogo(Tela_Menu):
@@ -83,8 +98,18 @@ class Carregar_Jogo(Tela_Menu):
 
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
-        self.__contador_menu = 0
+    
+    def atualizar(self,ciclo):
+        """Como outras telas, checa cada botao e responde de acordo
 
+        Se o botao apertado for o de carregar alguma das fases,
+        ele liga a musica
+        """
+        resultado = super().atualizar(ciclo)
+        acao = resultado[2]
+        if acao in range(1,6):
+            pygame.mixer.music.play()
+        return resultado
 
 class Deletar_Save(Tela_Menu):
     """Tela que apaga um jogo salvo
@@ -136,6 +161,20 @@ class Fim_De_Jogo(Tela_Menu):
         listatelas = [True,[Menu_Principal,[superficie]],[Tela_De_Jogo,[superficie,nivel,save]],True]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
+    
+    def atualizar(self,ciclo):
+        """Como outras telas, checa cada botao e responde de acordo
+
+        Se o botao apertado for o de de algumas das fases,
+        ele liga a musica
+        """
+        resultado = super().atualizar(ciclo)
+        acao = resultado[2]
+        if acao == 2:
+            pygame.mixer.music.play(-1)
+        else:
+            pygame.mixer.music.fadeout(2400)
+        return resultado
 
 
 class Configuracoes(Tela_Menu):
@@ -275,7 +314,6 @@ class Tela_De_Jogo(Tela):
         self.__nivel = nivel
         self.__slot = slot
         self.__sobreposicao = None
-        pygame.mixer.music.play(-1)
 
         ##### ENTRADAS DO JOGADOR #####
         self.__cima, self.__baixo, self.__direita, self.__esquerda = 0, 0, 0, 0
@@ -297,7 +335,9 @@ class Tela_De_Jogo(Tela):
                 poder_armazenado = item()
         self.__jogador = self.__mapa.iniciar(nivel,dicionaro_mapa, poder_atual, poder_armazenado, slot_atual[4])
         self.__comeco = pygame.time.get_ticks() / 1000
-    
+
+
+
     def salvar_jogo(self):
         "Salva o jogo ao ganhar ou perder"
         slots = DAOJogo.saves
@@ -388,7 +428,7 @@ class Tela_De_Jogo(Tela):
                 self.__textin = self.__fonte.render("FIM DE JOGO", False, (0, 0, 0))
                 if self.__mapa.escala_tempo > 1:
                     self.__textin = pygame.font.SysFont('msminchomspmincho', 48).render("神の御名（みめい）においてしりそける", False, (0, 0, 0))
-                pygame.mixer.music.fadeout(2400)
+
             else:
                 self.__jogador.tipos_transparentes = classes_instanciaveis
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
@@ -399,8 +439,8 @@ class Tela_De_Jogo(Tela):
         ### VENCENDO ###
         if self.__mapa.ganhou:
             self.__atrasofim += 1
-            if self.__atrasofim <= 1:
-                pygame.mixer.music.fadeout(2400)
+            #if self.__atrasofim <= 1:
+                #pygame.mixer.music.fadeout(2400)
             self.__textin = self.__fonte.render("VITÓRIA", False, (0, 0, 0))
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
@@ -414,7 +454,7 @@ class Tela_De_Jogo(Tela):
                 self.__sobreposicao = None
             elif resultado == "Fechar":
                 self.salvar_jogo()
-                pygame.mixer.music.fadeout(2400)
+                #pygame.mixer.music.fadeout(2400)
                 return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
         except AttributeError:
             pass

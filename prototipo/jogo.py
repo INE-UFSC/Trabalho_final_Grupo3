@@ -21,7 +21,7 @@ class Jogo:
         pygame.mixer.music.set_volume(configs["musica"])
         self.__screen = pygame.display.set_mode((width, height),
         pygame.FULLSCREEN if configs["telacheia"] else 0)
-
+    
         caption = ["O Risco do Rabisco: A Jornada das Cores"]
                    #  "As Aventuras do Guri",
                    # "A Aventura Bizarra de Guri",
@@ -30,10 +30,13 @@ class Jogo:
                    # "Uma Pincelada de Vigor",
                    # "Entre Riscos e Rabiscos"]
         pygame.display.set_caption(random.choices(caption,[1])[0])
+        
+
 
         self.__ciclo = 0
         self.__janela = Janela(Menu_Principal(self.__screen))
         self.__relogio = pygame.time.Clock()
+
 
     def rodar(self):
         """Cria tela do jogo e o roda
@@ -48,6 +51,7 @@ class Jogo:
         Realiza isso 60x por segundo ate que alguma
         tela informe que o jogo foi fechado
         """
+
         self.__janela.tela = Menu_Principal(self.__screen)
         while True:
             self.__ciclo += 1
