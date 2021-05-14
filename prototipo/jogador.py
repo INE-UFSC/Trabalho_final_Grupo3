@@ -117,6 +117,7 @@ class Jogador(Movel):
         if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 3):
             self.__poder_armazenado = self.__poder
         self.poder = item.poder_atribuido
+        self.ganha_vida()
 
     def coletar_moeda(self):
         self.__moedas += 1
@@ -200,6 +201,8 @@ class Jogador(Movel):
         "Atualiza posicao e velocidade"
         if not self.__congelado: self.escala_tempo = 1
 
+        vely_buff = self.vely
+
         ##### MOVIMENTO HORIZONTAL #####
         self.__aceleracao = (direita - esquerda)
         self.velx += self.__aceleracao
@@ -223,7 +226,6 @@ class Jogador(Movel):
             dano_sofrido = obsEsquerda.sofreu_colisao_jogador(self, "esquerda", mapa)
             dano_total += dano_sofrido
 
-        # print(dano_total)
         if not self.invisivel:
             if dano_total and not self.__recuperacao > 0 and not mapa.ganhou:
                 self.__vida -= dano_total
@@ -279,23 +281,23 @@ class Jogador(Movel):
         if obsBaixo and type(obsBaixo) not in [Gelatina, Bala] and espaco:
             self.vely = -self.poder.pulo
 
-        ##### AJUSTE DE VELOCIDADE MAXIMA #####
-        # entrando na trla de pintura #
+        ##### ANIMACAO DE ENTRAR NA TELA #####
         if mapa.ganhou:
             if self.__auxiliar == 0:
                 self.vely = -10
                 self.__auxiliar += 1
-            dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.right
+            dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.centerx
             if dist_meio_vitoria < 0:
                 self.velx = -1
             elif dist_meio_vitoria > 0:
                 self.velx = 1
             else:
                 self.velx = 0
-            dist_metade_vitoria = entidade_vitoria.corpo.centery - self.corpo.y -25
-            if dist_metade_vitoria <= 0 and dist_meio_vitoria == 0:
+            dist_metade_vitoria = (entidade_vitoria.corpo.centery - self.corpo.y) - 30
+            if dist_metade_vitoria <= 0 and self.vely > 0:
                 self.vely = 0
 
+        ##### AJUSTE DE VELOCIDADE MAXIMA #####
         if self.velx > self.poder.limite_vel:
             if self.velx > self.poder.limite_vel + 1:
                 self.velx -= 1

@@ -308,11 +308,12 @@ def montar_mapas():
         ["Atirador", (6350, height - 500, False)],
         ["Atirador", (6350, height - 550, False)],
 
-        ["Borracha", (6250, height - 300)],
-        ["Borracha", (6300, height - 300)],
-        ["Borracha", (6350, height - 300)],
-        ["Borracha", (6400, height - 300)],
-        ["Borracha", (6450, height - 300)],
+        ["Borracha", (6250, height - 150)],
+        ["Borracha", (6300, height - 150)],
+        ["Borracha", (6350, height - 150)],
+        ["Borracha", (6400, height - 150)],
+        ["Borracha", (6450, height - 150)],
+        ["Borracha", (6500, height - 150)],
 
         ##### BORDA E VITORIA #####
         ["Vitoria", (6600, height - 285)]
