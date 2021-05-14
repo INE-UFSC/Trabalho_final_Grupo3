@@ -290,6 +290,29 @@ class Movel(Estatico):
         if mapa.campo_visivel.colliderect(self.corpo):
             self.renderizar(tela, mapa)
         return False
+    
+    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+        "Detecta colisao com o jogador"
+        ##### COLISAO ESQUERDA #####
+        if direcao == "esquerda":
+            if jogador.velx <= 0:
+                jogador.velx = 0
+                jogador.x = self.corpo.right + 1
+        ##### COLISAO DIREITA #####
+        elif direcao == "direita":
+            if jogador.velx >= 0:
+                jogador.velx = 0
+                jogador.x = self.corpo.left - jogador.largura
+        ##### COLISAO BAIXO #####
+        elif direcao == "baixo":
+            jogador.vely = self.vely
+            jogador.y = self.corpo.top - jogador.altura
+        ##### COLISAO CIMA #####
+        elif direcao == "cima":
+            if jogador.vely < 0:
+                jogador.vely = 0
+                jogador.y = self.corpo.bottom
+        return 0
 
     def sofreu_colisao_outros(self, entidade, direcao, mapa):
         "Determina resultado da colisao"
@@ -374,7 +397,7 @@ class Entidade(Movel):
                 return self.__dano_contato * (mapa.escala_tempo >= 1)
             ##### COLISAO BAIXO #####
             elif direcao == "baixo":
-                jogador.vely = 0
+                jogador.vely = -1
                 jogador.y = self.corpo.top - jogador.altura
                 self.auto_destruir(mapa)
                 return 0

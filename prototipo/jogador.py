@@ -278,7 +278,7 @@ class Jogador(Movel):
                 self.velx -= atrito
 
         #### PULO ####
-        if obsBaixo and type(obsBaixo) not in [Gelatina, Bala] and espaco:
+        if obsBaixo and type(obsBaixo) not in [Bala] and espaco:
             self.vely = -self.poder.pulo
 
         ##### ANIMACAO DE ENTRAR NA TELA #####
