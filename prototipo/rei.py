@@ -401,7 +401,7 @@ class ReiDasCores(Entidade):
         self.__punho_esquerdo = 0
         self.__punho_direito = 0
         self.__coracao = 0
-        super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "0", (0,0,255), 0, True)
+        super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "corpo_das_cores", (0,0,255),9, True)
         self.velx = 1
 
         ##### ATRIBUTOS REFERENTES A FASE DA LUTA #####
@@ -517,10 +517,6 @@ class ReiDasCores(Entidade):
         ##### COISA BASICA #####
         self.mover(dimensoes_tela, mapa)
         self.renderizar(tela, mapa)
-
-    def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, self.cor,
-                [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y, self.corpo.w, self.corpo.h])
 
     def mover(self, dimensoesTela, mapa):
         ##### COLISOES #####
