@@ -125,42 +125,45 @@ class PunhoVermelho(ParteDoRei):
 
     def lancar(self, jogador, mapa, atira):
         velx_buff = self.velx
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa, ParteDoRei])
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, Coletavel, ParteDoRei])
         if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
         if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
         if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
         if obsBaixo:
             obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
             self.velx = 0
+        ##### VOLTANDO AO CORPO #####
         if velx_buff and not self.velx and self.__atirando: # se acabou de de tocar no chão começa o tempo de espera paravoltar ao corpo
             self.vely = 0
             self.__espera = 120
-            self.__atirou = True # variavel para deixar a função de voltar
-        if self.__espera == 0: #and self.__atirou:
+            self.__atirou = True # variavel para deixar a função de voltar ao corpo rodar só depois de ter atirado
+        if self.__espera == 0 and self.__atirou:# função de voltar ao corpo
             dstancia = (((self.__centro_y) - (self.y)) ** 2 + (
-                self.__centro_x - self.x) ** 2) ** (1 / 2)
+                self.__centro_x - self.x) ** 2) ** (1 / 2) # distancia entre a mão e sua posiçaõ no corpo
             divisor = max(dstancia / self.__vel_projetil,0.001)
 
             self.velx = ((self.__centro_x - self.x)) / divisor
             self.vely = ((self.__centro_y) - (self.y)) / divisor
-            if dstancia <= 8:
+            if dstancia <= 8: #checagem para ver se chegou no corpo
                 self.__atirando = False
         else:
-            self.__espera -= 1
+            self.__espera -= 1 #contagem para a mão ficar um tempinho parada
         
-        if abs(self.__centro_x - self.corpo.centerx) >= 700 or abs((self.__centro_y) - (self.y)) >= 700:
+        if abs(self.__centro_x - self.corpo.centerx) >= 700 or abs((self.__centro_y) - (self.y)) >= 700: #se a mão nunca chegar no chão começa a voltar
             self.__espera = 0
-            self.__atirou = True
+            self.__atirou = True # variavel para deixar a função de voltar ao corpo rodar só depois de ter atirado
 
-
+        #### FUNÇÂO PARA ATIRAR ####
         if atira == 1:
-            self.__atirando = True
+            self.__atirando = True 
             dstancia = (((jogador.corpo.centery) - (self.corpo.centery)) ** 2 + (
-                    jogador.corpo.centerx - self.corpo.centerx) ** 2) ** (1 / 2)
+                    jogador.corpo.centerx - self.corpo.centerx) ** 2) ** (1 / 2) #distancia entre a mão e o jogador
             divisor = max(dstancia / self.__vel_projetil,0.001)
 
             self.velx = ((jogador.corpo.centerx - self.corpo.centerx)) / divisor
             self.vely = ((jogador.corpo.centery) - (self.corpo.centery)) / divisor
+        
+        #### Atualiza a posição da mão ####
         self.x += self.velx
         self.y += self.vely
         
@@ -186,7 +189,7 @@ class PunhoVermelho(ParteDoRei):
             elif direcao == "baixo":
                 jogador.vely = 0
                 jogador.y = self.corpo.top - jogador.altura
-                self.__quebrado = True
+                self.__quebrado = True #Toma dano se o jogador pina nela
                 return 0
             ##### COLISAO CIMA #####
             elif direcao == "cima":
@@ -241,6 +244,7 @@ class CabecaLaranja(ParteDoRei):
                                         int((self.escala_tempo != 0)*mapa.ciclo/6) % 8)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        print(self.__quebrado)
 
         if not self.montado: self.montar(mapa)
 
@@ -282,7 +286,7 @@ class CabecaLaranja(ParteDoRei):
         if not jogador.invisivel:
             if direcao == "esquerda":
                 if jogador.velx <= 0:
-                    if jogador.velx >= 8: #cabeça toma dano se for batida via dash
+                    if jogador.velx <= -8: #cabeça toma dano se for batida via dash
                         self.__quebrado = True
                     jogador.velx = 0
                     jogador.aceleracao = 0
@@ -317,7 +321,6 @@ class CoracaoRoxo(ParteDoRei):
         dano_contato = 0
         cor = (255,0,255)
         limiteVel = 4
-        self.__montado = False
         self.__tempo_parado = 500 #contador de tempo parado
         super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "0", cor, 0)
 
@@ -446,11 +449,8 @@ class ReiDasCores(Entidade):
         if self.__descanso_ate_prox_fase:
             self.__descanso_ate_prox_fase = self.__descanso_ate_prox_fase-1
         else:
-            #print(self.__fase)
             self.passar_fase(mapa)
             self.__descanso_ate_prox_fase = 500
-
-        #print(self.__vida_gelatinosa)
 
         ##### COISA BASICA #####
         self.mover(dimensoes_tela, mapa)
