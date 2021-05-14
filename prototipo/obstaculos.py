@@ -2,14 +2,16 @@ import pygame
 from entidades import *
 from sprites import *
 
-
 # FUNCOES DE ATUALIZAR NECESSITAM DA AREA VISIVEL PARA RENDERIZAR CORRETAMENTE
 class Obstaculo(Estatico):
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, arquivo: str, cor: tuple):
         super().__init__(nome, x, y, altura, largura, arquivo, cor)
 
+
+@visivel
 @instanciavel
 class PlataformaMovel(Movel):
+    nome_imagem = "sprites"
     def __init__(self, y: int , x: int, largura: int, vely):
         altura = 19
         super().__init__("chao", x, y, altura, largura, 5, "sprites",  (184, 20, 20))
@@ -31,24 +33,30 @@ class PlataformaMovel(Movel):
             self.y = mapa.tamanho[1] - 2
 
 
+@visivel
 @instanciavel
 class Bloco(Obstaculo):
+    nome_imagem = "0"
     def __init__(self, nome: str, x: int, y: int):
         largura = 30
         altura = 30
         super().__init__(nome, x, y, altura, largura, "0", (255, 102, 0))
 
 
+@visivel
 @instanciavel
 class Lapis(Obstaculo):
+    nome_imagem = "sprites"
     def __init__(self, x: int, topo: int, base: int):
         largura = 44
         altura = base - topo
         super().__init__("lapis", x, topo, altura, largura, "sprites", (11, 137, 0))
 
 
+@visivel
 @instanciavel
 class Ponta(Obstaculo):
+    nome_imagem = "sprites"
     def __init__(self, x: int, topo: int, base: int):
         largura = 44
         altura = base - topo
@@ -78,16 +86,20 @@ class Ponta(Obstaculo):
         return 0
 
 
+@visivel
 @instanciavel
 class Cano(Obstaculo):
+    nome_imagem = "0"
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
         altura = 50
         largura = direita - esquerda
         super().__init__(nome, esquerda, y, altura, largura, "0", (11, 137, 0))
 
 
+@visivel
 @instanciavel
 class Chao(Obstaculo):
+    nome_imagem = "sprites"
     def __init__(self, nome: str, y: int, esquerda: int, direita: int):
         altura = 17
         super().__init__("chao", esquerda, y, altura, direita - esquerda, "sprites", (184, 20, 20))
@@ -99,7 +111,9 @@ class Chao(Obstaculo):
         self.sprite.imprimir(tela, "chao", self.x  - mapa.campo_visivel.x, self.y  - mapa.campo_visivel.y, 0, 0, 0, 0, self.largura, self.altura)
 
 
+@visivel
 @instanciavel
 class Vitoria(Obstaculo):
+    nome_imagem = "sprites"
     def __init__(self, x: int, y: int):
         super().__init__("tela", x, y, 275, 161, "sprites", (254, 254, 0))

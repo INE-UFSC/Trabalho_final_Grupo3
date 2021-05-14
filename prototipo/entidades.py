@@ -5,19 +5,22 @@ from sprites import *
 colisao_analisada = "cano3"
 renderizar_hitbox = True
 renderizar_sprite = True
-modo_dev = True
 gravidade = 0.2
 classes_instanciaveis = []
-imagens_instanciaveis = {}
 poderes_no_jogador = []
+
+
+
+def visivel(classe):
+    try:
+        imagens_instanciaveis[classe.nome_imagem] = "existe"
+    except:
+        imagens_instanciaveis= {classe.nome_imagem:"existe"}
+    return classe
 
 #Decorator que indica o que a classe pode ser instanciada no mapa
 def instanciavel(classe):
     classes_instanciaveis.append(classe)
-    return classe
-
-def visivel(classe):
-    imagens_instanciaveis[classe.__name__] = classe.nome_imagem
     return classe
 
 def poder_no_jogador(classe):
@@ -132,7 +135,7 @@ class Estatico():
             try:
                 self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
                                      0, 0, 0, self.__largura, self.__altura)
-            except AttributeError:
+            except FileNotFoundError:
                 #print(self.nome,"sprite nao encontrado")
                 pass
 

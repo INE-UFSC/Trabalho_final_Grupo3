@@ -8,7 +8,6 @@ from DAOjogo import DAOJogo
 from efeitosrender import *
 
 dicionaro_mapa = DAOJogo.mapas
-
 class Tela_Pause(Sobreposicao):
     """Menu utilizado ao pausar jogo
 

@@ -22,8 +22,10 @@ class Hud:
         self.__poder_armazenado.atualizar(tela, mapa, dimensoes_tela)
 
 
+@visivel
 class Vida(Estatico):
     "Indica a vida do jogador"
+    nome_imagem = "sprites"
     def __init__(self, x: int, y: int):
         altura = 30
         largura = 100
@@ -41,9 +43,10 @@ class Vida(Estatico):
         return False
 
 
+@visivel
 class Tempo(Estatico):
     "Mostra o tempo restante ate que o jogador perca"
-
+    nome_imagem = "sprites"
     def __init__(self, x: int, y: int):
         altura = 30
         largura = 70
@@ -71,8 +74,10 @@ class Tempo(Estatico):
         return False
 
 
+@visivel
 class Borrachona(Estatico):
     "Contador de Borrachas coletadas"
+    nome_imagem = "sprites"
     def __init__(self, x: int, y: int):
         altura = 30
         largura = 60
@@ -94,8 +99,10 @@ class Borrachona(Estatico):
         return False
 
 
+@visivel
 class BarraPoder(Estatico):
     "Indica a recarga e duracao do poder"
+    nome_imagem = "sprites"
     def __init__(self, x: int, y: int):
         altura = 40
         largura = 188
@@ -121,8 +128,10 @@ class BarraPoder(Estatico):
         self.sprite.imprimir(tela, nome, self.x-70, self.y-18, 0, 0, 0, 0, 0, 0)
 
 
+@visivel
 class Paleta(Estatico):
     "Mostra o progresso de colecao de paletas no mapa"
+    nome_imagem = "sprites"
     def __init__(self, x: int, y: int):
         altura = 40
         largura = 40
@@ -142,8 +151,11 @@ class Paleta(Estatico):
         self.renderizar(tela, mapa)
         return False
 
+
+@visivel
 class ArmazenadoPoder(Estatico):
     "Mostra qual poder o jogador guardou para trocar quando necessario"
+    nome_imagem = "sprites"
     def __init__(self, x: int, y: int):
         altura = 40
         largura = 40

@@ -6,7 +6,7 @@ from inimigos import *
 from time import sleep
 from sprites import *
 from random import randrange
-
+from entidades import *
 
 ##### PODERES NO JOGADOR #####
 class PoderGenerico:
@@ -228,8 +228,11 @@ class Coletavel(Movel):
         self.coleta(jogador, mapa)
         return 0
 
+
+@visivel
 @instanciavel
 class Borracha(Coletavel):
+    nome_imagem = "sprites"
     def __init__(self, x, y, cor=(245, 245, 220)):
         super().__init__("borracha", x, y, "sprites", cor, 41, 29)
         self.__raio = 10
@@ -239,8 +242,11 @@ class Borracha(Coletavel):
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
 
+
+@visivel
 @instanciavel
 class Paleta(Coletavel):
+    nome_imagem = "sprites"
     def __init__(self, x, y, cor=(0, 0, 0)):
         super().__init__("paleta_mapa", x, y, "sprites", cor, 50, 35)
 
@@ -249,39 +255,57 @@ class Paleta(Coletavel):
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
 
-@instanciavel
+
 class PoderNoMapa(Coletavel):
     def __init__(self, nome, x, y, poder_atribuido, imagem, cor=(0, 0, 0)):
         self.poder_atribuido = poder_atribuido
         super().__init__(nome, x, y, imagem, cor)
 
+
+@visivel
 @instanciavel
 class TintaVermelha(PoderNoMapa):
+    nome_imagem = "sprites"
     def __init__(self, x, y):
         super().__init__("poder_Vermelho", x, y, Vermelho(), "sprites", (50, 50, 50))
 
+
+@visivel
 @instanciavel
 class TintaLaranja(PoderNoMapa):
+    nome_imagem = "sprites"
     def __init__(self, x, y):
         super().__init__("poder_Laranja", x, y, Laranja(), "sprites", (255, 50, 50))
 
+
+@visivel
 @instanciavel
 class TintaAzul(PoderNoMapa):
+    nome_imagem = "sprites"
     def __init__(self, x, y):
         super().__init__("poder_Azul", x, y, Azul(), "sprites", (50, 50, 255))
 
+
+@visivel
 @instanciavel
 class TintaRoxa(PoderNoMapa):
+    nome_imagem = "sprites"
     def __init__(self, x, y):
         super().__init__("poder_Roxo", x, y, Roxo(), "sprites", (80, 10, 120))
 
+
+@visivel
 @instanciavel
 class TintaVerde(PoderNoMapa):
+    nome_imagem = "sprites"
     def __init__(self, x, y):
         super().__init__("poder_Verde", x, y, Verde(), "sprites", (5, 200, 40))
 
+
+@visivel
 @instanciavel
 class TintaMarrom(PoderNoMapa):
+    nome_imagem = "sprites"
     def __init__(self, x, y):
         super().__init__("poder_Marrom", x, y, Marrom(), "sprites", (255, 255, 0))
 
@@ -305,8 +329,11 @@ class PoderManifestadoInimigo(Entidade):
             return self.dano_contato
         return 0
 
+
+@visivel
 @instanciavel
 class BolaFogo(PoderManifestado):
+    nome_imagem = "fogo"
     def __init__(self, pos_inicial, screen, mapa, vel):
         x = pos_inicial[0] + 25 * vel
         y = pos_inicial[1]
@@ -361,8 +388,10 @@ class BolaFogo(PoderManifestado):
         self.auto_destruir(mapa)
 
 
+@visivel
 @instanciavel
 class Bala(PoderManifestadoInimigo):
+    nome_imagem = "fogo"
     def __init__(self, pos_inicial, screen, mapa, lado, velx, vely):
         x = pos_inicial[0] + 15 * lado
         largura = 26
@@ -397,8 +426,10 @@ class Bala(PoderManifestadoInimigo):
         return True
 
 
+@visivel
 @instanciavel
 class Clones(PoderManifestado):
+    nome_imagem = "0"
     def __init__(self, pos_inicial, screen, mapa, vel, tamanho_jogador):
         x = pos_inicial[0] + vel + 50
         y = pos_inicial[1] 

@@ -10,9 +10,11 @@ class Inimigo(Entidade):
         super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem, cor, frames, fogo)
 
 
+@visivel
 @instanciavel
 class Bolota(Inimigo):
     "Inimigo comum, anda em uma direcao e muda quando bate"
+    nome_imagem = "bolota"
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
@@ -45,9 +47,11 @@ class Bolota(Inimigo):
         self.x += self.velx * self.escala_tempo
 
 
+@visivel
 @instanciavel
 class Espinhento(Inimigo):
     "Inimigo que da dano quando esmagado"
+    nome_imagem = "espinhento"
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 2
@@ -110,9 +114,11 @@ class Espinhento(Inimigo):
         self.x += self.velx * self.escala_tempo
 
 
+@visivel
 @instanciavel
 class Voador(Inimigo):
     "Inimigo que voa, ignora o jogador por maior parte"
+    nome_imagem = "0"
     def __init__(self, nome: str, x: int, y: int, altitude: int):
         vida = 1
         danoContato = 1
@@ -156,9 +162,11 @@ class Voador(Inimigo):
         self.altitude.y = self.y + self.largura + 2
 
 
+@visivel
 @instanciavel
 class Atirador(Inimigo):
     "Inimigo que atira bolas de fogo periodicamente"
+    nome_imagem = "atirador"
     def __init__(self, x: int, y: int, anda = True):
         vida = 1
         danoContato = 1
@@ -241,9 +249,11 @@ class Atirador(Inimigo):
         self.y += self.vely * self.escala_tempo
 
 
+@visivel
 @instanciavel
 class Saltante(Inimigo):
     "Inimigo que pula de um lado pro outro"
+    nome_imagem = "saltante"
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
@@ -297,9 +307,11 @@ class Saltante(Inimigo):
         self.x += self.velx * self.escala_tempo
 
 
+@visivel
 @instanciavel
 class Gelatina(Inimigo):
     "Inimigo que nem eh solido, mas deixa lento ao atravessar"
+    nome_imagem = "gelatina"
     def __init__(self, x: int, y: int, anda = True):
         vida = 1
         danoContato = 1
@@ -341,6 +353,7 @@ class Gelatina(Inimigo):
         pass
 
 
+@visivel
 @instanciavel
 class Temporal(Inimigo):
     """Inimigo com o mesmo tipo de stand
@@ -349,6 +362,7 @@ class Temporal(Inimigo):
     e rapido quando o tempo esta parado, para fazer com que o
     jogador use o poder apenas quando necessario
     """
+    nome_imagem = "temporal"
     def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1

@@ -1,19 +1,11 @@
 import pygame
 import json
+from DAOjogo import DAOJogo
 
 class Sprite():
     def __init__(self, arquivo):
-        arquivo = "sprites/"+arquivo
-        self.__imagem = arquivo+".png"
-        self.__sprite_sheet = pygame.image.load(self.__imagem).convert_alpha()
-        self.__arquivo_dados = arquivo+".json"
-        self.__dados = {}
-        with open(self.__arquivo_dados) as f:
-            self.__dados = json.load(f)
-
-    @property
-    def imagem(self):
-        return self.__imagem
+        self.__sprite_sheet = DAOJogo.sprites[arquivo]["imagem"]
+        self.__dados = DAOJogo.sprites[arquivo]["dados"]
 
     def imprimir(self, tela, nome, posx, posy, orientacao, velx, vely, frame=0, largura=0, altura=0):
         if orientacao == 1: nome = nome + "_right"
