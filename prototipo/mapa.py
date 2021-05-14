@@ -547,7 +547,7 @@ def montar_mapas():
     height = 900
     fase6 = [[
 
-        ["Vitoria", (2090, height - 280)],
+        ["Vitoria", (2100, height - 280)],
         ["ReiDasCores", (800, 100, height)],
         ["PunhoVermelho", (0, 0, "esquerdo", 280)],
         ["PunhoVermelho", (0, 0, "direito", 340)],
