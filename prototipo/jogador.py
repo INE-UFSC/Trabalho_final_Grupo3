@@ -175,10 +175,10 @@ class Jogador(Movel):
         self.invisivel = self.__poder.atualizar(screen, mapa)
 
         ##### SIDESCROLL #####
-        x_min = min(0, mapa.campo_visivel.x)
-        x_max = max(mapa.tamanho[0] - mapa.campo_visivel.w, mapa.campo_visivel.x)
-        y_min = min(0, mapa.campo_visivel.y)
-        y_max = max(mapa.tamanho[1] - mapa.campo_visivel.h, mapa.campo_visivel.y)
+        #x_min = min(0, mapa.campo_visivel.x)
+        #x_max = max(mapa.tamanho[0] - mapa.campo_visivel.w, mapa.campo_visivel.x)
+        #y_min = min(0, mapa.campo_visivel.y)
+        #y_max = max(mapa.tamanho[1] - mapa.campo_visivel.h, mapa.campo_visivel.y)
         if self.x > mapa.campo_visivel.x + tamanho_tela[0]*3/5:
             campo_x = max(0, min((mapa.tamanho[0] - mapa.campo_visivel.w, self.x - tamanho_tela[0]*3/5)))
         elif self.x < mapa.campo_visivel.x + tamanho_tela[0]*2/5:

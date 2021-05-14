@@ -245,8 +245,6 @@ class Movel(Estatico):
                 transparente = transparente or isinstance(entidade, tipo)
             if entidade != self and not transparente:
 
-                cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
-
                 ##### DEFINICAO DO CORPO VELOZ #####
                 if self.__velx < 0:  # movimento para a esquerda
                     cveloz_left = self.corpo.left - 1 + self.__velx * self.escala_tempo
