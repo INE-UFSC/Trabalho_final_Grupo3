@@ -62,13 +62,13 @@ class Jogador(Movel):
     #def poder(self, poder):
     #    self.__poder = poder
 
-    #@property
-    #def moedas(self):
-    #    return self.__moedas
+    @property
+    def moedas(self):
+        return self.__moedas
 
-    @moedas.setter
-    def moedas(self, moedas):
-        self.__moedas = moedas
+    #@moedas.setter
+    #def moedas(self, moedas):
+     #   self.__moedas = moedas
 
     @property
     def aceleracao(self):
@@ -113,7 +113,7 @@ class Jogador(Movel):
     def coletar_poder(self, item):
         if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 3):
             self.__poder_armazenado = self.__poder
-        self.poder = item.poder_atribuido
+        self.__poder = item.poder_atribuido
         self.ganha_vida()
 
     def coletar_moeda(self):
