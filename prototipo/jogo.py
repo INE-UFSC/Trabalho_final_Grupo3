@@ -32,12 +32,12 @@ class Jogo:
         pygame.display.set_caption(random.choices(caption,[1])[0])
 
         self.__ciclo = 0
-        self.__janela = Janela(Menu_Principal(self.__screen))
+        self.__janela = Janela(MenuPrincipal(self.__screen))
         self.__relogio = pygame.time.Clock()
 
 
     def menu_inicial(self):  # Menu inicial do jogo
-        self.__janela.tela = Menu_Principal(self.__screen)
+        self.__janela.tela = MenuPrincipal(self.__screen)
         while True:
             self.__ciclo += 1
             acao = self.__janela.tela.atualizar(self.__ciclo)

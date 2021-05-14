@@ -10,7 +10,7 @@ from efeitosrender import *
 
 dicionaro_mapa = DAOJogo.mapas
 
-class Tela_Pause(Sobreposicao):
+class TelaPause(Sobreposicao):
     """Menu utilizado ao pausar jogo
 
     Funciona igual a uma tela, mas nao substitui a tela do jogo,
@@ -24,10 +24,10 @@ class Tela_Pause(Sobreposicao):
         sair = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2+60, 200, 50, (220, 0, 0), "Desistir", 5)
         listabotoes = [continuar,sair]
         listatelas = [True,False,"Fechar"]
-        super().__init__(listabotoes,((50,50,50),(tela.superficie.get_size()[0]/2-120,tela.superficie.get_size()[1]/2-35,240,130)),tela,listatelas)
+        super().__init__(listabotoes,[(50,50,50),(tela.superficie.get_size()[0]/2-120,tela.superficie.get_size()[1]/2-35,240,130)],tela,listatelas)
 
 
-class Menu_Principal(Tela_Menu):
+class MenuPrincipal(TelaMenu):
     """Menu principal do jogo
     
     Temporariamente possui botoes para testar cada fase
@@ -51,17 +51,17 @@ class Menu_Principal(Tela_Menu):
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         listabotoes = [botaosair, botaojogar, botaonivel_1, botaonivel_2,
                           botaonivel_3,b4,b5,b6,b7,botaoconfig]
-        listatelas = [True,False,[Carregar_Jogo,[superficie]],[Tela_De_Jogo,[superficie,"fase1",'6']]
-                ,[Tela_De_Jogo,[superficie,"fase2",'6']],[Tela_De_Jogo,[superficie,"fase3",'6']],
-                [Tela_De_Jogo,[superficie,"fase4",'6']],[Tela_De_Jogo,[superficie,"fase5",'6']],
-                [Tela_De_Jogo,[superficie,"fase6",'6']],[Tela_De_Jogo,[superficie,"fase7",'6']],
-                [Configuracoes,[superficie]]]
+        listatelas = [True, False, [CarregarJogo, [superficie]], [TelaDeJogo, [superficie, "fase1", '6']]
+                , [TelaDeJogo, [superficie, "fase2", '6']], [TelaDeJogo, [superficie, "fase3", '6']],
+                      [TelaDeJogo, [superficie, "fase4", '6']], [TelaDeJogo, [superficie, "fase5", '6']],
+                      [TelaDeJogo, [superficie, "fase6", '6']], [TelaDeJogo, [superficie, "fase7", '6']],
+                      [Configuracoes,[superficie]]]
         super().__init__(listabotoes, cormenu, superficie,listatelas)
         pygame.mixer.music.stop()
 
 
 
-class Carregar_Jogo(Tela_Menu):
+class CarregarJogo(TelaMenu):
     """ Menu de selecionar save game
 
     O jogador pode selecionar um espaco vazio para iniciar um novo jogo,
@@ -85,15 +85,15 @@ class Carregar_Jogo(Tela_Menu):
         listabotoes = botoes_encaixe + botoes_deletar + [sair] + [texto]
 
         listatelas = [True]
-        listatelas += [[Tela_De_Jogo,[superficie,encaixe[i][1],str(i)]] for i in range(5)]
-        listatelas += [[Deletar_Save,[superficie,str(i)]] for i in range(5)]
-        listatelas += [[Menu_Principal,[superficie]]] + [True]
+        listatelas += [[TelaDeJogo, [superficie, encaixe[i][1], str(i)]] for i in range(5)]
+        listatelas += [[DeletarSave, [superficie, str(i)]] for i in range(5)]
+        listatelas += [[MenuPrincipal, [superficie]]] + [True]
 
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
 
-class Deletar_Save(Tela_Menu):
+class DeletarSave(TelaMenu):
     """Tela que apaga um jogo salvo
 
     Apos apertar um dos botoes de deletar na tela de escolha,
@@ -109,7 +109,7 @@ class Deletar_Save(Tela_Menu):
         deletar = Botao(t[0]/2+150, t[1]/3+150, 260, 50, (220, 20, 60), "Deletar", 5)
         cancelar = Botao(t[0]/2-150, t[1]/3+150, 260, 50, (60, 220, 20), "Cancelar", 5)
         listabotoes = [deletar,cancelar,texto]
-        listatelas = [True,[Carregar_Jogo,[superficie]],[Carregar_Jogo,[superficie]],True]
+        listatelas = [True, [CarregarJogo, [superficie]], [CarregarJogo, [superficie]], True]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
@@ -127,7 +127,7 @@ class Deletar_Save(Tela_Menu):
         return resultado
 
 
-class Fim_De_Jogo(Tela_Menu):
+class FimDeJogo(TelaMenu):
     """Tela apresentada ao jogador apos perder
 
     Caso o jogador perca toda a vida ou acabe o tempo, 
@@ -140,12 +140,12 @@ class Fim_De_Jogo(Tela_Menu):
         continuar = Botao(t[0]/2+150, t[1]/3+150, 260, 50, (160, 220, 60), "Tentar Novamente", 5)
         voltar = Botao(t[0]/2-150, t[1]/3+150, 260, 50, (220, 220, 60), "Menu Principal", 5)
         listabotoes = [voltar,continuar,texto]
-        listatelas = [True,[Menu_Principal,[superficie]],[Tela_De_Jogo,[superficie,nivel,save]],True]
+        listatelas = [True, [MenuPrincipal, [superficie]], [TelaDeJogo, [superficie, nivel, save]], True]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
 
-class Configuracoes(Tela_Menu):
+class Configuracoes(TelaMenu):
     """ Tela de configuracoes de jogo
 
     Altera configuracoes referentes ao jogo,
@@ -185,7 +185,7 @@ class Configuracoes(Tela_Menu):
 
         listabotoes = [sair,musica,musica_mais,musica_menos,efeitos,efeitos_mais,efeitos_menos,
                         tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais,tela_cheia,creditos]
-        listatelas = [True,[Menu_Principal,[superficie]]] + [True for i in range(12)] + [[Creditos,[superficie]]]
+        listatelas = [True, [MenuPrincipal, [superficie]]] + [True for i in range(12)] + [[Creditos, [superficie]]]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
@@ -238,7 +238,7 @@ class Configuracoes(Tela_Menu):
                 "telacheia":self.__tela_cheia}
 
 
-class Creditos(Tela_Menu):
+class Creditos(TelaMenu):
     """ Tela de Creditos, todos que criaram algo neste jogo
 
     Botoes simplesmente mostram a funcao e nome de cada um,
@@ -264,7 +264,7 @@ class Creditos(Tela_Menu):
         super().__init__(listabotoes,cormenu,superficie,listatelas)
     
 
-class Tela_De_Jogo(Tela):
+class TelaDeJogo(Tela):
     """ Tela responsavel pelo nivel em si
 
     Guarda algumas das variaveis utilizadas no jogo,
@@ -344,7 +344,7 @@ class Tela_De_Jogo(Tela):
                         self.__esquerda = 0.5
                     if evento.key == pygame.K_SPACE or evento.key == pygame.K_w: self.__espaco = True
                     if evento.key == pygame.K_ESCAPE:
-                        self.__sobreposicao = Tela_Pause(self)
+                        self.__sobreposicao = TelaPause(self)
                     if evento.key == pygame.K_TAB:
                         self.__troca_poder = True
                 if evento.type == pygame.KEYUP:
@@ -405,7 +405,7 @@ class Tela_De_Jogo(Tela):
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 self.salvar_jogo()
-                return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
+                return [FimDeJogo, [self.superficie, self.__nivel, self.__slot]]
 
         ### VENCENDO ###
         if self.__mapa.ganhou:
@@ -416,7 +416,7 @@ class Tela_De_Jogo(Tela):
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 self.salvar_jogo()
-                return [Tela_De_Jogo, [self.superficie, self.__mapa.proxima_fase, self.__slot]] if self.__mapa.proxima_fase else [Menu_Principal, [self.superficie]]
+                return [TelaDeJogo, [self.superficie, self.__mapa.proxima_fase, self.__slot]] if self.__mapa.proxima_fase else [MenuPrincipal, [self.superficie]]
 
         ##### TELA DE PAUSE NO JOGO #####
         try:
@@ -426,7 +426,7 @@ class Tela_De_Jogo(Tela):
             elif resultado == "Fechar":
                 self.salvar_jogo()
                 pygame.mixer.music.fadeout(500)
-                return [Fim_De_Jogo,[self.superficie,self.__nivel,self.__slot]]
+                return [FimDeJogo, [self.superficie, self.__nivel, self.__slot]]
         except AttributeError:
             pass
 

@@ -25,7 +25,7 @@ class Janela:
 class Tela:
     """Classe base para qualquer tela que exista no jogo
 
-    Divide-se em Tela_Menu, a qual envolve gerenciar botoes
+    Divide-se em TelaMenu, a qual envolve gerenciar botoes
     e Tela_Jogo, que envolve logica de jogatina
     """
     def __init__(self,superficie):
@@ -39,7 +39,7 @@ class Tela:
         pass
 
 
-class Tela_Menu(Tela):
+class TelaMenu(Tela):
     """Tela do jogo, utilizada para navegar entre os menus
 
     Este tipo de tela se caracteriza pelo uso de botoes.
@@ -204,8 +204,8 @@ class Botao:
             return False
 
 
-class Sobreposicao(Tela_Menu):
-    "Documentado em Tela_Pause"
+class Sobreposicao(TelaMenu):
+    "Documentado em TelaPause"
     def __init__(self,listabotoes:list,fundo:list,tela,listatelas):
         super().__init__(listabotoes,fundo,tela.superficie,listatelas)
         self.__tela_superior = tela
