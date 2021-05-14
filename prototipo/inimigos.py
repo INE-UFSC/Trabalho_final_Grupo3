@@ -68,14 +68,14 @@ class Espinhento(Inimigo):
             if direcao == "esquerda":
                 if jogador.velx <= 0:
                     jogador.velx = 0
-                    jogador.aceleracao = 0
+                    #jogador.aceleracao = 0
                     jogador.x = self.corpo.right + 1
                 return self.dano_contato
             ##### COLISAO DIREITA #####
             elif direcao == "direita":
                 if jogador.velx >= 0:
                     jogador.velx = 0
-                    jogador.aceleracao = 0
+                    #jogador.aceleracao = 0
                     jogador.x = self.corpo.left - jogador.largura
                 return self.dano_contato
             ##### COLISAO BAIXO #####
