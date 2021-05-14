@@ -35,7 +35,7 @@ class Tela:
     def superficie(self):
         return self.__superficie #superficie a se desenhar
     
-    def atualizar(self):
+    def atualizar(self, ciclo):
         pass
 
 

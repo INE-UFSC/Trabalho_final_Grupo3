@@ -139,18 +139,18 @@ class Jogador(Movel):
         self.__congelado = False
         self.escala_tempo = 1
 
-    def renderizar(self, tela, campo_visivel, ciclo):
+    def renderizar(self, tela, mapa):
         "renderiza na tela na posicao correta, relativo ao local no mapa"
     
         if renderizar_hitbox:
-            pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - campo_visivel.x, self.corpo.y - campo_visivel.y,
+            pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                                 self.corpo.w, self.corpo.h])
         if renderizar_sprite:
             if self.recuperacao % 15 < 10:
-                self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - campo_visivel.x, self.y - campo_visivel.y,
-                                self.face*(self.escala_tempo!=0)+1*(self.escala_tempo==0), self.velx*(self.escala_tempo>0), self.vely, ciclo % 12*(self.escala_tempo>0))
+                self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                self.face*(self.escala_tempo!=0)+1*(self.escala_tempo==0), self.velx*(self.escala_tempo>0), self.vely, int(mapa.ciclo/6) % 12*(self.escala_tempo>0))
 
-    def atualizar(self, screen, mapa, campo_visivel, ciclo, entradas, atrito): 
+    def atualizar(self, screen, mapa, entradas):
         """define logica de interacao com objetos especificos
         
         return o campo que determina a renderizacao do mapa
@@ -166,32 +166,32 @@ class Jogador(Movel):
                 self.__descanso_troca_poder = 30
         else:
             self.__descanso_troca_poder -= 1
-        self.mover(entradas[0], entradas[1], entradas[2], tamanho_tela, mapa, atrito)
+        self.mover(entradas[0], entradas[1], entradas[2], tamanho_tela, mapa, 0.5)
 
-        self.renderizar(screen, campo_visivel, ciclo)
+        self.renderizar(screen, mapa)
 
         ##### ATUALIZACAO DOS PODERES #####
         #if self.__recarga > 0: self.__recarga -= 1
         self.invisivel = self.__poder.atualizar(screen, mapa)
 
         ##### SIDESCROLL #####
-        x_min = min(0, campo_visivel.x)
-        x_max = max(mapa.tamanho[0] - campo_visivel.w, campo_visivel.x)
-        y_min = min(0, campo_visivel.y)
-        y_max = max(mapa.tamanho[1] - campo_visivel.h, campo_visivel.y)
-        if self.x > campo_visivel.x + tamanho_tela[0]*3/5:
-            campo_x = max(0, min((mapa.tamanho[0] - campo_visivel.w, self.x - tamanho_tela[0]*3/5)))
-        elif self.x < campo_visivel.x + tamanho_tela[0]*2/5:
-            campo_x = max(0, min((mapa.tamanho[0] - campo_visivel.w, self.x - tamanho_tela[0]*2/5)))
+        x_min = min(0, mapa.campo_visivel.x)
+        x_max = max(mapa.tamanho[0] - mapa.campo_visivel.w, mapa.campo_visivel.x)
+        y_min = min(0, mapa.campo_visivel.y)
+        y_max = max(mapa.tamanho[1] - mapa.campo_visivel.h, mapa.campo_visivel.y)
+        if self.x > mapa.campo_visivel.x + tamanho_tela[0]*3/5:
+            campo_x = max(0, min((mapa.tamanho[0] - mapa.campo_visivel.w, self.x - tamanho_tela[0]*3/5)))
+        elif self.x < mapa.campo_visivel.x + tamanho_tela[0]*2/5:
+            campo_x = max(0, min((mapa.tamanho[0] - mapa.campo_visivel.w, self.x - tamanho_tela[0]*2/5)))
         else:
-            campo_x = campo_visivel.x
-        if self.y < campo_visivel.y + tamanho_tela[1]/3:
-            campo_y = min((mapa.tamanho[1] - campo_visivel.h, self.y - tamanho_tela[1]/3))
-        elif self.y > campo_visivel.y + tamanho_tela[1]/2:
-            campo_y = min((mapa.tamanho[1] - campo_visivel.h, self.y - tamanho_tela[1]/2))
+            campo_x = mapa.campo_visivel.x
+        if self.y < mapa.campo_visivel.y + tamanho_tela[1]/3:
+            campo_y = min((mapa.tamanho[1] - mapa.campo_visivel.h, self.y - tamanho_tela[1]/3))
+        elif self.y > mapa.campo_visivel.y + tamanho_tela[1]/2:
+            campo_y = min((mapa.tamanho[1] - mapa.campo_visivel.h, self.y - tamanho_tela[1]/2))
         else:
-            campo_y = campo_visivel.y
-        return pygame.Rect(campo_x, campo_y, campo_visivel.w, campo_visivel.h)
+            campo_y = mapa.campo_visivel.y
+        return pygame.Rect(campo_x, campo_y, mapa.campo_visivel.w, mapa.campo_visivel.h)
 
     def respawn(self):
         ##### EMPURRA O JOGADOR #####
@@ -201,8 +201,6 @@ class Jogador(Movel):
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
         "Atualiza posicao e velocidade"
         if not self.__congelado: self.escala_tempo = 1
-
-        vely_buff = self.vely
 
         ##### MOVIMENTO HORIZONTAL #####
         self.__aceleracao = (direita - esquerda)
@@ -327,7 +325,7 @@ class Jogador(Movel):
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
-    def poderes(self, screen, mapa, acao=False, outros_poderes=False):
+    def poderes(self, screen, mapa, acao=False):
         "Faz com que o jogador ative seu poder quando disponivel"
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
         if acao:

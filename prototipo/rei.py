@@ -2,6 +2,7 @@ from entidades import *
 from inimigos import *
 from poderes import *
 from obstaculos import *
+from coletaveis import *
 
 @instanciavel
 class Gota(Coletavel):

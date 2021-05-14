@@ -14,12 +14,12 @@ class Hud:
 
     def atualizar(self, tela, mapa, dimensoes_tela, tempo, vida, moedas_pegas, paletas_pegas):
         "Atualiza cada um dos elementos"
-        self.__vida.atualizar(tela, mapa, dimensoes_tela, vida)
-        self.__tempo.atualizar(tela, mapa, dimensoes_tela, tempo)
-        self.__barra_poder.atualizar(tela, mapa, dimensoes_tela)
-        self.__borrachona.atualizar(tela, mapa, dimensoes_tela, moedas_pegas)
-        self.__paleta.atualizar(tela, mapa, dimensoes_tela, paletas_pegas)
-        self.__poder_armazenado.atualizar(tela, mapa, dimensoes_tela)
+        self.__vida.atualizar_hud(tela, mapa, dimensoes_tela, vida)
+        self.__tempo.atualizar_hud(tela, mapa, dimensoes_tela, tempo)
+        self.__barra_poder.atualizar_hud(tela, mapa, dimensoes_tela)
+        self.__borrachona.atualizar_hud(tela, mapa, dimensoes_tela, moedas_pegas)
+        self.__paleta.atualizar_hud(tela, mapa, dimensoes_tela, paletas_pegas)
+        self.__poder_armazenado.atualizar_hud(tela, mapa, dimensoes_tela)
 
 
 class Vida(Estatico):
@@ -35,7 +35,7 @@ class Vida(Estatico):
         nome = self.nome+"_"+str(self.__vida)
         self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0, 0, 0)
 
-    def atualizar(self, tela, mapa, dimensoes_tela, vida):
+    def atualizar_hud(self, tela, mapa, dimensoes_tela, vida):
         self.__vida = vida
         self.renderizar(tela, mapa)
         return False
@@ -64,7 +64,7 @@ class Tempo(Estatico):
         tela.blit(self.__contador, (self.x+70, self.y+35))
         self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0, 0, 0)
 
-    def atualizar(self, tela, mapa, dimensoes_tela, tempo):
+    def atualizar_hud(self, tela, mapa, dimensoes_tela, tempo):
         "Atualiza o contador interno dele com o do mapa"
         self.__tempo = tempo
         self.renderizar(tela, mapa)
@@ -87,7 +87,7 @@ class Borrachona(Estatico):
         self.sprite.imprimir(tela, "borrachona", self.x, self.y, 0, 0, 0, 0, 0, 0)
         tela.blit(self.__escreve_na_tela, (self.x+90, self.y+35))
         
-    def atualizar(self, tela, mapa, dimensoes_tela, moedas_pegas):
+    def atualizar_hud(self, tela, mapa, dimensoes_tela, moedas_pegas):
         "Atualiza o contador interno dele com o do Jogador"
         self.__numero_biscoitos = moedas_pegas
         self.renderizar(tela, mapa)
@@ -105,7 +105,7 @@ class BarraPoder(Estatico):
         super().__init__("poder_barra", x, y, altura, largura, "sprites", (205, 133, 63))
         #self.sprite = SpriteSheetBarras()
 
-    def atualizar(self, tela, mapa, dimensoes_tela):
+    def atualizar_hud(self, tela, mapa, dimensoes_tela):
         "Checa se o jogador trocou de poder e tenta renderizar"
         self.__cor_poder = mapa.jogador.poder.cor
         self.__largura_atual = (abs(mapa.jogador.poder.descanso - mapa.jogador.poder.recarga))/mapa.jogador.poder.recarga * self.largura
@@ -137,7 +137,7 @@ class Paleta(Estatico):
         nome = self.nome + "_" + str(self.__paletas_coletadas)
         self.sprite.imprimir(tela, nome, self.x, self.y, 0, 0, 0, 0, 0, 0)
 
-    def atualizar(self, tela, mapa, dimensoes_tela, paletas_pegas):
+    def atualizar_hud(self, tela, mapa, dimensoes_tela, paletas_pegas):
         self.__paletas_coletadas = paletas_pegas
         self.renderizar(tela, mapa)
         return False
@@ -152,7 +152,7 @@ class ArmazenadoPoder(Estatico):
         super().__init__("poder_armazenado", x, y, altura, largura, "sprites", (205, 133, 63))
         #self.sprite = SpriteSheetBarras()
 
-    def atualizar(self, tela, mapa, dimensoes_tela):
+    def atualizar_hud(self, tela, mapa, dimensoes_tela):
         self.renderizar(tela, mapa)
         return False
 
