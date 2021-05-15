@@ -2,6 +2,7 @@ import pygame
 from obstaculos import *
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Bolota,Gelatina,Temporal
+from coletaveis import *
 from poderes import *
 from sprites import Sprite
 
@@ -267,7 +268,11 @@ class Jogador(Movel):
                 self.velx -= atrito
 
         #### PULO ####
-        if obsBaixo and type(obsBaixo) not in [Bala] and espaco:
+        flag = False
+        for tipo in [PoderManifestado, Coletavel]:
+            if isinstance(obsBaixo, tipo):
+                flag = True
+        if obsBaixo and not flag and espaco:
             self.vely = -self.poder.pulo
 
         ##### ANIMACAO DE ENTRAR NA TELA #####
