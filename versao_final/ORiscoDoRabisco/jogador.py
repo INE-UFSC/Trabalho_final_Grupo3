@@ -58,33 +58,33 @@ class Jogador(Movel):
     def poder_armazenado(self):
         return self.__poder_armazenado
 
-    #@poder.setter
-    #def poder(self, poder):
-    #    self.__poder = poder
+    @poder.setter
+    def poder(self, poder):
+       self.__poder = poder
 
     @property
     def moedas(self):
         return self.__moedas
 
-    #@moedas.setter
-    #def moedas(self, moedas):
-     #   self.__moedas = moedas
+    @moedas.setter
+    def moedas(self, moedas):
+       self.__moedas = moedas
 
     @property
     def aceleracao(self):
         return self.__aceleracao
 
-    #@aceleracao.setter
-    #def aceleracao(self, aceleracao):
-    #    self.__aceleracao = aceleracao
+    @aceleracao.setter
+    def aceleracao(self, aceleracao):
+       self.__aceleracao = aceleracao
 
-    #@property
-    #def posicao_comeco(self):
-    #    return self.__posicao_comeco
+    @property
+    def posicao_comeco(self):
+       return self.__posicao_comeco
 
-    #@posicao_comeco.setter
-    #def posicao_comeco(self, posicao_comeco):
-     #   self.__posicao_comeco = posicao_comeco
+    @posicao_comeco.setter
+    def posicao_comeco(self, posicao_comeco):
+       self.__posicao_comeco = posicao_comeco
 
     @property
     def vida(self):

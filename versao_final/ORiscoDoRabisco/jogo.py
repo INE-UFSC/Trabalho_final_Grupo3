@@ -26,7 +26,7 @@ class Jogo:
                    #  "As Aventuras do Guri",
                    # "A Aventura Bizarra de Guri",
                    # "Super Guri Bros",
-                   # "Arte-lharia",
+                   # "Arte-lharida",
                    # "Uma Pincelada de Vigor",
                    # "Entre Riscos e Rabiscos"]
         pygame.display.set_caption(random.choices(caption,[1])[0])

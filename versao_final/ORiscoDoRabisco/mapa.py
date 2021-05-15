@@ -148,7 +148,7 @@ class Mapa:
 
         ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
-            if entidade.atualizar(tela, self, dimensoes_tela) :
+            if entidade.atualizar(tela, self, dimensoes_tela):
                 del entidade
 
         ##### ATUALIZACAO DO HUD #####
@@ -479,6 +479,7 @@ def montar_mapas():
         ["Saltante", (6350, height - 100)],
 
         ["Chao", ('chao', height - 350, 6250, 6500)],
+        ["Paleta", (6375, height - 450)],
         ["Temporal", (6375, height - 450)],
 
         ##### BORDA E VITORIA #####

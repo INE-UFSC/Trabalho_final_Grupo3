@@ -302,11 +302,11 @@ class CabecaLaranja(ParteDoRei):
         if renderizar_sprite:
             if self.fase < 4:
                 self.sprite.imprimir(tela, "cabeca", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                     self.face, 1 * (self.__quebrado), 0, int((self.escala_tempo != 0)*mapa.ciclo/6) % 8)
+                                     self.face, 1 * (self.__quebrado), 0, int((mapa.escala_tempo != 0)*mapa.ciclo/6) % 8)
             else:
                 self.sprite.imprimir(tela, "cabeca_final", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
                                      self.face, 0, 0,
-                                     int((self.escala_tempo != 0) * mapa.ciclo / 6) % 8)
+                                     int((mapa.escala_tempo != 0) * mapa.ciclo / 6) % 8)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
 
@@ -352,7 +352,7 @@ class CabecaLaranja(ParteDoRei):
                 self.__poder.acao(self, tela, mapa, velx, vely, 0+10*i)
             self.__descanso_poder = self.__descanso_poder_max# + randrange(0, 50)
         else:
-            self.__descanso_poder -= 1 * self.escala_tempo
+            self.__descanso_poder -= 1 * mapa.escala_tempo
 
     def sofreu_colisao_jogador(self, jogador, direcao, mapa):
         "Detecta colisao com jogador, return dano caso valido"
@@ -630,7 +630,6 @@ class ReiDasCores(Entidade):
 
         ##### PASSA AS FASES DA LUTA #####
         else:
-            #print(self.__fase)
             if self.__fase == 0:
                 if self.punho_direito.quebrado and self.punho_esquerdo.quebrado:
                     self.passar_fase(mapa)
@@ -662,6 +661,8 @@ class ReiDasCores(Entidade):
         self.renderizar(tela, mapa)
 
     def mover(self, dimensoesTela, mapa):
+        ##### ATUALIZA A ESCALA TEMPO #####
+        self.escala_tempo = mapa.escala_tempo
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, Coletavel, ParteDoRei])
 
