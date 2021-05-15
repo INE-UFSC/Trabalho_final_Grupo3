@@ -1,0 +1,19 @@
+O Rei das cores consiste em uma luta em 5 etapas, cada uma incorpora uma cor do jogo.
+
+Fase 0:
+O jogador deve saltar em cima das punhos dele para quebra-los, iniciando a fase 1
+
+Fase 1:
+O rei das cores libera o poder do dash (luvas), o jogador deve usar o Dash contra o rosto do rei para iniciar a fase 2
+
+Fase 2:
+O rei das cores libera o poder da fogo e entra em furia. o jogador deve usar acertar 15 bolas de fogo no corpo do rei para iniciar a fase 3
+
+Fase 3:
+O rei libera o poder da intangibilidade e as cores RPG. o jogador deve coletar as 3 gotas espalhadas pelo mapa (uma esta em cima dele!) para iniciar a fase 4
+Toda vez que o jogador coleta uma gota de tinta o rei das cores usa seu coração para congelar o tempo do jogador, tome cuidado
+
+Fase 4:
+O rei quebra as plataformas e libera o poder do tempo. O jogador deve parar o tempo para escalar as plataformas caindo e pular na cabeça do rei das cores para derrota-lo.
+
+[Puramente narrativo, não foi implementado :( ] Ao derrotar o rei o jogador vence, ele consegue a cor suprema que da pra ele todos os poderes ao mesmo tempo e fica trocando de cor.
