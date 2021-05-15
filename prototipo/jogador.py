@@ -1,322 +1,291 @@
 import pygame
-from obstaculos import *
+from obstaculos import Bloco, Vitoria
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
-from inimigos import Bolota,Gelatina,Temporal
+from inimigos import Goomba
 from poderes import *
-from sprites import Sprite
+from sprites import SpriteSheet
 
-
-class Jogador(Movel):
-    """ Entidade controlada pela pessoa que joga, o jogador
-    """
-    def __init__(self, nome: str, x: int, y: int, poder_atual: PoderGenerico, poder_armazenado: PoderGenerico, paletas_coletadas: int):
+class Jogador: 
+    def __init__(self, nome: str, x: int, y: int, velx: int, vida: int):
         ##### ATRIBUTOS GERAIS #####
-        self.__vida = 5
-        self.__sprite = {"cinza": Sprite("rabisco_cinza"),
-                         "laranja": Sprite("rabisco_laranja"),
-                         "vermelho": Sprite("rabisco_vermelho"),
-                         "roxo": Sprite("rabisco_roxo"),
-                         "azul": Sprite("rabisco_azul"),
-                         "verde": Sprite("rabisco_verde"),
-                         "marrom": Sprite("rabisco_marrom")}
-        self.__posicao_comeco = (x, y)
-        self.__descanso_troca_poder = 0
+        self.__vida = 10
+        self.__nome = nome
+        self.__imagem = SpriteSheet("andando")
+
         ##### ATRIBUTOS POSICIONAIS #####
-        altura = 45
-        largura = 45
-        limite_vel = 5
-        self.__aceleracao = 0
+        self.__x = x
+        self.__y = y
+        self.__altura = 46
+        self.__largura = 46
+        self.__velx = velx
+        self.__vely = 0
+        self.__face = 1
+        self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 
         ##### ATRIBUTOS COMPORTAMENTAIS #####
-        self.__tipos_transparentes = [BolaFogo, Vitoria]
-        self.__poder = poder_atual
-        self.__poder_armazenado = poder_armazenado
-        self.__recuperacao = 0
+        self.__poder = PretoDoNinja()
         self.__recarga = 0
-        self.__invisivel = 0
-        self.__moedas = 0
-        self.escala_tempo = 1
-        self.__paleta = paletas_coletadas
-        self.__auxiliar = 0 #usado para fazer o jogador pular no instane que toca no castelo
-        self.__congelado = False
-
-        super().__init__(nome, x, y, altura, largura, limite_vel, "0")
 
     @property
-    def invisivel(self):
-        return self.__invisivel
-    
+    def nome (self):
+        return self.__nome
+
+    @nome.setter
+    def nome (self, nome):
+        self.__nome = nome
+
     @property
-    def paleta(self):
-        return self.__paleta
+    def x (self):
+        return self.__x
+
+    @property
+    def y (self):
+        return self.__y
+
+    @property
+    def velx (self):
+        return self.__velx
+
+    @velx.setter
+    def velx(self, velx):
+        self.__velx = velx
+
+    @property
+    def velocidade_max(self):
+        return self.__velmax
+
+    @velocidade_max.setter
+    def velocidade_max(self, velocidade_max):
+        self.__velmax = velocidade_max
+
+    @property
+    def corpo(self):
+        return self.__corpo
 
     @property
     def poder(self):
         return self.__poder
-    
-    @property
-    def poder_armazenado(self):
-        return self.__poder_armazenado
 
-    #@poder.setter
-    #def poder(self, poder):
-    #    self.__poder = poder
-
-    @property
-    def moedas(self):
-        return self.__moedas
-
-    #@moedas.setter
-    #def moedas(self, moedas):
-     #   self.__moedas = moedas
-
-    @property
-    def aceleracao(self):
-        return self.__aceleracao
-
-    #@aceleracao.setter
-    #def aceleracao(self, aceleracao):
-    #    self.__aceleracao = aceleracao
-
-    #@property
-    #def posicao_comeco(self):
-    #    return self.__posicao_comeco
-
-    #@posicao_comeco.setter
-    #def posicao_comeco(self, posicao_comeco):
-     #   self.__posicao_comeco = posicao_comeco
+    @poder.setter
+    def poder(self, poder):
+        self.__poder = poder
 
     @property
     def vida(self):
         return self.__vida
 
     @property
-    def tipos_transparentes(self):
-        return self.__tipos_transparentes
+    def face(self):
+        return self.__face
     
-    @tipos_transparentes.setter
-    def tipos_transparentes(self,tipos):
-        self.__tipos_transparentes = tipos
-    
-    #@property
-    #def recuperacao(self):
-    #    return self.__recuperacao
-
     def vida_pra_zero(self):
         self.__vida = 0
-    
-    def ganha_vida(self):
-        "Recupera 1 vida"
-        if self.__vida < 5:
-            self.__vida += 1
 
-    def coletar_poder(self, item):
-        if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 3):
-            self.__poder_armazenado = self.__poder
-        self.__poder = item.poder_atribuido
-        self.ganha_vida()
+    def checar_colisao(self, lista_de_entidades, tipos_transparentes):
+        ##### COLISOES #####
+        obsBaixo, obsCima, obsEsquerda, obsDireita = 0, 0, 0, 0
 
-    def coletar_moeda(self):
-        self.__moedas += 1
-    
-    def coletar_paleta(self):
-        if self.__paleta < 3:
-            self.__paleta += 1
-        else:
-            self.coletar_moeda()
-        if self.__vida < 5:
-            self.__vida += 1
+        ##### COLISOES COM OBSTACULOS #####
+        for entidade in lista_de_entidades:
+            if entidade != self and not type(entidade) in tipos_transparentes:
 
-    def congelar(self):
-        self.__congelado = True
-        self.escala_tempo = 0
+                cCima, cBaixo, cEsquerda, cDireita = False, False, False, False
+                if self.__velx < 0:  # movimento para a esquerda
+                    cveloz_left = self.corpo.left - 1 + self.__velx
+                    cveloz_largura = self.corpo.right - cveloz_left + 1
+                else:  # movimento para a direita
+                    cveloz_left = self.corpo.left - 1
+                    cveloz_largura = self.corpo.right - cveloz_left + 1 + self.__velx
+                if self.__vely < 0:  # movimento para cima
+                    cveloz_top = self.corpo.top - 1 + self.__vely
+                    cveloz_altura = self.corpo.bottom - cveloz_top + 1
+                else:  # movimento para baixo
+                    cveloz_top = self.corpo.top
+                    cveloz_altura = self.corpo.bottom - cveloz_top + 1 + self.__vely
+                self.__corpoveloz = pygame.Rect(cveloz_left, cveloz_top, cveloz_largura, cveloz_altura)
+                colisaoVeloz = self.__corpoveloz.colliderect(entidade.corpo)
 
-    def descongelar(self):
-        self.__congelado = False
-        self.escala_tempo = 1
+                if colisaoVeloz:
+                    # CALCULO DE O QUAO DENTRO O OBJETO TA HORIZONTALMENTE E VERTICALMENTE
+                    ##### VERTICIAIS #####
+                    dist_y = 0
+                    if not self.__vely:  # parado
+                        dist_y = min(self.__corpoveloz.bottom - entidade.corpo.top,
+                                     entidade.corpo.bottom - self.__corpoveloz.top)
+                    elif self.__vely > 0:  # caindo
+                        dist_y = self.__corpoveloz.bottom - entidade.corpo.top
+                    else:  # subindo
+                        dist_y = entidade.corpo.bottom - self.__corpoveloz.top
+                    dist_x = 0
+                    ##### HORIZONTAL #####
+                    if not self.__velx:  # parado
+                        dist_x = min(entidade.corpo.right - self.__corpoveloz.left,
+                                     self.__corpoveloz.right - entidade.corpo.left)  # colisao a direita = +
+                    elif self.__velx > 0:  # movimentacao pra direita
+                        dist_x = self.__corpoveloz.right - entidade.corpo.left
+                    else:  # movimentacao pra esquerda
+                        dist_x = entidade.corpo.right - self.__corpoveloz.left
 
-    def renderizar(self, tela, mapa):
-        "renderiza na tela na posicao correta, relativo ao local no mapa"
-    
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                                self.corpo.w, self.corpo.h])
-        if renderizar_sprite:
-            if self.__recuperacao % 15 < 10:
-                self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                self.face*(self.escala_tempo!=0)+1*(self.escala_tempo==0), self.velx*(self.escala_tempo>0), self.vely, int(mapa.ciclo/6) % 12*(self.escala_tempo>0))
+                    if self.__vely >= 0 and dist_x + self.__largura / 2 >= dist_y:
+                        cBaixo = True
+                    elif self.__vely < 0 and dist_x + self.__largura / 2 >= dist_y:
+                        cCima = True
+                    elif self.__velx > 0 and dist_x < dist_y:
+                        cDireita = True
+                    elif self.__velx < 0 and dist_x < dist_y:
+                        cEsquerda = True
+                    elif not self.__velx and abs(dist_x) < dist_y:
+                        if self.__corpoveloz.right - entidade.corpo.left > entidade.corpo.right - self.__corpoveloz.left:
+                            cEsquerda = True
+                        else:
+                            cDireita = True
 
-    def atualizar(self, screen, mapa, entradas):
-        """define logica de interacao com objetos especificos
-        
-        return o campo que determina a renderizacao do mapa
-        para permitir sidescrolling
-        """
-        pega_poder_armazenado = entradas[3]
-        tamanho_tela = screen.get_size()
-        if self.__descanso_troca_poder == 0:
-            if self.__paleta == 3 and pega_poder_armazenado and not isinstance(self.__poder_armazenado, Cinza):
-                poder_a_ser_armazenado = self.__poder
-                self.__poder = self.__poder_armazenado
-                self.__poder_armazenado = poder_a_ser_armazenado
-                self.__descanso_troca_poder = 30
-        else:
-            self.__descanso_troca_poder -= 1
-        self.mover(entradas[0], entradas[1], entradas[2], tamanho_tela, mapa, 0.5)
-        self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+                # Essa checagem em dois passos tem que ocorrer por que se nao ele so salva a colisao com o utlimo obstaculo
+                if cCima: obsCima = entidade
+                if cBaixo: obsBaixo = entidade
+                if cEsquerda: obsEsquerda = entidade
+                if cDireita: obsDireita = entidade
 
-        self.renderizar(screen, mapa)
+        return [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
-        ##### ATUALIZACAO DOS PODERES #####
-        self.__invisivel = self.__poder.atualizar(screen, mapa)
+    def coletar(self, item):
+        if isinstance(item,PoderNoMapa):
+            self.poder = item.poder_atribuido
 
-        ##### SIDESCROLL #####
-        if self.x > mapa.campo_visivel.x + tamanho_tela[0]*3/5:
-            campo_x = max(0, min((mapa.tamanho[0] - mapa.campo_visivel.w, self.x - tamanho_tela[0]*3/5)))
-        elif self.x < mapa.campo_visivel.x + tamanho_tela[0]*2/5:
-            campo_x = max(0, min((mapa.tamanho[0] - mapa.campo_visivel.w, self.x - tamanho_tela[0]*2/5)))
-        else:
-            campo_x = mapa.campo_visivel.x
-        if self.y < mapa.campo_visivel.y + tamanho_tela[1]/3:
-            campo_y = min((mapa.tamanho[1] - mapa.campo_visivel.h, self.y - tamanho_tela[1]/3))
-        elif self.y > mapa.campo_visivel.y + tamanho_tela[1]/2:
-            campo_y = min((mapa.tamanho[1] - mapa.campo_visivel.h, self.y - tamanho_tela[1]/2))
-        else:
-            campo_y = mapa.campo_visivel.y
-        return pygame.Rect(campo_x, campo_y, mapa.campo_visivel.w, mapa.campo_visivel.h)
+    def renderizar(self, tela, campo_visivel, ciclo):
+        if renderizar_hitbox: pygame.draw.rect(tela, (0,0,0), [self.corpo.x-campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+        if renderizar_sprite: self.__imagem.imprimir("andando"+str(ciclo%12), self.__x-campo_visivel.x, self.__y, tela, self.__face)
 
-    def respawn(self):
-        ##### EMPURRA O JOGADOR #####
-        self.x = self.posicao_comeco[0]
-        self.y = self.posicao_comeco[1]
+    def atualizar(self, screen, campo_visivel, ciclo): ### REQUER AREA VISIVEL PARA RENDERIZAR
+        self.renderizar(screen, campo_visivel, ciclo)
+        if self.__recarga > 0: self.__recarga -= 1
+        if self.__poder != '':
+            self.__poder.atualizar(screen,campo_visivel)
+        if self.x > campo_visivel.x + 600:
+            return pygame.Rect(self.x-600,0,campo_visivel.w,campo_visivel.h)
+        elif self.x < campo_visivel.x + 400:
+            return pygame.Rect(self.x-400,0,campo_visivel.w,campo_visivel.h) if campo_visivel.x > 0 else pygame.Rect(0,0,campo_visivel.w,campo_visivel.h)
+        return campo_visivel
 
     def mover(self, direita, esquerda, espaco, screen, mapa, atrito):
-        "Atualiza posicao e velocidade"
-        if not self.__congelado: self.escala_tempo = 1
 
         ##### MOVIMENTO HORIZONTAL #####
-        self.__aceleracao = (direita - esquerda)
-        self.velx += self.__aceleracao
+        aceleracao = (direita - esquerda)
+        self.__velx += aceleracao
 
         ##### COLISOES #####
-        # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, self.__tipos_transparentes)
-        obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
-        dano_total = 0
+        coletaveis = [OrbeDoMago, ShurikenDoNinja] #Tipos coletaveis
 
-        if obsCima:
-            dano_sofrido = obsCima.sofreu_colisao_jogador(self, "cima", mapa)
-            dano_total += dano_sofrido
-        if obsBaixo:
-            dano_sofrido = obsBaixo.sofreu_colisao_jogador(self, "baixo", mapa)
-            dano_total += dano_sofrido
-        if obsDireita:
-            dano_sofrido = obsDireita.sofreu_colisao_jogador(self, "direita", mapa)
-            dano_total += dano_sofrido
-        if obsEsquerda:
-            dano_sofrido = obsEsquerda.sofreu_colisao_jogador(self, "esquerda", mapa)
-            dano_total += dano_sofrido
+        #0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
+        obstaculos = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo])
 
-        if not self.__invisivel:
-            if dano_total and not self.__recuperacao > 0 and not mapa.ganhou:
-                self.__vida -= dano_total
-                self.__recuperacao = 90
-            elif self.__recuperacao > 0:
-                self.__recuperacao -= 1
-
-
-        ##### PERMITE
-        if self.__invisivel:
-            for i in range(len(obstaculos)):
-                if isinstance(obstaculos[i], Entidade):
-                    obstaculos[i] = 0
+        ##### COLETA ITENS #####
+        for i in range(len(obstaculos)):
+            if type(obstaculos[i]) in coletaveis:
+                self.coletar(obstaculos[i])
+                obstaculos[i].auto_destruir(mapa)
+                obstaculos[i] = False
 
         ##### REPOSICIONAMENTO POS COLISAO #####
-        if isinstance(obsDireita, Obstaculo) and isinstance(obsEsquerda, Obstaculo):  # ESMAGAMENTO
-            self.__vida = 0
+        if obstaculos[2] and obstaculos[3]: #ESMAGAMENTO
+            self.__vida = 0 #AQUI EH TESTE N SEI SE ESSA VARIAVEL VAI FICAR COMO STRING MSM
 
-        ##### IMPEDE QUE O JOGADOR PASSE DA BORDA ESQUERDA #####
-        if self.x <= 0:
-            if self.velx <= 0:
-                self.velx = 0
-                self.x = 0
+        if obstaculos[3]:
+            #print("COLISAO PELA ESQUERDA", obsEsquerda.nome)
+            if self.__velx <= 0:
+                self.__velx = 0
+                aceleracao = 0
+                self.__x = obstaculos[3].corpo.right+1
 
-        ##### IMPEDE QUE O JOGADOR PASSE DA BORDA DIREITA #####
-        if self.x >= mapa.tamanho[0] - self.largura:
-            if self.velx >= 0:
-                self.velx = 0
-                self.x = mapa.tamanho[0] - self.largura
+        if obstaculos[2]:
+            #print("COLISAO PELA DIREITA", obsDireita.nome)
+            if self.__velx >= 0:
+                self.__velx = 0
+                aceleracao = 0
+                self.__x = obstaculos[2].corpo.left - self.__largura
+
+        if obstaculos[1]:
+            self.__vely = 0
+            self.__y = obstaculos[1].corpo.top - self.__altura
+            if espaco:
+                self.__vely = -self.poder.pulo
+
+        if obstaculos[0]:
+            if self.__vely < 0:
+                self.__vely = 0
+                self.__y = obstaculos[0].corpo.bottom
+
+        #### COLISAO GOOMBA ####
+        for cada_termo in mapa.lista_de_entidades: 
+            if isinstance (cada_termo, Goomba):
+                entidade = cada_termo
+        
+                if obstaculos[3] != 0:
+                    if isinstance(obstaculos[3], Goomba):
+                        self.__vida -= entidade.dano_contato
+                
+                if obstaculos[2] != 0:
+                    if isinstance(obstaculos[2], Goomba):
+                        self.__vida -= entidade.dano_contato
 
         ### CHECANDO VITÓRIA ###
-        entidade_vitoria = 0
-        for ganhar in mapa.lista_de_entidades:
-            if isinstance(ganhar, Vitoria):
-                entidade_vitoria = ganhar
+        for cada_termo in mapa.lista_de_entidades: 
+            if isinstance (cada_termo, Vitoria):
+                entidade = cada_termo
 
-        if self.corpo.colliderect(entidade_vitoria.corpo):
-            mapa.ganhou = True
+                if obstaculos[3] != 0:
+                    if isinstance(obstaculos[3], Vitoria):
+                        mapa.ganhou = True
+
+                if obstaculos[2] != 0:
+                    if isinstance(obstaculos[2], Vitoria):
+                        mapa.ganhou = True
+
+                if obstaculos[1] != 0:
+                    if isinstance(obstaculos[1], Vitoria):
+                        mapa.ganhou = True
 
         ##### GRAVIDADE ######
-        if not obsBaixo: self.vely += gravidade * self.escala_tempo
+        if not obstaculos[1]: self.__vely += gravidade
 
         ##### ATRITO ######
-        if self.__aceleracao == 0:
-            if self.velx < 0:
-                self.velx += atrito
-            elif self.velx > 0:
-                self.velx -= atrito
-
-        #### PULO ####
-        if obsBaixo and type(obsBaixo) not in [Bala] and espaco:
-            self.vely = -self.poder.pulo
-
-        ##### ANIMACAO DE ENTRAR NA TELA #####
-        if mapa.ganhou:
-            if self.__auxiliar == 0:
-                self.vely = -10
-                self.__auxiliar += 1
-            dist_meio_vitoria = entidade_vitoria.corpo.centerx - self.corpo.centerx
-            if dist_meio_vitoria < 0:
-                self.velx = -1
-            elif dist_meio_vitoria > 0:
-                self.velx = 1
-            else:
-                self.velx = 0
-            dist_metade_vitoria = (entidade_vitoria.corpo.centery - self.corpo.y) - 30
-            if dist_metade_vitoria <= 0 and self.vely > 0:
-                self.vely = 0
+        if aceleracao == 0:
+            if self.__velx < 0:
+                self.__velx += atrito
+            elif self.__velx > 0:
+                self.__velx -= atrito
 
         ##### AJUSTE DE VELOCIDADE MAXIMA #####
-        if self.velx > self.poder.limite_vel:
-            if self.velx > self.poder.limite_vel + 1:
-                self.velx -= 1
+        if self.__velx > self.poder.velmax:
+            if self.__velx > self.poder.velmax + 1:
+                self.__velx -= 1
             else:
-                self.velx = self.poder.limite_vel
+                self.__velx = self.poder.velmax
 
-        elif self.velx < -self.poder.limite_vel:
-            if self.velx < -self.poder.limite_vel - 1:
-                self.velx += 1
+        elif self.__velx < -self.poder.velmax:
+            if self.__velx < -self.poder.velmax - 1:
+                self.__velx += 1
             else:
-                self.velx = -self.poder.limite_vel
+                self.__velx = -self.poder.velmax
 
         ##### ATUALIZACAO DE POSICOES #####
-        self.y += self.vely * self.escala_tempo
-        self.x += self.velx * self.escala_tempo
+        self.__y += self.__vely
+        self.__x += self.__velx
 
         ##### MATA O JOGADOR SE CAIR NO BURACO #####
-        if self.y > mapa.tamanho[1]: self.__vida = 0
+        if self.__y > screen[1]: self.__vida = 0
 
         ##### INDICA A DIRECAO DO JOGADOR PARA DIRECIONAR PODERES #####
-        if self.velx > 0:
-            self.face = 1
-        elif self.velx < 0:
-            self.face = -1
+        if self.__velx > 0:
+            self.__face = 1
+        elif self.__velx < 0:
+            self.__face = -1
 
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####
-        #self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
+        self.__corpo = pygame.Rect(self.__x , self.__y, self.__largura, self.__altura)
 
-    def poderes(self, screen, mapa, acao=False):
-        "Faz com que o jogador ative seu poder quando disponivel"
+    def poderes(self, screen, mapa, acao = False, outros_poderes = False):
         ##### ATIRA BOLA DE FOGO SE ESTIVER DISPONIVEL
-        if acao:
-            self.__poder.acao(self, screen, mapa)
+        if acao and not self.__recarga:
+            self.__poder.acao(self,screen,mapa)
+            self.__recarga = self.poder.recarga        # TORNAR ESSA PARTE MAIS GENERICA
