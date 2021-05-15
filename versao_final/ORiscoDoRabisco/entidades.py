@@ -5,7 +5,7 @@ from sprites import *
 colisao_analisada = "0"
 renderizar_hitbox = False
 renderizar_sprite = True
-modo_dev = True
+modo_dev = False
 gravidade = 0.2
 classes_instanciaveis = []
 imagens_instanciaveis = {}
