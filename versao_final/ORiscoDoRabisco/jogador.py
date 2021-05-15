@@ -2,6 +2,7 @@ import pygame
 from obstaculos import *
 from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderizar_sprite
 from inimigos import Bolota,Gelatina,Temporal
+from coletaveis import *
 from poderes import *
 from sprites import Sprite
 
@@ -58,33 +59,33 @@ class Jogador(Movel):
     def poder_armazenado(self):
         return self.__poder_armazenado
 
-    #@poder.setter
-    #def poder(self, poder):
-    #    self.__poder = poder
+    @poder.setter
+    def poder(self, poder):
+       self.__poder = poder
 
     @property
     def moedas(self):
         return self.__moedas
 
-    #@moedas.setter
-    #def moedas(self, moedas):
-     #   self.__moedas = moedas
+    @moedas.setter
+    def moedas(self, moedas):
+       self.__moedas = moedas
 
     @property
     def aceleracao(self):
         return self.__aceleracao
 
-    #@aceleracao.setter
-    #def aceleracao(self, aceleracao):
-    #    self.__aceleracao = aceleracao
+    @aceleracao.setter
+    def aceleracao(self, aceleracao):
+       self.__aceleracao = aceleracao
 
-    #@property
-    #def posicao_comeco(self):
-    #    return self.__posicao_comeco
+    @property
+    def posicao_comeco(self):
+       return self.__posicao_comeco
 
-    #@posicao_comeco.setter
-    #def posicao_comeco(self, posicao_comeco):
-     #   self.__posicao_comeco = posicao_comeco
+    @posicao_comeco.setter
+    def posicao_comeco(self, posicao_comeco):
+       self.__posicao_comeco = posicao_comeco
 
     @property
     def vida(self):
@@ -267,7 +268,11 @@ class Jogador(Movel):
                 self.velx -= atrito
 
         #### PULO ####
-        if obsBaixo and type(obsBaixo) not in [Bala] and espaco:
+        flag = False
+        for tipo in [PoderManifestado, Coletavel]:
+            if isinstance(obsBaixo, tipo):
+                flag = True
+        if obsBaixo and not flag and espaco:
             self.vely = -self.poder.pulo
 
         ##### ANIMACAO DE ENTRAR NA TELA #####
