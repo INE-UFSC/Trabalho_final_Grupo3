@@ -20,8 +20,8 @@ class PlataformaMovel(Movel):
         pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                       self.corpo.w, self.corpo.h])
 
-        self.sprite.imprimir(tela, "chao", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0, 0, 0, 0,
-                             self.largura, self.altura)
+        self.sprite.imprimir(tela, "chao", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, largura = self.largura,
+                             altura = self.altura)
 
     def mover(self, dimensoesTela, mapa):
         ##### REPOSICIONAMENTO DA PLATAFORMA #####
@@ -97,7 +97,8 @@ class Chao(Obstaculo):
         pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
                                       self.corpo.w, self.corpo.h])
 
-        self.sprite.imprimir(tela, "chao", self.x  - mapa.campo_visivel.x, self.y  - mapa.campo_visivel.y, 0, 0, 0, 0, self.largura, self.altura)
+        self.sprite.imprimir(tela, "chao", self.x  - mapa.campo_visivel.x, self.y  - mapa.campo_visivel.y, largura = self.largura,
+                             altura = self.altura)
 
 
 @instanciavel

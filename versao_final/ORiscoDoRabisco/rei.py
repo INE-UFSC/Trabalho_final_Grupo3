@@ -129,8 +129,8 @@ class PunhoVermelho(ParteDoRei):
             else:
                 if self.__lado == "esquerdo": face = -1
                 else: face = 1
-            self.sprite.imprimir(tela, "punho", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, face, 0, 0,
-                                        1 * (self.__quebrado))
+            self.sprite.imprimir(tela, "punho", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, orientacao = face,
+                                        frame = 1 * (self.__quebrado))
 
     def montar(self, mapa):
         for entidade in mapa.lista_de_entidades:
@@ -302,11 +302,10 @@ class CabecaLaranja(ParteDoRei):
         if renderizar_sprite:
             if self.fase < 4:
                 self.sprite.imprimir(tela, "cabeca", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                     self.face, 1 * (self.__quebrado), 0, int((mapa.escala_tempo != 0)*mapa.ciclo/6) % 8)
+                                     orientacao = self.face, velx = 1 * (self.__quebrado), frame = int((mapa.escala_tempo != 0)*mapa.ciclo/6) % 8)
             else:
                 self.sprite.imprimir(tela, "cabeca_final", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                     self.face, 0, 0,
-                                     int((mapa.escala_tempo != 0) * mapa.ciclo / 6) % 8)
+                                     orientacao = self.face, frame = int((mapa.escala_tempo != 0) * mapa.ciclo / 6) % 8)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
 
@@ -434,7 +433,7 @@ class CoracaoRoxo(ParteDoRei):
                               self.corpo.w, self.corpo.h])
         if renderizar_sprite:
             self.sprite.imprimir(tela, "coracao", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                 self.face, 0, 0, 0)
+                                 orientacao = self.face)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if not self.montado: self.montar(mapa)

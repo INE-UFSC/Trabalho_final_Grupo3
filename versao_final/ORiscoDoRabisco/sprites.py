@@ -15,10 +15,10 @@ class Sprite():
     def imagem(self):
         return self.__imagem
 
-    def imprimir(self, tela, nome, posx, posy, orientacao, velx, vely, frame=0, largura=0, altura=0):
+    def imprimir(self, tela, nome, posx, posy, orientacao = None, velx = None, vely = None, frame = 0, largura = None, altura = None):
         if orientacao == 1: nome = nome + "_right"
         elif orientacao == -1: nome = nome + "_left"
-        if velx != 0: nome = nome + "_walk"
+        if velx: nome = nome + "_walk"
         if self.__imagem != "sprites/sprites.png": nome = nome + "_" + str(frame)
         self.carregar_sprite(nome, posx, posy, largura, altura, tela)
 
