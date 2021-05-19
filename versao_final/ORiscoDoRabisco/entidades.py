@@ -179,24 +179,32 @@ class Estatico():
         elif direcao == "cima": return(self.colisao_jogador_cima(jogador, mapa))
         return 0
 
+    def colisao_outros_esquerda(self, entidade, mapa):
+        if entidade.velx <= 0:
+            entidade.velx = - entidade.velx
+            entidade.x = self.corpo.right + 1
+            entidade.face = -(entidade.face)
+
+    def colisao_outros_direita(self, entidade, mapa):
+        if entidade.velx >= 0:
+            entidade.x = self.corpo.left - entidade.largura
+            entidade.velx = - entidade.velx
+            entidade.face = -(entidade.face)
+
+    def colisao_outros_baixo(self, entidade, mapa):
+        entidade.vely = 0
+        entidade.y = self.corpo.top - entidade.altura
+
+    def colisao_outros_cima(self, entidade, mapa):
+        pass
 
     def colisao_outros(self, entidade, direcao, mapa):
         "Idem Ibdem so que com outros objetos nao jogador"
-        ##### COLISAO ESQUERDA #####
-        if direcao == "esquerda":
-            if entidade.velx <= 0:
-                entidade.velx = - entidade.velx
-                entidade.x = self.corpo.right + 1
-                entidade.face = -(entidade.face)
-        ##### COLISAO DIREITA #####
-        elif direcao == "direita":
-            if entidade.velx >= 0:
-                entidade.x = self.corpo.left - entidade.largura
-                entidade.velx = - entidade.velx
-                entidade.face = -(entidade.face)
-        elif direcao in ["baixo"]:
-            entidade.vely = 0
-            entidade.y = self.corpo.top - entidade.altura
+        if direcao == "esquerda": self.colisao_outros_esquerda(entidade, mapa)
+        elif direcao == "direita": self.colisao_outros_direita(entidade, mapa)
+        elif direcao == "baixo": self.colisao_outros_baixo(entidade, mapa)
+        elif direcao == "cima": self.colisao_outros_cima(entidade, mapa)
+
 
 
 class Movel(Estatico):
@@ -294,6 +302,15 @@ class Movel(Estatico):
 
         return [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
+    def gerenciar_colisoes(self, mapa, tipos_transparentes):
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, tipos_transparentes)
+
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
+        if obsBaixo: obsBaixo.colisao_outros(self, "baixo", mapa)
+        return obsBaixo
+
     def atualizar(self, tela, mapa, dimensoes_tela):
         "Governa movimento, assim como seu movimento em tempo distorcido"
         if self.escala_tempo != mapa.escala_tempo:
@@ -309,27 +326,30 @@ class Movel(Estatico):
         jogador.y = self.corpo.top - jogador.altura
         return 0
 
-    def colisao_outros(self, entidade, direcao, mapa):
-        "Determina resultado da colisao"
+    def colisao_outros_esquerda(self, entidade, mapa):
         if self.escala_tempo > 0:
-            if direcao == "esquerda":
-                if entidade.velx <= 0:
-                    entidade.velx = - entidade.velx
-                    entidade.face = -(entidade.face)
-                    entidade.x = self.corpo.right + 1
-                    self.velx = - self.velx
-                    self.face = - self.face
-            ##### COLISAO DIREITA #####
-            elif direcao == "direita":
-                if entidade.velx >= 0:
-                    entidade.x = self.corpo.left - entidade.largura
-                    entidade.velx = - entidade.velx
-                    entidade.face = -(entidade.face)
-                    self.velx = - self.velx
-                    self.face = - self.face
-            elif direcao in ["baixo"]:
-                entidade.vely = 0
-                entidade.y = self.corpo.top - entidade.altura
+            if entidade.velx <= 0:
+                entidade.velx = - entidade.velx
+                entidade.face = -(entidade.face)
+                entidade.x = self.corpo.right + 1
+                self.velx = - self.velx
+                self.face = - self.face
+
+    def colisao_outros_direita(self, entidade, mapa):
+        if entidade.velx >= 0:
+            entidade.x = self.corpo.left - entidade.largura
+            entidade.velx = - entidade.velx
+            entidade.face = -(entidade.face)
+            self.velx = - self.velx
+            self.face = - self.face
+
+    def colisao_outros_baixo(self, entidade, mapa):
+        if self.escala_tempo > 0:
+            entidade.vely = 0
+            entidade.y = self.corpo.top - entidade.altura
+
+    def colisao_outros_cima(self, entidade, mapa):
+        pass
 
 
 class Entidade(Movel):

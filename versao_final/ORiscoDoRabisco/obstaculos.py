@@ -55,28 +55,10 @@ class Ponta(Obstaculo):
         altura = base - topo
         super().__init__("ponta", x, topo, altura, largura, "sprites", (173, 68, 0))
 
-    def colisao_jogador(self, jogador, direcao, mapa):
-        ##### COLISAO ESQUERDA #####
-        if direcao == "esquerda":
-            if jogador.velx <= 0:
-                jogador.velx = 0
-                jogador.x = self.corpo.right + 1
-        ##### COLISAO DIREITA #####
-        elif direcao == "direita":
-            if jogador.velx >= 0:
-                jogador.velx = 0
-                jogador.x = self.corpo.left - jogador.largura
-        ##### COLISAO BAIXO #####
-        elif direcao == "baixo":
-            jogador.vely = 0
-            jogador.y = self.corpo.top - jogador.altura
-            return 1 * (mapa.escala_tempo >= 1)
-        ##### COLISAO CIMA #####
-        elif direcao == "cima":
-            if jogador.vely < 0:
-                jogador.vely = 0
-                jogador.y = self.corpo.bottom
-        return 0
+    def colisao_jogador_baixo(self, jogador, mapa):
+        jogador.vely = 0
+        jogador.y = self.corpo.top - jogador.altura
+        return 1 * (mapa.escala_tempo >= 1)
 
 
 @instanciavel

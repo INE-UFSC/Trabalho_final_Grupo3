@@ -10,6 +10,19 @@ class Inimigo(Entidade):
     def __init__(self, nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem, cor, frames, fogo = False):
         super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem, cor, frames, fogo)
 
+    def mover(self, dimensoesTela, mapa):
+        "Atualiza posicao e velocidade"
+        ##### COLISOES #####
+        obsBaixo = self.gerenciar_colisoes(mapa, [Bala, PoderNoMapa])
+
+        ##### GRAVIDADE ######
+        if not obsBaixo:
+            self.vely += gravidade * self.escala_tempo
+
+        ##### ATUALIZACAO DAS POSICOES #####
+        self.y += self.vely * self.escala_tempo
+        self.x += self.velx * self.escala_tempo
+
 
 @instanciavel
 class Bolota(Inimigo):
@@ -26,32 +39,13 @@ class Bolota(Inimigo):
         self.xinicial = x
         self.escala_tempo = 1
 
-    def mover(self, dimensoesTela, mapa):
-        "Atualiza posicao e velocidade"
-
-        ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
-
-        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
-        if obsBaixo:
-            obsBaixo.colisao_outros(self, "baixo", mapa)
-
-        ##### GRAVIDADE ######
-        else:
-            self.vely += gravidade * self.escala_tempo
-
-        self.y += self.vely * self.escala_tempo
-        self.x += self.velx * self.escala_tempo
-
 
 @instanciavel
 class Espinhento(Inimigo):
     "Inimigo que da dano quando esmagado"
     def __init__(self, x: int, y: int):
         vida = 1
-        danoContato = 2
+        danoContato = 1
         largura = 48
         altura = 45
         limiteVel = 1
@@ -65,27 +59,8 @@ class Espinhento(Inimigo):
         if not jogador.invisivel:
             jogador.vely = 0
             jogador.y = self.corpo.top - jogador.altura
-            return self.dano_contato
+            return self.dano_contato+1
         return 0
-
-    def mover(self, dimensoesTela, mapa):
-        "Atualiza posicao e velocidade"
-        ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
-
-        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
-        if obsBaixo:
-            obsBaixo.colisao_outros(self, "baixo", mapa)
-
-        ##### GRAVIDADE ######
-        else:
-            self.vely += gravidade * self.escala_tempo
-
-        self.y += self.vely * self.escala_tempo
-        self.x += self.velx * self.escala_tempo
-
 
 @instanciavel
 class Voador(Inimigo):
@@ -192,24 +167,19 @@ class Atirador(Inimigo):
     def mover(self, dimensoesTela, mapa):
         "Atualiza posicao e velocidade"
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala])
-
-        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
-        if obsBaixo:
-            obsBaixo.colisao_outros(self, "baixo", mapa)
+        obsBaixo = self.gerenciar_colisoes(mapa,[Bala, PoderNoMapa])
 
         ##### GRAVIDADE ######
-        else:
+        if not obsBaixo:
             self.vely += self.__gravidade * self.escala_tempo
+
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
         dist_x_jogador = self.x - mapa.jogador.x
         if dist_x_jogador > 0:
             self.face = -1
         elif dist_x_jogador < 0:
             self.face = 1
-        #else:
+
         self.x += self.velx * self.escala_tempo * self.face
         self.y += self.vely * self.escala_tempo
 
@@ -239,29 +209,20 @@ class Saltante(Inimigo):
         vely_buff = self.vely
 
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
-
-        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
-        if obsBaixo:
-            obsBaixo.colisao_outros(self, "baixo", mapa)
-
+        obsBaixo = self.gerenciar_colisoes(mapa,[Bala, PoderNoMapa])
 
         ##### GRAVIDADE ######
-        else:
-            self.vely += gravidade * self.escala_tempo
+        if not obsBaixo: self.vely += gravidade * self.escala_tempo
 
         ##### GERENCIADOR DO PULO #####
         self.__descanso_pulo = (self.__descanso_pulo-1) % self.__descanso_pulo_max
 
-        if not self.__descanso_pulo and obsBaixo:
-            self.vely -= 9
+        if not self.__descanso_pulo and obsBaixo: self.vely -= 9 #PULA
 
-        if self.vely : self.velx = self.face * 3 * self.__pulo_lado
+        if self.vely : self.velx = self.face * 3 * self.__pulo_lado #MOVIMENTO HORIZONTAL
         else: self.velx = 0
 
-        if not self.vely and vely_buff:
+        if not self.vely and vely_buff: #INVERTE A FACE
             if self.__pulo_lado: self.face = -self.face
             self.__pulo_lado = not(self.__pulo_lado)
 
@@ -273,7 +234,7 @@ class Saltante(Inimigo):
 @instanciavel
 class Gelatina(Inimigo):
     "Inimigo que nem eh solido, mas deixa lento ao atravessar"
-    def __init__(self, x: int, y: int, anda = True):
+    def __init__(self, x: int, y: int):
         vida = 1
         danoContato = 1
         largura = 150
@@ -284,25 +245,6 @@ class Gelatina(Inimigo):
         self.velx = 1
         self.xinicial = x
         self.escala_tempo = 1
-        self.__anda = anda
-
-    def mover(self, dimensoesTela, mapa):
-        "Atualiza posicao e velocidade"
-        ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa, Inimigo])
-
-        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
-        if obsBaixo:
-            obsBaixo.colisao_outros(self, "baixo", mapa)
-
-        ##### GRAVIDADE ######
-        else:
-            self.vely += gravidade * self.escala_tempo
-
-        self.y += self.vely * self.escala_tempo
-        self.x += self.velx * self.escala_tempo * self.__anda
 
     def colisao_jogador(self, jogador, direcao, mapa):
         "Determina que o jogador fique mais lento ao passar"
@@ -362,19 +304,13 @@ class Temporal(Inimigo):
     def mover(self, dimensoesTela, mapa):
         "Atualiza posicao e velocidade,mas no tempo parado"
         ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
-
-        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
+        obsBaixo = self.gerenciar_colisoes(mapa,[Bala, PoderNoMapa])
         if obsBaixo:
-            obsBaixo.colisao_outros(self, "baixo", mapa)
-            if mapa.jogador.vely < 0 or obsDireita or obsEsquerda:
+            if mapa.jogador.vely < 0:
                 self.vely = -10
 
         ##### GRAVIDADE ######
-        else:
-            self.vely += gravidade * max(0,(-self.escala_tempo+1))
+        else: self.vely += gravidade * max(0,(-self.escala_tempo+1))
 
         if not self.escala_tempo:
             if mapa.jogador.x > self.x:

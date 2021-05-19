@@ -250,7 +250,6 @@ class BolaFogo(PoderManifestado):
         limiteVel = 3 * vel
         dano_contato = 0
         duracao = 500
-        # self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
         super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", 4, (255,128,0))
         self.escala_tempo = 1.0
         self.mapa = mapa

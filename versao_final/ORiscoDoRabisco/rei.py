@@ -117,20 +117,18 @@ class PunhoVermelho(ParteDoRei):
     def quebrado(self):
         return self.__quebrado
 
-    def renderizar(self, tela, mapa):
+    def renderizar_sprite(self, tela, mapa):
         "renderiza na tela na posicao correta"
-
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, (255, 0, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                                   self.corpo.w, self.corpo.h])
-        if renderizar_sprite:
-            if self.velx > 0: face = 1
-            elif self.velx < 0: face = -1
-            else:
-                if self.__lado == "esquerdo": face = -1
-                else: face = 1
-            self.sprite.imprimir(tela, "punho", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, orientacao = face,
-                                        frame = 1 * (self.__quebrado))
+        if self.velx > 0: face = 1
+        elif self.velx < 0: face = -1
+        else:
+            if self.__lado == "esquerdo": face = -1
+            else: face = 1
+        self.sprite.imprimir(tela, "punho",
+                             self.x - mapa.campo_visivel.x,
+                             self.y - mapa.campo_visivel.y,
+                             orientacao = face,
+                             frame = 1 * (self.__quebrado))
 
     def montar(self, mapa):
         for entidade in mapa.lista_de_entidades:
@@ -173,13 +171,8 @@ class PunhoVermelho(ParteDoRei):
 
     def mover(self, jogador, mapa, atira):
         velx_buff = self.velx
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo ,Bala, Coletavel, ParteDoRei, ReiDasCores, PlataformaMovel])
-        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
-        if obsBaixo:
-            obsBaixo.colisao_outros(self, "baixo", mapa)
-            self.velx = 0
+        obsBaixo = self.gerenciar_colisoes(mapa, [Bala, BolaFogo, Coletavel, ParteDoRei, ReiDasCores, PlataformaMovel])
+        if obsBaixo: self.velx = 0
         ##### VOLTANDO AO CORPO #####
         if velx_buff and not self.velx and self.__atirando: # se acabou de de tocar no chão começa o tempo de espera paravoltar ao corpo
             self.vely = 0
@@ -293,19 +286,14 @@ class CabecaLaranja(ParteDoRei):
     def numero_de_projeteis(self, numero_de_projeteis):
         self.__numero_de_projeteis = numero_de_projeteis
 
-    def renderizar(self, tela, mapa):
+    def renderizar_sprite(self, tela, mapa):
         "renderiza na tela na posicao correta"
-
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, (255, 128, 0), [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                                   self.corpo.w, self.corpo.h])
-        if renderizar_sprite:
-            if self.fase < 4:
-                self.sprite.imprimir(tela, "cabeca", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                     orientacao = self.face, velx = 1 * (self.__quebrado), frame = int((mapa.escala_tempo != 0)*mapa.ciclo/6) % 8)
-            else:
-                self.sprite.imprimir(tela, "cabeca_final", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                     orientacao = self.face, frame = int((mapa.escala_tempo != 0) * mapa.ciclo / 6) % 8)
+        if self.fase < 4:
+            self.sprite.imprimir(tela, "cabeca", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                 orientacao = self.face, velx = 1 * (self.__quebrado), frame = int((mapa.escala_tempo != 0)*mapa.ciclo/6) % 8)
+        else:
+            self.sprite.imprimir(tela, "cabeca_final", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                                 orientacao = self.face, frame = int((mapa.escala_tempo != 0) * mapa.ciclo / 6) % 8)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
 
@@ -423,21 +411,19 @@ class CoracaoRoxo(ParteDoRei):
             jogador.descongelar()
             return False
 
-    def renderizar(self, tela, mapa):
+    def renderizar_sprite(self, tela, mapa):
         "renderiza na tela na posicao correta"
-
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, self.cor,
-                             [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                              self.corpo.w, self.corpo.h])
-        if renderizar_sprite:
-            self.sprite.imprimir(tela, "coracao", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                                 orientacao = self.face)
+        self.sprite.imprimir(tela, "coracao",
+                             self.x - mapa.campo_visivel.x,
+                             self.y - mapa.campo_visivel.y,
+                             orientacao = self.face)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
         if not self.montado: self.montar(mapa)
+
         self.renderizar(tela, mapa)
-        ##### ATUALIZACAO DO CORACAO #####
+
+        ##### ATUALIZACAO DA POSICAO #####
         self.x = self.rei.x + 61
         self.y = self.rei.y + 100
         self.corpo = pygame.Rect(self.x, self.y, self.largura,self.altura)
@@ -463,7 +449,7 @@ class ReiDasCores(Entidade):
         self.__punho_esquerdo = 0
         self.__punho_direito = 0
         self.__coracao = 0
-        super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "corpo_das_cores", (0,0,255),9, True)
+        super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "corpo_das_cores", (0, 0, 255), 9, True)
         self.velx = 1
 
         ##### ATRIBUTOS REFERENTES A FASE DA LUTA #####
@@ -528,6 +514,7 @@ class ReiDasCores(Entidade):
             self.__entidades_da_fase.append(poder(self.__posicao_inicial-216,mapa.tamanho[1]-200))
         else:
             self.__entidades_da_fase.append(poder(self.__posicao_inicial+684,mapa.tamanho[1]-200))
+
     def fase_1(self, mapa):
         "Comeca fase 1 da batalha, com poder vermelho"
         self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
@@ -540,8 +527,6 @@ class ReiDasCores(Entidade):
                                     Saltante(self.__posicao_inicial+950, mapa.tamanho[1] - 150)
                                     ]
         self.spawn_poder(mapa, TintaVermelha)
-        
-
     def fase_2(self, mapa):
         "Comeca fase 2 da batalha, com poder laranja"
         self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
@@ -554,7 +539,6 @@ class ReiDasCores(Entidade):
                                     Atirador(self.__posicao_inicial+600, mapa.tamanho[1]-500),
                                     ]
         self.spawn_poder(mapa, TintaLaranja)
-    
     def fase_3(self, mapa):
         "Comeca fase 3 da batalha, com poder azul"
         self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
@@ -568,7 +552,6 @@ class ReiDasCores(Entidade):
                                     Gota("B", self.__posicao_inicial+200, mapa.tamanho[1]-600, self)
                                     ]
         self.spawn_poder(mapa, TintaAzul)
-
     def fase_4(self, mapa):
         "Comeca fase 4 da batalha, com poder roxo"
         self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-250, 100, 4),
@@ -576,7 +559,6 @@ class ReiDasCores(Entidade):
                                     PlataformaMovel(mapa.tamanho[1]-300, self.__posicao_inicial+500, 100, 4),
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+600, 100, 4),]
         self.spawn_poder(mapa, TintaRoxa)
-
     def fase_5(self, mapa):
         "Termina Batalha"
         self.__entidades_da_fase = []
@@ -618,11 +600,11 @@ class ReiDasCores(Entidade):
             mapa.lista_de_entidades.append(entidade)
 
     def atualizar(self, tela, mapa, dimensoes_tela):
-        ##### PASSA A FASE APOS CERTO TEMPO (PROVISORIO) #####
+        ##### 25 FRAMES PRO JOGO CARREGAR TUDO #####
         if self.__enjoo == 1:
             for entidade in self.__entidades_da_fase: ##### CRIA INIMIGOS DA NOVA FASE #####
                 mapa.lista_de_entidades.append(entidade)
-        if self.__enjoo: self.__enjoo -= 1 #Da 25 frames pro jogo carregar tudo
+        if self.__enjoo: self.__enjoo -= 1
 
         ##### PASSA AS FASES DA LUTA #####
         else:
@@ -659,18 +641,12 @@ class ReiDasCores(Entidade):
     def mover(self, dimensoesTela, mapa):
         ##### ATUALIZA A ESCALA TEMPO #####
         self.escala_tempo = mapa.escala_tempo
-        ##### COLISOES #####
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, Coletavel, ParteDoRei])
 
-        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
-        if obsBaixo:
-            obsBaixo.colisao_outros(self, "baixo", mapa)
+        ##### COLISOES #####
+        obsBaixo = self.gerenciar_colisoes(mapa, [Bala, Coletavel, ParteDoRei])
 
         ##### GRAVIDADE ######
-        else:
-            self.vely += gravidade * self.escala_tempo
+        if not obsBaixo: self.vely += gravidade * self.escala_tempo
 
         ##### ATUALIZACAO DAS POSICOES #####
         self.y += self.vely * self.escala_tempo
