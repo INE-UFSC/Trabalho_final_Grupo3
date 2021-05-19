@@ -41,7 +41,7 @@ class Jogador(Movel):
         self.__auxiliar = 0 #usado para fazer o jogador pular no instane que toca no castelo
         self.__congelado = False
 
-        super().__init__(nome, x, y, altura, largura, limite_vel, "0")
+        super().__init__(nome, x, y, altura, largura, limite_vel, "0", (128,128,128))
 
     @property
     def invisivel(self):
@@ -139,9 +139,7 @@ class Jogador(Movel):
     def renderizar(self, tela, mapa):
         "renderiza na tela na posicao correta, relativo ao local no mapa"
     
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, (50, 50, 255),[self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                                self.corpo.w, self.corpo.h])
+        if renderizar_hitbox: self.renderizar_hitbox(tela,mapa)
         if renderizar_sprite:
             if self.__recuperacao % 15 < 10:
                 self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
@@ -206,16 +204,16 @@ class Jogador(Movel):
         dano_total = 0
 
         if obsCima:
-            dano_sofrido = obsCima.sofreu_colisao_jogador(self, "cima", mapa)
+            dano_sofrido = obsCima.colisao_jogador(self, "cima", mapa)
             dano_total += dano_sofrido
         if obsBaixo:
-            dano_sofrido = obsBaixo.sofreu_colisao_jogador(self, "baixo", mapa)
+            dano_sofrido = obsBaixo.colisao_jogador(self, "baixo", mapa)
             dano_total += dano_sofrido
         if obsDireita:
-            dano_sofrido = obsDireita.sofreu_colisao_jogador(self, "direita", mapa)
+            dano_sofrido = obsDireita.colisao_jogador(self, "direita", mapa)
             dano_total += dano_sofrido
         if obsEsquerda:
-            dano_sofrido = obsEsquerda.sofreu_colisao_jogador(self, "esquerda", mapa)
+            dano_sofrido = obsEsquerda.colisao_jogador(self, "esquerda", mapa)
             dano_total += dano_sofrido
 
         if not self.__invisivel:

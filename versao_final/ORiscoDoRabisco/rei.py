@@ -174,11 +174,11 @@ class PunhoVermelho(ParteDoRei):
     def mover(self, jogador, mapa, atira):
         velx_buff = self.velx
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [BolaFogo ,Bala, Coletavel, ParteDoRei, ReiDasCores, PlataformaMovel])
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
+            obsBaixo.colisao_outros(self, "baixo", mapa)
             self.velx = 0
         ##### VOLTANDO AO CORPO #####
         if velx_buff and not self.velx and self.__atirando: # se acabou de de tocar no chão começa o tempo de espera paravoltar ao corpo
@@ -218,7 +218,7 @@ class PunhoVermelho(ParteDoRei):
         self.y += self.vely * mapa.escala_tempo
         
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         "Detecta colisao com jogador, return dano caso valido"
         ##### COLISAO ESQUERDA #####
         if not jogador.invisivel:
@@ -353,7 +353,7 @@ class CabecaLaranja(ParteDoRei):
         else:
             self.__descanso_poder -= 1 * mapa.escala_tempo
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         "Detecta colisao com jogador, return dano caso valido"
         ##### COLISAO ESQUERDA #####
         if not jogador.invisivel:
@@ -385,7 +385,6 @@ class CabecaLaranja(ParteDoRei):
                         if isinstance(ganhar, Vitoria):
                             entidade_vitoria = ganhar
                     entidade_vitoria.x = 400
-                    print(entidade_vitoria.y)
                     self.finalizar_jogo()
                     return 0
             ##### COLISAO CIMA #####
@@ -443,13 +442,13 @@ class CoracaoRoxo(ParteDoRei):
         self.y = self.rei.y + 100
         self.corpo = pygame.Rect(self.x, self.y, self.largura,self.altura)
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         "Determina que o jogador fique mais lento ao passar"
         if not jogador.invisivel:
             jogador.escala_tempo = 0.25
         return 0
 
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+    def colisao_outros(self, entidade, direcao, mapa):
         pass
 
 
@@ -586,7 +585,6 @@ class ReiDasCores(Entidade):
                 ganhar.x = self.x+12
                 ganhar.corpo.x = self.x+12
                 break
-        print(ganhar.x)
         
 
     def jogador_pega_gota(self):
@@ -607,7 +605,6 @@ class ReiDasCores(Entidade):
         ##### LIMPA ENTIDADES DA FASE ANTERIOR #####
         for entidade in self.__entidades_da_fase:
             if entidade in mapa.lista_de_entidades:
-                print("FAXINA", self.__fase)
                 mapa.lista_de_entidades.remove(entidade)
 
         if self.__fase == 1: self.fase_1(mapa)
@@ -665,11 +662,11 @@ class ReiDasCores(Entidade):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, Coletavel, ParteDoRei])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
+            obsBaixo.colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -684,11 +681,11 @@ class ReiDasCores(Entidade):
 
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         "Determina que o jogador fique mais lento ao passar"
         if not jogador.invisivel:
             jogador.escala_tempo = 0.25
         return 0
 
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+    def colisao_outros(self, entidade, direcao, mapa):
         pass

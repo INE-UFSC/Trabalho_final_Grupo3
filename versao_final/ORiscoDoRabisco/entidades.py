@@ -3,8 +3,8 @@ import pygame
 from sprites import *
 
 colisao_analisada = "0"
-renderizar_hitbox = False
-renderizar_sprite = True
+renderizar_hitbox = True
+renderizar_sprite = False
 modo_dev = False
 gravidade = 0.2
 classes_instanciaveis = []
@@ -121,13 +121,15 @@ class Estatico():
         if self in mapa.lista_de_entidades:  # RESOLVE PROVISORIAMENTE
             mapa.lista_de_entidades.remove(self)
 
+    def renderizar_hitbox(self, tela, mapa):
+        pygame.draw.rect(tela, self.__cor, [self.corpo.x - mapa.campo_visivel.x,
+                                            self.corpo.y - mapa.campo_visivel.y,
+                                            self.corpo.w,
+                                            self.corpo.h])
+
     def renderizar(self, tela, mapa):
         "Coloca a imagem correspondente na tela"
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, self.__cor, [self.corpo.x - mapa.campo_visivel.x,
-                                                self.corpo.y - mapa.campo_visivel.y,
-                                                self.corpo.w,
-                                                self.corpo.h])
+        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
         if renderizar_sprite:
             try:
                 self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
@@ -142,30 +144,39 @@ class Estatico():
             self.renderizar(tela, mapa)
         return False
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-        "Detecta colisao com o jogador"
-        ##### COLISAO ESQUERDA #####
-        if direcao == "esquerda":
-            if jogador.velx <= 0:
-                jogador.velx = 0
-                jogador.x = self.corpo.right + 1
-        ##### COLISAO DIREITA #####
-        elif direcao == "direita":
-            if jogador.velx >= 0:
-                jogador.velx = 0
-                jogador.x = self.corpo.left - jogador.largura
-        ##### COLISAO BAIXO #####
-        elif direcao == "baixo":
-            jogador.vely = 0
-            jogador.y = self.corpo.top - jogador.altura
-        ##### COLISAO CIMA #####
-        elif direcao == "cima":
-            if jogador.vely < 0:
-                jogador.vely = 0
-                jogador.y = self.corpo.bottom
+    def colisao_jogador_esquerda(self, jogador, mapa):
+        if jogador.velx <= 0:
+            jogador.velx = 0
+            jogador.x = self.corpo.right + 1
         return 0
 
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+    def colisao_jogador_direita(self, jogador, mapa):
+        if jogador.velx >= 0:
+            jogador.velx = 0
+            jogador.x = self.corpo.left - jogador.largura
+        return 0
+
+    def colisao_jogador_baixo(self, jogador, mapa):
+        jogador.vely = 0
+        jogador.y = self.corpo.top - jogador.altura
+        return 0
+
+    def colisao_jogador_cima(self, jogador, mapa):
+        if jogador.vely < 0:
+            jogador.vely = 0
+            jogador.y = self.corpo.bottom
+        return 0
+
+    def colisao_jogador(self, jogador, direcao, mapa):
+        "Detecta colisao com o jogador"
+        if direcao == "esquerda": return(self.colisao_jogador_esquerda(jogador, mapa))
+        elif direcao == "direita": return(self.colisao_jogador_direita(jogador, mapa))
+        elif direcao == "baixo": return(self.colisao_jogador_baixo(jogador, mapa))
+        elif direcao == "cima": return(self.colisao_jogador_cima(jogador, mapa))
+        return 0
+
+
+    def colisao_outros(self, entidade, direcao, mapa):
         "Idem Ibdem so que com outros objetos nao jogador"
         ##### COLISAO ESQUERDA #####
         if direcao == "esquerda":
@@ -289,30 +300,12 @@ class Movel(Estatico):
             self.renderizar(tela, mapa)
         return False
     
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-        "Detecta colisao com o jogador"
-        ##### COLISAO ESQUERDA #####
-        if direcao == "esquerda":
-            if jogador.velx <= 0:
-                jogador.velx = 0
-                jogador.x = self.corpo.right + 1
-        ##### COLISAO DIREITA #####
-        elif direcao == "direita":
-            if jogador.velx >= 0:
-                jogador.velx = 0
-                jogador.x = self.corpo.left - jogador.largura
-        ##### COLISAO BAIXO #####
-        elif direcao == "baixo":
-            jogador.vely = self.vely
-            jogador.y = self.corpo.top - jogador.altura
-        ##### COLISAO CIMA #####
-        elif direcao == "cima":
-            if jogador.vely < 0:
-                jogador.vely = 0
-                jogador.y = self.corpo.bottom
+    def colisao_jogador_baixo(self, jogador, mapa):
+        jogador.vely = self.vely
+        jogador.y = self.corpo.top - jogador.altura
         return 0
 
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+    def colisao_outros(self, entidade, direcao, mapa):
         "Determina resultado da colisao"
         if self.escala_tempo > 0:
             if direcao == "esquerda":
@@ -377,42 +370,42 @@ class Entidade(Movel):
     def frames(self):
         return self.__frames
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-        ##### COLISAO ESQUERDA #####
+    def colisao_jogador_esquerda(self, jogador, mapa):
         if not jogador.invisivel:
-            if direcao == "esquerda":
-                if jogador.velx <= 0:
-                    jogador.velx = 0
-                    #jogador.aceleracao = 0
-                    jogador.x = self.corpo.right + 1
-                return self.__dano_contato * (mapa.escala_tempo >= 1)
-            ##### COLISAO DIREITA #####
-            elif direcao == "direita":
-                if jogador.velx >= 0:
-                    jogador.velx = 0
-                    #jogador.aceleracao = 0
-                    jogador.x = self.corpo.left - jogador.largura
-                return self.__dano_contato * (mapa.escala_tempo >= 1)
-            ##### COLISAO BAIXO #####
-            elif direcao == "baixo":
-                jogador.vely = -1
-                jogador.y = self.corpo.top - jogador.altura
-                self.auto_destruir(mapa)
-                return 0
-            ##### COLISAO CIMA #####
-            elif direcao == "cima":
-                if jogador.vely < 0:
-                    jogador.vely = 0
-                    jogador.y = self.corpo.bottom
-                return self.__dano_contato * (mapa.escala_tempo >= 1)
-        else:
-            return 0
+            if jogador.velx <= 0:
+                jogador.velx = 0
+                # jogador.aceleracao = 0
+                jogador.x = self.corpo.right + 1
+            return self.__dano_contato * (mapa.escala_tempo >= 1)
+        return 0
+
+    def colisao_jogador_direita(self, jogador, mapa):
+        if not jogador.invisivel:
+            if jogador.velx >= 0:
+                jogador.velx = 0
+                # jogador.aceleracao = 0
+                jogador.x = self.corpo.left - jogador.largura
+            return self.__dano_contato * (mapa.escala_tempo >= 1)
+        return 0
+
+    def colisao_jogador_baixo(self, jogador, mapa):
+        if not jogador.invisivel:
+            jogador.vely = -1
+            jogador.y = self.corpo.top - jogador.altura
+            self.auto_destruir(mapa)
+        return 0
+
+    def colisao_jogador_cima(self, jogador, mapa):
+        if not jogador.invisivel:
+            if jogador.vely < 0:
+                jogador.vely = 0
+                jogador.y = self.corpo.bottom
+            return self.__dano_contato * (mapa.escala_tempo >= 1)
+        return 0
 
     def renderizar(self, tela, mapa):
 
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                              self.corpo.w, self.corpo.h])
+        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
         if renderizar_sprite and type(self.sprite) != list:
             self.sprite.imprimir(tela, self.nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
                         self.face, self.velx, self.vely, int((self.escala_tempo != 0)*mapa.ciclo/6) % self.__frames, 0,0)

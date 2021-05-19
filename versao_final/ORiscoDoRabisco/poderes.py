@@ -232,7 +232,7 @@ class PoderManifestadoInimigo(Entidade):
         self.duracao = duracao
         super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor, frames)
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         if not jogador.invisivel:
             self.auto_destruir(mapa)
             return self.dano_contato
@@ -251,7 +251,7 @@ class BolaFogo(PoderManifestado):
         dano_contato = 0
         duracao = 500
         # self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", 4)
+        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", 4, (255,128,0))
         self.escala_tempo = 1.0
         self.mapa = mapa
         self.vely = -1
@@ -263,14 +263,12 @@ class BolaFogo(PoderManifestado):
 
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Entidade])
-        obstaculos = [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
 
         if obsCima or obsBaixo:
             self.vely = -max(self.vely * 4 / 5, 8)
-            # self.y = obsBaixo.corpo.top - self.altura'''
         if not obsBaixo: self.vely += gravidade * 7 * self.escala_tempo
 
         self.y += self.vely * self.escala_tempo
@@ -287,7 +285,7 @@ class BolaFogo(PoderManifestado):
             return False
         return True
 
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+    def colisao_outros(self, entidade, direcao, mapa):
         if entidade.nome == "corpo_das_cores" and entidade.fase == 2:
             entidade.toma_dano_de_fogo()
         elif not entidade.a_prova_de_fogo:
@@ -308,14 +306,13 @@ class Bala(PoderManifestadoInimigo):
         dano_contato = 1
         duracao = 500
         # self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", 4)
+        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", 4, (255,128,0))
         self.escala_tempo = 1.0
         self.mapa = mapa
         self.vely = vely
         self.velx = velx
 
     def mover(self, dimensoesTela, mapa):
-
         #### SE MOVE ####
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo
@@ -408,13 +405,7 @@ class Clones(PoderManifestado):
         
 
     def renderizar(self, tela, mapa):
-
-        
-        pygame.draw.rect(tela, (50, 50, 0), [self.corpo.x - mapa.campo_visivel.x,
-                                                 self.corpo.y - mapa.campo_visivel.y,
-                                                 self.corpo.w,
-                                                 self.corpo.h])
-        
+        if renderizar_hitbox: self.renderizar(tela, mapa)
         
         if self.contato == True:
             pygame.draw.rect(tela, (50, 50, 0), [self.corpo2.x - mapa.campo_visivel.x,

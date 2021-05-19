@@ -2,22 +2,21 @@ from entidades import *
 from poderes import *
 
 ##### ITENS DOS PODERES NO MAPA #####
-class Coletavel(Movel):
+class Coletavel(Estatico):
     "Itens que mudam alguma propriedade do jogador"
 
     def __init__(self, nome, x, y, imagem, cor=(0, 0, 0), largura=32, altura=32):
-        limite_vel = 4
-        super().__init__(nome, x, y, altura, largura, limite_vel, imagem, cor)
+        super().__init__(nome, x, y, altura, largura, imagem, cor)
 
     def coleta(self, jogador, mapa):
         jogador.coletar_poder(self)
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
 
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+    def colisao_outros(self, entidade, direcao, mapa):
         return 0
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         self.coleta(jogador, mapa)
         return 0
 
@@ -26,8 +25,8 @@ class Coletavel(Movel):
 class Borracha(Coletavel):
     "Adiciona borracha ao contador"
 
-    def __init__(self, x, y, cor=(245, 245, 220)):
-        super().__init__("borracha", x, y, "sprites", cor, 41, 29)
+    def __init__(self, x, y):
+        super().__init__("borracha", x, y, "sprites", (255, 0, 255), 41, 29)
         self.__raio = 10
 
     def coleta(self, jogador, mapa):
@@ -43,8 +42,8 @@ class Paleta(Coletavel):
     Quando completa, permite que o jogador guarde um poder
     """
 
-    def __init__(self, x, y, cor=(0, 0, 0)):
-        super().__init__("paleta_mapa", x, y, "sprites", cor, 50, 35)
+    def __init__(self, x, y):
+        super().__init__("paleta_mapa", x, y, "sprites", (128, 75, 0), 50, 35)
 
     def coleta(self, jogador, mapa):
         jogador.coletar_paleta()

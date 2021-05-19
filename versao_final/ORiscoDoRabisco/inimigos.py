@@ -32,11 +32,11 @@ class Bolota(Inimigo):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
+            obsBaixo.colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -61,47 +61,23 @@ class Espinhento(Inimigo):
         self.xinicial = x
         self.escala_tempo = 1
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-        "Detecta colisao com jogador, return dano caso valido"
-        ##### COLISAO ESQUERDA #####
+    def colisao_jogador_baixo(self, jogador, mapa):
         if not jogador.invisivel:
-            if direcao == "esquerda":
-                if jogador.velx <= 0:
-                    jogador.velx = 0
-                    #jogador.aceleracao = 0
-                    jogador.x = self.corpo.right + 1
-                return self.dano_contato
-            ##### COLISAO DIREITA #####
-            elif direcao == "direita":
-                if jogador.velx >= 0:
-                    jogador.velx = 0
-                    #jogador.aceleracao = 0
-                    jogador.x = self.corpo.left - jogador.largura
-                return self.dano_contato
-            ##### COLISAO BAIXO #####
-            elif direcao == "baixo":
-                jogador.vely = 0
-                jogador.y = self.corpo.top - jogador.altura
-                return self.dano_contato
-            ##### COLISAO CIMA #####
-            elif direcao == "cima":
-                if jogador.vely < 0:
-                    jogador.vely = 0
-                    jogador.y = self.corpo.bottom
-                return self.dano_contato
-        else:
-            return 0
+            jogador.vely = 0
+            jogador.y = self.corpo.top - jogador.altura
+            return self.dano_contato
+        return 0
 
     def mover(self, dimensoesTela, mapa):
         "Atualiza posicao e velocidade"
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
+            obsBaixo.colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -218,11 +194,11 @@ class Atirador(Inimigo):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
+            obsBaixo.colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -265,11 +241,11 @@ class Saltante(Inimigo):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
+            obsBaixo.colisao_outros(self, "baixo", mapa)
 
 
         ##### GRAVIDADE ######
@@ -315,11 +291,11 @@ class Gelatina(Inimigo):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa, Inimigo])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
+            obsBaixo.colisao_outros(self, "baixo", mapa)
 
         ##### GRAVIDADE ######
         else:
@@ -328,13 +304,13 @@ class Gelatina(Inimigo):
         self.y += self.vely * self.escala_tempo
         self.x += self.velx * self.escala_tempo * self.__anda
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         "Determina que o jogador fique mais lento ao passar"
         if not jogador.invisivel:
             jogador.escala_tempo = 0.25
         return 0
 
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+    def colisao_outros(self, entidade, direcao, mapa):
         pass
 
 
@@ -358,7 +334,7 @@ class Temporal(Inimigo):
         self.escala_tempo = 0
         self.aceleracao = 1
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         ##### COLISAO ESQUERDA #####
         if direcao == "esquerda":
             if jogador.velx <= 0:
@@ -388,11 +364,11 @@ class Temporal(Inimigo):
         ##### COLISOES #####
         obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Bala, PoderNoMapa])
 
-        if obsEsquerda: obsEsquerda.sofreu_colisao_outros(self, "esquerda", mapa)
-        if obsDireita: obsDireita.sofreu_colisao_outros(self, "direita", mapa)
-        if obsCima: obsCima.sofreu_colisao_outros(self, "cima", mapa)
+        if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
+        if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
+        if obsCima: obsCima.colisao_outros(self, "cima", mapa)
         if obsBaixo:
-            obsBaixo.sofreu_colisao_outros(self, "baixo", mapa)
+            obsBaixo.colisao_outros(self, "baixo", mapa)
             if mapa.jogador.vely < 0 or obsDireita or obsEsquerda:
                 self.vely = -10
 
@@ -417,7 +393,8 @@ class Temporal(Inimigo):
         ##### REPOSICIONALMENTO #####
         self.y += self.vely * max(0,(-self.escala_tempo+1))
         self.x += self.velx * max(0,(-self.escala_tempo+1))
-    def sofreu_colisao_outros(self, entidade, direcao, mapa):
+
+    def colisao_outros(self, entidade, direcao, mapa):
         if direcao == "esquerda":
             if entidade.velx <= 0:
                 if self.escala_tempo > 0:
@@ -441,10 +418,10 @@ class Temporal(Inimigo):
 
     def renderizar(self, tela, mapa):
 
-        if renderizar_hitbox:
-            pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                              self.corpo.w, self.corpo.h])
+        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
         if renderizar_sprite and type(self.sprite) != list:
-            self.sprite.imprimir(tela, self.nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+            self.sprite.imprimir(tela, self.nome,
+                                 self.x - mapa.campo_visivel.x,
+                                 self.y - mapa.campo_visivel.y,
                                  self.face, self.velx, self.vely,
                                  int(mapa.ciclo / 6) % self.frames)

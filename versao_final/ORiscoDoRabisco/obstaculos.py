@@ -17,11 +17,13 @@ class PlataformaMovel(Movel):
         self.vely = vely
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                      self.corpo.w, self.corpo.h])
-
-        self.sprite.imprimir(tela, "chao", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, largura = self.largura,
-                             altura = self.altura)
+        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
+        if renderizar_sprite:
+            self.sprite.imprimir(tela, "chao",
+                                 self.x - mapa.campo_visivel.x,
+                                 self.y - mapa.campo_visivel.y,
+                                 largura=self.largura,
+                                 altura=self.altura)
 
     def mover(self, dimensoesTela, mapa):
         ##### REPOSICIONAMENTO DA PLATAFORMA #####
@@ -45,7 +47,7 @@ class Lapis(Obstaculo):
     def __init__(self, x: int, topo: int, base: int):
         largura = 44
         altura = base - topo
-        super().__init__("lapis", x, topo, altura, largura, "sprites", (11, 137, 0))
+        super().__init__("lapis", x, topo, altura, largura, "sprites", (255, 255, 0))
 
 
 @instanciavel
@@ -53,9 +55,9 @@ class Ponta(Obstaculo):
     def __init__(self, x: int, topo: int, base: int):
         largura = 44
         altura = base - topo
-        super().__init__("ponta", x, topo, altura, largura, "sprites", (11, 137, 0))
+        super().__init__("ponta", x, topo, altura, largura, "sprites", (173, 68, 0))
 
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
+    def colisao_jogador(self, jogador, direcao, mapa):
         ##### COLISAO ESQUERDA #####
         if direcao == "esquerda":
             if jogador.velx <= 0:
@@ -94,11 +96,13 @@ class Chao(Obstaculo):
         super().__init__("chao", esquerda, y, altura, direita - esquerda, "sprites", (184, 20, 20))
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                      self.corpo.w, self.corpo.h])
-
-        self.sprite.imprimir(tela, "chao", self.x  - mapa.campo_visivel.x, self.y  - mapa.campo_visivel.y, largura = self.largura,
-                             altura = self.altura)
+        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
+        if renderizar_sprite:
+            self.sprite.imprimir(tela, "chao",
+                                 self.x - mapa.campo_visivel.x,
+                                 self.y - mapa.campo_visivel.y,
+                                 largura=self.largura,
+                                 altura=self.altura)
 
 
 @instanciavel
