@@ -5,7 +5,7 @@ from sprites import *
 colisao_analisada = "0"
 renderizar_hitbox = True
 renderizar_sprite = True
-modo_dev = False
+modo_dev = True
 gravidade = 0.2
 classes_instanciaveis = []
 imagens_instanciaveis = {}
@@ -213,13 +213,15 @@ class Movel(Estatico):
     possui tambem velocidade e direcao horizontal
     """
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limite_vel: int, imagem: str,
-                 cor=(0, 0, 0)):
+                 tipos_transparentes, cor=(0, 0, 0), tempo_inverso = False):
         super().__init__(nome, x, y, altura, largura, imagem, cor)
         self.escala_tempo = 1.0
         self.__velx = 0
         self.__vely = 0
         self.__limite_vel = limite_vel
         self.__face = 1
+        self.__tempo_inverso = tempo_inverso #Indica se deve se mover no tempo parado ou ficar parado no tempo movel
+        self.__tipos_transparentes = tipos_transparentes #Tipos que o movel ignora na checagem de colisoes
     
     @property
     def face(self):
@@ -252,6 +254,14 @@ class Movel(Estatico):
     @limite_vel.setter
     def limite_vel(self, limite_vel):
         self.__limite_vel = limite_vel
+
+    @property
+    def tempo_inverso(self):
+        return self.__tempo_inverso
+
+    @property
+    def tipos_transparentes(self):
+        return self.__tipos_transparentes
 
     def mover(self, dimensoesTela, mapa):
         pass
@@ -302,8 +312,8 @@ class Movel(Estatico):
 
         return [obsCima, obsBaixo, obsDireita, obsEsquerda]
 
-    def gerenciar_colisoes(self, mapa, tipos_transparentes):
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, tipos_transparentes)
+    def gerenciar_colisoes(self, mapa):
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, self.tipos_transparentes)
 
         if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
         if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
@@ -355,8 +365,9 @@ class Movel(Estatico):
 class Entidade(Movel):
     "Expande no movel, adicionando dano de contato e animacoes"
     def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int,
-                 dano_contato: int, imagem: str, cor, frames: int, fogo = False):
-        super().__init__(nome, x, y, altura, largura, limiteVel, imagem, cor)
+                 dano_contato: int, imagem: str, tipos_transparentes, cor, frames: int, fogo = False,
+                 tempo_inverso = False):
+        super().__init__(nome, x, y, altura, largura, limiteVel, imagem, tipos_transparentes, cor, tempo_inverso)
         self.__vida = vida
         self.__dano_contato = dano_contato
         self.__a_prova_de_fogo = fogo
@@ -428,11 +439,14 @@ class Entidade(Movel):
         return 0
 
     def renderizar_sprite(self, tela, mapa):
+
+        ajuste_temporal = self.tempo_inverso or self.escala_tempo != 0
+        #Tempo invertido = Nunca para de animar, tempo normal = parade animar se o tempo parar
         self.sprite.imprimir(tela, self.nome,
                              self.x - mapa.campo_visivel.x,
                              self.y - mapa.campo_visivel.y,
                              self.face, self.velx, self.vely,
-                             int((self.escala_tempo != 0)*mapa.ciclo/6) % self.__frames)
+                             int((ajuste_temporal)*mapa.ciclo/6) % self.__frames)
     
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.corpo.colliderect([mapa.campo_visivel.x-50,mapa.campo_visivel.y-50,mapa.campo_visivel.w+100,mapa.campo_visivel.h+100]):

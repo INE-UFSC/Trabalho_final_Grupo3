@@ -25,8 +25,10 @@ class Gota(Coletavel):
 
 class ParteDoRei(Entidade):
     "Partes do Rei das Cores"
-    def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str, cor, frames: int):
-        super().__init__(nome, x, y, altura, largura, limiteVel, vida, dano_contato, imagem, cor, frames, True)
+    def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, limiteVel: int, vida: int, dano_contato: int, imagem: str,
+                 tipos_transparentes, cor, frames: int):
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, dano_contato, imagem,
+                         tipos_transparentes, cor, frames, True)
         self.__montado = False
         self.__fim_de_jogo = False
         self.__fase = 0
@@ -95,7 +97,8 @@ class PunhoVermelho(ParteDoRei):
         self.__atirou = False
         self.__vel_mao = 8
         self.__quebrado = False
-        super().__init__("punho", x, y, altura, largura, limiteVel, 0, dano_contato, "punho", cor, 0)
+        super().__init__("punho", x, y, altura, largura, limiteVel, 0, dano_contato, "punho",
+                         [Bala, BolaFogo, Coletavel, ParteDoRei, ReiDasCores, PlataformaMovel], cor, 0)
     
     @property
     def recarga(self):
@@ -171,7 +174,7 @@ class PunhoVermelho(ParteDoRei):
 
     def mover(self, jogador, mapa, atira):
         velx_buff = self.velx
-        obsBaixo = self.gerenciar_colisoes(mapa, [Bala, BolaFogo, Coletavel, ParteDoRei, ReiDasCores, PlataformaMovel])
+        obsBaixo = self.gerenciar_colisoes(mapa)
         if obsBaixo: self.velx = 0
         ##### VOLTANDO AO CORPO #####
         if velx_buff and not self.velx and self.__atirando: # se acabou de de tocar no chão começa o tempo de espera paravoltar ao corpo
@@ -263,7 +266,7 @@ class CabecaLaranja(ParteDoRei):
         dano_contato = 1
         cor = (255,128,0)
         limiteVel = 10
-        super().__init__("cabeca", x, y, altura, largura, limiteVel, 0, dano_contato, "cabeca", cor, 0)
+        super().__init__("cabeca", x, y, altura, largura, limiteVel, 0, dano_contato, "cabeca", [], cor, 0)
 
 
     @property
@@ -399,7 +402,7 @@ class CoracaoRoxo(ParteDoRei):
         cor = (255,0,255)
         limiteVel = 4
         self.__tempo_parado = 100 #contador de tempo parado
-        super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "coracao", cor, 0)
+        super().__init__("coracao", x, y, altura, largura, limiteVel, 0, dano_contato, "coracao", [], cor, 0)
 
     def parar_o_tempo(self, jogador):
         if self.__tempo_parado > 0:
@@ -449,7 +452,8 @@ class ReiDasCores(Entidade):
         self.__punho_esquerdo = 0
         self.__punho_direito = 0
         self.__coracao = 0
-        super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "corpo_das_cores", (0, 0, 255), 9, True)
+        super().__init__("corpo_das_cores", x, y, 300, 150, 0, 0, 0, "corpo_das_cores",
+                         [Bala, Coletavel, ParteDoRei], (0, 0, 255), 9, True)
         self.velx = 1
 
         ##### ATRIBUTOS REFERENTES A FASE DA LUTA #####
@@ -643,7 +647,7 @@ class ReiDasCores(Entidade):
         self.escala_tempo = mapa.escala_tempo
 
         ##### COLISOES #####
-        obsBaixo = self.gerenciar_colisoes(mapa, [Bala, Coletavel, ParteDoRei])
+        obsBaixo = self.gerenciar_colisoes(mapa)
 
         ##### GRAVIDADE ######
         if not obsBaixo: self.vely += gravidade * self.escala_tempo

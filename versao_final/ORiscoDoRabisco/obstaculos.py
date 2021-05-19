@@ -13,7 +13,7 @@ class Obstaculo(Estatico):
 class PlataformaMovel(Movel):
     def __init__(self, y: int , x: int, largura: int, vely):
         altura = 19
-        super().__init__("chao", x, y, altura, largura, 5, "sprites",  (184, 20, 20))
+        super().__init__("chao", x, y, altura, largura, 5, "sprites",  [], (184, 20, 20))
         self.vely = vely
 
     def renderizar_sprite(self, tela, mapa):

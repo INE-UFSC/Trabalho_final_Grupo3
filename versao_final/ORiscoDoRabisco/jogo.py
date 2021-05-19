@@ -7,7 +7,7 @@ from telas import *
 
 class Jogo:
     def __init__(self):
-        ###### INFORMACOES TA TELA ######
+        ###### INFORMACOES TA TELA ######d
         try:
             configs = json.load(open("configs.json","r"))
         except FileNotFoundError:

@@ -7,13 +7,15 @@ from random import randrange
 
 
 class Inimigo(Entidade):
-    def __init__(self, nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem, cor, frames, fogo = False):
-        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem, cor, frames, fogo)
+    def __init__(self, nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem,
+                 tipos_transparentes, cor, frames, fogo = False, tempo_inverso = False):
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, imagem,
+                         tipos_transparentes, cor, frames, fogo, tempo_inverso)
 
     def mover(self, dimensoesTela, mapa):
         "Atualiza posicao e velocidade"
         ##### COLISOES #####
-        obsBaixo = self.gerenciar_colisoes(mapa, [Bala, PoderNoMapa])
+        obsBaixo = self.gerenciar_colisoes(mapa)
 
         ##### GRAVIDADE ######
         if not obsBaixo:
@@ -33,7 +35,8 @@ class Bolota(Inimigo):
         largura = 46
         altura = 46
         limiteVel = 1
-        super().__init__("bolota", x, y, altura, largura, limiteVel, vida, danoContato, "bolota", (88, 51, 0), 25)
+        super().__init__("bolota", x, y, altura, largura, limiteVel, vida, danoContato, "bolota",
+                         [Bala, PoderNoMapa], (88, 51, 0), 25)
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -49,7 +52,8 @@ class Espinhento(Inimigo):
         largura = 48
         altura = 45
         limiteVel = 1
-        super().__init__("espinhento", x, y, altura, largura, limiteVel, vida, danoContato, "espinhento", (50, 50, 50), 8)
+        super().__init__("espinhento", x, y, altura, largura, limiteVel, vida, danoContato, "espinhento",
+                         [Bala, PoderNoMapa], (50, 50, 50), 8)
         self.vely = 0
         self.velx = 0.5
         self.xinicial = x
@@ -62,6 +66,7 @@ class Espinhento(Inimigo):
             return self.dano_contato+1
         return 0
 
+
 @instanciavel
 class Voador(Inimigo):
     "Inimigo que voa, ignora o jogador por maior parte"
@@ -71,7 +76,8 @@ class Voador(Inimigo):
         largura = 26
         altura = 26
         limiteVel = 4
-        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "0", (88, 51, 0), 0)
+        super().__init__(nome, x, y, altura, largura, limiteVel, vida, danoContato, "0",
+                         [Bala, PoderNoMapa, Estatico], (88, 51, 0), 0)
         self.altitude = pygame.Rect(x, y + largura + 2, largura,
                                     altura + altitude)  # CAMPO UTILIZADO PARA CHECAR ALTURA DE VOO
         self.vely = 0
@@ -117,7 +123,8 @@ class Atirador(Inimigo):
         largura = 90
         altura = 44
         limiteVel = 0
-        super().__init__("atirador", x, y, altura, largura, limiteVel, vida, danoContato, "atirador", (255, 25, 25), 8, True)
+        super().__init__("atirador", x, y, altura, largura, limiteVel, vida, danoContato, "atirador",
+                         [Bala, PoderNoMapa], (255, 25, 25), 8, True)
         self.vely = 0
         self.velx = 0
         self.__vel_projetil = 3
@@ -167,7 +174,7 @@ class Atirador(Inimigo):
     def mover(self, dimensoesTela, mapa):
         "Atualiza posicao e velocidade"
         ##### COLISOES #####
-        obsBaixo = self.gerenciar_colisoes(mapa,[Bala, PoderNoMapa])
+        obsBaixo = self.gerenciar_colisoes(mapa)
 
         ##### GRAVIDADE ######
         if not obsBaixo:
@@ -193,7 +200,8 @@ class Saltante(Inimigo):
         largura = 54
         altura = 99
         limiteVel = 1
-        super().__init__("saltante", x, y, altura, largura, limiteVel, vida, danoContato, "saltante", (128, 0, 0), 6)
+        super().__init__("saltante", x, y, altura, largura, limiteVel, vida, danoContato, "saltante",
+                         [Bala, PoderNoMapa], (128, 0, 0), 6)
         #self.vely = 0
         #self.velx = 0
         self.xinicial = x
@@ -209,7 +217,7 @@ class Saltante(Inimigo):
         vely_buff = self.vely
 
         ##### COLISOES #####
-        obsBaixo = self.gerenciar_colisoes(mapa,[Bala, PoderNoMapa])
+        obsBaixo = self.gerenciar_colisoes(mapa)
 
         ##### GRAVIDADE ######
         if not obsBaixo: self.vely += gravidade * self.escala_tempo
@@ -240,7 +248,8 @@ class Gelatina(Inimigo):
         largura = 150
         altura = 150
         limiteVel = 1
-        super().__init__("gelatina", x, y, altura, largura, limiteVel, vida, danoContato, "gelatina", (50, 50, 255), 9, True)
+        super().__init__("gelatina", x, y, altura, largura, limiteVel, vida, danoContato, "gelatina",
+                         [Bala, PoderNoMapa, Inimigo], (50, 50, 255), 9, True)
         self.vely = 0
         self.velx = 1
         self.xinicial = x
@@ -270,7 +279,8 @@ class Temporal(Inimigo):
         largura = 59
         altura = 59
         limiteVel = 4
-        super().__init__("temporal", x, y, altura, largura, limiteVel, vida, danoContato, "temporal", (80, 10, 120), 15)
+        super().__init__("temporal", x, y, altura, largura, limiteVel, vida, danoContato, "temporal",
+                         [Bala, PoderNoMapa], (80, 10, 120), 15, tempo_inverso=True)
         self.vely = 0
         self.xinicial = x
         self.escala_tempo = 0
@@ -304,7 +314,7 @@ class Temporal(Inimigo):
     def mover(self, dimensoesTela, mapa):
         "Atualiza posicao e velocidade,mas no tempo parado"
         ##### COLISOES #####
-        obsBaixo = self.gerenciar_colisoes(mapa,[Bala, PoderNoMapa])
+        obsBaixo = self.gerenciar_colisoes(mapa)
         if obsBaixo:
             if mapa.jogador.vely < 0:
                 self.vely = -10
@@ -351,10 +361,3 @@ class Temporal(Inimigo):
         elif direcao in ["baixo"]:
             entidade.vely = 0
             entidade.y = self.corpo.top - entidade.altura
-
-    def renderizar_sprite(self, tela, mapa):
-        self.sprite.imprimir(tela, self.nome,
-                             self.x - mapa.campo_visivel.x,
-                             self.y - mapa.campo_visivel.y,
-                             self.face, self.velx, self.vely,
-                             int(mapa.ciclo / 6) % self.frames)

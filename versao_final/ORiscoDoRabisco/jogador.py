@@ -41,7 +41,7 @@ class Jogador(Movel):
         self.__auxiliar = 0 #usado para fazer o jogador pular no instane que toca no castelo
         self.__congelado = False
 
-        super().__init__(nome, x, y, altura, largura, limite_vel, "0", (128,128,128))
+        super().__init__(nome, x, y, altura, largura, limite_vel, "0", [], (128,128,128))
 
     @property
     def invisivel(self):

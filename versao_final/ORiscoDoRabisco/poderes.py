@@ -221,16 +221,19 @@ class Projetil(PoderGenerico):
 
 class PoderManifestado(Entidade):
     "Base para entidades criadas por poderes"
-    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, frame = 0, cor=(0, 0, 0)):
+    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem,
+                 tipos_transparentes, frame = 0, cor=(0, 0, 0)):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor, frame)
+        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor, tipos_transparentes, frame)
 
 
 class PoderManifestadoInimigo(Entidade):
     "Entidades criadas por poderes dos inimigos"
-    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, frames, cor=(0, 0, 0)):
+    def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem, cor, frames):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor, frames)
+        tipos_transparentes = []
+        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem,
+                         tipos_transparentes, cor, frames)
 
     def colisao_jogador(self, jogador, direcao, mapa):
         if not jogador.invisivel:
@@ -250,7 +253,7 @@ class BolaFogo(PoderManifestado):
         limiteVel = 3 * vel
         dano_contato = 0
         duracao = 500
-        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", 4, (255,128,0))
+        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", (255,128,0), 4)
         self.escala_tempo = 1.0
         self.mapa = mapa
         self.vely = -1
@@ -305,7 +308,7 @@ class Bala(PoderManifestadoInimigo):
         dano_contato = 1
         duracao = 500
         # self.__corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", 4, (255,128,0))
+        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", (255,128,0), 4)
         self.escala_tempo = 1.0
         self.mapa = mapa
         self.vely = vely
