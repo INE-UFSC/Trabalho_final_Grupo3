@@ -16,14 +16,12 @@ class PlataformaMovel(Movel):
         super().__init__("chao", x, y, altura, largura, 5, "sprites",  (184, 20, 20))
         self.vely = vely
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
-        if renderizar_sprite:
-            self.sprite.imprimir(tela, "chao",
-                                 self.x - mapa.campo_visivel.x,
-                                 self.y - mapa.campo_visivel.y,
-                                 largura=self.largura,
-                                 altura=self.altura)
+    def renderizar_sprite(self, tela, mapa):
+        self.sprite.imprimir(tela, "chao",
+                             self.x - mapa.campo_visivel.x,
+                             self.y - mapa.campo_visivel.y,
+                             largura=self.largura,
+                             altura=self.altura)
 
     def mover(self, dimensoesTela, mapa):
         ##### REPOSICIONAMENTO DA PLATAFORMA #####
@@ -95,14 +93,12 @@ class Chao(Obstaculo):
         altura = 17
         super().__init__("chao", esquerda, y, altura, direita - esquerda, "sprites", (184, 20, 20))
 
-    def renderizar(self, tela, mapa):
-        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
-        if renderizar_sprite:
-            self.sprite.imprimir(tela, "chao",
-                                 self.x - mapa.campo_visivel.x,
-                                 self.y - mapa.campo_visivel.y,
-                                 largura=self.largura,
-                                 altura=self.altura)
+    def renderizar_sprite(self, tela, mapa):
+        self.sprite.imprimir(tela, "chao",
+                             self.x - mapa.campo_visivel.x,
+                             self.y - mapa.campo_visivel.y,
+                             largura=self.largura,
+                             altura=self.altura)
 
 
 @instanciavel

@@ -136,12 +136,9 @@ class Jogador(Movel):
         self.__congelado = False
         self.escala_tempo = 1
 
-    def renderizar(self, tela, mapa):
+    def renderizar_sprite(self, tela, mapa):
         "renderiza na tela na posicao correta, relativo ao local no mapa"
-    
-        if renderizar_hitbox: self.renderizar_hitbox(tela,mapa)
-        if renderizar_sprite:
-            if self.__recuperacao % 15 < 10:
+        if self.__recuperacao % 15 < 10:
                 self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
                                 self.face*(self.escala_tempo!=0)+1*(self.escala_tempo==0), self.velx*(self.escala_tempo>0), self.vely, int(mapa.ciclo/6) % 12*(self.escala_tempo>0))
 

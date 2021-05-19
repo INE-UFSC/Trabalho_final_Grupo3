@@ -416,12 +416,9 @@ class Temporal(Inimigo):
             entidade.vely = 0
             entidade.y = self.corpo.top - entidade.altura
 
-    def renderizar(self, tela, mapa):
-
-        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
-        if renderizar_sprite and type(self.sprite) != list:
-            self.sprite.imprimir(tela, self.nome,
-                                 self.x - mapa.campo_visivel.x,
-                                 self.y - mapa.campo_visivel.y,
-                                 self.face, self.velx, self.vely,
-                                 int(mapa.ciclo / 6) % self.frames)
+    def renderizar_sprite(self, tela, mapa):
+        self.sprite.imprimir(tela, self.nome,
+                             self.x - mapa.campo_visivel.x,
+                             self.y - mapa.campo_visivel.y,
+                             self.face, self.velx, self.vely,
+                             int(mapa.ciclo / 6) % self.frames)

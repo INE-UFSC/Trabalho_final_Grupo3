@@ -4,7 +4,7 @@ from sprites import *
 
 colisao_analisada = "0"
 renderizar_hitbox = True
-renderizar_sprite = False
+renderizar_sprite = True
 modo_dev = False
 gravidade = 0.2
 classes_instanciaveis = []
@@ -127,15 +127,19 @@ class Estatico():
                                             self.corpo.w,
                                             self.corpo.h])
 
+    def renderizar_sprite(self, tela, mapa):
+        self.sprite.imprimir(tela, self.__nome,
+                             self.x - mapa.campo_visivel.x,
+                             self.y - mapa.campo_visivel.y,
+                             largura=self.__largura,
+                             altura=self.__altura)
+
     def renderizar(self, tela, mapa):
         "Coloca a imagem correspondente na tela"
         if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
         if renderizar_sprite:
-            try:
-                self.sprite.imprimir(tela, self.__nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0,
-                                     0, 0, 0, self.__largura, self.__altura)
+            try: self.renderizar_sprite(tela, mapa)
             except AttributeError:
-                #print(self.nome,"sprite nao encontrado")
                 pass
 
     def atualizar(self, tela, mapa, dimensoes_tela):
@@ -403,12 +407,12 @@ class Entidade(Movel):
             return self.__dano_contato * (mapa.escala_tempo >= 1)
         return 0
 
-    def renderizar(self, tela, mapa):
-
-        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
-        if renderizar_sprite and type(self.sprite) != list:
-            self.sprite.imprimir(tela, self.nome, self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
-                        self.face, self.velx, self.vely, int((self.escala_tempo != 0)*mapa.ciclo/6) % self.__frames, 0,0)
+    def renderizar_sprite(self, tela, mapa):
+        self.sprite.imprimir(tela, self.nome,
+                             self.x - mapa.campo_visivel.x,
+                             self.y - mapa.campo_visivel.y,
+                             self.face, self.velx, self.vely,
+                             int((self.escala_tempo != 0)*mapa.ciclo/6) % self.__frames)
     
     def atualizar(self, tela, mapa, dimensoes_tela):
         if self.corpo.colliderect([mapa.campo_visivel.x-50,mapa.campo_visivel.y-50,mapa.campo_visivel.w+100,mapa.campo_visivel.h+100]):
