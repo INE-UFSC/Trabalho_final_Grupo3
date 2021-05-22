@@ -217,8 +217,8 @@ class Jogador(Movel):
             if dano_total and not self.__recuperacao > 0 and not mapa.ganhou:
                 self.__vida -= dano_total
                 self.__recuperacao = 90
-            elif self.__recuperacao > 0:
-                self.__recuperacao -= 1
+        if self.__recuperacao > 0:
+            self.__recuperacao -= 1
 
 
         ##### PERMITE

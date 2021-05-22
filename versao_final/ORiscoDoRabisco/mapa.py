@@ -149,7 +149,7 @@ class Mapa:
         ##### ATUALIZACAO DAS ENTIDADES #####
         for entidade in self.__lista_de_entidades:
             if entidade.atualizar(tela, self, dimensoes_tela):
-                del entidade
+                entidade.auto_destruir(self)
 
         ##### ATUALIZACAO DO HUD #####
         self.__hud.atualizar(tela, self, dimensoes_tela, self.__tempo_restante, self.__vida_jogador

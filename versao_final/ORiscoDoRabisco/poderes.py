@@ -222,7 +222,7 @@ class PoderManifestado(Entidade):
     def __init__(self, nome, x, y, largura, altura, limite_vel, vida, dano_contato, duracao, imagem,
                  tipos_transparentes, frame = 0, cor=(0, 0, 0)):
         self.duracao = duracao
-        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, cor, tipos_transparentes, frame)
+        super().__init__(nome, x, y, largura, altura, limite_vel, vida, dano_contato, imagem, tipos_transparentes, cor, frame)
 
 
 class PoderManifestadoInimigo(Entidade):
@@ -251,7 +251,7 @@ class BolaFogo(PoderManifestado):
         limiteVel = 3 * vel
         dano_contato = 0
         duracao = 500
-        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo", (255,128,0), 4)
+        super().__init__("fogo", x, y, largura, altura, limiteVel, vida, dano_contato, duracao, "fogo","no", 4, (255,128,0))
         self.escala_tempo = 1.0
         self.mapa = mapa
         self.vely = -1
@@ -262,13 +262,14 @@ class BolaFogo(PoderManifestado):
         ##### COLISOES #####
 
         # 0-Cima, 1-Baixo, 2-Direita, 3-Esquerda
-        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Entidade])
+        from coletaveis import Coletavel
+        obsCima, obsBaixo, obsDireita, obsEsquerda = self.checar_colisao(mapa.lista_de_entidades, [Entidade,Coletavel])
 
         if obsEsquerda: obsEsquerda.colisao_outros(self, "esquerda", mapa)
         if obsDireita: obsDireita.colisao_outros(self, "direita", mapa)
 
         if obsCima or obsBaixo:
-            self.vely = -max(self.vely * 4 / 5, 8)
+            self.vely = max(abs(self.vely) * 4 / 5, 8) * (int(self.vely < 0)*2-1)
         if not obsBaixo: self.vely += gravidade * 7 * self.escala_tempo
 
         self.y += self.vely * self.escala_tempo
@@ -278,7 +279,7 @@ class BolaFogo(PoderManifestado):
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        if self.duracao > 0 or not self.corpo.colliderect(mapa.campo_visivel):
+        if self.duracao > 0 and self.corpo.colliderect(mapa.campo_visivel):
             self.mover(dimensoes_tela, mapa)
             self.renderizar(tela, mapa)
             self.duracao -= 1 * self.escala_tempo
@@ -321,7 +322,7 @@ class Bala(PoderManifestadoInimigo):
         if self.escala_tempo != mapa.escala_tempo:
             self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         self.corpo = pygame.Rect(self.x, self.y, self.largura, self.altura)
-        if self.duracao > 0 or not self.corpo.colliderect(mapa.campo_visivel):
+        if self.duracao > 0 and self.corpo.colliderect(mapa.campo_visivel) or not self.escala_tempo:
             self.mover(dimensoes_tela, mapa)
             self.renderizar(tela, mapa)
             self.duracao -= 1 * self.escala_tempo
