@@ -17,6 +17,7 @@ class DAO:
         self.carregar_configs()
         self.carregar_saves()
         self.carregar_mapas()
+        self.__sprites = {}
     
     def carregar_configs(self):
         try:
@@ -50,8 +51,17 @@ class DAO:
                 json.dump(mapas, mapa_arquivo)
                 self.__mapas = mapas
     
-    def carregar_sprites(self):
-        pass
+    def carregar_sprite(self, nome):
+        try:
+            return self.__sprites[nome]
+        except KeyError:
+            arquivo = "sprites/"+nome
+            sprite_sheet = pygame.image.load(arquivo+".png").convert_alpha()
+            with open(arquivo+".json") as f:
+                dados = json.load(f)
+            self.__sprites[nome] = {"sprite_sheet":sprite_sheet,"dados":dados}
+            return self.__sprites[nome]
+            
 
     @property
     def configs(self):

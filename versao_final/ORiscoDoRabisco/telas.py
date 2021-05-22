@@ -1,10 +1,6 @@
 #from prototipo.menu import Musica
 import pygame
-from jogador import Jogador
-from mapa import Mapa
 from menu import *
-from poderes import *
-from entidades import classes_instanciaveis, renderizar_hitbox
 from DAOjogo import DAOJogo
 from efeitosrender import *
 
@@ -299,6 +295,11 @@ class TelaDeJogo(Tela):
     @param slot: slot de jogo salvo selecionado
     """
     def __init__(self, superficie, nivel, slot):
+        from jogador import Jogador
+        from mapa import Mapa
+        from poderes import Cinza
+        from entidades import classes_instanciaveis, renderizar_hitbox,poderes_no_jogador
+        self.__classes_instanciaveis = classes_instanciaveis
         global dicionaro_mapa
         super().__init__(superficie)
         (width, height) = superficie.get_size()
@@ -425,7 +426,7 @@ class TelaDeJogo(Tela):
                 if self.__mapa.escala_tempo > 1:
                     self.__textin = pygame.font.SysFont('msminchomspmincho', 48).render("神の御名（みめい）においてしりそける", False, (0, 0, 0))
             else:
-                self.__jogador.tipos_transparentes = classes_instanciaveis
+                self.__jogador.tipos_transparentes = self.__classes_instanciaveis
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
                 self.salvar_jogo()

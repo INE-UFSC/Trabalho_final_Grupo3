@@ -1,6 +1,4 @@
 # Arquivos com as classes abstratas do jogo
-import pygame
-from sprites import *
 
 colisao_analisada = "0"
 renderizar_hitbox = True
@@ -24,6 +22,8 @@ def poder_no_jogador(classe):
     poderes_no_jogador.append(classe)
     return classe
 
+import pygame
+from sprites import Sprite
 
 class Estatico():
     """Base para qualquer objeto fisico no mapa

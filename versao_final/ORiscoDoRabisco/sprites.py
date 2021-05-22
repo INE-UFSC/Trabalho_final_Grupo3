@@ -3,13 +3,11 @@ import json
 
 class Sprite():
     def __init__(self, arquivo):
-        arquivo = "sprites/"+arquivo
-        self.__imagem = arquivo+".png"
-        self.__sprite_sheet = pygame.image.load(self.__imagem).convert_alpha()
-        self.__arquivo_dados = arquivo+".json"
-        self.__dados = {}
-        with open(self.__arquivo_dados) as f:
-            self.__dados = json.load(f)
+        from DAOjogo import DAOJogo
+        imagem = DAOJogo.carregar_sprite(arquivo)
+        self.__imagem = "sprites/"+arquivo+".png"
+        self.__sprite_sheet = imagem["sprite_sheet"]
+        self.__dados = imagem["dados"]
 
     @property
     def imagem(self):
