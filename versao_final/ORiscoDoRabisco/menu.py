@@ -60,12 +60,17 @@ class TelaMenu(Tela):
 
     """
     def __init__(self,listabotoes:list,fundo:list,superficie,listatelas):
+        from DAOjogo import DAOJogo
+        self.__mostrar_fps = DAOJogo.configs["mostrarfps"]
         super().__init__(superficie)
         self.__listatelas = listatelas
         self.__listabotoes = listabotoes        #lista de objetos Botao
         self.__fundo = fundo                    #[red,green,blue] do fundo 
         self.__contador_menu = 0
         self.musica = False
+        self.__ultimo_tick = pygame.time.get_ticks()
+        self.__ultimo_quadro = 0
+        self.__medidor = pygame.font.SysFont('miriam', 24).render("FPS:63", False, (0,0,0))
         
 
     
@@ -109,6 +114,14 @@ class TelaMenu(Tela):
         self.superficie.fill(self.__fundo)           #preenche o fundo
         for i in self.__listabotoes:            #renderiza cada botao
             i.renderizar(self.superficie)
+        if self.__mostrar_fps:
+            atual_tick = pygame.time.get_ticks()
+            if atual_tick > self.__ultimo_tick + 1000:
+                self.__ultimo_tick = atual_tick
+                fps = min(ciclo - self.__ultimo_quadro,63)
+                self.__medidor = pygame.font.SysFont('miriam', 24).render("FPS:"+str(fps), False, (0,0,0))
+                self.__ultimo_quadro = ciclo
+            self.superficie.blit(self.__medidor, (10,10))
         pygame.display.flip()
     
 

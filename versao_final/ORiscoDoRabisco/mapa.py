@@ -35,6 +35,12 @@ class Mapa:
         self.__paletas_pegas = ""
         self.__fase = "fase0"
 
+        self.__ultimo_tick = pygame.time.get_ticks()
+        self.__ultimo_quadro = self.ciclo
+        self.__medidor = pygame.font.SysFont('miriam', 24).render("FPS:63", False, (0,0,0))
+        from DAOjogo import DAOJogo
+        self.__mostrar_fps = DAOJogo.configs["mostrarfps"]
+
     @property
     def lista_de_entidades(self):
         return self.__lista_de_entidades
@@ -154,6 +160,14 @@ class Mapa:
         ##### ATUALIZACAO DO HUD #####
         self.__hud.atualizar(tela, self, dimensoes_tela, self.__tempo_restante, self.__vida_jogador
                                         , self.__moedas_pegas, self.__paletas_pegas)
+        if self.__mostrar_fps:
+            atual_tick = pygame.time.get_ticks()
+            if atual_tick > self.__ultimo_tick + 1000:
+                self.__ultimo_tick = atual_tick
+                fps = min(self.ciclo - self.__ultimo_quadro,63)
+                self.__medidor = pygame.font.SysFont('miriam', 24).render("FPS:"+str(fps), False, (0,0,0))
+                self.__ultimo_quadro = self.ciclo
+            self.__superficie.blit(self.__medidor, (10,10))
 
 
 def montar_mapas():

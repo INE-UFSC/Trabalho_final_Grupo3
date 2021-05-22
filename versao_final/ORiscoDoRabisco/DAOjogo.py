@@ -26,7 +26,8 @@ class DAO:
             configs = {"resolucao":[1000,600],
                 "musica":1,
                 "efeitos":1,
-                "telacheia":False}
+                "telacheia":False,
+                "mostrarfps":False}
             json.dump(configs,open("configs.json","w"))
             self.__configs = configs
     

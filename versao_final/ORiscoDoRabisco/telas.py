@@ -100,7 +100,7 @@ class CarregarJogo(TelaMenu):
         sair = Botao(90,t[1]-35, 160, 50, (220, 20, 60), "Sair", 5)
         botoes_deletar = [Botao(t[0]*3/4,  max(75,t[1]/10)+i*max(60,t[1]/8), 100, 40, (220, 20, 60), "Deletar", 5) if deletar_encaixe[i] == "Deletar" 
                         else Botao(-1000, -1000, 50, 50, (0,0,0), "", 5) for i in range(5)]
-        texto = Botao(200, 20, 400, 40, (200, 200, 200), "Escolha de Jogo Salvo", 5,True)
+        texto = Botao(t[0]/3, 20, 400, 40, (200, 200, 200), "Escolha de Jogo Salvo", 5,True)
         
         listabotoes = botoes_encaixe + botoes_deletar + [sair] + [texto]
 
@@ -181,6 +181,7 @@ class Configuracoes(TelaMenu):
         self.__volume_musica = configs["musica"]
         self.__volume_efeitos = configs["efeitos"] ### IMPLEMENTAR VOLUME DE EFEITOS SONOROS!!! ###
         self.__tela_cheia = configs["telacheia"]
+        self.__mostrar_fps = configs["mostrarfps"]
         t = self.__tamanho
     
         sair = Botao(120, superficie.get_size()[1]-45, 200, 50, (220, 60, 60), "Salvar e Sair", 5)
@@ -201,11 +202,13 @@ class Configuracoes(TelaMenu):
 
         tela_cheia = Botao(295, 240, 150, 40, (160, 220, 60) if self.__tela_cheia else (220,160,60), "Tela Cheia", 5)
 
+        mostrar_fps = Botao(295, 360, 150, 40, (160, 220, 60) if self.__mostrar_fps else (220,160,60), "Mostrar FPS", 5)
+
         creditos = Botao(295, 300, 150, 40, (160, 220, 60), "Créditos", 5)
 
         listabotoes = [sair,musica,musica_mais,musica_menos,efeitos,efeitos_mais,efeitos_menos,
-                        tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais,tela_cheia,creditos]
-        listatelas = [True, [MenuPrincipal, [superficie]]] + [True for i in range(12)] + [[Creditos, [superficie]]]
+                        tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais,tela_cheia,mostrar_fps,creditos]
+        listatelas = [True, [MenuPrincipal, [superficie]]] + [True for i in range(13)] + [[Creditos, [superficie]]]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
@@ -245,7 +248,10 @@ class Configuracoes(TelaMenu):
         elif acao == 13: # ALTERNAR TELA CHEIA
             self.__tela_cheia = not self.__tela_cheia
             self.listabotoes[12].cor = (160, 220, 60) if self.__tela_cheia else (220,160,60)
-        elif acao == 14: # SALVAR CONFIGS PARA ENTRAR NOS CREDITOS
+        elif acao == 14: # ALTERNAR MOSTRAR FPS
+            self.__mostrar_fps = not self.__mostrar_fps
+            self.listabotoes[13].cor = (160, 220, 60) if self.__mostrar_fps else (220,160,60)  
+        elif acao == 15: # SALVAR CONFIGS PARA ENTRAR NOS CREDITOS
             self.salvar_config()
         self.listabotoes[7].texto = "({}x{})".format(*self.__tamanho)
         return resultado
@@ -255,7 +261,8 @@ class Configuracoes(TelaMenu):
         DAOJogo.configs = {"resolucao":self.__tamanho,
                 "musica":self.__volume_musica,
                 "efeitos":self.__volume_efeitos,
-                "telacheia":self.__tela_cheia}
+                "telacheia":self.__tela_cheia,
+                "mostrarfps":self.__mostrar_fps}
 
 
 class Creditos(TelaMenu):

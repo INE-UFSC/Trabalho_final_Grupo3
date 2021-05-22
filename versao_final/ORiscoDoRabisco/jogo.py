@@ -8,11 +8,12 @@ class Jogo:
         ###### INFORMACOES TA TELA ######d
         try:
             configs = json.load(open("configs.json","r"))
-        except FileNotFoundError:
+        except:
             configs = {"resolucao":[1000,600],
                 "musica":1,
                 "efeitos":1,
-                "telacheia":False}
+                "telacheia":False,
+                "mostrarfps":False}
             json.dump(configs,open("configs.json","w"))
         
         (width, height) = configs["resolucao"]  # Tamanho da tela
