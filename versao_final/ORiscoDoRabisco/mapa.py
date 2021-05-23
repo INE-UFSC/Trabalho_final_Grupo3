@@ -4,6 +4,7 @@ from poderes import *
 from rei import *
 from jogador import Jogador
 from hud import *
+import DAOjogo
 
 
 class Mapa:
@@ -14,8 +15,8 @@ class Mapa:
 
 
         ##### ATRIBUTOS DE RENDERIZACAO #####
-        self.__fundo = pygame.image.load("sprites/fundo.png").convert_alpha()
-        self.__trono = pygame.image.load("sprites/trono.png").convert_alpha()
+        self.__fundo = pygame.image.load(DAOjogo.DAOJogo.pasta_assets+"fundo.png").convert_alpha()
+        self.__trono = pygame.image.load(DAOjogo.DAOJogo.pasta_assets+"trono.png").convert_alpha()
         self.__superficie = superficie
         tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])

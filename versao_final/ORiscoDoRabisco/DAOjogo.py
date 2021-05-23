@@ -14,40 +14,57 @@ class DAO:
     definidos pela funcao montar_mapas
     """
     def __init__(self):
+        from sys import platform
+        if platform == "win32":
+            self.__pasta_data = __file__.rsplit("\\",1)[0]+"\\data\\"
+            self.__pasta_assets = __file__.rsplit("\\",1)[0]+"\\assets\\"
+        else:
+            self.__pasta_data = __file__.rsplit("/",1)[0]+"/data/"
+            self.__pasta_assets = __file__.rsplit("/",1)[0]+"/assets/"
         self.carregar_configs()
         self.carregar_saves()
         self.carregar_mapas()
         self.__sprites = {}
     
     def carregar_configs(self):
-        try:
-            self.__configs = json.load(open("configs.json","r"))
-        except FileNotFoundError:
-            configs = {"resolucao":[1000,600],
+        default = {"resolucao":[1000,600],
                 "musica":1,
                 "efeitos":1,
                 "telacheia":False,
-                "mostrarfps":False}
-            json.dump(configs,open("configs.json","w"))
+                "mostrarfps":False,
+                "renderizarhitbox":False,
+                "renderizarsprite":True}
+        try:
+            with open(self.__pasta_data+"configs.json","r") as arquivo:
+                configs = json.load(arquivo)
+        except (FileNotFoundError,json.JSONDecodeError):
+            configs = {}
+        finally:
+            for key in default.keys():
+                if key not in configs.keys():
+                    configs[key] = default[key]
+            with open(self.__pasta_data+"configs.json","w") as arquivo:
+                json.dump(configs,arquivo)
             self.__configs = configs
-    
+          
     def carregar_saves(self):
         try:
-            self.__saves = json.load(open("saves.json","r"))
-        except FileNotFoundError:
+            self.__saves = json.load(open(self.__pasta_data+"saves.json","r"))
+        except (FileNotFoundError,IndexError,KeyError):
             slots = {'0':["Novo Jogo","fase1","Cinza","Cinza",0],'1':["Novo Jogo","fase1","Cinza","Cinza",0],
                         '2':["Novo Jogo","fase1","Cinza","Cinza",0],'3':["Novo Jogo","fase1","Cinza","Cinza",0],
                         '4':["Novo Jogo","fase1","Cinza","Cinza",0],'6':["Novo Jogo","fase1","Cinza","Cinza",0]}
-            json.dump(slots,open("saves.json","w"))
+            with open(self.__pasta_data+"saves.json","w") as saves:
+                json.dump(slots,saves)
             self.__saves = slots
     
     def carregar_mapas(self):
         try:
             if modo_dev:
                 raise FileNotFoundError
-            self.__mapas = json.load(open("mapas.json","r"))
+            self.__mapas = json.load(open(self.__pasta_data+"mapas.json","r"))
         except FileNotFoundError:
-            with open("mapas.json","w") as mapa_arquivo:
+            with open(self.__pasta_data+"mapas.json","w") as mapa_arquivo:
                 mapas = montar_mapas()
                 json.dump(mapas, mapa_arquivo)
                 self.__mapas = mapas
@@ -56,7 +73,7 @@ class DAO:
         try:
             return self.__sprites[nome]
         except KeyError:
-            arquivo = "sprites/"+nome
+            arquivo = self.__pasta_assets+nome
             sprite_sheet = pygame.image.load(arquivo+".png").convert_alpha()
             with open(arquivo+".json") as f:
                 dados = json.load(f)
@@ -71,7 +88,8 @@ class DAO:
     @configs.setter
     def configs(self,configs):
         self.__configs = configs
-        json.dump(configs,open("configs.json","w"))
+        with open(self.__pasta_data+"configs.json","w") as f:
+            json.dump(configs,f)
 
     @property
     def mapas(self):
@@ -80,7 +98,8 @@ class DAO:
     @mapas.setter
     def mapas(self,mapas):
         self.__mapas = mapas
-        json.dump(mapas,open("mapas.json","w"))
+        with open(self.__pasta_data+"mapas.json","w") as f:
+            json.dump(mapas,f)
     
     @property
     def saves(self):
@@ -89,6 +108,15 @@ class DAO:
     @saves.setter
     def saves(self,saves):
         self.__saves = saves
-        json.dump(saves,open("saves.json","w"))
+        with open(self.__pasta_data+"saves.json","w") as f:
+            json.dump(saves,f)
+    
+    @property
+    def pasta_data(self):
+        return self.__pasta_data
+
+    @property
+    def pasta_assets(self):
+        return self.__pasta_assets
 
 DAOJogo = DAO()

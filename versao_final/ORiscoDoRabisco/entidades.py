@@ -24,6 +24,7 @@ def poder_no_jogador(classe):
 
 import pygame
 from sprites import Sprite
+import DAOjogo
 
 class Estatico():
     """Base para qualquer objeto fisico no mapa
@@ -39,6 +40,8 @@ class Estatico():
         self.__corpo = pygame.Rect(x, y, largura, altura)
         self.__imagem = imagem
         self.__cor = cor
+        self.__renderizar_hitbox = DAOjogo.DAOJogo.configs["renderizarhitbox"]
+        self.__renderizar_sprite = DAOjogo.DAOJogo.configs["renderizarsprite"]
         try:
             self.__sprite = Sprite(imagem)
         except FileNotFoundError:
@@ -136,8 +139,8 @@ class Estatico():
 
     def renderizar(self, tela, mapa):
         "Coloca a imagem correspondente na tela"
-        if renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
-        if renderizar_sprite:
+        if self.__renderizar_hitbox: self.renderizar_hitbox(tela, mapa)
+        if self.__renderizar_sprite:
             try: self.renderizar_sprite(tela, mapa)
             except AttributeError:
                 pass

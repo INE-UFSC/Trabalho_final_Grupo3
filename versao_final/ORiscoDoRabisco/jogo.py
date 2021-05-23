@@ -1,20 +1,13 @@
 import pygame, random, json
 from menu import *
 from telas import *
+import DAOjogo
 
 
 class Jogo:
     def __init__(self):
         ###### INFORMACOES TA TELA ######d
-        try:
-            configs = json.load(open("configs.json","r"))
-        except:
-            configs = {"resolucao":[1000,600],
-                "musica":1,
-                "efeitos":1,
-                "telacheia":False,
-                "mostrarfps":False}
-            json.dump(configs,open("configs.json","w"))
+        configs = DAOjogo.DAOJogo.configs
         
         (width, height) = configs["resolucao"]  # Tamanho da tela
         pygame.mixer.music.set_volume(configs["musica"])
@@ -56,6 +49,6 @@ class Jogo:
             self.__relogio.tick(60)
 
 pygame.init()
-pygame.mixer.music.load('musica_fundo.ogg')
+pygame.mixer.music.load(DAOjogo.DAOJogo.pasta_assets +'musica_fundo.ogg')
 jogo = Jogo()
 jogo.menu_inicial()

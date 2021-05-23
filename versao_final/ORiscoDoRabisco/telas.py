@@ -32,7 +32,7 @@ class InicioJogo(TelaMenu):
     """
     def __init__(self,superficie):
         t = superficie.get_size()
-        self.__imagem = pygame.image.load("sprites/inicidojogo.png")
+        self.__imagem = pygame.image.load(DAOJogo.pasta_assets+"inicidojogo.png")
         self.__imagem = pygame.transform.scale(self.__imagem,t)
         iniciar = Botao(t[0]*7/8,t[1]*3/5, t[0]/5, t[0]/8, (220, 220, 60), "Menu Principal", 5,False,True)
         listabotoes = [iniciar]
@@ -182,6 +182,8 @@ class Configuracoes(TelaMenu):
         self.__volume_efeitos = configs["efeitos"] ### IMPLEMENTAR VOLUME DE EFEITOS SONOROS!!! ###
         self.__tela_cheia = configs["telacheia"]
         self.__mostrar_fps = configs["mostrarfps"]
+        self.__renderizar_hitbox = configs["renderizarhitbox"]
+        self.__renderizar_sprite = configs["renderizarsprite"]
         t = self.__tamanho
     
         sair = Botao(120, superficie.get_size()[1]-45, 200, 50, (220, 60, 60), "Salvar e Sair", 5)
@@ -200,15 +202,19 @@ class Configuracoes(TelaMenu):
         tela_altura_menos = Botao(140, 190, 60, 40, (220, 160, 60), "-100", 5)
         tela_altura_mais = Botao(140, 50, 60, 40, (160, 220, 60), "+100", 5)
 
-        tela_cheia = Botao(295, 240, 150, 40, (160, 220, 60) if self.__tela_cheia else (220,160,60), "Tela Cheia", 5)
+        tela_cheia = Botao(300, 240, 150, 40, (160, 220, 60) if self.__tela_cheia else (220,160,60), "Tela Cheia", 5)
 
-        mostrar_fps = Botao(295, 360, 150, 40, (160, 220, 60) if self.__mostrar_fps else (220,160,60), "Mostrar FPS", 5)
+        mostrar_fps = Botao(300, 360, 150, 40, (160, 220, 60) if self.__mostrar_fps else (220,160,60), "Mostrar FPS", 5)
 
-        creditos = Botao(295, 300, 150, 40, (160, 220, 60), "Créditos", 5)
+        renderizar_hitbox = Botao(455, 240, 150, 40, (160, 220, 60) if self.__renderizar_hitbox else (220,160,60), "Hitboxes", 5)
+        renderizar_sprite = Botao(455, 300, 150, 40, (160, 220, 60) if self.__renderizar_sprite else (220,160,60), "Sprites", 5)
+
+        creditos = Botao(300, 300, 150, 40, (160, 220, 60), "Créditos", 5)
 
         listabotoes = [sair,musica,musica_mais,musica_menos,efeitos,efeitos_mais,efeitos_menos,
-                        tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais,tela_cheia,mostrar_fps,creditos]
-        listatelas = [True, [MenuPrincipal, [superficie]]] + [True for i in range(13)] + [[Creditos, [superficie]]]
+                        tela,tela_largura_menos,tela_largura_mais,tela_altura_menos,tela_altura_mais,
+                        tela_cheia,mostrar_fps,renderizar_hitbox,renderizar_sprite,creditos]
+        listatelas = [True, [MenuPrincipal, [superficie]]] + [True for i in range(15)] + [[Creditos, [superficie]]]
         cormenu = misturacor(psicodelico(0), [255, 255, 255], 1, 5)
         super().__init__(listabotoes,cormenu,superficie,listatelas)
 
@@ -251,7 +257,13 @@ class Configuracoes(TelaMenu):
         elif acao == 14: # ALTERNAR MOSTRAR FPS
             self.__mostrar_fps = not self.__mostrar_fps
             self.listabotoes[13].cor = (160, 220, 60) if self.__mostrar_fps else (220,160,60)  
-        elif acao == 15: # SALVAR CONFIGS PARA ENTRAR NOS CREDITOS
+        elif acao == 15:
+            self.__renderizar_hitbox = not self.__renderizar_hitbox
+            self.listabotoes[14].cor = (160, 220, 60) if self.__renderizar_hitbox else (220,160,60)
+        elif acao == 16:
+            self.__renderizar_sprite = not self.__renderizar_sprite
+            self.listabotoes[15].cor = (160, 220, 60) if self.__renderizar_sprite else (220,160,60)
+        elif acao == 17: # SALVAR CONFIGS PARA ENTRAR NOS CREDITOS
             self.salvar_config()
         self.listabotoes[7].texto = "({}x{})".format(*self.__tamanho)
         return resultado
@@ -262,7 +274,9 @@ class Configuracoes(TelaMenu):
                 "musica":self.__volume_musica,
                 "efeitos":self.__volume_efeitos,
                 "telacheia":self.__tela_cheia,
-                "mostrarfps":self.__mostrar_fps}
+                "mostrarfps":self.__mostrar_fps,
+                "renderizarhitbox":self.__renderizar_hitbox,
+                "renderizarsprite":self.__renderizar_sprite}
 
 
 class Creditos(TelaMenu):
