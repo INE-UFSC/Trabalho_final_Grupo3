@@ -1,119 +1,126 @@
 import pygame
-from entidades import *
-from sprites import *
+from entidades import Estatico, renderizar_hitbox, renderizar_sprite
 
 # FUNCOES DE ATUALIZAR NECESSITAM DA AREA VISIVEL PARA RENDERIZAR CORRETAMENTE
-class Obstaculo(Estatico):
-    def __init__(self, nome: str, x: int, y: int, altura: int, largura: int, arquivo: str, cor: tuple):
-        super().__init__(nome, x, y, altura, largura, arquivo, cor)
-
-
-@visivel
-@instanciavel
-class PlataformaMovel(Movel):
-    nome_imagem = "sprites"
-    def __init__(self, y: int , x: int, largura: int, vely):
-        altura = 19
-        super().__init__("chao", x, y, altura, largura, 5, "sprites",  (184, 20, 20))
-        self.vely = vely
-
-    def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                      self.corpo.w, self.corpo.h])
-
-        self.sprite.imprimir(tela, "chao", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y, 0, 0, 0, 0,
-                             self.largura, self.altura)
-
-    def mover(self, dimensoesTela, mapa):
-        ##### REPOSICIONAMENTO DA PLATAFORMA #####
-        self.y += self.vely * mapa.escala_tempo
-        if self.y >= mapa.tamanho[1]:
-            self.y = 2
-        elif self.y <= 0:
-            self.y = mapa.tamanho[1] - 2
-
-
-@visivel
-@instanciavel
-class Bloco(Obstaculo):
-    nome_imagem = "0"
+class Bloco(Estatico):
     def __init__(self, nome: str, x: int, y: int):
         largura = 30
         altura = 30
-        super().__init__(nome, x, y, altura, largura, "0", (255, 102, 0))
-
-
-@visivel
-@instanciavel
-class Lapis(Obstaculo):
-    nome_imagem = "sprites"
-    def __init__(self, x: int, topo: int, base: int):
-        largura = 44
-        altura = base - topo
-        super().__init__("lapis", x, topo, altura, largura, "sprites", (11, 137, 0))
-
-
-@visivel
-@instanciavel
-class Ponta(Obstaculo):
-    nome_imagem = "sprites"
-    def __init__(self, x: int, topo: int, base: int):
-        largura = 44
-        altura = base - topo
-        super().__init__("ponta", x, topo, altura, largura, "sprites", (11, 137, 0))
-
-    def sofreu_colisao_jogador(self, jogador, direcao, mapa):
-        ##### COLISAO ESQUERDA #####
-        if direcao == "esquerda":
-            if jogador.velx <= 0:
-                jogador.velx = 0
-                jogador.x = self.corpo.right + 1
-        ##### COLISAO DIREITA #####
-        elif direcao == "direita":
-            if jogador.velx >= 0:
-                jogador.velx = 0
-                jogador.x = self.corpo.left - jogador.largura
-        ##### COLISAO BAIXO #####
-        elif direcao == "baixo":
-            jogador.vely = 0
-            jogador.y = self.corpo.top - jogador.altura
-            return 1 * (mapa.escala_tempo >= 1)
-        ##### COLISAO CIMA #####
-        elif direcao == "cima":
-            if jogador.vely < 0:
-                jogador.vely = 0
-                jogador.y = self.corpo.bottom
-        return 0
-
-
-@visivel
-@instanciavel
-class Cano(Obstaculo):
-    nome_imagem = "0"
-    def __init__(self, nome: str, y: int, esquerda: int, direita: int):
-        altura = 50
-        largura = direita - esquerda
-        super().__init__(nome, esquerda, y, altura, largura, "0", (11, 137, 0))
-
-
-@visivel
-@instanciavel
-class Chao(Obstaculo):
-    nome_imagem = "sprites"
-    def __init__(self, nome: str, y: int, esquerda: int, direita: int):
-        altura = 17
-        super().__init__("chao", esquerda, y, altura, direita - esquerda, "sprites", (184, 20, 20))
+        super().__init__(nome, x, y, altura, largura)
 
     def renderizar(self, tela, mapa):
-        pygame.draw.rect(tela, self.cor, [self.corpo.x - mapa.campo_visivel.x, self.corpo.y - mapa.campo_visivel.y,
-                                      self.corpo.w, self.corpo.h])
+        if renderizar_hitbox: pygame.draw.rect(tela, (255, 102, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
 
-        self.sprite.imprimir(tela, "chao", self.x  - mapa.campo_visivel.x, self.y  - mapa.campo_visivel.y, 0, 0, 0, 0, self.largura, self.altura)
+class CanoVertical(Estatico):
+    def __init__(self, nome: str, x: int, topo: int, base: int):
+        largura = 50
+        altura= base-topo
+        super().__init__(nome, x, topo, altura, largura)
 
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (11, 137, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
 
-@visivel
-@instanciavel
-class Vitoria(Obstaculo):
-    nome_imagem = "sprites"
-    def __init__(self, x: int, y: int):
-        super().__init__("tela", x, y, 275, 161, "sprites", (254, 254, 0))
+class CanoHorizontal(Estatico):
+    def __init__(self, nome: str, y: int, esquerda: int, direita: int):
+        altura = 50
+        largura = direita-esquerda
+        super().__init__(nome, esquerda, y, altura, largura)
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (11, 137, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+
+class Chao(Estatico): 
+    def __init__(self, nome: str, y: int, esquerda: int, direita: int):
+        altura = 10
+        super().__init__(nome, esquerda, y, altura, direita-esquerda)
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (184, 20, 20), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+
+class Vida(Estatico):
+    def __init__(self, nome: str, x: int, y: int):
+        altura = 30
+        largura = 60
+        self.__fonte = pygame.font.SysFont('Arial',20)
+        self.__vida = ""
+        super().__init__(nome, x, y, altura, largura)
+
+    @property
+    def vida(self):
+        return self.__vida
+    
+    @vida.setter
+    def vida(self, vida):
+        self.__vida = vida
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (10, 237, 0), self.corpo)
+    
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.renderizar(tela, mapa)
+        mostra_vida = self.__fonte.render('vida :'+" "+str(self.__vida),0,(0,0,0))
+        tela.blit(mostra_vida, (self.x, self.y))
+        return False
+
+class Tempo(Estatico):
+    pygame.init()
+    def __init__(self, nome: str, x: int, y: int):
+        altura = 30
+        largura = 70
+        self.__fonte = pygame.font.SysFont('Arial',20)
+        self.__tempo = 0
+        self.__contador = self.__fonte.render('time :'+" "+str(self.tempo),0,(0,0,0))
+        super().__init__(nome, x, y, altura, largura)
+    @property
+    def tempo(self):
+        return self.__tempo
+    
+    @tempo.setter
+    def tempo(self, tempo):
+        self.__tempo = tempo
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (160, 160, 160), self.corpo)
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.renderizar(tela, mapa)
+        self.__contador = self.__fonte.render('time :'+" "+str(self.__tempo),0,(0,0,0))
+        tela.blit(self.__contador, (self.x, self.y))
+        return False
+
+class Moeda(Estatico):
+    def __init__(self, nome: str, x: int, y: int):
+        altura = 30
+        largura = 60
+        super().__init__(nome, x, y, altura, largura)
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (254, 254, 0), self.corpo)
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.renderizar(tela, mapa)
+        return False
+
+class Vitoria(Estatico):
+    def __init__(self, x):
+        altura = 190
+        y = 590 - altura
+        largura = 100
+        super().__init__("vitoria", x, y, altura, largura)
+    
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (254, 254, 0), [self.corpo.x-mapa.campo_visivel.x,self.corpo.y,self.corpo.w,self.corpo.h])
+
+    def atualizar(self, tela, mapa, dimensoes_tela):
+        self.renderizar(tela, mapa)
+        return False
+
+class Borda(Estatico):
+    def __init__(self, nome: str, x: int):
+        y = -1000
+        altura = 2000
+        largura = 1
+        super().__init__(nome, x, y, altura, largura)
+
+    def renderizar(self, tela, mapa):
+        if renderizar_hitbox: pygame.draw.rect(tela, (0,0,0), self.corpo)

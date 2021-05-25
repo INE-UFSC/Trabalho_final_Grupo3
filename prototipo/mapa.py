@@ -1,40 +1,30 @@
 from obstaculos import *
 from inimigos import *
 from poderes import *
-from rei import *
-from jogador import Jogador
-from hud import *
 
 class Mapa:
-    "Classe que segura todas as entidades de um jogo"
-    def __init__(self, superficie):
+    def __init__(self, tamanho):
+        self.__tamanho = tamanho
         self.__lista_de_entidades = []
-        self.__hud = Hud(superficie.get_size())
-
-        ##### ATRIBUTOS DE RENDERIZACAO #####
-        
-        self.__superficie = superficie
-        tamanho_campo = superficie.get_size()
-        self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
-        self.campo_menor = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
-        self.__background_colour = (150, 220, 255)  # Cor do fundo
-
-        ##### ATRIBUTOS TEMPORAIS #####
-        self.__tempo_restante = ""
-        self.__ciclo = 0
-        self.escala_tempo = 1
-        self.render_escala_tempo = 1
-
-        ##### ATRIBUTOS COMPORTAMENTAIS #####
-        self.__vida_jogador = ""
+        self.__lista_de_display = []
+        self.__campo_visivel = pygame.Rect(0,0,tamanho[0],tamanho[1])
+        self.__conta = ""
+        self.__vitoria = pygame.Rect(tamanho[0]-30, 550-30, 30, 100)
         self.__ganhou = False
-        self.__moedas_pegas = ""
-        self.__paletas_pegas = ""
+        self.__vida_jogador = ""
 
     @property
     def lista_de_entidades(self):
         return self.__lista_de_entidades
+    
+    @property
+    def lista_de_display(self):
+        return self.__lista_de_display
 
+    @lista_de_entidades.setter
+    def lista_de_entidades(self, lista_de_entidades):
+        self.__lista_de_entidades = lista_de_entidades
+    
     @property
     def ganhou(self):
         return self.__ganhou
@@ -42,15 +32,7 @@ class Mapa:
     @ganhou.setter
     def ganhou(self, ganhou):
         self.__ganhou = ganhou
-
-    @property
-    def ciclo(self):
-        return self.__ciclo
-
-    @ciclo.setter
-    def ciclo(self, ciclo):
-        self.__ciclo = ciclo
-
+    
     @property
     def vida_jogador(self):
         return self.__vida_jogador
@@ -58,92 +40,89 @@ class Mapa:
     @vida_jogador.setter
     def vida_jogador(self, vida_jogador):
         self.__vida_jogador = vida_jogador
-
+    
     @property
-    def tempo_restante(self):
-        return self.__tempo_restante
+    def conta(self):
+        return self.__conta
 
-    @tempo_restante.setter
-    def tempo_restante(self, tempo_restante):
-        self.__tempo_restante = tempo_restante
-
+    @conta.setter
+    def conta(self, conta):
+        self.__conta = conta
+    
+    
     @property
     def campo_visivel(self):
         return self.__campo_visivel
 
-    @property
-    def tamanho(self):
-        return self.__tamanho
+    def iniciar(self,entidades):
+        lista_todos = entidades.copy()
+        self.__lista_de_entidades = lista_todos[0]
+        self.__lista_de_display = lista_todos[1]
 
-    @property
-    def jogador(self):
-        return self.__jogador
-    
-    @property
-    def proxima_fase(self):
-        return self.__proxima_fase
-    
-    @property
-    def paletas_pegas(self):
-        return self.__paletas_pegas
-    
-    @property
-    def moedas_pegas(self):
-        return self.__moedas_pegas
-    
-    @property
-    def cor_fundo(self):
-        return self.__background_colour
-    
-    @cor_fundo.setter
-    def cor_fundo(self,cor):
-        self.__background_colour = cor
-
-    def iniciar(self, fase, dicionaro_mapa, poder_atual, poder_armazenado, paletas):
-        """define outras propriedades do mapa fora do __init__()
-        
-        return o objeto jogador a ser utilizado"""
-        ##### LEITURA DAS FASES A PARTIR DO ARQUIVO JSON #####
-        lista_todos = dicionaro_mapa[fase]
-        objetos_no_mapa = lista_todos[0]
-        for item in objetos_no_mapa:
-            for classe in classes_instanciaveis:
-                if item[0] == classe.__name__:
-                    parametros = item[1] #Sim eh so pra ser maneiro
-                    objeto = classe(*parametros)
-                    self.__lista_de_entidades.append(objeto)
-        self.__tamanho = lista_todos[1]
-        self.__proxima_fase = lista_todos[2]
-
-        ##### INSTANCIACAO DO JOGADOR #####
-        self.__jogador = Jogador("rabisco", 200, self.tamanho[1] - 50, poder_atual, poder_armazenado, paletas)
-
-        ##### CARREGAMENTO DAS IMAGENS DAS ENTIDADES #####
-        for entidade in self.__lista_de_entidades:
-            if entidade.imagem != "0": entidade.sprite = Sprite(entidade.imagem)
-        return self.__jogador
-
-    def atualizar(self, tela, campo_visivel, dimensoes_tela, ciclo):
-        "Atualiza, principalmente renderiza cada objeto componente"
-
-        self.__ciclo = ciclo #Frame atual
-        self.__campo_visivel = campo_visivel #Aquilo que o jogador ve
-        self.__vida_jogador = self.__jogador.vida #Pega a vida do jogador pra passar pro hud
-        self.__moedas_pegas = self.__jogador.moedas#Pega as moedas que o jogador tem para passar pro hud
-        self.__paletas_pegas = self.__jogador.paleta
-        self.render_escala_tempo += max(min(self.escala_tempo - self.render_escala_tempo, 0.05), -0.05)
-        self.cor_fundo = [180-min(self.render_escala_tempo,1)*30,
-            200+min(self.render_escala_tempo,1)*20,
-            210+min(self.render_escala_tempo,1)*45]
-        self.__superficie.fill(self.__background_colour)  # Preenche a cor de fundo
-
-        ##### ATUALIZACAO DAS ENTIDADES #####
+    def atualizar(self, tela,campo_visivel,dimensoes_tela):
+        # O CAMPO_VISIVEL FAZ COM QUE APENAS OBJETOS NA TELA SEJAM RENDERIZADOS
+        # PODE AJUDAR CASO OS MAPAS FIQUEM MUITO GRANDES
+        self.__campo_visivel = campo_visivel
         for entidade in self.__lista_de_entidades:
             if entidade.atualizar(tela, self, dimensoes_tela):
                 self.__lista_de_entidades.remove(entidade)
+        for elemento_hud in self.__lista_de_display:
+            if isinstance(elemento_hud, Tempo):
+                elemento_hud.tempo = self.conta
+            if isinstance(elemento_hud, Vida):
+                elemento_hud.vida = self.__vida_jogador
 
-        ##### ATUALIZACAO DO HUD #####
-        self.__hud.atualizar(tela, self, dimensoes_tela, self.__tempo_restante, self.__vida_jogador
-                                        , self.__moedas_pegas, self.__paletas_pegas)
+            elemento_hud.atualizar(tela,self,dimensoes_tela)
 
+##### INSTANCIAS DE MAPAS #####
 
+width = 1000
+height = 600
+
+fase1 = [[
+    CanoVertical('cano1', 550, 475, height),
+    CanoVertical('cano2', 800, 475, height),
+    CanoVertical('cano3', 1500, 475, height),
+
+    Bloco('bloco1', 200, 400),
+    Bloco('bloco2', 250, 400),
+    Bloco('bloco3', 300, 400),
+    Bloco('bloco4', 350, 400),
+
+    Chao('chao1', height-10, -200, 350),
+    Chao('chao2', height-10, 450, 2000),
+
+    Borda('borda1', 0),
+    Borda('borda2', 2000),
+    Vitoria(1900),
+
+    ##### PODERES #####
+    ShurikenDoNinja('shuriken1', 1200, 500),
+    OrbeDoMago('orbe1', 275, 300),
+
+    ##### INIMIGOS #####
+    Goomba('goomba1', 610, height - 50)
+
+],
+
+[   Vida('vida', 140, 50),
+    Tempo('tempo', 470, 50),
+    Moeda('moeda', 800, 50),]]
+
+fase2 = [[
+    CanoVertical('cano1', -9000, 475, height),
+    CanoVertical('cano2', 1600, 475, height),
+
+    Chao('chao1', height - 10, -1000, 2000),
+
+    ##### INIMIGOS #####
+    Goomba('goomba',100,height-50),
+    Goomba('goomba',600,height-50),
+    Goomba('goomba',1000,height-50),
+    Goomba('goomba',1200,height-50),
+    Goomba('goomba',1400,height-50),
+    Goomba('goomba',1600,height-50),
+    Vitoria(1900)
+],[Vida('vida', 140, 50),
+    Tempo('tempo', 470, 50),
+    Moeda('moeda', 800, 50),]]
