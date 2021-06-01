@@ -1,4 +1,4 @@
-import json, pygame, os
+import json, pygame
 from mapa import montar_mapas
 from entidades import *
 
@@ -14,13 +14,9 @@ class DAO:
     definidos pela funcao montar_mapas
     """
     def __init__(self):
-        from sys import platform
-        if platform == "win32":
-            self.__pasta_data = __file__.rsplit("\\",1)[0]+"\\data\\"
-            self.__pasta_assets = __file__.rsplit("\\",1)[0]+"\\assets\\"
-        else:
-            self.__pasta_data = __file__.rsplit("/",1)[0]+"/data/"
-            self.__pasta_assets = __file__.rsplit("/",1)[0]+"/assets/"
+        pasta_jogo = __file__[:-len(__name__)-3]
+        self.__pasta_data = pasta_jogo+"data/"
+        self.__pasta_assets = pasta_jogo+"assets/"
         self.carregar_configs()
         self.carregar_saves()
         self.carregar_mapas()
