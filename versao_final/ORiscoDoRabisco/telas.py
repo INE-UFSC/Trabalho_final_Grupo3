@@ -17,7 +17,7 @@ class TelaPause(Sobreposicao):
     """
     def __init__(self,tela):
         continuar = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2, 200, 50, (220, 0, 0), "Continuar", 5)
-        sair = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2+60, 200, 50, (220, 0, 0), "Desistir", 5)
+        sair = Botao(tela.superficie.get_size()[0]/2, tela.superficie.get_size()[1]/2+60, 200, 50, (220, 0, 0), "Sair", 5)
         listabotoes = [continuar,sair]
         listatelas = [True,False,"Fechar"]
         super().__init__(listabotoes,[(50,50,50),(tela.superficie.get_size()[0]/2-120,tela.superficie.get_size()[1]/2-35,240,130)],tela,listatelas)
@@ -32,7 +32,7 @@ class InicioJogo(TelaMenu):
     """
     def __init__(self,superficie):
         t = superficie.get_size()
-        self.__imagem = pygame.image.load(DAOJogo.pasta_assets+"inicidojogo.png")
+        self.__imagem = pygame.image.load(DAOJogo.pasta_assets+"inicidojogo.png").convert()
         self.__imagem = pygame.transform.scale(self.__imagem,t)
         iniciar = Botao(t[0]*7/8,t[1]*3/5, t[0]/5, t[0]/8, (220, 220, 60), "Menu Principal", 5,False,True)
         listabotoes = [iniciar]
@@ -357,9 +357,10 @@ class TelaDeJogo(Tela):
 
 
     def salvar_jogo(self):
-        "Salva o jogo ao ganhar ou perder"
+        "Salva o jogo ao ganhar"
         slots = DAOJogo.saves
-        slots[self.__slot] = [self.__nivel,self.__nivel, type(self.__jogador.poder).__name__,
+        proxima = self.__mapa.proxima_fase if self.__mapa.proxima_fase else "fase6"
+        slots[self.__slot] = [proxima,proxima, type(self.__jogador.poder).__name__,
                                 type(self.__jogador.poder_armazenado).__name__, self.__jogador.paleta]
         DAOJogo.saves = slots
 
@@ -379,7 +380,6 @@ class TelaDeJogo(Tela):
         if not pausado:
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
-                    self.salvar_jogo()
                     return [False]
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_w: self.__cima = 5
@@ -410,7 +410,6 @@ class TelaDeJogo(Tela):
         else:
             for evento in pygame.event.get():
                 if evento.type == pygame.QUIT:
-                    self.salvar_jogo()
                     return False
                 if evento.type == pygame.KEYDOWN:
                     if evento.key == pygame.K_ESCAPE:
@@ -450,7 +449,6 @@ class TelaDeJogo(Tela):
                 self.__jogador.tipos_transparentes = self.__classes_instanciaveis
             self.superficie.blit(self.__textin, (self.__campo_visivel.w/2 - self.__textin.get_size()[0] / 2, self.__campo_visivel.h/2 - self.__textin.get_size()[1] / 2))
             if self.__atrasofim >= 150:
-                self.salvar_jogo()
                 return [FimDeJogo, [self.superficie, self.__nivel, self.__slot]]
 
         ### VENCENDO ###
@@ -470,9 +468,8 @@ class TelaDeJogo(Tela):
             if not resultado:
                 self.__sobreposicao = None
             elif resultado == "Fechar":
-                self.salvar_jogo()
                 pygame.mixer.music.fadeout(500)
-                return [FimDeJogo, [self.superficie, self.__nivel, self.__slot]]
+                return [MenuPrincipal, [self.superficie]]
         except AttributeError:
             pass
 

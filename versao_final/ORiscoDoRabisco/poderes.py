@@ -289,6 +289,7 @@ class BolaFogo(PoderManifestado):
     def colisao_outros(self, entidade, direcao, mapa):
         if entidade.nome == "corpo_das_cores" and entidade.fase == 2:
             entidade.toma_dano_de_fogo()
+            mapa.hud.barra_rei.vida -= 2
         elif not entidade.a_prova_de_fogo:
             entidade.auto_destruir(mapa)
         self.auto_destruir(mapa)

@@ -15,8 +15,14 @@ class Mapa:
 
 
         ##### ATRIBUTOS DE RENDERIZACAO #####
-        self.__fundo = pygame.image.load(DAOjogo.DAOJogo.pasta_assets+"fundo.png").convert_alpha()
-        self.__trono = pygame.image.load(DAOjogo.DAOJogo.pasta_assets+"trono.png").convert_alpha()
+        self.__fundo = pygame.image.load(DAOjogo.DAOJogo.pasta_assets+"fundo.png").convert()
+        self.__fundo.set_colorkey((0,255,0))
+        tamanho = self.__fundo.get_size()
+        self.__fundo = pygame.transform.scale(self.__fundo,(tamanho[0]*3,tamanho[1]*3))
+        self.__trono = pygame.image.load(DAOjogo.DAOJogo.pasta_assets+"trono.png").convert()
+        self.__trono.set_colorkey((0,255,0))
+        tamanho = self.__trono.get_size()
+        self.__trono = pygame.transform.scale(self.__trono,(tamanho[0]*3,tamanho[1]*3))
         self.__superficie = superficie
         tamanho_campo = superficie.get_size()
         self.__campo_visivel = pygame.Rect(0, 0, tamanho_campo[0], tamanho_campo[1])
@@ -41,6 +47,14 @@ class Mapa:
         self.__medidor = pygame.font.SysFont('miriam', 24).render("FPS:63", False, (0,0,0))
         from DAOjogo import DAOJogo
         self.__mostrar_fps = DAOJogo.configs["mostrarfps"]
+
+    @property
+    def fase(self):
+        return self.__fase
+
+    @property
+    def hud(self):
+        return self.__hud
 
     @property
     def lista_de_entidades(self):

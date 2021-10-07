@@ -19,6 +19,7 @@ class Gota(Coletavel):
     
     def coleta(self, jogador, mapa):
         jogador.ganha_vida()
+        mapa.hud.barra_rei.vida -= 9
         self.__rei.jogador_pega_gota()
         mapa.escala_tempo = 1
         self.auto_destruir(mapa)
@@ -98,7 +99,7 @@ class PunhoVermelho(ParteDoRei):
         self.__vel_mao = 8
         self.__quebrado = False
         super().__init__("punho", x, y, altura, largura, limiteVel, 0, dano_contato, "punho",
-                         [Bala, BolaFogo, Coletavel, ParteDoRei, ReiDasCores, PlataformaMovel], cor, 0)
+                         [Bala, BolaFogo, Coletavel, ParteDoRei, ReiDasCores, PlataformaMovel], cor, 8)
     
     @property
     def recarga(self):
@@ -127,11 +128,12 @@ class PunhoVermelho(ParteDoRei):
         else:
             if self.__lado == "esquerdo": face = -1
             else: face = 1
+        ajuste_temporal = self.tempo_inverso or self.escala_tempo != 0
         self.sprite.imprimir(tela, "punho",
                              self.x - mapa.campo_visivel.x,
                              self.y - mapa.campo_visivel.y,
                              orientacao = face,
-                             frame = 1 * (self.__quebrado))
+                             frame = 8 if self.__quebrado else int((ajuste_temporal)*mapa.ciclo/6) % self.frames * int(self.escala_tempo))
 
     def montar(self, mapa):
         for entidade in mapa.lista_de_entidades:
@@ -145,6 +147,8 @@ class PunhoVermelho(ParteDoRei):
 
 
     def atualizar(self, tela, mapa, dimensoes_tela):
+        if self.escala_tempo != mapa.escala_tempo:
+            self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
         atira = 0 #define se o boss vai laçar a mão
         if not self.__atirando: #se não esta lançando a posição é colada ao boss e conta para poder atirar
             if mapa.escala_tempo != 0:
@@ -210,8 +214,8 @@ class PunhoVermelho(ParteDoRei):
             self.vely = disty / divisor
         
         #### Atualiza a posição da mão ####
-        self.x += self.velx * mapa.escala_tempo
-        self.y += self.vely * mapa.escala_tempo
+        self.x += self.velx * self.escala_tempo
+        self.y += self.vely * self.escala_tempo
         
 
     def colisao_jogador(self, jogador, direcao, mapa):
@@ -235,7 +239,9 @@ class PunhoVermelho(ParteDoRei):
             elif direcao == "baixo":
                 jogador.vely = 0
                 jogador.y = self.corpo.top - jogador.altura
-                self.__quebrado = True #Toma dano se o jogador pina nela
+                if not self.__quebrado:
+                    mapa.hud.barra_rei.vida -= 10
+                    self.__quebrado = True #Toma dano se o jogador pina nela
                 return 0
             ##### COLISAO CIMA #####
             elif direcao == "cima":
@@ -302,10 +308,14 @@ class CabecaLaranja(ParteDoRei):
 
         if not self.montado: self.montar(mapa)
 
-        if mapa.jogador.x >= self.x:
-            self.face = 1
-        else:
-            self.face = -1
+        if self.escala_tempo != mapa.escala_tempo:
+            self.escala_tempo += max(min(mapa.escala_tempo - self.escala_tempo, 0.05), -0.05)
+        
+        if self.escala_tempo > 0:
+            if mapa.jogador.x >= self.x:
+                self.face = 1
+            else:
+                self.face = -1
 
         self.renderizar(tela, mapa)
 
@@ -342,7 +352,7 @@ class CabecaLaranja(ParteDoRei):
                 self.__poder.acao(self, tela, mapa, velx, vely, 0+10*i)
             self.__descanso_poder = self.__descanso_poder_max# + randrange(0, 50)
         else:
-            self.__descanso_poder -= 1 * mapa.escala_tempo
+            self.__descanso_poder -= 1 * self.escala_tempo
 
     def colisao_jogador(self, jogador, direcao, mapa):
         "Detecta colisao com jogador, return dano caso valido"
@@ -351,7 +361,9 @@ class CabecaLaranja(ParteDoRei):
             if direcao == "esquerda":
                 if jogador.velx <= 0:
                     if jogador.velx <= -8: #cabeça toma dano se for batida via dash
-                        self.__quebrado = True
+                        if not self.__quebrado:
+                            mapa.hud.barra_rei.vida -= 10
+                            self.__quebrado = True
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.right + 1
@@ -360,7 +372,9 @@ class CabecaLaranja(ParteDoRei):
             elif direcao == "direita":
                 if jogador.velx >= 0:
                     if jogador.velx >= 8: #cabeça toma dano se for batida via dash
-                        self.__quebrado = True
+                        if not self.__quebrado:
+                            mapa.hud.barra_rei.vida -= 10
+                            self.__quebrado = True
                     jogador.velx = 0
                     jogador.aceleracao = 0
                     jogador.x = self.corpo.left - jogador.largura
@@ -531,6 +545,7 @@ class ReiDasCores(Entidade):
                                     Saltante(self.__posicao_inicial+950, mapa.tamanho[1] - 150)
                                     ]
         self.spawn_poder(mapa, TintaVermelha)
+        mapa.hud.barra_rei.cor = (50, 50, 50)
     def fase_2(self, mapa):
         "Comeca fase 2 da batalha, com poder laranja"
         self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
@@ -543,6 +558,7 @@ class ReiDasCores(Entidade):
                                     Atirador(self.__posicao_inicial+600, mapa.tamanho[1]-500),
                                     ]
         self.spawn_poder(mapa, TintaLaranja)
+        mapa.hud.barra_rei.cor = (255, 50, 50)
     def fase_3(self, mapa):
         "Comeca fase 3 da batalha, com poder azul"
         self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-300, 200, 0),
@@ -556,6 +572,7 @@ class ReiDasCores(Entidade):
                                     Gota("B", self.__posicao_inicial+200, mapa.tamanho[1]-600, self)
                                     ]
         self.spawn_poder(mapa, TintaAzul)
+        mapa.hud.barra_rei.cor = (50, 50, 255)
     def fase_4(self, mapa):
         "Comeca fase 4 da batalha, com poder roxo"
         self.__entidades_da_fase = [PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial-250, 100, 4),
@@ -563,8 +580,10 @@ class ReiDasCores(Entidade):
                                     PlataformaMovel(mapa.tamanho[1]-300, self.__posicao_inicial+500, 100, 4),
                                     PlataformaMovel(mapa.tamanho[1]-150, self.__posicao_inicial+600, 100, 4),]
         self.spawn_poder(mapa, TintaRoxa)
+        mapa.hud.barra_rei.cor = (80, 10, 120)
     def fase_5(self, mapa):
         "Termina Batalha"
+        mapa.hud.barra_rei.vida = 0
         self.__entidades_da_fase = []
         for ganhar in mapa.lista_de_entidades:
             if isinstance(ganhar, Vitoria):

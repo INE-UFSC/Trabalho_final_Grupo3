@@ -4,7 +4,7 @@ from entidades import gravidade, colisao_analisada, renderizar_hitbox, renderiza
 from inimigos import Bolota,Gelatina,Temporal
 from coletaveis import *
 from poderes import *
-from sprites import Sprite
+from sprites import SpriteJogador
 
 
 class Jogador(Movel):
@@ -13,13 +13,15 @@ class Jogador(Movel):
     def __init__(self, nome: str, x: int, y: int, poder_atual: PoderGenerico, poder_armazenado: PoderGenerico, paletas_coletadas: int):
         ##### ATRIBUTOS GERAIS #####
         self.__vida = 5
-        self.__sprite = {"cinza": Sprite("rabisco_cinza"),
-                         "laranja": Sprite("rabisco_laranja"),
-                         "vermelho": Sprite("rabisco_vermelho"),
-                         "roxo": Sprite("rabisco_roxo"),
-                         "azul": Sprite("rabisco_azul"),
-                         "verde": Sprite("rabisco_verde"),
-                         "marrom": Sprite("rabisco_marrom")}
+        self.__cores = {"cinza": [(128,128,128),(196,196,196)],
+                         "laranja": [(220,56,1),(255,201,14)],
+                         "vermelho": [(94,0,14),(224,18,29)],
+                         "roxo": [(163,73,164),(218,173,218)],
+                         "azul": [(0,17,170),(153,217,234)],
+                         "verde": [(22,114,50),(20,201,61)],
+                         "marrom": [(83,41,28),(185,122,87)]}
+        nome_poder = type(poder_atual).__name__.lower()
+        self.__sprite = SpriteJogador(self.__cores[nome_poder][0], self.__cores[nome_poder][1])
         self.__posicao_comeco = (x, y)
         self.__descanso_troca_poder = 0
         ##### ATRIBUTOS POSICIONAIS #####
@@ -115,6 +117,8 @@ class Jogador(Movel):
         if (not isinstance(self.__poder, Cinza)) and (self.__paleta == 3):
             self.__poder_armazenado = self.__poder
         self.__poder = item.poder_atribuido
+        nome_poder = type(self.poder).__name__.lower()
+        self.__sprite.montar_sprite(self.__cores[nome_poder][0], self.__cores[nome_poder][1])
         self.ganha_vida()
 
     def coletar_moeda(self):
@@ -139,7 +143,7 @@ class Jogador(Movel):
     def renderizar_sprite(self, tela, mapa):
         "renderiza na tela na posicao correta, relativo ao local no mapa"
         if self.__recuperacao % 15 < 10:
-                self.__sprite[type(self.poder).__name__.lower()].imprimir(tela, "rabisco", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
+                self.__sprite.imprimir(tela, "rabisco", self.x - mapa.campo_visivel.x, self.y - mapa.campo_visivel.y,
                                 self.face*(self.escala_tempo!=0)+1*(self.escala_tempo==0), self.velx*(self.escala_tempo>0), self.vely, int(mapa.ciclo/6) % 12*(self.escala_tempo>0))
 
     def atualizar(self, screen, mapa, entradas):
@@ -154,6 +158,8 @@ class Jogador(Movel):
             if self.__paleta == 3 and pega_poder_armazenado and not isinstance(self.__poder_armazenado, Cinza):
                 poder_a_ser_armazenado = self.__poder
                 self.__poder = self.__poder_armazenado
+                nome_poder = type(self.poder).__name__.lower()
+                self.__sprite = SpriteJogador(self.__cores[nome_poder][0], self.__cores[nome_poder][1])
                 self.__poder_armazenado = poder_a_ser_armazenado
                 self.__descanso_troca_poder = 30
         else:
@@ -164,7 +170,10 @@ class Jogador(Movel):
         self.renderizar(screen, mapa)
 
         ##### ATUALIZACAO DOS PODERES #####
+        mudanca = self.__invisivel or False
         self.__invisivel = self.__poder.atualizar(screen, mapa)
+        if mudanca != self.__invisivel:
+            self.__sprite.montar_sprite(self.__cores[type(self.__poder).__name__.lower()][0], self.__cores[type(self.__poder).__name__.lower()][1] if not self.__invisivel else (0,0,0))
 
         ##### SIDESCROLL #####
         if self.x > mapa.campo_visivel.x + tamanho_tela[0]*3/5:
@@ -304,12 +313,12 @@ class Jogador(Movel):
         self.x += self.velx * self.escala_tempo
 
         ##### MATA O JOGADOR SE CAIR NO BURACO #####
-        if self.y > mapa.tamanho[1]: self.__vida = 0
+        if self.y > mapa.tamanho[1] + 50: self.__vida = 0
 
         ##### INDICA A DIRECAO DO JOGADOR PARA DIRECIONAR PODERES #####
-        if self.velx > 0:
+        if self.__aceleracao > 0:
             self.face = 1
-        elif self.velx < 0:
+        elif self.__aceleracao < 0:
             self.face = -1
 
         ##### ATUALIZACAO DO CORPO DO JOGADOR #####

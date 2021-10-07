@@ -182,10 +182,11 @@ class Atirador(Inimigo):
 
         #### SE NÃO TA NO CAMPO VISIVEL FICA PARADO ####
         dist_x_jogador = self.x - mapa.jogador.x
-        if dist_x_jogador > 0:
-            self.face = -1
-        elif dist_x_jogador < 0:
-            self.face = 1
+        if self.escala_tempo > 0:
+            if dist_x_jogador > 0:
+                self.face = -1
+            elif dist_x_jogador < 0:
+                self.face = 1
 
         self.x += self.velx * self.escala_tempo * self.face
         self.y += self.vely * self.escala_tempo
